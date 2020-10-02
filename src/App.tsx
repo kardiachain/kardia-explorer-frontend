@@ -6,6 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import KAIHeader from './common/components/Header';
+import KAIFooter from './common/components/Footer';
 import Home from './pages/Home';
 import TxDetail from './pages/TxDetail';
 import Network from './pages/Network';
@@ -15,7 +16,7 @@ import { Container, Header, Content, Footer } from 'rsuite';
     render() {
       return (
         <Router>
-          <Container>
+          <Container className="kai-explorer-app">
             <Header>
               <KAIHeader />
             </Header>
@@ -32,7 +33,7 @@ import { Container, Header, Content, Footer } from 'rsuite';
                 </Route>
               </Switch>
             </Content>
-            <Footer>Footer</Footer>
+            <Footer><KAIFooter /></Footer>
           </Container>
         </Router>
       );
