@@ -1,0 +1,15 @@
+.kai-header-container {
+    padding: 0 40px;
+}
+
+.kai-logo-container {
+    max-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.kai-logo-container>img {
+    width: 100%;
+}
