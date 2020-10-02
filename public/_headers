@@ -1,0 +1,3 @@
+/
+	Link: <*.js>; rel=preload; as=script
+	Link: <*.css>; rel=preload; as=style
