@@ -1,4 +1,4 @@
-const getTransactions = (page: number, limit: number) => {
+const getTransactions = (page: number, size: number) => {
     // TODO: Integrate API get transactions
     const now = new Date();
     now.setDate(now.getDate() - 1)
@@ -42,4 +42,9 @@ const getTransactions = (page: number, limit: number) => {
     return data;
 }
 
-export {getTransactions}
+const getBlocks = (page: number, size: number) => {
+    // TODO: Integrate API get blocks
+    return []
+}
+
+export {getTransactions, getBlocks}

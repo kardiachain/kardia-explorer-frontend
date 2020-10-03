@@ -3,6 +3,7 @@ import SearchSection from './SearchSection';
 import './home.css'
 import { Divider } from 'rsuite';
 import TransactionSection from './TransactionSection';
+import BlockSection from './BlockSection';
 
 const Home = () => {
     return (
@@ -14,6 +15,7 @@ const Home = () => {
                 <TransactionSection />
                 <h3>Blocks</h3>
                 <Divider />
+                <BlockSection />
             </div>
         </React.Fragment>
     )
