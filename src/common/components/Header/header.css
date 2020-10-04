@@ -2,6 +2,32 @@
     padding: 0 40px;
 }
 
+.kai-header-container-mobile {
+    background-color: #2A343D;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.kai-header-mobile-menu-container {
+    max-width: 70%;
+}
+
+.kai-header-container-mobile-menu {
+    position: absolute;
+    right: 10px;
+}
+
+.kai-header-container-mobile-menu>button {
+    background-color: transparent;
+}
+
+.kai-header-container-mobile-menu>button:focus {
+    outline: none;
+}
+
 .kai-logo-container {
     max-width: 200px;
     display: flex;

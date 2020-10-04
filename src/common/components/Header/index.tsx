@@ -1,11 +1,51 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Dropdown, Icon, Nav, Navbar } from 'rsuite';
+import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
+import { useViewport } from '../../../context/ViewportContexrt';
 import logo from '../../../resources/kardia-logo.png';
 import './header.css';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('explorer');
+    const [showMenu, setShowMenu] = useState(false);
+    const {isMobile} = useViewport()
+    if (isMobile) {
+        return (
+            <div className="kai-header-container-mobile">
+                <Link to="/" className="navbar-brand logo">
+                    <div className="kai-logo-container">
+                        <img src={logo} alt="Kardia block explorer" />
+                    </div>
+                </Link>
+                <div className="kai-header-container-mobile-menu" >
+                    <button onClick={() => setShowMenu(true)}>
+                        <Icon icon="bars" size="2x" inverse />
+                    </button>
+                </div>
+                <Drawer
+                    size="xs"
+                    placement="right"
+                    show={showMenu}
+                    onHide={() => setShowMenu(false)}
+                    keyboard
+                    className="kai-header-mobile-menu-container"
+                >
+                    <Drawer.Body>
+                        <Sidenav appearance="subtle">
+                            <Sidenav.Body>
+                                <Nav onSelect={setActiveKey} activeKey={activeKey}>
+                                    <Link to="/explorer"><Nav.Item eventKey="explorer" icon={<Icon icon="explore" />}>Explorer</Nav.Item></Link>
+                                    <Link to="/network"><Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />}>View Network</Nav.Item></Link>
+                                    <Link to="/wallet"><Nav.Item eventKey="wallet" icon={<Icon icon="money" />}>Wallet</Nav.Item></Link>
+                                    <Link to="/faucet"><Nav.Item eventKey="faucet" icon={<Icon icon="usd" />}>Faucet</Nav.Item></Link>
+                                </Nav>
+                            </Sidenav.Body>
+                        </Sidenav>
+                    </Drawer.Body>
+                </Drawer>
+            </div>
+        )
+    }
     return (
         <Navbar appearance="inverse" className="kai-header-container">
             <Navbar.Header>
