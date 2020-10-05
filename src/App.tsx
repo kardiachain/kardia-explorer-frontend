@@ -12,6 +12,9 @@ import TxDetail from './pages/TxDetail';
 import Network from './pages/Network';
 import { Container, Header, Content, Footer } from 'rsuite';
 import { ViewportProvider } from './context/ViewportContexrt';
+import Wallet from './pages/Wallet';
+import CreateNewWallet from './pages/Wallet/CreateNewWallet';
+import AccessMyWallet from './pages/Wallet/AccessMyWallet';
 
   class App extends Component {
     render() {
@@ -29,6 +32,15 @@ import { ViewportProvider } from './context/ViewportContexrt';
                   </Route>
                   <Route path="/tx">
                     <TxDetail />
+                  </Route>
+                  <Route path="/wallet">
+                    <Wallet />
+                  </Route>
+                  <Route path="/create-wallet">
+                    <CreateNewWallet />
+                  </Route>
+                  <Route path="/access-wallet">
+                    <AccessMyWallet />
                   </Route>
                   <Route path="/">
                     <Home />
