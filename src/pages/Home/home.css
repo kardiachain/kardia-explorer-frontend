@@ -36,6 +36,7 @@
 @media screen and (max-width: 620px) {
     .home-container {
         margin-top: 0;
+        padding: 20px;
     }
     .search-section {
         background-color: transparent;

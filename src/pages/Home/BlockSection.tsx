@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2';
 import { Col, FlexboxGrid, Table } from 'rsuite';
 import { renderHashString } from '../../common/utils/string';
+import { useViewport } from '../../context/ViewportContexrt';
 import { getBlocks } from '../../service/kai-explorer';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const BlockSection = () => {
     const [blockList, setBlockList] = useState([] as KAITransaction[])
+    const { isMobile } = useViewport()
     useEffect(() => {
         const transactions = getBlocks(1, 5);
         setBlockList(transactions)
@@ -17,7 +19,7 @@ const BlockSection = () => {
             <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
                 <Line 
                     options={{ maintainAspectRatio: false }}
-                    height={400}
+                    height={isMobile ? 200 : 400}
                     data={{
                         labels: ['1', '2', '3', '4', '5', '6', '7'],
                         datasets: [{
