@@ -16,9 +16,23 @@ const BlockSection = () => {
     }, [])
     return (
         <FlexboxGrid justify="space-between">
-            <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
+            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
                 <Line 
-                    options={{ maintainAspectRatio: false }}
+                    options={{ 
+                        maintainAspectRatio: false,
+                        scales : {
+                            xAxes : [ {
+                                gridLines : {
+                                    display : false
+                                }
+                            } ],
+                            yAxes : [ {
+                                gridLines : {
+                                    display : false
+                                }
+                            } ]
+                        }
+                    }}
                     height={isMobile ? 200 : 400}
                     data={{
                         labels: ['1', '2', '3', '4', '5', '6', '7'],
@@ -30,7 +44,7 @@ const BlockSection = () => {
                     }} 
                 />
             </FlexboxGrid.Item>
-            <FlexboxGrid.Item componentClass={Col} colspan={24} md={10}>
+            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16}>
                 <h3>Latest blocks</h3>
                 <Table
                     bordered
