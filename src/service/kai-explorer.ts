@@ -44,7 +44,29 @@ const getTransactions = (page: number, size: number) => {
 
 const getBlocks = (page: number, size: number) => {
     // TODO: Integrate API get blocks
-    return []
+    const now = new Date();
+    now.setDate(now.getDate() - 1)
+    const data = [
+        {
+            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
+            blockHeight: 279604,
+            transactions: 0,
+            time: now
+        },
+        {
+            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
+            blockHeight: 279604,
+            transactions: 0,
+            time: now
+        },
+        {
+            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
+            blockHeight: 279604,
+            transactions: 0,
+            time: now
+        }
+    ]
+    return data;
 }
 
 export {getTransactions, getBlocks}
