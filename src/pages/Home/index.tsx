@@ -10,12 +10,12 @@ const Home = () => {
         <React.Fragment>
             <SearchSection />
             <div className="home-container">
-                <h3>Transactions</h3>
-                <Divider />
-                <TransactionSection />
                 <h3>Blocks</h3>
                 <Divider />
                 <BlockSection />
+                <h3>Transactions</h3>
+                <Divider />
+                <TransactionSection />
             </div>
         </React.Fragment>
     )

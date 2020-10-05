@@ -33,11 +33,11 @@ const Header = () => {
                     <Drawer.Body>
                         <Sidenav appearance="subtle">
                             <Sidenav.Body>
-                                <Nav onSelect={setActiveKey} activeKey={activeKey}>
-                                    <Link to="/explorer"><Nav.Item eventKey="explorer" icon={<Icon icon="explore" />}>Explorer</Nav.Item></Link>
-                                    <Link to="/network"><Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />}>View Network</Nav.Item></Link>
-                                    <Link to="/wallet"><Nav.Item eventKey="wallet" icon={<Icon icon="money" />}>Wallet</Nav.Item></Link>
-                                    <Link to="/faucet"><Nav.Item eventKey="faucet" icon={<Icon icon="usd" />}>Faucet</Nav.Item></Link>
+                                <Nav>
+                                    <Nav.Item eventKey="explorer" icon={<Icon icon="explore" />} href="/">Explorer</Nav.Item>
+                                    <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
+                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href="/wallet">Wallet</Nav.Item>
+                                    <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
                                 </Nav>
                             </Sidenav.Body>
                         </Sidenav>
