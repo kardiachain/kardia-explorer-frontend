@@ -55,13 +55,13 @@ const TransactionSection = () => {
                         console.log(data);
                     }}
                 >
-                    <Column width={140}>
+                    <Column width={300}>
                         <HeaderCell>Tx Hash</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (
                                     <div>
-                                        <div> {renderHashString(rowData.txHash)} </div>
+                                        <div> {renderHashString(rowData.txHash, 30)} </div>
                                         <div>{rowData.time.toLocaleDateString()} </div>
                                     </div>
                                 );

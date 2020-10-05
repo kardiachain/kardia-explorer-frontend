@@ -8,11 +8,11 @@ import { getBlocks } from '../../service/kai-explorer';
 const { Column, HeaderCell, Cell } = Table;
 
 const BlockSection = () => {
-    const [blockList, setBlockList] = useState([] as KAITransaction[])
+    const [blockList, setBlockList] = useState([] as KAIBlock[])
     const { isMobile } = useViewport()
     useEffect(() => {
-        const transactions = getBlocks(1, 5);
-        setBlockList(transactions)
+        const blocks = getBlocks(1, 5);
+        setBlockList(blocks)
     }, [])
     return (
         <FlexboxGrid justify="space-between">
@@ -55,13 +55,13 @@ const BlockSection = () => {
                         console.log(data);
                     }}
                 >
-                    <Column width={140}>
-                        <HeaderCell>Tx Hash</HeaderCell>
+                    <Column width={300}>
+                        <HeaderCell>Block Hash</HeaderCell>
                         <Cell>
-                            {(rowData: any) => {
+                            {(rowData: KAIBlock) => {
                                 return (
                                     <div>
-                                        <div> {renderHashString(rowData.txHash)} </div>
+                                        <div> {renderHashString(rowData.blockHash, 30)} </div>
                                         <div>{rowData.time.toLocaleDateString()} </div>
                                     </div>
                                 );
@@ -69,21 +69,12 @@ const BlockSection = () => {
                         </Cell>
                     </Column>
                     <Column width={400}>
-                        <HeaderCell>Detail</HeaderCell>
-                        <Cell>
-                            {(rowData: any) => {
-                                return (
-                                    <div>
-                                        <div>From: {renderHashString(rowData.from, 30)} </div>
-                                        <div>To: {renderHashString(rowData.to, 30)} </div>
-                                    </div>
-                                );
-                            }}
-                        </Cell>
+                        <HeaderCell>Block height</HeaderCell>
+                        <Cell dataKey="blockHeight" />
                     </Column>
                     <Column align="center">
-                        <HeaderCell>Value</HeaderCell>
-                        <Cell dataKey="value" />
+                        <HeaderCell>Transactions count</HeaderCell>
+                        <Cell dataKey="transactions" />
                     </Column>
                 </Table>
             </FlexboxGrid.Item>
