@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Icon, Input, Modal } from 'rsuite';
+import { Button, Col, Icon, Input, Modal, Panel, Row } from 'rsuite';
+import NumberFormat from 'react-number-format';
 import QrReader from 'react-qr-reader';
 import { useViewport } from '../../context/ViewportContexrt';
 
@@ -17,6 +18,28 @@ const SearchSection = () => {
 
     return (
         <div className="search-section">
+            <Row className="stat-group">
+                <Col md={6} sm={12} xs={12}>
+                    <Panel shaded bordered header="Block height" className="stat-container">
+                        <NumberFormat value={279604} displayType={'text'} thousandSeparator={true} />
+                    </Panel>
+                </Col>
+                <Col md={6} sm={12} xs={12}>
+                    <Panel shaded bordered header="Live TPS" className="stat-container">
+                        <NumberFormat value={0.0139} displayType={'text'} thousandSeparator={true} />
+                    </Panel>
+                </Col>
+                <Col md={6} sm={12} xs={12}>
+                    <Panel shaded bordered header="Total transactions" className="stat-container">
+                        <NumberFormat value={123456789} displayType={'text'} thousandSeparator={true} />
+                    </Panel>
+                </Col>
+                <Col md={6} sm={12} xs={12}>
+                    <Panel shaded bordered header="Total holders" className="stat-container">
+                        <NumberFormat value={12345} displayType={'text'} thousandSeparator={true} />
+                    </Panel>
+                </Col>
+            </Row>
             <div className="search-input-wrapper">
                 <Input block size="lg" placeholder="Search by Address / TxHash / BlockHash ..." />
                 {
