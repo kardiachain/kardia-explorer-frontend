@@ -14,7 +14,9 @@ const Wallet = () => {
                                 <Panel header="Create a new wallet" shaded>
                                     <p>Our user-friendly application will enable wallet creation and user's interaction with Kardiachain</p>
                                     <br/>
-                                    <Link to="/create-wallet"><Button color="violet">Create wallet</Button></Link>
+                                    <Link to="/create-wallet">
+                                        <Button appearance="primary">Create wallet</Button>
+                                    </Link>
                                 </Panel>
                             </div>   
                         </FlexboxGrid.Item>
@@ -23,7 +25,9 @@ const Wallet = () => {
                                 <Panel header="Access my wallet" shaded>
                                 <p>Send your KAI and interact with Kardiachain blockchain platform</p>
                                     <br/>
-                                    <Link to="/access-wallet"><Button color="violet">Access now</Button></Link>
+                                    <Link to="/access-wallet">
+                                        <Button appearance="primary">Access now</Button>
+                                    </Link>
                                 </Panel>
                             </div>
                         </FlexboxGrid.Item>
