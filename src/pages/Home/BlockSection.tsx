@@ -55,34 +55,39 @@ const BlockSection = () => {
                         console.log(data);
                     }}
                 >
-                    <Column width={200}>
+                    <Column width={100}>
                         <HeaderCell>Block height</HeaderCell>
                         <Cell dataKey="blockHeight" />
                     </Column>
-                    <Column width={300}>
+                    <Column width={isMobile ? 120 : 300}>
                         <HeaderCell>Block Hash</HeaderCell>
                         <Cell>
                             {(rowData: KAIBlock) => {
                                 return (
                                     <div>
-                                        <div> {renderHashString(rowData.blockHash, 30)} </div>
+                                        <div> {renderHashString(rowData.blockHash, isMobile ? 10 : 30)} </div>
                                         <div>{rowData.time.toLocaleDateString()} </div>
                                     </div>
                                 );
                             }}
                         </Cell>
                     </Column>
-                    <Column width={300}>
+                    <Column width={isMobile ? 120 : 300}>
                         <HeaderCell>Block validator</HeaderCell>
                         <Cell>
                             {(rowData: KAIBlock) => {
                                 return (
-                                    <a target="_blank" href={`/validator/${rowData.validator.hash}`}>{rowData.validator.label}</a>
+                                    <div>
+                                        <div> {renderHashString(rowData.validator.hash, isMobile ? 10 : 30)} </div>
+                                        <div>
+                                            <a target="_blank" rel="noopener noreferrer" href={`/validator/${rowData.validator.hash}`}>{rowData.validator.label}</a>
+                                        </div>
+                                    </div>
                                 );
                             }}
                         </Cell>
                     </Column>
-                    <Column align="center" width={300}>
+                    <Column width={100}>
                         <HeaderCell>Transactions count</HeaderCell>
                         <Cell dataKey="transactions" />
                     </Column>

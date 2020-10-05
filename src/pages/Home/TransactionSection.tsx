@@ -55,27 +55,27 @@ const TransactionSection = () => {
                         console.log(data);
                     }}
                 >
-                    <Column width={300}>
+                    <Column width={isMobile ? 120 : 300}>
                         <HeaderCell>Tx Hash</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (
                                     <div>
-                                        <div> {renderHashString(rowData.txHash, 30)} </div>
+                                        <div> {renderHashString(rowData.txHash, isMobile ? 10 : 30)} </div>
                                         <div>{rowData.time.toLocaleDateString()} </div>
                                     </div>
                                 );
                             }}
                         </Cell>
                     </Column>
-                    <Column width={400}>
+                    <Column width={isMobile ? 170 : 300}>
                         <HeaderCell>Detail</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (
                                     <div>
-                                        <div>From: {renderHashString(rowData.from, 30)} </div>
-                                        <div>To: {renderHashString(rowData.to, 30)} </div>
+                                        <div>From: {renderHashString(rowData.from, isMobile ? 10 : 30)} </div>
+                                        <div>To: {renderHashString(rowData.to, isMobile ? 10 : 30)} </div>
                                     </div>
                                 );
                             }}
