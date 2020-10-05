@@ -12,6 +12,7 @@ import TxDetail from './pages/TxDetail';
 import Network from './pages/Network';
 import { Container, Header, Content, Footer } from 'rsuite';
 import { ViewportProvider } from './context/ViewportContexrt';
+import Faucet from './pages/Faucet';
 
   class App extends Component {
     render() {
@@ -29,6 +30,9 @@ import { ViewportProvider } from './context/ViewportContexrt';
                   </Route>
                   <Route path="/tx">
                     <TxDetail />
+                  </Route>
+                  <Route path="/faucet">
+                    <Faucet />
                   </Route>
                   <Route path="/">
                     <Home />
