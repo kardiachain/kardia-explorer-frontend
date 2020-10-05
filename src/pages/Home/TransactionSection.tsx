@@ -65,7 +65,7 @@ const TransactionSection = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column align="center" fixed>
+                    <Column align="center">
                         <HeaderCell>Value</HeaderCell>
                         <Cell dataKey="value" />
                     </Column>
