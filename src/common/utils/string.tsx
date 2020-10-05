@@ -13,13 +13,13 @@ const copyToClipboard = (text: string, onSuccess?: () => void, onFail?: () => vo
 }
 
 
-const renderHashString = (hash: string, length?: number) => {
+const renderHashString = (hash: string, headCount?: number, tailCount?: number) => {
     const onSuccess = () => {
         Alert.success('Copied to clipboard.')
     }
     return (
         <span>
-            {truncate(hash, length || 10)}{' '}
+            {truncate(hash, headCount || 10)}{' '}
             <IconButton 
                 onClick={() => copyToClipboard(hash, onSuccess)} 
                 size="xs" 
