@@ -3,6 +3,10 @@
     margin-top: 60px;
 }
 
+.home-container>h3 {
+    margin-top: 45px;
+}
+
 .search-section {
     background-color: #2a343d;
     min-height: 300px;

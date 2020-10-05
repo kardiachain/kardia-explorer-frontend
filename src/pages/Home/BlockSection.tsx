@@ -55,6 +55,10 @@ const BlockSection = () => {
                         console.log(data);
                     }}
                 >
+                    <Column width={200}>
+                        <HeaderCell>Block height</HeaderCell>
+                        <Cell dataKey="blockHeight" />
+                    </Column>
                     <Column width={300}>
                         <HeaderCell>Block Hash</HeaderCell>
                         <Cell>
@@ -68,11 +72,17 @@ const BlockSection = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column width={400}>
-                        <HeaderCell>Block height</HeaderCell>
-                        <Cell dataKey="blockHeight" />
+                    <Column width={300}>
+                        <HeaderCell>Block validator</HeaderCell>
+                        <Cell>
+                            {(rowData: KAIBlock) => {
+                                return (
+                                    <a target="_blank" href={`/validator/${rowData.validator.hash}`}>{rowData.validator.label}</a>
+                                );
+                            }}
+                        </Cell>
                     </Column>
-                    <Column align="center">
+                    <Column align="center" width={300}>
                         <HeaderCell>Transactions count</HeaderCell>
                         <Cell dataKey="transactions" />
                     </Column>
