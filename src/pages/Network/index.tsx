@@ -155,18 +155,21 @@ const Network = () => {
     return (
         <Grid fluid>
             <Row>
-                <Col xs={24} sm={24} md={10} style={{padding: 30}}>
-                    <Panel bordered header="Kardia network">
-                        {
-                            graphConfig.width && 
-                            <Graph
-                                id='kai_network_graph'
-                                data={data}
-                                config={graphConfig}
-                            />
-                        }
-                    </Panel>
-                </Col>
+                {
+                    !isMobile && 
+                    <Col xs={24} sm={24} md={10} style={{padding: 30}}>
+                        <Panel bordered header="Kardia network">
+                            {
+                                graphConfig.width && 
+                                <Graph
+                                    id='kai_network_graph'
+                                    data={data}
+                                    config={graphConfig}
+                                />
+                            }
+                        </Panel>
+                    </Col>
+                }
                 <Col xs={24} sm={24} md={14} style={{padding: 30}}>
                     <Table
                         bordered
@@ -180,6 +183,17 @@ const Network = () => {
                         <Column width={100} fixed>
                             <HeaderCell>Name</HeaderCell>
                             <Cell dataKey="id" />
+                        </Column>
+                        <Column width={100}>
+                            <HeaderCell>Status</HeaderCell>
+                            <Cell>
+                                {(rowData: KAINode) => {
+                                    if (rowData.status === "online") {
+                                        return <Tag color="green">Online</Tag>
+                                    }
+                                    return <Tag color="red">Offline</Tag>
+                                }}
+                            </Cell>
                         </Column>
                         <Column width={isMobile ? 120 : 300}>
                             <HeaderCell>Hash</HeaderCell>
@@ -206,17 +220,6 @@ const Network = () => {
                         <Column width={200}>
                             <HeaderCell>RPC URL</HeaderCell>
                             <Cell dataKey="rpcURL" />
-                        </Column>
-                        <Column width={100}>
-                            <HeaderCell>Status</HeaderCell>
-                            <Cell>
-                                {(rowData: KAINode) => {
-                                    if (rowData.status === "online") {
-                                        return <Tag color="green">Online</Tag>
-                                    }
-                                    return <Tag color="red">Offline</Tag>
-                                }}
-                            </Cell>
                         </Column>
                     </Table>
                 </Col>
