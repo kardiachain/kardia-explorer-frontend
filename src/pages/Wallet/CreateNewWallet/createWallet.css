@@ -2,6 +2,14 @@
     margin-top: 50px;
 }
 
+.create-by-key {
+    margin-bottom: 30px;
+}
+
+.creact-by-privatekey {
+    margin-bottom: 10px;
+}
+
 .creact-by-privatekey Button {
     margin: 0 10px;
     /* min-width: 100px; */
@@ -15,4 +23,7 @@
 .button-container {
     margin-top: 15px;
     display: block;
+}
+.child-tab {
+    margin-top: 50px;
 }

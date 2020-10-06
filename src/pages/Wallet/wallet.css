@@ -10,3 +10,7 @@
 .wallet-container .access {
     margin: 10px;
 }
+
+.wallet-container .grid-container {
+    margin-bottom: 10px;
+}

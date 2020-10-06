@@ -1,72 +1,43 @@
-import { Box, Typography } from '@material-ui/core';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import  React from 'react';
-import { FlexboxGrid, Panel } from 'rsuite';
+import  React, { useState } from 'react';
+import { Col, FlexboxGrid, Icon, Nav, Panel } from 'rsuite';
 import CreateByKeystore from './CreateByKeystore';
 import CreateByMnemonicPhrase from './CreateByMnemonicPhrase';
 import CreateByPrivateKey from './CreateByPrivateKey';
 import './createWallet.css'
 
-function TabPanel(props: any) {
-    const { children, value, index, ...other } = props;
-  
+const CreateNewWallet = () => {
+
+    const [activeKey, setActiveKey] = useState(0);
+
+    const handleSelect = (activeK: any) => {
+        setActiveKey(activeK);
+    }
+
+
     return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box p={3}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-}
-
-class CreateNewWallet extends React.Component {
-    
-    state = {
-        value: 0
-    }
-    
-    handleChange = (event: any, value: any) => {
-        this.setState({value})
-    }
-
-    render() {
-        const {value} = this.state;
-        return (
-            <div className="show-grid">
-                <FlexboxGrid justify="center">
-                    <FlexboxGrid.Item colspan={10}>
-                        <div className="create-wallet-container">
-                            <Panel header="Create new wallet" shaded>
-                                 <Tabs value={value} onChange={this.handleChange}>
-                                    <Tab label="By Private Key"/>
-                                    <Tab label="By Keystore File"/>
-                                    <Tab label="By Mnemonic Phrase"/>
-                                </Tabs>
-                                <TabPanel value={value} index={0}>
-                                    <CreateByPrivateKey />
-                                </TabPanel>
-                                <TabPanel value={value} index={1}>
-                                    <CreateByKeystore />
-                                </TabPanel>
-                                <TabPanel value={value} index={2}>
-                                    <CreateByMnemonicPhrase />
-                                </TabPanel>
+        <React.Fragment>
+            <div className="create-wallet-container">
+                <div className="show-grid">
+                    <FlexboxGrid justify="center">
+                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={14}>
+                            <Panel shaded>
+                                <Nav appearance="tabs" justified onSelect={(eventKey) => handleSelect(eventKey)}  >
+                                    <Nav.Item eventKey="0" active={ activeKey == 0 ? true : false}>Create by private key</Nav.Item>
+                                    <Nav.Item eventKey="1" active={ activeKey == 1 ? true : false}>Create by keystore file</Nav.Item>
+                                    <Nav.Item eventKey="2" active={ activeKey == 2 ? true : false}>Create by mnemonic phrase</Nav.Item>
+                                </Nav>
+                                <div className="child-tab">
+                                    {
+                                        activeKey == 0 ? <CreateByPrivateKey /> : activeKey == 1 ? <CreateByKeystore /> : <CreateByMnemonicPhrase />
+                                    }
+                                </div>
                             </Panel>
-                        </div>
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
+                        </FlexboxGrid.Item>
+                    </FlexboxGrid>
+                </div>
             </div>
-        );
-    }
+        </React.Fragment>
+    );
 }
 
 

@@ -27,16 +27,16 @@ const CreateByPrivateKey = () => {
             return privateKey.split('').map(item => '*').join('');
         }
     }
-    
+
     return !privateKey ? (
         <div className="show-grid creact-by-privatekey">
-            <FlexboxGrid justify="center">
+            <FlexboxGrid justify="start">
                 <div className="note-warning">
                     <div> A unique private key will be generate for you </div>
                     <div><b>Remember to save your private key! If you lose your private key, you will not able to recover your wallet.</b></div>
                 </div>
             </FlexboxGrid>
-            <FlexboxGrid justify="center">
+            <FlexboxGrid justify="start">
                 <div className="button-container">
                     <Link to="/wallet">
                         <Button appearance="ghost">Back</Button>
@@ -51,6 +51,9 @@ const CreateByPrivateKey = () => {
                 <div className="note-warning">
                     <div><b>Please copy and save the following Private key:</b></div>
                 </div>
+               
+            </FlexboxGrid>
+            <FlexboxGrid justify="start">
                 <div className="privatekey-text">
                     {renderCredential()}
                     <IconButton 
@@ -58,14 +61,14 @@ const CreateByPrivateKey = () => {
                         size="xs" 
                         icon={<Icon icon="copy" />}
                     />
-                    <IconButton 
+                    <IconButton
                         onClick={() => setShowPrivKey(!showPrivKey)} 
                         size="xs" 
                         icon={<Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />}
                     />
                 </div>
             </FlexboxGrid>
-            <FlexboxGrid justify="center">
+            <FlexboxGrid justify="start">
                 <div className="button-container">
                     <Link to="/wallet">
                         <Button appearance="ghost">Back</Button>
