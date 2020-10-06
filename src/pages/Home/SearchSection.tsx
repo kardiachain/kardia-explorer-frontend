@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Icon, Input, Modal, Panel, Row } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import QrReader from 'react-qr-reader';
-import { useViewport } from '../../context/ViewportContexrt';
+import { useViewport } from '../../context/ViewportContext';
 
 const SearchSection = () => {
     const {isMobile} = useViewport();
