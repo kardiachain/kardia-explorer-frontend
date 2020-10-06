@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2';
 import { Col, FlexboxGrid, Table } from 'rsuite';
 import { renderHashString } from '../../common/utils/string';
-import { useViewport } from '../../context/ViewportContexrt';
+import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
 
 const { Column, HeaderCell, Cell } = Table;

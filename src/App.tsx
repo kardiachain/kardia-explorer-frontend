@@ -11,7 +11,7 @@ import Home from './pages/Home';
 import TxDetail from './pages/TxDetail';
 import Network from './pages/Network';
 import { Container, Header, Content, Footer } from 'rsuite';
-import { ViewportProvider } from './context/ViewportContexrt';
+import { ViewportProvider } from './context/ViewportContext';
 import Faucet from './pages/Faucet';
 
   class App extends Component {
