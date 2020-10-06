@@ -43,7 +43,7 @@ class CreateNewWallet extends React.Component {
         return (
             <div className="show-grid">
                 <FlexboxGrid justify="center">
-                    <FlexboxGrid.Item colspan={8}>
+                    <FlexboxGrid.Item colspan={10}>
                         <div className="create-wallet-container">
                             <Panel header="Create new wallet" shaded>
                                  <Tabs value={value} onChange={this.handleChange}>

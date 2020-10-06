@@ -1,16 +1,11 @@
 import React from 'react';
-import { Button, Panel } from 'rsuite';
+import { FlexboxGrid, Panel } from 'rsuite';
 
 const AccessMyWallet = () => {
     return (
-        <div>
-            <Panel header="Access my wallet" shaded>
-            <p>Send your KAI and interact with Kardiachain blockchain platform</p>
-                <br/>
-                <Button color="violet">Access now</Button>
-            </Panel>
-        </div>
-    )
+
+        <div>Access my wallet</div>
+    );
 }
 
 export default AccessMyWallet;
