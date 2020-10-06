@@ -16,6 +16,11 @@
     - Get testnet KAI tokens
 
 ## Development
+
+### Prerequisite
+- NodeJS v12.18.4
+
+### Start developing
 1. Clone from this project
 2. Run `npm install`
 3. Run `npm start`
