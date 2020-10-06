@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite';
+import { Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, Message, Panel } from 'rsuite';
 
 const Faucet = () => {
     return (
@@ -16,6 +16,7 @@ const Faucet = () => {
                             </ButtonToolbar>
                         </FormGroup>
                     </Form>
+                    <Message className="faucet-warning" type="warning" description="These tokens are for testing purpose only. They can't be used to trade to pay for any services." />
                 </Panel>
             </FlexboxGrid.Item>
         </FlexboxGrid>
