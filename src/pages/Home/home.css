@@ -1,6 +1,25 @@
+.stat-group {
+    padding: 10px 40px;
+}
+
+.stat-container {
+    margin-top: 10px;
+    background-color: #FFFFFF;
+    border-left: 5px solid #54e859;
+    font-size: 40px;
+}
+
+.stat-container>.rs-panel-body {
+    text-align: right;
+}
+
 .home-container {
     padding: 50px;
     margin-top: 60px;
+}
+
+.home-container>h3 {
+    margin-top: 45px;
 }
 
 .search-section {
@@ -34,8 +53,16 @@
 }
 
 @media screen and (max-width: 620px) {
+    .stat-group {
+        padding: 10px;
+    }
+    .stat-container>.rs-panel-body{
+        font-size: 20px;
+        font-weight: bold;
+    }
     .home-container {
         margin-top: 0;
+        padding: 20px;
     }
     .search-section {
         background-color: transparent;
