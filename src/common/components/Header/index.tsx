@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
-import { useViewport } from '../../../context/ViewportContexrt';
+import { useViewport } from '../../../context/ViewportContext';
 import logo from '../../../resources/kardia-logo.png';
 import './header.css';
 
