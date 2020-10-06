@@ -1,11 +1,12 @@
 import React from 'react'
 import { Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, Message, Panel } from 'rsuite';
+import './faucet.css';
 
 const Faucet = () => {
     return (
-        <FlexboxGrid justify="center" style={{marginTop: 50}}>
+        <FlexboxGrid justify="center" className="faucet-container">
             <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
-                <Panel header={<h3>KardiaChain Faucet</h3>} shaded>
+                <Panel header={<h3>Received free KAIs with KardiaChain Faucet</h3>} shaded>
                     <Form fluid>
                         <FormGroup>
                             <FormControl placeholder="Wallet address" name="walletAddress" type="text" />
