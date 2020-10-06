@@ -14,6 +14,7 @@ const copyToClipboard = (text: string, onSuccess?: () => void, onFail?: () => vo
 
 
 const renderHashString = (hash: string, headCount?: number, tailCount?: number) => {
+    if (!hash) return null;
     const onSuccess = () => {
         Alert.success('Copied to clipboard.')
     }
