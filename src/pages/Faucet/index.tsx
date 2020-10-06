@@ -5,7 +5,7 @@ import './faucet.css';
 const Faucet = () => {
     return (
         <FlexboxGrid justify="center" className="faucet-container">
-            <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
+            <FlexboxGrid.Item componentClass={Col} colspan={22} md={14}>
                 <Panel header={<h3>Received free KAIs with KardiaChain Faucet</h3>} shaded>
                     <Form fluid>
                         <FormGroup>
