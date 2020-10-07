@@ -7,7 +7,7 @@ import './createWallet.css'
 
 const CreateNewWallet = () => {
 
-    const [activeKey, setActiveKey] = useState(0);
+    const [activeKey, setActiveKey] = useState("private-key");
 
 
     return (
@@ -17,13 +17,13 @@ const CreateNewWallet = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={14}>
                         <Panel shaded>
                             <Nav appearance="tabs" justified onSelect={setActiveKey}  >
-                                <Nav.Item eventKey="0" active={ activeKey === 0 ? true : false}>Create by private key</Nav.Item>
-                                <Nav.Item eventKey="1" active={ activeKey === 1 ? true : false}>Create by keystore file</Nav.Item>
-                                <Nav.Item eventKey="2" active={ activeKey === 2 ? true : false}>Create by mnemonic phrase</Nav.Item>
+                                <Nav.Item eventKey="private-key" active={ activeKey === "private-key" ? true : false}>Create by private key</Nav.Item>
+                                <Nav.Item eventKey="keystore" active={ activeKey === "keystore" ? true : false}>Create by keystore file</Nav.Item>
+                                <Nav.Item eventKey="mnemonic" active={ activeKey === "mnemonic" ? true : false}>Create by mnemonic phrase</Nav.Item>
                             </Nav>
                             <div className="child-tab">
                                 {
-                                    activeKey === 0 ? <CreateByPrivateKey /> : activeKey === 1 ? <CreateByKeystore /> : <CreateByMnemonicPhrase />
+                                    activeKey === "private-key" ? <CreateByPrivateKey /> : activeKey === "keystore" ? <CreateByKeystore /> : <CreateByMnemonicPhrase />
                                 }
                             </div>
                         </Panel>
