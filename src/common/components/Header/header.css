@@ -39,3 +39,9 @@
 .kai-logo-container>img {
     width: 100%;
 }
+
+@media only screen and (min-width: 1024px) {
+    .kai-logo-container {
+        margin-right: 15px;
+    }
+}

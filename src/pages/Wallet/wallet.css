@@ -1,0 +1,16 @@
+.wallet-container {
+    /* padding: 50px; */
+    margin-top: 60px;
+}
+
+.wallet-container .create {
+    margin: 10px;
+}
+
+.wallet-container .access {
+    margin: 10px;
+}
+
+.wallet-container .grid-container {
+    margin-bottom: 10px;
+}

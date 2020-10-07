@@ -57,7 +57,7 @@ const Header = () => {
             </Navbar.Header>
             <Navbar.Body>
                 <Nav onSelect={setActiveKey} activeKey={activeKey}>
-                    <Nav.Item eventKey="explorer" href="/explorer">Explorer</Nav.Item>
+                    <Nav.Item eventKey="explorer" href="/">Explorer</Nav.Item>
                     <Nav.Item eventKey="network" href="/network">View Network</Nav.Item>
                     <Nav.Item eventKey="wallet" href="/wallet">Wallet</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
