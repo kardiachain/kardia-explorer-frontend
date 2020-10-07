@@ -13,9 +13,7 @@ const CreateNewWallet = () => {
         setActiveKey(activeK);
     }
 
-
     return (
-        <React.Fragment>
             <div className="create-wallet-container">
                 <div className="show-grid">
                     <FlexboxGrid justify="center">
@@ -36,7 +34,6 @@ const CreateNewWallet = () => {
                     </FlexboxGrid>
                 </div>
             </div>
-        </React.Fragment>
     );
 }
 
