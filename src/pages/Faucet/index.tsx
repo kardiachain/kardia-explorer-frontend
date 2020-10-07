@@ -17,7 +17,7 @@ const Faucet = () => {
                             </ButtonToolbar>
                         </FormGroup>
                     </Form>
-                    <Message className="faucet-warning" type="warning" description="These tokens are for testing purpose only. They can't be used to trade to pay for any services." />
+                    <Message className="faucet-warning" type="warning" description="These tokens are for testing purpose only. They can't be used to trade or pay for any services." />
                 </Panel>
             </FlexboxGrid.Item>
         </FlexboxGrid>
