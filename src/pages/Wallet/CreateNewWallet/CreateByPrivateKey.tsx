@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Alert, Button, FlexboxGrid, Icon, IconButton } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
-import { copyToClipboard } from '../../../common/utils/string';
+import { copyToClipboard, truncate } from '../../../common/utils/string';
 
 const CreateByPrivateKey = () => {
 
@@ -22,9 +22,9 @@ const CreateByPrivateKey = () => {
 
     const renderCredential = () => {
         if (showPrivKey) {
-            return privateKey;
+            return truncate(privateKey, 30);
         } else {
-            return privateKey.split('').map(item => '*').join('');
+            return truncate(privateKey, 30).split('').map(item => '*').join('');
         }
     }
 
