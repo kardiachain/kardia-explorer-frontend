@@ -30,4 +30,4 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
     );
 }
 
-export { renderHashString, copyToClipboard }
+export { renderHashString, copyToClipboard, truncate }
