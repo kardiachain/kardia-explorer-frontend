@@ -6,7 +6,7 @@ import './createWallet.css'
 
 const CreateNewWallet = () => {
 
-    const [activeKey, setActiveKey] = useState("private-key");
+    const [activeKey, setActiveKey] = useState("keystore");
 
     return (
         <div className="create-wallet-container">
