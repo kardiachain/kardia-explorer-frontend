@@ -11,19 +11,11 @@ const CreateByKeystore = () => {
         if(!password) return;
         // Generate wallet
         const wallet = Wallet.generate();
-        console.log("Private key string: ", wallet.getPrivateKeyString());
-
         const publicKey = wallet.getPublicKeyString();
-        console.log("Public key: ", publicKey);
-
         const walletAddr = wallet.getAddressString()
-        console.log("Wallet address: ", walletAddr);
-
         const keystoreFilename = wallet.getV3Filename();
-        console.log("Keystore Filename: ", keystoreFilename);
 
         const keystoreJson = await wallet.toV3(password);
-        console.log(keystoreJson);
 
         const keystoreJsonString = JSON.stringify(keystoreJson);
         const keystoreBlob = new Blob([keystoreJsonString], {
@@ -50,9 +42,9 @@ const CreateByKeystore = () => {
                     </Form>
                 </div>
             </FlexboxGrid>
-            <a href={blobUrl} download={keystoreFilename}>
+            {/* <a href={blobUrl} download={keystoreFilename}>
                 Download Keystore File
-            </a>
+            </a> */}
         </div>
     );
 }

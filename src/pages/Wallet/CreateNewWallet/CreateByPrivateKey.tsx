@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Alert, Button, FlexboxGrid, Icon, IconButton } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
-import { copyToClipboard, truncate } from '../../../common/utils/string';
+import { copyToClipboard } from '../../../common/utils/string';
+import { useWalletStorage } from '../../../store/wallet';
 
 const CreateByPrivateKey = () => {
 
@@ -13,6 +14,8 @@ const CreateByPrivateKey = () => {
 
     const [privateKey, setPrivateKey] = useState('');
     const [showPrivKey, setShowPrivKey] = useState(false)
+    const [walletStored, setWalletStored] = useWalletStorage()
+    let history = useHistory();
 
     const handleGenerate = () => {
         let wallet = EtherWallet.generate();
@@ -22,10 +25,16 @@ const CreateByPrivateKey = () => {
 
     const renderCredential = () => {
         if (showPrivKey) {
-            return truncate(privateKey, 30);
+            return privateKey;
         } else {
-            return truncate(privateKey, 30).split('').map(item => '*').join('');
+            return privateKey.split('').map(item => '*').join('');
         }
+    }
+
+    const accessWalletNow = () => {
+        if(!privateKey) return;
+        setWalletStored({privatekey: privateKey, isAccess: true})
+        history.push("/dashboard");
     }
 
     return !privateKey ? (
@@ -73,7 +82,7 @@ const CreateByPrivateKey = () => {
                     <Link to="/wallet">
                         <Button appearance="ghost">Back</Button>
                     </Link>
-                    <Button appearance="primary">Access wallet</Button>
+                    <Button appearance="primary" onClick={accessWalletNow}>Access Now</Button>
                 </div>
             </FlexboxGrid>
         </div>

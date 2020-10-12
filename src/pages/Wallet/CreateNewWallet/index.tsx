@@ -16,7 +16,7 @@ const CreateWalletOption = (props: any) => {
 }
 
 const CreateNewWallet = () => {
-    const [activeKey, setActiveKey] = useState("mnemonic");
+    const [activeKey, setActiveKey] = useState("privatekey");
     return (
         <div className="create-wallet-container">
             <div className="show-grid">
