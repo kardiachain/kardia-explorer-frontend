@@ -1,0 +1,33 @@
+.dashboard-container {
+    width: 80%;
+    margin: 30px auto;
+}
+
+.wallet-info-card {
+    height: 200px;
+    margin: 20px;
+    border-left: 5px solid #54e859;
+    color: white;
+}
+
+.wallet-info-card.address {
+    background: #7a4df7;
+}
+
+.wallet-info-card.balance {
+    background: rgb(255, 153, 0);
+}
+
+.wallet-info-card.network {
+    background: #0b0474;
+}
+
+
+.wallet-info-card .title {
+    font-size: 20px;
+}
+
+.wallet-info-card .title .icon{
+    font-size: 24px;
+    margin-right: 15px;
+}

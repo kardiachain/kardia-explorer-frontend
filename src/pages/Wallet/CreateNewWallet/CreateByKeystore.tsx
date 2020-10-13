@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, ButtonToolbar, FlexboxGrid, Form, FormControl, FormGroup } from 'rsuite';
 import Wallet from 'ethereumjs-wallet'
-import { useWalletStorage } from '../../../store/wallet';
+import { useWalletStorage } from '../../../service/wallet';
 import { useHistory } from 'react-router-dom';
 
 const CreateByKeystore = () => {
@@ -11,8 +11,11 @@ const CreateByKeystore = () => {
     const [isLoading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [walletStored, setWalletStored] = useWalletStorage()
-    const [privateKey, setPrivateKey] = useState('')
+    const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
+
+
+    // create wallet
     const createWallet = async () => {
         if(!password) {
             setErrorMessage('This field is required')
@@ -21,21 +24,28 @@ const CreateByKeystore = () => {
         setLoading(true)
         // Generate wallet
         const wallet = Wallet.generate();
-        setPrivateKey(wallet.getPrivateKeyString())
         const keystoreFilename = wallet.getV3Filename();
         const keystoreJson = await wallet.toV3(password);
         const keystoreJsonString = JSON.stringify(keystoreJson);
         const keystoreBlob = new Blob([keystoreJsonString], {
           type: 'mime',
         });
+        setWallet({
+            privatekey: wallet.getPrivateKeyString(),
+            address: wallet.getAddressString(),
+            isAccess: false
+        })
         setBlobUrl(window.URL.createObjectURL(keystoreBlob));
         setKeystoreFilename(keystoreFilename);
         setLoading(false)
     }
 
+    // access wallet now
     const accessWallet = async() => {
-        if(!privateKey) return;
-        setWalletStored({privatekey: privateKey, isAccess: true})
+        if(!wallet.privatekey) return;
+        const newWallet = JSON.parse(JSON.stringify(wallet))
+        newWallet.isAccess = true;
+        setWalletStored(newWallet)
         history.push("/dashboard");
     }
 

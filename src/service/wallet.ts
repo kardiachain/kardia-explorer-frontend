@@ -1,11 +1,9 @@
 import { useState } from 'react';
 
-const initialValue = {
-    wallet : {
-        privatekey: '',
-        publickey: '',
-        isAccess: false
-    }
+const initialValue: WalletStore = {
+    privatekey: '',
+    address: '',
+    isAccess: false
 }
 
 export const useWalletStorage = () => {
@@ -19,9 +17,9 @@ export const useWalletStorage = () => {
         }
     });
 
-    const setValue = (value: any) => {
+    const setValue = (value: WalletStore) => {
         try {
-            const valueToStore = value instanceof Function ? {wallet: value(storedValue)} : {wallet: value};
+            const valueToStore = value instanceof Function ? value(storedValue) : value;
             setStoredValue(valueToStore);
             window.localStorage.setItem('walletstore', JSON.stringify(valueToStore))
         } catch (err) {
@@ -34,10 +32,9 @@ export const useWalletStorage = () => {
 
 export const isAccessWallet = () => {
     const walletstore = window.localStorage.getItem('walletstore') || '{}';
-    const walletstoreObj = JSON.parse(walletstore)
-    console.log("walletstoreObj", walletstoreObj);
+    const walletstoreObj = JSON.parse(walletstore) as WalletStore;
     
-    if(walletstoreObj && walletstoreObj.wallet && walletstoreObj.wallet.isAccess) {
+    if(walletstoreObj && walletstoreObj.isAccess) {
         return true;
     }
     return false;

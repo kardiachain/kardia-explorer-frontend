@@ -4,7 +4,7 @@ import { Alert, Button, FlexboxGrid, Icon, IconButton } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
 import { copyToClipboard } from '../../../common/utils/string';
-import { useWalletStorage } from '../../../store/wallet';
+import { useWalletStorage } from '../../../service/wallet';
 
 const CreateByPrivateKey = () => {
 
@@ -12,32 +12,37 @@ const CreateByPrivateKey = () => {
         Alert.success('Copied to clipboard.')
     }
 
-    const [privateKey, setPrivateKey] = useState('');
     const [showPrivKey, setShowPrivKey] = useState(false)
     const [walletStored, setWalletStored] = useWalletStorage()
+    const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 
     const handleGenerate = () => {
         let wallet = EtherWallet.generate();
-        let privateKeyStr = wallet.getPrivateKeyString();
-        setPrivateKey(privateKeyStr);
+        setWallet({
+            privatekey: wallet.getPrivateKeyString(),
+            address: wallet.getAddressString(),
+            isAccess: false
+        })
     }
 
     const renderCredential = () => {
         if (showPrivKey) {
-            return privateKey;
+            return wallet.privatekey;
         } else {
-            return privateKey.split('').map(item => '*').join('');
+            return wallet.privatekey.split('').map(() => '*').join('');
         }
     }
 
     const accessWalletNow = () => {
-        if(!privateKey) return;
-        setWalletStored({privatekey: privateKey, isAccess: true})
+        if(!wallet.privatekey) return;
+        const newWallet = JSON.parse(JSON.stringify(wallet))
+        newWallet.isAccess = true;
+        setWalletStored(newWallet)
         history.push("/dashboard");
     }
 
-    return !privateKey ? (
+    return !wallet.privatekey ? (
         <div className="show-grid creact-by-privatekey">
             <FlexboxGrid justify="start">
                 <div className="note-warning">
@@ -66,7 +71,7 @@ const CreateByPrivateKey = () => {
                 <div className="privatekey-text">
                     {renderCredential()}
                     <IconButton 
-                        onClick={() => copyToClipboard(privateKey, onSuccess)} 
+                        onClick={() => copyToClipboard(wallet.privatekey, onSuccess)} 
                         size="xs" 
                         icon={<Icon icon="copy" />}
                     />

@@ -17,6 +17,7 @@ import AccessMyWallet from './pages/Wallet/AccessMyWallet';
 import Faucet from './pages/Faucet';
 import { ViewportProvider } from './context/ViewportContext';
 import DashboardWallet from './pages/Wallet/Dashboard';
+import Staking from './pages/Staking';
 
   class App extends Component {
     render() {
@@ -34,6 +35,9 @@ import DashboardWallet from './pages/Wallet/Dashboard';
                   </Route>
                   <Route path="/tx">
                     <TxDetail />
+                  </Route>
+                  <Route path="/staking">
+                    <Staking />
                   </Route>
                   <Route path="/wallet">
                     <Wallet />
