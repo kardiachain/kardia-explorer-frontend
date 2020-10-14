@@ -53,7 +53,7 @@ const Header = () => {
                                 <Nav>
                                     <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Explorer</Nav.Item>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
-                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isAccess ? "/wallet" : "/dashboard"}>Wallet</Nav.Item>
+                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isAccess ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                                     <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
                                 </Nav>
                             </Sidenav.Body>
@@ -76,7 +76,7 @@ const Header = () => {
                 <Nav onSelect={setActiveKey} activeKey={activeKey}>
                     <Nav.Item eventKey="" href="/">Explorer</Nav.Item>
                     <Nav.Item eventKey="network" href="/network">View Network</Nav.Item>
-                    <Nav.Item eventKey="wallet" href={!isAccess ? "/wallet" : "/dashboard"}>Wallet</Nav.Item>
+                    <Nav.Item eventKey="wallet" href={!isAccess ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
                 </Nav>
                 <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight>
