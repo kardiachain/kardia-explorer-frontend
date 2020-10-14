@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom';
 import { Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel, Table } from 'rsuite';
-import { renderHashString } from '../../../common/utils/string';
-import { useViewport } from '../../../context/ViewportContext';
-import { getValidators } from '../../../service/smc';
-import './dashboard.css'
+import { renderHashString } from '../../../../common/utils/string';
+import { useViewport } from '../../../../context/ViewportContext';
+import { getValidators } from '../../../../service/smc';
+import '../dashboard.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -12,7 +13,8 @@ const Validators = () => {
     const [validators, setValidators] = useState([] as Validator[])
     const { isMobile } = useViewport()
     const [wantRegister, setWantRegister] = useState(true)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)    
+    let history = useHistory();
 
     useEffect(() => {
         getValidators().then(rs => {
@@ -40,10 +42,10 @@ const Validators = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                                         <Form fluid>
                                             <FormGroup>
-                                                <FormControl  placeholder="Commission Rate*" name="commssionRate" type="number" />
-                                                <FormControl  placeholder="Max Rate*" name="maxRate" type="number" />
-                                                <FormControl  placeholder="Max Change Rate*" name="maxChangeRate" type="number" />
-                                                <FormControl  placeholder="Min Seft Delegation*" name="minSeftDelegation" type="number" />
+                                                <FormControl placeholder="Commission Rate*" name="commssionRate" type="number" />
+                                                <FormControl placeholder="Max Rate*" name="maxRate" type="number" />
+                                                <FormControl placeholder="Max Change Rate*" name="maxChangeRate" type="number" />
+                                                <FormControl placeholder="Min Seft Delegation*" name="minSeftDelegation" type="number" />
                                             </FormGroup>
                                             <FormGroup>
                                                 <ButtonToolbar>
@@ -71,8 +73,9 @@ const Validators = () => {
                     autoHeight
                     rowHeight={70}
                     data={validators}
-                    onRowClick={data => {
-                        console.log(data);
+                    onRowClick={validator => {
+                        console.log(validator);
+                        history.push(`/dashboard/validator?id=${validator.address}`)
                     }}
                 >
                     <Column width={isMobile ? 120 : 500}>

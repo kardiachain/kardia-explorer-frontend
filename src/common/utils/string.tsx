@@ -31,8 +31,6 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
 }
 
 const kaiValueString = (value: any) => {
-    console.log(value);
-    
     if (!value || '0' === value) {
       return '-'
     }

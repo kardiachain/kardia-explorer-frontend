@@ -46,7 +46,7 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
 }
 
 
-const getValidators = async () => {
+const getValidators = async (): Promise<Validator[]> => {
     const invoke = await invokeCallData("getValidatorSets", [])
     let validators: Validator[] = [];
     for (let i = 0; i < invoke[0].length; i++) {
@@ -59,4 +59,45 @@ const getValidators = async () => {
     return validators
 }
 
-export {invokeCallData, invokeSendAction, getValidators}
+const getDelegationsByValidator = async (valAddr: string) : Promise<Delegator[]> => {
+    const invoke = await invokeCallData("getDelegationsByValidator", [valAddr])
+    let delegators: Delegator[] = [];
+    for (let i = 0; i < invoke[0].length; i++) {
+        let delegator: Delegator = {
+            address: invoke[0][i],
+            delegationsShares: invoke[1][i]
+        }
+        delegators.push(delegator)
+    }
+    return delegators
+}
+
+const getValidatorsByDelegator = async (delAddr: string) : Promise<String> => {
+    const valAddr = await invokeCallData("getValidatorsByDelegator", [delAddr])
+    return valAddr
+}
+
+const getValidator = async (valAddr: string): Promise<Validator> => {
+    const invoke = await invokeCallData("getValidator", [valAddr])
+    let validators: Validator = {
+        address: invoke[0],
+        delegationsShares: invoke[1],
+        jailed: invoke[2]
+    }
+    return validators
+}
+
+const getValidatorCommission = async (valAddr: string): Promise<number> => {
+    const commission = await invokeCallData("getValidatorCommission", [valAddr])
+    return commission;
+}
+
+export {
+    invokeCallData,
+    invokeSendAction,
+    getValidators,
+    getDelegationsByValidator,
+    getValidatorsByDelegator,
+    getValidator,
+    getValidatorCommission
+}

@@ -20,8 +20,6 @@ export const useWalletStorage = (callback?: () => void) => {
     });
 
     useEffect(() => {
-        console.log("Store storedValue:", storedValue);
-        
         window.localStorage.setItem('walletstore', JSON.stringify(storedValue))
     }, [storedValue])
     

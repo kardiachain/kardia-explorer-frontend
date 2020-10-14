@@ -22,6 +22,12 @@ interface Validator {
     tokens?: number;
     delegationsShares?: number;
     votingPower?: number;
+    jailed?: boolean;
+}
+
+interface Delegator {
+    address: string;
+    delegationsShares: number;
 }
 
 interface WalletStore {
