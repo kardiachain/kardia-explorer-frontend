@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { kaiValueNumber } from '../common/utils/string';
+import { kardiaApi } from '../plugin/kardia-tool';
 
 const initialValue: WalletStore = {
     privatekey: '',
@@ -6,7 +8,7 @@ const initialValue: WalletStore = {
     isAccess: false
 }
 
-export const useWalletStorage = () => {
+export const useWalletStorage = (callback?: () => void) => {
     const [storedValue, setStoredValue] = useState(() => {
         try {
             const item = window.localStorage.getItem('walletstore');
@@ -17,11 +19,17 @@ export const useWalletStorage = () => {
         }
     });
 
-    const setValue = (value: WalletStore) => {
+    useEffect(() => {
+        console.log("Store storedValue:", storedValue);
+        
+        window.localStorage.setItem('walletstore', JSON.stringify(storedValue))
+    }, [storedValue])
+    
+    const setValue = async (value: WalletStore) => {
         try {
             const valueToStore = value instanceof Function ? value(storedValue) : value;
-            setStoredValue(valueToStore);
-            window.localStorage.setItem('walletstore', JSON.stringify(valueToStore))
+            await setStoredValue(valueToStore);
+            callback && callback()
         } catch (err) {
             console.log(err);
         }
@@ -44,3 +52,11 @@ export const logoutWallet = () => {
     window.localStorage.removeItem('walletstore');
 }
 
+export const getBalanceByAddress = async (address: string) => {
+    try {
+        const balance = await kardiaApi.balance(address, '', null)
+        return balance
+    } catch (error) {
+        console.log(error)
+    }
+} 

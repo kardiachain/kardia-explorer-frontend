@@ -3,13 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { Button, ButtonToolbar, FlexboxGrid, Form, FormControl, FormGroup } from 'rsuite';
 import { useWalletStorage } from '../../../service/wallet';
 import Wallet from 'ethereumjs-wallet'
-import EthUtil from 'ethereumjs-util'
+import * as EthUtil from 'ethereumjs-util'
+import './accessWallet.css'
 
 const AccessByPrivateKey = () => {
-    const [privateKey, setPrivateKey] = useState('');
-    const [walletStored, setWalletStored] = useWalletStorage()
-    const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
+    const [privateKey, setPrivateKey] = useState('');
+    const [walletStored, setWalletStored] = useWalletStorage(() => history.push('/dashboard'))
 
     //access wallet
     const accessWallet = () => {
@@ -17,19 +17,16 @@ const AccessByPrivateKey = () => {
 
         const privateKeyBuffer = EthUtil.toBuffer(privateKey);
         const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
-        setWallet({
+        setWalletStored({
             privatekey: wallet.getPrivateKeyString(),
             address: wallet.getAddressString(),
             isAccess: true
         })
-        setWalletStored(wallet)
-        
-        history.push("/dashboard");
     }
     
     return (
         <FlexboxGrid justify="start">
-            <div className="note-warning">
+            <div className="access-privatekey-container">
                 <Form fluid>
                     <FormGroup>
                         <FormControl placeholder="Private key*" name="password" type="text" value={privateKey} onChange={setPrivateKey} />

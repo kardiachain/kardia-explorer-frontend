@@ -1,0 +1,7 @@
+.access-privatekey-container {
+    width: 100%;
+}
+
+.access-privatekey-container .rs-form-control-wrapper {
+    max-width: 500px !important;
+}

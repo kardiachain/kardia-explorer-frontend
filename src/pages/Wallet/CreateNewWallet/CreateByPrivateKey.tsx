@@ -13,7 +13,7 @@ const CreateByPrivateKey = () => {
     }
 
     const [showPrivKey, setShowPrivKey] = useState(false)
-    const [walletStored, setWalletStored] = useWalletStorage()
+    const [walletStored, setWalletStored] = useWalletStorage(() => history.push('/dashboard'))
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 
@@ -39,7 +39,6 @@ const CreateByPrivateKey = () => {
         const newWallet = JSON.parse(JSON.stringify(wallet))
         newWallet.isAccess = true;
         setWalletStored(newWallet)
-        history.push("/dashboard");
     }
 
     return !wallet.privatekey ? (

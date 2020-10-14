@@ -10,7 +10,7 @@ const CreateByKeystore = () => {
     const [keystoreFilename, setKeystoreFilename] = useState('')
     const [isLoading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
-    const [walletStored, setWalletStored] = useWalletStorage()
+    const [walletStored, setWalletStored] = useWalletStorage(() => history.push('/dashboard'))
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 
@@ -46,7 +46,6 @@ const CreateByKeystore = () => {
         const newWallet = JSON.parse(JSON.stringify(wallet))
         newWallet.isAccess = true;
         setWalletStored(newWallet)
-        history.push("/dashboard");
     }
 
     useEffect(() => {
