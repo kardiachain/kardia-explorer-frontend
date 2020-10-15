@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Button, ButtonToolbar, FlexboxGrid, Form, FormGroup, Message } from 'rsuite'
+import React, { useState } from 'react'
+import { Button, Message } from 'rsuite'
 import * as Bip39 from 'bip39';
-import Wallet from 'ethereumjs-wallet'
 import { hdkey } from 'ethereumjs-wallet'
 
 const CreateByMnemonic = () => {
@@ -11,8 +10,6 @@ const CreateByMnemonic = () => {
 
     const createWallet = async() => {
         const seed = await Bip39.mnemonicToSeed(mnemonic)
-        console.log("Seed: ", seed);
-
         const root = hdkey.fromMasterSeed(seed)
         const masterWallet = root.getWallet()
         const masterPrivateKey = masterWallet.getPrivateKeyString()

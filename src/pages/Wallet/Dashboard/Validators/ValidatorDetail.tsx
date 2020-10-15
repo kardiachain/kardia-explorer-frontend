@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { Breadcrumb, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
+import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
+import { ErrorMessage } from '../../../../common/constant/Message';
+import { onlyNumber } from '../../../../common/utils/number';
 import { renderHashString } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { delegateAction, getDelegationsByValidator } from '../../../../service/smc';
-import { useWalletStorage } from '../../../../service/wallet';
+import { getAccount } from '../../../../service/wallet';
 import './validators.css';
 const { Column, HeaderCell, Cell } = Table;
 
@@ -12,10 +15,9 @@ const ValidatorDetail = () => {
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const { isMobile } = useViewport();
     const [isLoading, setIsLoading] = useState(false)
-    const [delAmount, setDelAmount] = useState(0)
+    const [delAmount, setDelAmount] = useState('')
     const query = new URLSearchParams(useLocation().search);
     const [errorMessage, setErrorMessage] = useState('')
-    const [walletStored, setWalletStored] = useWalletStorage()
 
     useEffect(() => {
         const valAddr = query.get("id") || '';
@@ -25,24 +27,25 @@ const ValidatorDetail = () => {
     }, []);
 
     useEffect(() => {
-        if(delAmount) {
+        if (delAmount) {
             setErrorMessage('')
         }
-    }, [delAmount]); 
+    }, [delAmount]);
 
     const submitDelegate = async () => {
-        if(!delAmount) {
-            setErrorMessage('This field is required')
+        if (!delAmount) {
+            setErrorMessage(ErrorMessage.Require)
+            return;
+        }
+        if (Number(delAmount) === 0) {
+            setErrorMessage(ErrorMessage.ValueInvalid)
             return;
         }
         setIsLoading(true)
         const valAddr = query.get("id") || '';
-        let account = {
-            publickey: walletStored.address,
-            privatekey: walletStored.privatekey
-        } as Account
+        let account = getAccount() as Account
         const delegate = await delegateAction(valAddr, account, Number(delAmount))
-        console.log("Delegate: ", delegate);
+        console.log("Delegate", delegate);
         setIsLoading(false)
     }
 
@@ -72,7 +75,7 @@ const ValidatorDetail = () => {
                                 </List.Item>
                                 <List.Item>
                                     <span className="property-title">Voting power: </span> 5%
-                                </List.Item> 
+                                </List.Item>
                             </List>
                         </Panel>
                     </div>
@@ -82,7 +85,18 @@ const ValidatorDetail = () => {
                         <Panel header={<h4>Delegate for validator</h4>} shaded>
                             <Form fluid>
                                 <FormGroup>
-                                    <FormControl errorMessage={errorMessage} placeholder="Delegation amount*" value={delAmount} name="delAmount" type="number" onChange={setDelAmount}/>
+                                    <FormControl
+                                        placeholder="Delegation amount*"
+                                        value={delAmount} name="delAmount"
+                                        onChange={(value) => {
+                                            if (!value) {
+                                                setErrorMessage(ErrorMessage.Require)
+                                            }
+                                            if (onlyNumber(value)) {
+                                                setDelAmount(value)
+                                            }
+                                        }} />
+                                    <ErrMessage message={errorMessage} />
                                 </FormGroup>
                                 <FormGroup>
                                     <ButtonToolbar>
@@ -101,10 +115,6 @@ const ValidatorDetail = () => {
                             autoHeight
                             rowHeight={70}
                             data={delegators}
-                            onRowClick={delegator => {
-                                // console.log(delegator);
-                                // history.push(`/dashboard/validator?id=${validator.address}`)
-                            }}
                         >
                             <Column width={isMobile ? 120 : 500}>
                                 <HeaderCell>Delegator address</HeaderCell>

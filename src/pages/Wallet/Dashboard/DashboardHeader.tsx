@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Icon, Panel, Row } from 'rsuite';
 import { kaiValueString } from '../../../common/utils/amount';
-import { getBalanceByAddress, useWalletStorage } from '../../../service/wallet';
+import { getAccount, getBalanceByAddress } from '../../../service/wallet';
 import './dashboard.css';
 
 const DashboardHeader = () => {
-    const [walletStored, setWalletStored] = useWalletStorage()
+    const account: Account = getAccount()
     const [balance, setbalance] = useState(0)
 
     useEffect(() => {
-        getBalanceByAddress(walletStored.address).then(bal => {
+        getBalanceByAddress(account.publickey).then(bal => {
             setbalance(bal);
         });
     }, [])
@@ -20,7 +20,7 @@ const DashboardHeader = () => {
                 <Panel shaded bordered className="wallet-info-card address">
                     <div className="title"><Icon className="icon" icon="views-authorize"/>Address</div>
                     <div className="content">
-                        <div>{walletStored.address}</div>
+                        <div>{account.publickey}</div>
                     </div>
                 </Panel>
             </Col>

@@ -9,19 +9,6 @@ import SmartContract from './SmartContract';
 import TransactionHistory from './TransactionHistory';
 import ValidatorDetail from './Validators/ValidatorDetail';
 
-
-const SelectOption = (props: any) => {
-    return props.type === '1' ? (
-            <SendTransaction />
-        ) : props.type === '2' ? (
-            <Validators />
-        ) : props.type === '3' ? (
-            <SmartContract />
-        ) : (
-            <TransactionHistory />
-        )
-}
-
 const DashboardWallet = () => {
     const [activeKey, setActiveKey] = useState("0");
 

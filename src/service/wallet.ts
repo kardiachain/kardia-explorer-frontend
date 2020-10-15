@@ -57,3 +57,12 @@ export const getBalanceByAddress = async (address: string) => {
         console.log(error)
     }
 } 
+
+export const getAccount = (): Account => {
+    const walletstoreStr = window.localStorage.getItem('walletstore') || '';
+    const walletstoreJson = JSON.parse(walletstoreStr) || initialValue;
+    return {
+        publickey: walletstoreJson.address,
+        privatekey: walletstoreJson.privatekey
+    } as Account
+}

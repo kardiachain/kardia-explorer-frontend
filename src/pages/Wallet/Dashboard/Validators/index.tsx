@@ -14,7 +14,7 @@ const Validators = () => {
     let history = useHistory();
     const [validators, setValidators] = useState([] as Validator[])
     const { isMobile } = useViewport()
-    const [wantRegister, setWantRegister] = useState(true)
+    const [wantRegister, setWantRegister] = useState(false)
 
     useEffect(() => {
         getValidators().then(rs => {
