@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { kaiValueNumber } from '../common/utils/string';
 import { kardiaApi } from '../plugin/kardia-tool';
 
 const initialValue: WalletStore = {

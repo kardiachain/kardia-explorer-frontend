@@ -40,7 +40,7 @@ const DashboardWallet = () => {
                                                 Send transaction
                                             </Nav.Item>
                                             <Nav.Item eventKey="2" active={ activeKey === "2" } href="/dashboard/validators" icon={<Icon icon="group" />}>
-                                                Validators
+                                                Staking
                                             </Nav.Item>
                                             <Nav.Item eventKey="3" active={ activeKey === "3" } href="/dashboard/smart-contract" icon={<Icon icon="file-code-o" />}>
                                                 Smart contract

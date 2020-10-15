@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel, Table } from 'rsuite';
+import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import { renderHashString } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidators } from '../../../../service/smc';
 import '../dashboard.css'
+import ValidatorCreate from './ValidatorCreate';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const Validators = () => {
 
+    let history = useHistory();
     const [validators, setValidators] = useState([] as Validator[])
     const { isMobile } = useViewport()
     const [wantRegister, setWantRegister] = useState(true)
-    const [isLoading, setIsLoading] = useState(false)    
-    let history = useHistory();
 
     useEffect(() => {
         getValidators().then(rs => {
             setValidators(rs)
         });
     }, []);
-
-    const registerValidator = () => {
-
-    }
 
     return (
         <FlexboxGrid>
@@ -40,19 +36,7 @@ const Validators = () => {
                             <Panel bordered>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                                        <Form fluid>
-                                            <FormGroup>
-                                                <FormControl placeholder="Commission Rate*" name="commssionRate" type="number" />
-                                                <FormControl placeholder="Max Rate*" name="maxRate" type="number" />
-                                                <FormControl placeholder="Max Change Rate*" name="maxChangeRate" type="number" />
-                                                <FormControl placeholder="Min Seft Delegation*" name="minSeftDelegation" type="number" />
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <ButtonToolbar>
-                                                    <Button appearance="primary" loading={isLoading} onClick={registerValidator}>Register</Button>
-                                                </ButtonToolbar>
-                                            </FormGroup>
-                                        </Form>
+                                        <ValidatorCreate />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                                     <Panel header="Policy" bordered>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Icon, Panel, Row } from 'rsuite';
-import { kaiValueString } from '../../../common/utils/string';
+import { kaiValueString } from '../../../common/utils/amount';
 import { getBalanceByAddress, useWalletStorage } from '../../../service/wallet';
 import './dashboard.css';
 

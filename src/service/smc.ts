@@ -1,3 +1,4 @@
+import { cellValue } from '../common/utils/amount';
 import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import STAKING_BYTE_CODE from '../resources/smc-compile/staking-bin.json'
@@ -60,8 +61,11 @@ const getValidators = async (): Promise<Validator[]> => {
 }
 
 const getDelegationsByValidator = async (valAddr: string) : Promise<Delegator[]> => {
-    const invoke = await invokeCallData("getDelegationsByValidator", [valAddr])
     let delegators: Delegator[] = [];
+
+    if(!valAddr) return delegators;
+
+    const invoke = await invokeCallData("getDelegationsByValidator", [valAddr])
     for (let i = 0; i < invoke[0].length; i++) {
         let delegator: Delegator = {
             address: invoke[0][i],
@@ -92,6 +96,24 @@ const getValidatorCommission = async (valAddr: string): Promise<number> => {
     return commission;
 }
 
+const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
+    try {
+        const cellAmountDel = cellValue(amountDel);
+        return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
+    } catch (error) {
+        console.log("Error: ", error);      
+    }
+}
+
+const createValidator = async (commssionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
+    try {
+        const cellAmountDel = cellValue(amountDel);
+        return await invokeSendAction("delegate", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, cellAmountDel);
+    } catch (error) {
+        console.log("Error: ", error);  
+    }
+  }
+
 export {
     invokeCallData,
     invokeSendAction,
@@ -99,5 +121,7 @@ export {
     getDelegationsByValidator,
     getValidatorsByDelegator,
     getValidator,
-    getValidatorCommission
+    getValidatorCommission,
+    delegateAction,
+    createValidator
 }
