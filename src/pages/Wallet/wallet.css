@@ -1,16 +1,42 @@
 .wallet-container {
-    /* padding: 50px; */
-    margin-top: 60px;
+    margin-top: 80px;
 }
 
-.wallet-container .create {
-    margin: 10px;
-}
-
-.wallet-container .access {
+.panel-container {
     margin: 10px;
 }
 
 .wallet-container .grid-container {
     margin-bottom: 10px;
+}
+
+.panel-container .rs-panel {
+    color: white;
+    cursor: pointer;
+}
+.panel-container.create  .rs-panel{
+    background: #4d71ff;
+}
+
+.panel-container.access .rs-panel {
+    background: rgb(168 62 247);
+}
+.panel-container:hover {
+    margin-top: 0px !important;
+    transition: 0.2s;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    height: 200px;
+    font-size: 50px;
+}
+.move {
+    position: absolute;
+    font-size: 18px;
+    right: 0;
+    top: 180px;
 }

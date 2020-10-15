@@ -1,34 +1,51 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Col, FlexboxGrid, Panel } from 'rsuite';
+import { useHistory } from 'react-router-dom';
+import { Col, FlexboxGrid, Panel, Icon, Content } from 'rsuite';
 import './wallet.css';
 
 const Wallet = () => {
+    let history = useHistory();
     return (
         <div className="wallet-container">
             <div className="show-grid">
                 <FlexboxGrid justify="center">
-                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={14}>
-                        <div className="create">
-                            <Panel header="Create a new wallet" shaded>
-                                <p>Our user-friendly application will enable wallet creation and user's interaction with Kardiachain</p>
-                                <br/>
-                                <Link to="/create-wallet">
-                                    <Button appearance="primary">Create wallet</Button>
-                                </Link>
+                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={18}>
+                        <div className="panel-container create">
+                            <Panel shaded onClick={() => { history.push('/create-wallet') }}>
+                                <FlexboxGrid justify="center">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={22} xs={6}>
+                                        <Content justify="center">
+                                            <div className="icon-container">
+                                                <Icon icon="cogs" size="lg" />
+                                            </div>
+                                        </Content>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={22} xs={18}>
+                                        <h2>Create a new wallet</h2>
+                                        <p>Our user-friendly application will enable wallet creation and user's interaction with Kardiachain</p>                                      
+                                        <div className="move">Get Started &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
                             </Panel>
-                        </div>   
+                        </div>
                     </FlexboxGrid.Item>
-                </FlexboxGrid>
-                <FlexboxGrid justify="center">
-                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={14}>
-                        <div className="access">
-                            <Panel header="Access my wallet" shaded>
-                            <p>Send your KAI and interact with Kardiachain blockchain platform</p>
-                                <br/>
-                                <Link to="/access-wallet">
-                                    <Button appearance="primary">Access now</Button>
-                                </Link>
+                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={18}>
+                        <div className="panel-container access">
+                            <Panel shaded onClick={() => { history.push('/access-wallet') }}>
+                                <FlexboxGrid justify="center">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={22} xs={6}>
+                                        <Content justify="center">
+                                            <div className="icon-container">
+                                                <Icon icon="character-area" size="lg" />
+                                            </div>
+                                        </Content>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={22} xs={18}>
+                                        <h2>Access my wallet</h2>
+                                        <p>Send your KAI and interact with Kardiachain blockchain platform</p>
+                                        <div className="move">Access Now &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
                             </Panel>
                         </div>
                     </FlexboxGrid.Item>
