@@ -6,28 +6,89 @@
     margin-bottom: 30px;
 }
 
-.creact-by-privatekey {
-    margin-bottom: 10px;
-}
-
-.creact-by-privatekey Button {
-    margin: 0 10px;
-    /* min-width: 100px; */
-}
-
 .privatekey-text {
     margin-top: 15px;
     font-size: 14px;
 }
 
-.button-container {
-    margin-top: 15px;
-    display: block;
-}
 .child-tab {
     margin-top: 50px;
 }
 
-.download-keystore-file{
-    margin: 20px auto;
+.create-wallet-container .panel-container.private-key .rs-panel {
+    background: #b77f00;
+}
+
+.create-wallet-container .panel-container.keystore-file .rs-panel {
+    background: #0f198e;
+}
+
+.create-wallet-container .panel-container.mnemonic-phrase .rs-panel {
+    background: #630000;
+}
+
+.create-wallet-container .panel-container .rs-panel-body {
+    height: 400px;
+}
+
+.create-wallet-container .panel-container .title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.create-wallet-container .panel-container .icon {
+    font-size: 40px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.create-wallet-container .panel-container .move-next-step {
+    position: absolute;
+    font-size: 18px;
+    right: 30px;
+    top: 380px;
+}
+.create-wallet-container .rs-flex-box-grid-item {
+    max-width: 300px;
+}
+
+/* Style for crate wallet with private key */
+.creact-container {
+    margin-top: 50px;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-container .submit-buttom {
+    margin: 30px 20px;
+}
+
+.creact-container .rs-panel-body {
+    width: 700px;
+}
+
+.creact-container.private-key .rs-panel {
+    /* background: #b77f00; */
+    /* color: white; */
+}
+
+.creact-container .title {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+/* Style dowload with keystore */
+.download-keystore-file {
+    margin-top: 30px;
+}
+.download-keystore-file a {
+    padding: 10px 20px;
+    background: #b77f00;
+    color: white;
 }

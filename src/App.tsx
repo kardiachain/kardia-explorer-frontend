@@ -17,6 +17,8 @@ import AccessMyWallet from './pages/Wallet/AccessMyWallet';
 import Faucet from './pages/Faucet';
 import { ViewportProvider } from './context/ViewportContext';
 import DashboardWallet from './pages/Wallet/Dashboard';
+import CreateByPrivateKey from './pages/Wallet/CreateNewWallet/CreateByPrivateKey';
+import CreateByKeystore from './pages/Wallet/CreateNewWallet/CreateByKeystore';
 
   class App extends Component {
     render() {
@@ -40,6 +42,12 @@ import DashboardWallet from './pages/Wallet/Dashboard';
                   </Route>
                   <Route path="/create-wallet">
                     <CreateNewWallet />
+                  </Route>
+                  <Route path="/create-private-key">
+                    <CreateByPrivateKey />
+                  </Route>
+                  <Route path="/create-keystore-file">
+                    <CreateByKeystore />
                   </Route>
                   <Route path="/access-wallet">
                     <AccessMyWallet />

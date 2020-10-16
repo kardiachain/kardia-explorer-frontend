@@ -9,7 +9,7 @@ const Wallet = () => {
         <div className="wallet-container">
             <div className="show-grid">
                 <FlexboxGrid justify="center">
-                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={18}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={24}>
                         <div className="panel-container create">
                             <Panel shaded onClick={() => { history.push('/create-wallet') }}>
                                 <FlexboxGrid justify="center">
@@ -29,7 +29,7 @@ const Wallet = () => {
                             </Panel>
                         </div>
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={18}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={24}>
                         <div className="panel-container access">
                             <Panel shaded onClick={() => { history.push('/access-wallet') }}>
                                 <FlexboxGrid justify="center">
