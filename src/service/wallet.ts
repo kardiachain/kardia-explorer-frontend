@@ -25,7 +25,7 @@ export const useWalletStorage = (callback?: () => void) => {
     const setValue = async (value: WalletStore) => {
         try {
             const valueToStore = value instanceof Function ? value(storedValue) : value;
-            await setStoredValue(valueToStore);
+            setStoredValue(valueToStore);
             callback && callback()
         } catch (err) {
             console.log(err);
@@ -35,7 +35,7 @@ export const useWalletStorage = (callback?: () => void) => {
     return [storedValue, setValue]
 }
 
-export const isAccessWallet = () => {
+export const isLoggedIn = () => {
     const walletstore = window.localStorage.getItem('walletstore') || '{}';
     const walletstoreObj = JSON.parse(walletstore) as WalletStore;
     
