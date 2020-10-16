@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, Nav, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Panel } from 'rsuite';
 import './createWallet.css'
 
 const CreateNewWallet = () => {

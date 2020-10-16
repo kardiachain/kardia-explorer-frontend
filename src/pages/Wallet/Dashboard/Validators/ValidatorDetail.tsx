@@ -24,7 +24,7 @@ const ValidatorDetail = () => {
         getDelegationsByValidator(valAddr).then(rs => {
             setDelegators(rs)
         });
-    }, []);
+    }, [query]);
 
     useEffect(() => {
         if (delAmount) {
@@ -100,7 +100,7 @@ const ValidatorDetail = () => {
                                 </FormGroup>
                                 <FormGroup>
                                     <ButtonToolbar>
-                                        <Button appearance="primary" loading={isLoading} onClick={submitDelegate}>Delegator</Button>
+                                        <Button appearance="primary" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
                                     </ButtonToolbar>
                                 </FormGroup>
                             </Form>

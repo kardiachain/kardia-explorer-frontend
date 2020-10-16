@@ -12,7 +12,7 @@ const DashboardHeader = () => {
         getBalanceByAddress(account.publickey).then(bal => {
             setbalance(bal);
         });
-    }, [])
+    }, [account])
 
     return (
         <Row className="wallet-header-container">

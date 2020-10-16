@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Alert, Button, Col, FlexboxGrid, Icon, IconButton, Panel } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
@@ -13,7 +13,7 @@ const CreateByPrivateKey = () => {
     }
 
     const [showPrivKey, setShowPrivKey] = useState(false)
-    const [walletStored, setWalletStored] = useWalletStorage(() => history.push('/dashboard/send-transaction'))
+    const setWalletStored = useWalletStorage(() => history.push('/dashboard/send-transaction'))[1]
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 

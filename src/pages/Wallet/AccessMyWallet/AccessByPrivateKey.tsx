@@ -9,7 +9,7 @@ import './accessWallet.css'
 const AccessByPrivateKey = () => {
     let history = useHistory();
     const [privateKey, setPrivateKey] = useState('');
-    const [walletStored, setWalletStored] = useWalletStorage(() => history.push('/dashboard/send-transaction'))
+    const setWalletStored = useWalletStorage(() => history.push('/dashboard/send-transaction'))[1];
 
     //access wallet
     const accessWallet = () => {
