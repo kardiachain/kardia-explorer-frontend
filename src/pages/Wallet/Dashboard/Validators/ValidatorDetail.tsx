@@ -16,15 +16,16 @@ const ValidatorDetail = () => {
     const { isMobile } = useViewport();
     const [isLoading, setIsLoading] = useState(false)
     const [delAmount, setDelAmount] = useState('')
-    const query = new URLSearchParams(useLocation().search);
     const [errorMessage, setErrorMessage] = useState('')
+    
+    const query = new URLSearchParams(useLocation().search);
+    const valAddr = query.get("id") || '';
 
     useEffect(() => {
-        const valAddr = query.get("id") || '';
         getDelegationsByValidator(valAddr).then(rs => {
             setDelegators(rs)
         });
-    }, [query]);
+    }, [valAddr]);
 
     useEffect(() => {
         if (delAmount) {
