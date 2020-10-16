@@ -3,7 +3,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
 import logo from '../../../resources/kardia-logo.png';
-import { isAccessWallet, logoutWallet } from '../../../service/wallet';
+import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 
 const Header = () => {
@@ -17,7 +17,6 @@ const Header = () => {
         setActiveKey(location.pathname.split('/')[1])
     }, [location])
 
-    const isAccess = isAccessWallet();
     let history = useHistory();
 
     const logout = () => {
@@ -53,7 +52,7 @@ const Header = () => {
                                 <Nav>
                                     <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Explorer</Nav.Item>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
-                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isAccess ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
+                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                                     <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
                                 </Nav>
                             </Sidenav.Body>
@@ -76,13 +75,13 @@ const Header = () => {
                 <Nav onSelect={setActiveKey} activeKey={activeKey}>
                     <Nav.Item eventKey="" href="/">Explorer</Nav.Item>
                     <Nav.Item eventKey="network" href="/network">View Network</Nav.Item>
-                    <Nav.Item eventKey="wallet" href={!isAccess ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
+                    <Nav.Item eventKey="wallet" href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
                 </Nav>
                 <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight>
 
                     {
-                        !isAccess ? (
+                        !isLoggedIn() ? (
                             <Dropdown 
                                 icon={<Icon icon="money" size="lg" />}
                                 placement="bottomEnd"
