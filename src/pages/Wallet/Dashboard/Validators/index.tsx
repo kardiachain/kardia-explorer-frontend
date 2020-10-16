@@ -67,9 +67,7 @@ const Validators = () => {
                         <Cell>
                             {(rowData: Validator) => {
                                 return (
-                                    <div>
-                                        <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
-                                    </div>
+                                    <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
                                 );
                             }}
                         </Cell>
@@ -79,9 +77,7 @@ const Validators = () => {
                         <Cell>
                             {(rowData: Validator) => {
                                 return (
-                                    <div>
-                                        <div> {rowData.votingPower} </div>
-                                    </div>
+                                    <div> {rowData.votingPower} </div>
                                 );
                             }}
                         </Cell>
@@ -91,9 +87,7 @@ const Validators = () => {
                         <Cell>
                             {(rowData: Validator) => {
                                 return (
-                                    <div>
-                                        <div> Active </div>
-                                    </div>
+                                    <div> Active </div>
                                 );
                             }}
                         </Cell>

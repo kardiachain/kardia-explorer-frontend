@@ -122,9 +122,7 @@ const ValidatorDetail = () => {
                                 <Cell>
                                     {(rowData: Delegator) => {
                                         return (
-                                            <div>
-                                                <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
-                                            </div>
+                                            <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
                                         );
                                     }}
                                 </Cell>
@@ -134,9 +132,7 @@ const ValidatorDetail = () => {
                                 <Cell>
                                     {(rowData: Delegator) => {
                                         return (
-                                            <div>
-                                                <div> {rowData.delegationsShares} </div>
-                                            </div>
+                                            <div> {rowData.delegationsShares} </div>
                                         );
                                     }}
                                 </Cell>

@@ -15,7 +15,7 @@ const invokeCallData = async (methodName: string, params: any[]) => {
         const result = await invoke.call(STAKING_SMC_ADDRESS)
         return result
     } catch (error) {
-        return null;
+        throw error
     }
 }
 
@@ -42,7 +42,7 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
         
         return invokeResult;
     } catch (error) {
-        return null;
+        throw error
     }
 }
 
@@ -101,7 +101,7 @@ const delegateAction = async (valAddr: string, account: Account, amountDel: numb
         const cellAmountDel = cellValue(amountDel);
         return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
     } catch (error) {
-        console.log("Error: ", error);      
+        throw error    
     }
 }
 
@@ -110,7 +110,7 @@ const createValidator = async (commssionRate: number, maxRate: number, maxRateCh
         const cellAmountDel = cellValue(amountDel);
         return await invokeSendAction("delegate", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, cellAmountDel);
     } catch (error) {
-        console.log("Error: ", error);  
+        throw error 
     }
   }
 
