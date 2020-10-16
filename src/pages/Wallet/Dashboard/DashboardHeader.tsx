@@ -6,12 +6,10 @@ import './dashboard.css';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
-    const [balance, setbalance] = useState(0)
+    const [balance, setBalance] = useState(0)
 
     useEffect(() => {
-        getBalanceByAddress(account.publickey).then(bal => {
-            setbalance(bal);
-        });
+        getBalanceByAddress(account.publickey).then(setBalance);
     }, [account])
 
     return (

@@ -17,9 +17,7 @@ const Validators = () => {
     const [wantRegister, setWantRegister] = useState(false)
 
     useEffect(() => {
-        getValidators().then(rs => {
-            setValidators(rs)
-        });
+        getValidators().then(setValidators);
     }, []);
 
     return (
@@ -58,7 +56,6 @@ const Validators = () => {
                     rowHeight={70}
                     data={validators}
                     onRowClick={validator => {
-                        console.log(validator);
                         history.push(`/dashboard/validator?id=${validator.address}`)
                     }}
                 >
