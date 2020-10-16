@@ -1,3 +1,5 @@
+import { END_POINT } from "../config/api";
+
 const getTransactions = (page: number, size: number) => {
     // TODO: Integrate API get transactions
     const now = new Date();
@@ -42,63 +44,28 @@ const getTransactions = (page: number, size: number) => {
     return data;
 }
 
-const getBlocks = (page: number, size: number) => {
-    // TODO: Integrate API get blocks
-    const now = new Date();
-    now.setDate(now.getDate() - 1)
-    const data = [
-        {
-            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
-            blockHeight: 279604,
-            transactions: 0,
+const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
+
+    const requestOptions = {
+        method: 'GET'
+    };
+
+    const skip = (page - 1) * size
+    console.log(`${END_POINT}blocks?skip=${skip}&limit=${size}`)
+    const response = await fetch(`${END_POINT}blocks?skip=${skip}&limit=${size}`, requestOptions)
+    const responseJSON = await response.json()
+    return responseJSON.data.map((o: any) => {
+        return {
+            blockHash: o.hash,
+            blockHeight: o.height,
+            transactions: o.numTxs,
             validator: {
-                label: 'validator 1',
-                hash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732'
+                label: 'Validator',
+                hash: o.validator
             },
-            time: now
-        },
-        {
-            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
-            blockHeight: 279604,
-            transactions: 0,
-            validator: {
-                label: 'validator 1',
-                hash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732'
-            },
-            time: now
-        },
-        {
-            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
-            blockHeight: 279604,
-            transactions: 0,
-            validator: {
-                label: 'validator 1',
-                hash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732'
-            },
-            time: now
-        },
-        {
-            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
-            blockHeight: 279604,
-            transactions: 0,
-            validator: {
-                label: 'validator 1',
-                hash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732'
-            },
-            time: now
-        },
-        {
-            blockHash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732',
-            blockHeight: 279604,
-            transactions: 0,
-            validator: {
-                label: 'validator 1',
-                hash: '0xe7efc4658bb655e0ce77925bc80ff6dcf55e89e8469cb7e3907a6b984b498732'
-            },
-            time: now
+            time: new Date(o.time)
         }
-    ]
-    return data;
+    })
 }
 
 export {getTransactions, getBlocks}
