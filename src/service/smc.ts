@@ -7,43 +7,35 @@ const stakingContract = kardiaContract(kardiaProvider, STAKING_BYTE_CODE, STAKIN
 const STAKING_SMC_ADDRESS = '0xF3E77cDEeD0A979be6fb54dEdc50551e84F9C53a';
 
 const invokeCallData = async (methodName: string, params: any[]) => {
-    try {
-        const invoke = await stakingContract.invoke({
-            params: params,
-            name: methodName
-        })
-        const result = await invoke.call(STAKING_SMC_ADDRESS)
-        return result
-    } catch (error) {
-        throw error
-    }
+    const invoke = await stakingContract.invoke({
+        params: params,
+        name: methodName
+    })
+    const result = await invoke.call(STAKING_SMC_ADDRESS)
+    return result
 }
 
 const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number) => {
-    try {
-        const invoke = await stakingContract.invoke({
-            params: params,
-            name: methodName,
-        });
-    
-        const estimatedGas = await invoke.estimateGas({
-            from: account.publickey,
-            amount: amountVal,
-            gas: 2100,
-            gasPrice: 2
-        });
-    
-        const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
-            from: account.publickey,
-            amount: amountVal,
-            gas: 900000 + estimatedGas,
-            gasPrice: 2
-        });
-        
-        return invokeResult;
-    } catch (error) {
-        throw error
-    }
+    const invoke = await stakingContract.invoke({
+        params: params,
+        name: methodName,
+    });
+
+    const estimatedGas = await invoke.estimateGas({
+        from: account.publickey,
+        amount: amountVal,
+        gas: 2100,
+        gasPrice: 2
+    });
+
+    const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
+        from: account.publickey,
+        amount: amountVal,
+        gas: 900000 + estimatedGas,
+        gasPrice: 2
+    });
+
+    return invokeResult;
 }
 
 
@@ -60,10 +52,10 @@ const getValidators = async (): Promise<Validator[]> => {
     return validators
 }
 
-const getDelegationsByValidator = async (valAddr: string) : Promise<Delegator[]> => {
+const getDelegationsByValidator = async (valAddr: string): Promise<Delegator[]> => {
     let delegators: Delegator[] = [];
 
-    if(!valAddr) return delegators;
+    if (!valAddr) return delegators;
 
     const invoke = await invokeCallData("getDelegationsByValidator", [valAddr])
     for (let i = 0; i < invoke[0].length; i++) {
@@ -76,7 +68,7 @@ const getDelegationsByValidator = async (valAddr: string) : Promise<Delegator[]>
     return delegators
 }
 
-const getValidatorsByDelegator = async (delAddr: string) : Promise<String> => {
+const getValidatorsByDelegator = async (delAddr: string): Promise<String> => {
     const valAddr = await invokeCallData("getValidatorsByDelegator", [delAddr])
     return valAddr
 }
@@ -97,22 +89,14 @@ const getValidatorCommission = async (valAddr: string): Promise<number> => {
 }
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
-    try {
-        const cellAmountDel = cellValue(amountDel);
-        return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
-    } catch (error) {
-        throw error    
-    }
+    const cellAmountDel = cellValue(amountDel);
+    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
 }
 
 const createValidator = async (commssionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
-    try {
-        const cellAmountDel = cellValue(amountDel);
-        return await invokeSendAction("delegate", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, cellAmountDel);
-    } catch (error) {
-        throw error 
-    }
-  }
+    const cellAmountDel = cellValue(amountDel);
+    return await invokeSendAction("delegate", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, cellAmountDel);
+}
 
 export {
     invokeCallData,
