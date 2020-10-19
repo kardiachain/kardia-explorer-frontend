@@ -62,7 +62,7 @@ app.get('/giveFaucet', cors(corsOptions), function (req, res, next) {
   const address = req.query.address;
   // Check if address is valid
   if (!kardiaUtils.isAddress(address)) {
-    return res.send('Error: Invalid address.');
+    return res.send({error: 'Error: Invalid address.'});
   }
 
   // Function to excute faucet request
@@ -78,7 +78,7 @@ app.get('/giveFaucet', cors(corsOptions), function (req, res, next) {
 
       return kardiaApi.sendSignedTransaction(signedTx.rawTransaction).then((txHash) => {
         console.log("Transaction hash: ", txHash);
-        res.send({ 
+        res.send({
           txHash: txHash
         });
         return true;
@@ -143,7 +143,6 @@ app.get('/giveFaucet', cors(corsOptions), function (req, res, next) {
 
     // Check if last_faucet is more than one day
     if ((rows.length > 0) && (timeNow - rows[0].last_faucet >= one_day)) {
-
       db.run(query_update, [timeNow, address], (err) => {
         return executeFaucet(address);
       });

@@ -3,16 +3,10 @@ import { Alert, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, Form
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
 import { renderHashString, validAddress } from '../../common/utils/string';
-import { Config } from '../../config';
-import { sendTransaction } from '../../service/wallet';
+import { FAUCET_ENDPOINT } from '../../config/api';
 import './faucet.css';
 
 const Faucet = () => {
-    const faucetAccount = {
-        publickey: Config.faucet_account.public_key,
-        privatekey: Config.faucet_account.private_key
-    } as Account
-    console.log(process.env.PRIVATE_KEY_FAUCET_ACCOUNT);
     
     const [walletAddress, setWalletAddress] = useState('')
     const [walletAddrErr, setWalletAddrErr] = useState('')
@@ -32,11 +26,23 @@ const Faucet = () => {
 
     const sendKai = async () => {
         if (!validateWalletAddr()) return;
+        const requestOptions = {
+            method: 'GET'
+        };
+        const response = await fetch(`${FAUCET_ENDPOINT}/giveFaucet?address=${walletAddress}`, requestOptions)
+        const responseJSON = await response.json();
 
-        const txHash = await sendTransaction(faucetAccount, walletAddress, 1000);
-        if (txHash) {
-            Alert.success(renderHashString(`Tx hash: ${txHash}`, 30)!, 3000)
+        if (responseJSON && responseJSON.error) {
+            Alert.error(responseJSON.error, 5000);
+            return
         }
+
+        if(responseJSON && responseJSON.warning) {
+            Alert.warning(responseJSON.warning, 5000);
+            return
+        }
+        console.log('responseJSON: ', responseJSON.txHash);
+        Alert.success(renderHashString(`Tx hash: ${responseJSON.txHash}`, 30)!, 5000);
     }
 
     return (
