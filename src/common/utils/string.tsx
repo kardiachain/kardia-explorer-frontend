@@ -30,4 +30,11 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
     );
 }
 
-export { renderHashString, copyToClipboard, truncate}
+const validAddress = (addr: string) => {
+    if(addr.length === 42 && addr.startsWith('0x')) {
+        return true
+    }
+    return false
+}
+
+export { renderHashString, copyToClipboard, truncate, validAddress}

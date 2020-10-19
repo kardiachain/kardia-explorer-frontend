@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { kardiaApi } from '../plugin/kardia-tool';
+import { Alert } from 'rsuite';
+import { cellValue } from '../common/utils/amount';
+import { kardiaApi, kardiaCommon } from '../plugin/kardia-tool';
 
 const initialValue: WalletStore = {
     privatekey: '',
@@ -68,4 +70,23 @@ export const getAccount = (): Account => {
         publickey: walletstoreJson.address,
         privatekey: walletstoreJson.privatekey
     } as Account
+}
+
+export const sendTransaction = async (fromAccount: Account, toAddress: string, amount: number) => {
+    try {
+        // Get nonce
+        const nonce = await kardiaApi.accountNonce(fromAccount.publickey);
+        const tx = kardiaCommon.txGenerator(
+            toAddress,
+            cellValue(amount),  //200 KAI
+            nonce,
+            2,
+            2100
+        );
+        const signedTx = kardiaCommon.sign(tx, fromAccount.privatekey);
+        return await kardiaApi.sendSignedTransaction(signedTx.rawTransaction);
+    } catch (error) {
+        const e = JSON.parse(error.message).error;
+        Alert.error(`Error: ${e.message}`)
+    }
 }
