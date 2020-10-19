@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
 import logo from '../../../resources/kardia-logo.png';
@@ -9,6 +9,13 @@ const Header = () => {
     const [activeKey, setActiveKey] = useState('explorer');
     const [showMenu, setShowMenu] = useState(false);
     const {isMobile} = useViewport()
+
+    const location = useLocation()
+
+    useEffect(() => {
+        setActiveKey(location.pathname.split('/')[1])
+    }, [location])
+
     if (isMobile) {
         return (
             <div className="kai-header-container-mobile">
@@ -34,7 +41,7 @@ const Header = () => {
                         <Sidenav appearance="subtle">
                             <Sidenav.Body>
                                 <Nav>
-                                    <Nav.Item eventKey="explorer" icon={<Icon icon="explore" />} href="/">Explorer</Nav.Item>
+                                    <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Explorer</Nav.Item>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
                                     <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href="/wallet">Wallet</Nav.Item>
                                     <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
@@ -57,7 +64,7 @@ const Header = () => {
             </Navbar.Header>
             <Navbar.Body>
                 <Nav onSelect={setActiveKey} activeKey={activeKey}>
-                    <Nav.Item eventKey="explorer" href="/">Explorer</Nav.Item>
+                    <Nav.Item eventKey="" href="/">Explorer</Nav.Item>
                     <Nav.Item eventKey="network" href="/network">View Network</Nav.Item>
                     <Nav.Item eventKey="wallet" href="/wallet">Wallet</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
