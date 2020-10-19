@@ -41,7 +41,7 @@ const SearchSection = () => {
                 </Col>
             </Row>
             <div className="search-input-wrapper">
-                <Input block size="lg" placeholder="Search by Address / TxHash / BlockHash ..." />
+                <Input size="lg" placeholder="Search by Address / TxHash / BlockHash ..." />
                 {
                     isMobile ? 
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '15px'}}>
