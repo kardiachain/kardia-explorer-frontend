@@ -8,36 +8,48 @@ import { getAccount } from '../../../../service/wallet';
 const ValidatorCreate = () => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const [commssionRate, setCommssionRate] = useState('')
+    const [commissionRate, setCommissionRate] = useState('')
     const [maxRate, setMaxRate] = useState('')
     const [maxChangeRate, setMaxChangeRate] = useState('')
     const [minSelfDelegation, setMinSelfDelegation] = useState('')
     const [amountDel, setAmountDel] = useState('')
 
-    const [commssionRateErr, setCommssionRateErr] = useState('')
+    const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
     const [maxChangeRateErr, setMaxChangeRateErr] = useState('')
     const [maxMinSelfDelegationErr, setMaxMinSelfDelegationErr] = useState('')
     const [amountDelErr, setAmountDelErr] = useState('')
 
     useEffect(() => {
-        if (commssionRate) setCommssionRateErr('');
-        if (maxRate) setMaxRateErr('');
-        if (maxChangeRate) setMaxChangeRateErr('');
-        if (minSelfDelegation) setMaxMinSelfDelegationErr('');
-        if (amountDel) setAmountDelErr('');
-    }, [commssionRate, maxRate, maxChangeRate, minSelfDelegation, amountDel])
+        if (commissionRate) setCommissionRateErr('');
+    }, [commissionRate])
 
-    const validateCommssionRate = () => {
-        if (!commssionRate) {
-            setCommssionRateErr(ErrorMessage.Require)
+    useEffect(() => {
+        if (maxRate) setMaxRateErr('');
+    }, [maxRate])
+
+    useEffect(() => {
+        if (maxChangeRate) setMaxChangeRateErr('');
+    }, [maxChangeRate])
+
+    useEffect(() => {
+        if (minSelfDelegation) setMaxMinSelfDelegationErr('');
+    }, [minSelfDelegation])
+
+    useEffect(() => {
+        if (amountDel) setAmountDelErr('');
+    }, [amountDel])
+
+    const validateCommissionRate = () => {
+        if (!commissionRate) {
+            setCommissionRateErr(ErrorMessage.Require)
             return false
         }
-        if (Number(commssionRate) === 0) {
-            setCommssionRateErr(ErrorMessage.ValueInvalid)
+        if (Number(commissionRate) === 0) {
+            setCommissionRateErr(ErrorMessage.ValueInvalid)
             return false
         }
-        setCommssionRateErr('')
+        setCommissionRateErr('')
         return true
     }
 
@@ -103,12 +115,12 @@ const ValidatorCreate = () => {
     }
 
     const registerValidator = async () => {
-        if (!validateCommssionRate() || !validateMaxRate() || !validateMaxChangeRate() || !validateMinSelfDelegation() || !validateAmountDel()) {
+        if (!validateCommissionRate() || !validateMaxRate() || !validateMaxChangeRate() || !validateMinSelfDelegation() || !validateAmountDel()) {
             return
         }
         setIsLoading(true)
         let account = getAccount() as Account;
-        await createValidator(Number(commssionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
+        await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
         setIsLoading(false)
     }
 
@@ -116,17 +128,17 @@ const ValidatorCreate = () => {
         <Form fluid>
             <FormGroup>
                 <FormControl placeholder="Commission Rate*"
-                    name="commssionRate"
-                    value={commssionRate}
+                    name="commissionRate"
+                    value={commissionRate}
                     onChange={(value) => {
                         if (!value) {
-                            setCommssionRateErr(ErrorMessage.Require)
+                            setCommissionRateErr(ErrorMessage.Require)
                         }
                         if (onlyNumber(value)) {
-                            setCommssionRate(value)
+                            setCommissionRate(value)
                         }
                     }} />
-                <ErrMessage message={commssionRateErr} />
+                <ErrMessage message={commissionRateErr} />
                 <FormControl placeholder="Max Rate*"
                     name="maxRate"
                     value={maxRate}
