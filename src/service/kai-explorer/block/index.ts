@@ -9,8 +9,9 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
     const responseJSON = await response.json()
 
     const rawBlockList = responseJSON.data.data || []
-
+    const nowTime = (new Date()).getTime()
     return rawBlockList.map((o: any) => {
+        const createdTime = (new Date(o.time)).getTime()
         return {
             blockHash: o.hash,
             blockHeight: o.height,
@@ -19,7 +20,8 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
                 label: 'Validator',
                 hash: o.validator
             },
-            time: new Date(o.time)
+            time: new Date(o.time),
+            age: (nowTime - createdTime)
         }
     })
 }

@@ -7,15 +7,18 @@ interface KAITransaction {
 }
 
 interface KAIBlock {
-    blockHash: string,
+    blockHash?: string,
     blockHeight: number,
-    transactions: number,
+    transactions?: number,
     validator: {
-        label: string,
+        label?: string,
         hash: string
     },
-    time: Date
+    time: Date,
+    age?: number
 }
+
+
 
 interface Validator {
     address: string;

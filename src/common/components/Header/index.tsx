@@ -9,7 +9,7 @@ import './header.css';
 const Header = () => {
     const [activeKey, setActiveKey] = useState('explorer');
     const [showMenu, setShowMenu] = useState(false);
-    const {isMobile} = useViewport()
+    const { isMobile } = useViewport()
 
     const location = useLocation()
 
@@ -23,7 +23,7 @@ const Header = () => {
         logoutWallet()
         history.push('/wallet')
     }
-    
+
 
     if (isMobile) {
         return (
@@ -50,7 +50,11 @@ const Header = () => {
                         <Sidenav appearance="subtle">
                             <Sidenav.Body>
                                 <Nav>
-                                    <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Explorer</Nav.Item>
+                                    <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Home</Nav.Item>
+                                    <Dropdown eventKey="blockchain" icon={<Icon icon="unlink" />} title="Blockchain">
+                                        <Dropdown.Item href="/txs">View Txns</Dropdown.Item>
+                                        <Dropdown.Item href="/blocks">View Block</Dropdown.Item>
+                                    </Dropdown>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
                                     <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                                     <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
@@ -73,8 +77,12 @@ const Header = () => {
             </Navbar.Header>
             <Navbar.Body>
                 <Nav onSelect={setActiveKey} activeKey={activeKey}>
-                    <Nav.Item eventKey="" href="/">Explorer</Nav.Item>
-                    <Nav.Item eventKey="network" href="/network">View Network</Nav.Item>
+                    <Nav.Item eventKey="" href="/">Home</Nav.Item>
+                    <Dropdown eventKey="blockchain" title="Blockchain">
+                        <Dropdown.Item href="/txs">View Txns</Dropdown.Item>
+                        <Dropdown.Item href="/blocks">View Block</Dropdown.Item>
+                    </Dropdown>
+                    <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
                     <Nav.Item eventKey="wallet" href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
                 </Nav>
@@ -82,7 +90,7 @@ const Header = () => {
 
                     {
                         !isLoggedIn() ? (
-                            <Dropdown 
+                            <Dropdown
                                 icon={<Icon icon="money" size="lg" />}
                                 placement="bottomEnd"
                                 noCaret>
@@ -90,15 +98,15 @@ const Header = () => {
                                 <Dropdown.Item eventKey="access-wallet" href="/access-your-wallet">Access your wallet</Dropdown.Item>
                             </Dropdown>
                         ) : (
-                            <Dropdown 
-                                icon={<Icon icon="money" size="lg" />}
-                                placement="bottomEnd"
-                                noCaret>
-                                <Dropdown.Item eventKey="send-transaction" href="/send-transaction">Send transaction</Dropdown.Item>
-                                <Dropdown.Item eventKey="smart-contract" href="/smart-contract">Smart contract</Dropdown.Item>
-                                <Dropdown.Item eventKey="logout-wallet" href="/wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
-                            </Dropdown>
-                        )
+                                <Dropdown
+                                    icon={<Icon icon="money" size="lg" />}
+                                    placement="bottomEnd"
+                                    noCaret>
+                                    <Dropdown.Item eventKey="send-transaction" href="/send-transaction">Send transaction</Dropdown.Item>
+                                    <Dropdown.Item eventKey="smart-contract" href="/smart-contract">Smart contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="logout-wallet" href="/wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
+                                </Dropdown>
+                            )
                     }
                 </Nav>
             </Navbar.Body>

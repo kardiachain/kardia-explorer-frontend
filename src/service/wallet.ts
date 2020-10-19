@@ -19,7 +19,7 @@ export const useWalletStorage = (callback?: () => void) => {
     });
 
     useEffect(() => {
-        if(storedValue !== initialValue) {
+        if(storedValue.privatekey && storedValue.isAccess) {
             window.localStorage.setItem('walletstore', JSON.stringify(storedValue))
             callback && callback();
         }
