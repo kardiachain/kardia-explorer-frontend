@@ -24,7 +24,7 @@ export const useWalletStorage = (callback?: () => void) => {
             callback && callback();
         }
 
-    }, [storedValue])
+    }, [storedValue, callback])
     
     const setValue = (value: WalletStore) => {
         try {

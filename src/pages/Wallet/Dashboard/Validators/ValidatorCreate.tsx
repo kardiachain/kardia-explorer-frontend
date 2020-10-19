@@ -108,7 +108,7 @@ const ValidatorCreate = () => {
         }
         setIsLoading(true)
         let account = getAccount() as Account;
-        const validator = await createValidator(Number(commssionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
+        await createValidator(Number(commssionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
         setIsLoading(false)
     }
 
