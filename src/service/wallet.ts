@@ -19,14 +19,17 @@ export const useWalletStorage = (callback?: () => void) => {
     });
 
     useEffect(() => {
-        window.localStorage.setItem('walletstore', JSON.stringify(storedValue))
+        if(storedValue !== initialValue) {
+            window.localStorage.setItem('walletstore', JSON.stringify(storedValue))
+            callback && callback();
+        }
+
     }, [storedValue])
     
-    const setValue = async (value: WalletStore) => {
+    const setValue = (value: WalletStore) => {
         try {
             const valueToStore = value instanceof Function ? value(storedValue) : value;
             setStoredValue(valueToStore);
-            callback && callback()
         } catch (err) {
             console.log(err);
         }
