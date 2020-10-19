@@ -1,4 +1,4 @@
-import { END_POINT } from "../config/api";
+import { END_POINT } from "./config";
 
 const getTransactions = (page: number, size: number) => {
     // TODO: Integrate API get transactions
@@ -45,7 +45,6 @@ const getTransactions = (page: number, size: number) => {
 }
 
 const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
-
     const requestOptions = {
         method: 'GET'
     };
