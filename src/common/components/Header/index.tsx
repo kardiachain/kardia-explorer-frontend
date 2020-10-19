@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
 import logo from '../../../resources/kardia-logo.png';
+import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 
 const Header = () => {
@@ -15,6 +16,14 @@ const Header = () => {
     useEffect(() => {
         setActiveKey(location.pathname.split('/')[1])
     }, [location])
+
+    let history = useHistory();
+
+    const logout = () => {
+        logoutWallet()
+        history.push('/wallet')
+    }
+    
 
     if (isMobile) {
         return (
@@ -43,7 +52,7 @@ const Header = () => {
                                 <Nav>
                                     <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Explorer</Nav.Item>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
-                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href="/wallet">Wallet</Nav.Item>
+                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                                     <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
                                 </Nav>
                             </Sidenav.Body>
@@ -66,18 +75,31 @@ const Header = () => {
                 <Nav onSelect={setActiveKey} activeKey={activeKey}>
                     <Nav.Item eventKey="" href="/">Explorer</Nav.Item>
                     <Nav.Item eventKey="network" href="/network">View Network</Nav.Item>
-                    <Nav.Item eventKey="wallet" href="/wallet">Wallet</Nav.Item>
+                    <Nav.Item eventKey="wallet" href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
                 </Nav>
                 <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight>
-                    <Dropdown 
-                        icon={<Icon icon="money" size="lg" />}
-                        placement="bottomEnd"
-                        noCaret
-                    >
-                        <Dropdown.Item eventKey="create-wallet" href="/create-wallet">Create Wallet</Dropdown.Item>
-                        <Dropdown.Item eventKey="access-wallet" href="/access-your-wallet">Access your wallet</Dropdown.Item>
-                    </Dropdown>
+
+                    {
+                        !isLoggedIn() ? (
+                            <Dropdown 
+                                icon={<Icon icon="money" size="lg" />}
+                                placement="bottomEnd"
+                                noCaret>
+                                <Dropdown.Item eventKey="create-wallet" href="/create-wallet">Create Wallet</Dropdown.Item>
+                                <Dropdown.Item eventKey="access-wallet" href="/access-your-wallet">Access your wallet</Dropdown.Item>
+                            </Dropdown>
+                        ) : (
+                            <Dropdown 
+                                icon={<Icon icon="money" size="lg" />}
+                                placement="bottomEnd"
+                                noCaret>
+                                <Dropdown.Item eventKey="send-transaction" href="/send-transaction">Send transaction</Dropdown.Item>
+                                <Dropdown.Item eventKey="smart-contract" href="/smart-contract">Smart contract</Dropdown.Item>
+                                <Dropdown.Item eventKey="logout-wallet" href="/wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
+                            </Dropdown>
+                        )
+                    }
                 </Nav>
             </Navbar.Body>
         </Navbar>

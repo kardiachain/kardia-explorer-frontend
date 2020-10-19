@@ -16,3 +16,27 @@ interface KAIBlock {
     },
     time: Date
 }
+
+interface Validator {
+    address: string;
+    tokens?: number;
+    delegationsShares?: number;
+    votingPower?: number;
+    jailed?: boolean;
+}
+
+interface Delegator {
+    address: string;
+    delegationsShares: number;
+}
+
+interface WalletStore {
+    address: string;
+    privatekey: string;
+    isAccess: boolean;
+}
+
+interface Account {
+    publickey: string;
+    privatekey: string;
+}
