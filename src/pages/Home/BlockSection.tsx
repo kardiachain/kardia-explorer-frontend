@@ -11,8 +11,10 @@ const BlockSection = () => {
     const [blockList, setBlockList] = useState([] as KAIBlock[])
     const { isMobile } = useViewport()
     useEffect(() => {
-        const blocks = getBlocks(1, 5);
-        setBlockList(blocks)
+        (async () => {
+            const blocks = await getBlocks(1, 5);
+            setBlockList(blocks)
+        })()
     }, [])
     return (
         <FlexboxGrid justify="space-between">
