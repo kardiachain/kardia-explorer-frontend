@@ -1,6 +1,4 @@
-import { END_POINT } from "./config";
-
-const getTransactions = (page: number, size: number) => {
+export const getTransactions = (page: number, size: number) => {
     // TODO: Integrate API get transactions
     const now = new Date();
     now.setDate(now.getDate() - 1)
@@ -43,28 +41,3 @@ const getTransactions = (page: number, size: number) => {
     ]
     return data;
 }
-
-const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
-    const requestOptions = {
-        method: 'GET'
-    };
-
-    const skip = (page - 1) * size
-    console.log(`${END_POINT}blocks?skip=${skip}&limit=${size}`)
-    const response = await fetch(`${END_POINT}blocks?skip=${skip}&limit=${size}`, requestOptions)
-    const responseJSON = await response.json()
-    return responseJSON.data.map((o: any) => {
-        return {
-            blockHash: o.hash,
-            blockHeight: o.height,
-            transactions: o.numTxs,
-            validator: {
-                label: 'Validator',
-                hash: o.validator
-            },
-            time: new Date(o.time)
-        }
-    })
-}
-
-export {getTransactions, getBlocks}
