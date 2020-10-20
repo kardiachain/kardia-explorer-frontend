@@ -7,12 +7,12 @@ import './blockDetail.css'
 const BlockDetail = () => {
 
     const query = new URLSearchParams(useLocation().search);
-    const txHash = query.get("block") || '';
+    const blockHash = query.get("block") || '';
     const [dataDisplay, setDataDisplay] = useState([] as any[])
 
     useEffect(() => {
         (async () => {
-            const block = await getBlockBy(txHash);
+            const block = await getBlockBy(blockHash);
             console.log("Block: ", block);
             
             const data = [
@@ -30,7 +30,7 @@ const BlockDetail = () => {
             ] as any[]
             setDataDisplay(data)
         })()
-    }, [])
+    }, [blockHash])
 
 
     return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel } from 'rsuite';
-import { millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getTransactions } from '../../service/kai-explorer';

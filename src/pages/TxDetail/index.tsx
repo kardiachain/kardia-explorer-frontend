@@ -28,7 +28,7 @@ const TxDetail = () => {
             ] as any[]
             setDataDisplay(data)
         })()
-    }, [])
+    }, [txHash])
 
     return (
         <React.Fragment>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG} from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getTransactions } from '../../service/kai-explorer';
@@ -25,10 +25,12 @@ const TxList = () => {
     const handleChangePage = async (dataKey: number) => {
         const transactions = await getTransactions(dataKey, TABLE_CONFIG.limitDefault);
         setTransactionList(transactions)
+        setActivePage(dataKey)
     }
 
     const handleChangeLength = async (size: number) => {
         const transactions = await getTransactions(TABLE_CONFIG.skipDefault, size);
+        setActivePage(TABLE_CONFIG.skipDefault)
         setTransactionList(transactions)
     }
 

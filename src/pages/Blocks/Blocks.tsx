@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Panel, FlexboxGrid, Table, Icon, Col, Divider } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
-import { millisecondToHMS, renderHashString, renderHashToRedirect, truncate } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../config';
