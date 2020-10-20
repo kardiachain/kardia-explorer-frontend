@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Icon, IconButton } from 'rsuite';
-function truncate(str: any, n: number) {
+function truncate(str: string, n: number) {
     return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
 };
 
@@ -33,7 +33,7 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
 const renderHashToRedirect = (hash: any, headCount?: number, callBack?: () => void) => {
     return (
         <span onClick={() => {callBack && callBack()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
-            {truncate(hash, headCount || 10)}{' '}
+            {truncate(String(hash), headCount || 10)}{' '}
         </span>
     )
 }
