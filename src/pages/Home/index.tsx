@@ -12,10 +12,10 @@ const Home = () => {
             <div className="home-container">
                 <Divider />
                 <FlexboxGrid justify="space-between">
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
                         <BlockSection />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24}>
                         <TransactionSection />
                     </FlexboxGrid.Item>
                 </FlexboxGrid>

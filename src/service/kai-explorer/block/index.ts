@@ -1,11 +1,7 @@
-import { END_POINT } from "../config";
+import { END_POINT, REQUEST_GET } from "../config";
 export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
-    const requestOptions = {
-        method: 'GET'
-    };
 
-    const skip = (page - 1) * size
-    const response = await fetch(`${END_POINT}blocks?skip=${skip}&limit=${size}`, requestOptions)
+    const response = await fetch(`${END_POINT}blocks?skip=${page}&limit=${size}`, REQUEST_GET)
     const responseJSON = await response.json()
 
     const rawBlockList = responseJSON.data.data || []
@@ -21,7 +17,38 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
                 hash: o.validator
             },
             time: new Date(o.time),
-            age: (nowTime - createdTime)
-        }
-    })
+            age: (nowTime - createdTime),
+            gasUsed: o.gasUsed,
+            gasLimit: o.gasLimit
+        } as KAIBlock
+    }) as KAIBlock[];
+}
+
+// Common for get block detail by blockhash or blocknumber
+export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
+    const response = await fetch(`${END_POINT}blocks/${block}`, REQUEST_GET)
+    const responseJSON = await response.json()
+    const bockDel = responseJSON.data || {}
+    if(!bockDel) {
+        return {} as KAIBlockDetails
+    }
+    const nowTime = (new Date()).getTime()
+    const createdTime = (new Date(bockDel.time)).getTime()
+    return {
+        blockHash: bockDel.hash,
+        blockHeight: bockDel.height,
+        transactions: bockDel.numTxs || 0,
+        validator: bockDel.validator,
+        commitHash: bockDel.commitHash,
+        gasLimit: bockDel.gasLimit,
+        gasUsed: block.gasUsed || 0,
+        lastBlock: bockDel.lastBlock,
+        dataHash: bockDel.dataHash,
+        validatorHash: bockDel.validatorHash,
+        consensusHash: bockDel.consensusHash,
+        appHash: bockDel.appHash,
+        evidenceHash: bockDel.evidenceHash,
+        time: bockDel.time,
+        age: (nowTime - createdTime),
+    } as KAIBlockDetails
 }

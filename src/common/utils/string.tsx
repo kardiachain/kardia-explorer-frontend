@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Icon, IconButton } from 'rsuite';
-function truncate(str: string, n: number) {
+function truncate(str: any, n: number) {
     return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
 };
 
@@ -30,6 +30,15 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
     );
 }
 
+const renderHashToRedirect = (hash: any, headCount?: number, callBack?: () => void) => {
+    return (
+        <span onClick={() => {callBack && callBack()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
+            {truncate(hash, headCount || 10)}{' '}
+        </span>
+    )
+}
+
+
 const millisecondToHMS = (time: number) => {
     const timeInSeconds = parseInt(String(time / 1000));
     const days = parseInt(String((timeInSeconds / 86400)))
@@ -44,4 +53,4 @@ const millisecondToHMS = (time: number) => {
 
     return `${daysString} ${hourString} ${minuteString} ${secondString} ago`
 };
-export { renderHashString, copyToClipboard, truncate, millisecondToHMS}
+export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect}

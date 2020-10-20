@@ -20,8 +20,9 @@ import DashboardWallet from './pages/Wallet/Dashboard';
 import CreateByPrivateKey from './pages/Wallet/CreateNewWallet/CreateByPrivateKey';
 import CreateByKeystore from './pages/Wallet/CreateNewWallet/CreateByKeystore';
 import AccessByPrivateKey from './pages/Wallet/AccessMyWallet/AccessByPrivateKey';
-import BlockList from './pages/Block/BlockList';
-import TxList from './pages/Tx/TxList';
+import TxList from './pages/TxList/TxList';
+import Blocks from './pages/Blocks/Blocks';
+import BlockDetail from './pages/BlockDetail';
 
 class App extends Component {
   render() {
@@ -38,13 +39,16 @@ class App extends Component {
                   <TxList />
                 </Route>
                 <Route path="/blocks">
-                  <BlockList />
+                  <Blocks />
                 </Route>
                 <Route path="/network">
                   <Network />
                 </Route>
                 <Route path="/tx">
                   <TxDetail />
+                </Route>
+                <Route path="/block">
+                  <BlockDetail />
                 </Route>
                 <Route path="/wallet">
                   <Wallet />

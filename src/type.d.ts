@@ -1,21 +1,53 @@
 interface KAITransaction {
-    txHash: string,
-    from: string,
-    to: string,
-    value: number,
+    txHash: string;
+    from: string;
+    to: string;
+    value: number;
     time: Date
+    blockNumber: number;
+    blockHash: string;
+    status: boolean;
+    nonce: number;
+    age: number;
+    transactionIndex: number;
+    contractAddress: string;
+    gasPrice: number;
+    gas: number;
+    gasLimit: number;
+    input: string;
+    logs: string;
 }
 
 interface KAIBlock {
-    blockHash?: string,
-    blockHeight: number,
-    transactions?: number,
+    blockHash?: string;
+    blockHeight: number;
+    transactions?: number;
     validator: {
-        label?: string,
-        hash: string
-    },
-    time: Date,
-    age?: number
+        label?: string;
+        hash: string;
+    };
+    time: Date;
+    age?: number;
+    gasLimit: number;
+    gasUsed: number;
+}
+
+interface KAIBlockDetails {
+    blockHash: string;
+    blockHeight: number;
+    transactions: number;
+    validator: string;
+    commitHash: string;
+    gasLimit: number;
+    gasUsed: number;
+    lastBlock: string;
+    dataHash: string;
+    validatorHash: string;
+    consensusHash: string;
+    appHash: string;
+    evidenceHash: string;
+    time: Date;
+    age: number;
 }
 
 
