@@ -11,7 +11,7 @@ const { Column, HeaderCell, Cell } = Table;
 const TransactionSection = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { isMobile } = useViewport();
-    let history = useHistory();
+    const history = useHistory();
     useEffect(() => {
         (async () => {
             const transactions = await getTransactions(1, TABLE_CONFIG.limitDefault);

@@ -1,10 +1,10 @@
 import { END_POINT } from "../../config/api";
 
-const REQUEST_GET = {
+const GET_REQUEST_OPTION = {
     method: 'GET'
 };
 
 export {
     END_POINT,
-    REQUEST_GET
+    GET_REQUEST_OPTION
 }

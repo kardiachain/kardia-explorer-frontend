@@ -52,7 +52,7 @@ const Header = () => {
                                 <Nav>
                                     <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Home</Nav.Item>
                                     <Dropdown eventKey="blockchain" icon={<Icon icon="unlink" />} title="Blockchain">
-                                        <Dropdown.Item href="/txs">View Txns</Dropdown.Item>
+                                        <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
                                         <Dropdown.Item href="/blocks">View Block</Dropdown.Item>
                                     </Dropdown>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
@@ -79,7 +79,7 @@ const Header = () => {
                 <Nav onSelect={setActiveKey} activeKey={activeKey}>
                     <Nav.Item eventKey="" href="/">Home</Nav.Item>
                     <Dropdown eventKey="blockchain" title="Blockchain">
-                        <Dropdown.Item href="/txs">View Txns</Dropdown.Item>
+                        <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
                         <Dropdown.Item href="/blocks">View Block</Dropdown.Item>
                     </Dropdown>
                     <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>

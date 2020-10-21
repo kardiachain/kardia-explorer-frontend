@@ -11,7 +11,7 @@ const { Column, HeaderCell, Cell } = Table;
 
 const Blocks = () => {
     const [blocks, setBlocks] = useState([] as KAIBlock[])
-    const [blockLastest, setBlockLastest] = useState({} as KAIBlock)
+    const [blockLastest, setBlockLastest] = useState<KAIBlock>()
     const [activePage, setActivePage] = useState(1)
     const { isMobile } = useViewport()
     let history = useHistory();
@@ -39,122 +39,116 @@ const Blocks = () => {
     }
 
     return (
-        <React.Fragment>
-            <div className="block-container">
-                <h3>Blocks</h3>
-                <Divider />
-                <FlexboxGrid justify="space-between">
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                        <Panel shaded>
-                            <FlexboxGrid justify="space-between">
-                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                    <Table
-                                        virtualized
-                                        hover={false}
-                                        rowHeight={60}
-                                        height={650}
-                                        data={blocks}
-                                        onRowClick={data => {
-                                            // history.push(`/block?block=${data.blockHash}`)
-                                            console.log(data);
-                                        }}
-                                    >
-                                        <Column width={100}>
-                                            <HeaderCell>Block</HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAIBlock) => {
-                                                    return (
-                                                        <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, isMobile ? 20 : 45, () => { history.push(`/block?block=${rowData.blockHeight}`) })} </div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column width={150}>
-                                            <HeaderCell>Age</HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAIBlock) => {
-                                                    return (
-                                                        <div>{millisecondToHMS(rowData.age || 0)}</div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column width={isMobile ? 120 : 400}>
-                                            <HeaderCell>Block Hash</HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAIBlock) => {
-                                                    return (
-                                                        <div>
-                                                            {renderHashToRedirect(rowData.blockHash, isMobile ? 20 : 45, () => { history.push(`/block?block=${rowData.blockHash}`) })}
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column width={isMobile ? 120 : 400}>
-                                            <HeaderCell>Block validator</HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAIBlock) => {
-                                                    return (
-                                                        <div>
-                                                            {renderHashToRedirect(rowData.validator.hash, isMobile ? 20 : 45, () => { })}
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column width={100}>
-                                            <HeaderCell>Txn</HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAIBlock) => {
-                                                    return (
-                                                        <div>
-                                                            {renderHashToRedirect(rowData.transactions, 20, () => { })}
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column width={100}>
-                                            <HeaderCell>Gas Used</HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAIBlock) => {
-                                                    return (
-                                                        <div>
-                                                            {rowData.gasUsed}
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column width={100}>
-                                            <HeaderCell>Gas Limit</HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAIBlock) => {
-                                                    return (
-                                                        <div>
-                                                            {rowData.gasLimit}
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                    </Table>
-                                    <TablePagination
-                                        lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                        activePage={activePage}
-                                        displayLength={10}
-                                        total={blockLastest.blockHeight || 0}
-                                        onChangePage={handleChangePage}
-                                        onChangeLength={handleChangeLength}
-                                    />
-                                </FlexboxGrid.Item>
-                            </FlexboxGrid>
-                        </Panel>
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
-            </div>
-        </React.Fragment>
+        <div className="block-container">
+            <h3>Blocks</h3>
+            <Divider />
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <Panel shaded>
+                        <FlexboxGrid justify="space-between">
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                <Table
+                                    virtualized
+                                    hover={false}
+                                    rowHeight={60}
+                                    height={650}
+                                    data={blocks}
+                                >
+                                    <Column width={100}>
+                                        <HeaderCell>Block</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, isMobile ? 20 : 45, () => { history.push(`/block?block=${rowData.blockHeight}`) })} </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column width={150}>
+                                        <HeaderCell>Age</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div>{millisecondToHMS(rowData.age || 0)}</div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column width={isMobile ? 120 : 400}>
+                                        <HeaderCell>Block Hash</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div>
+                                                        {renderHashToRedirect(rowData.blockHash, isMobile ? 20 : 45, () => { history.push(`/block?block=${rowData.blockHash}`) })}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column width={isMobile ? 120 : 400}>
+                                        <HeaderCell>Block validator</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div>
+                                                        {renderHashToRedirect(rowData.validator.hash, isMobile ? 20 : 45, () => { })}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column width={100}>
+                                        <HeaderCell>Txn</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div>
+                                                        {renderHashToRedirect(rowData.transactions, 20, () => { })}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column width={100}>
+                                        <HeaderCell>Gas Used</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div>
+                                                        {rowData.gasUsed}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column width={100}>
+                                        <HeaderCell>Gas Limit</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div>
+                                                        {rowData.gasLimit}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                </Table>
+                                <TablePagination
+                                    lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                    activePage={activePage}
+                                    displayLength={10}
+                                    total={blockLastest?.blockHeight}
+                                    onChangePage={handleChangePage}
+                                    onChangeLength={handleChangeLength}
+                                />
+                            </FlexboxGrid.Item>
+                        </FlexboxGrid>
+                    </Panel>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
+        </div>
     )
 }
 

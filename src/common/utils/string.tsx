@@ -40,10 +40,10 @@ const renderHashToRedirect = (hash: any, headCount?: number, callBack?: () => vo
 
 
 const millisecondToHMS = (time: number) => {
-    const timeInSeconds = parseInt(String(time / 1000));
-    const days = parseInt(String((timeInSeconds / 86400)))
-    const hours = parseInt(String((timeInSeconds % 86400) / 3600));
-    const minutes = parseInt(String((timeInSeconds % 3600) / 60));
+    const timeInSeconds = Math.floor(time / 1000);
+    const days = Math.floor((timeInSeconds / 86400))
+    const hours = Math.floor((timeInSeconds % 86400) / 3600)
+    const minutes = Math.floor((timeInSeconds % 3600) / 60)
     const seconds = timeInSeconds - days*86400 - hours * 3600 - minutes * 60;
 
     const hourString = hours ? `${hours} hr${hours > 1 ? 's' : ''}` : '';

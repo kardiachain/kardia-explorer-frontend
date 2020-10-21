@@ -10,7 +10,7 @@ const { Column, HeaderCell, Cell } = Table;
 const BlockSection = () => {
     const [blockList, setBlockList] = useState([] as KAIBlock[])
     const { isMobile } = useViewport()
-    let history = useHistory();
+    const history = useHistory();
     useEffect(() => {
         (async () => {
             const blocks = await getBlocks(1, 10);
@@ -27,9 +27,6 @@ const BlockSection = () => {
                         height={400}
                         data={blockList}
                         hover={false}
-                        onRowClick={data => {
-                            console.log(data);
-                        }}
                     >
                         <Column width={150}>
                             <HeaderCell>Block height</HeaderCell>
@@ -37,7 +34,7 @@ const BlockSection = () => {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, 30, () => {history.push(`/block?block=${rowData.blockHeight}`)})} </div>
+                                            <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, 30, () => { history.push(`/block?block=${rowData.blockHeight}`) })} </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
@@ -50,9 +47,7 @@ const BlockSection = () => {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            <div>
-                                                {truncate(rowData.validator.hash, isMobile ? 10 : 30)}
-                                            </div>
+                                            {truncate(rowData.validator.hash, isMobile ? 10 : 30)}
                                         </div>
                                     );
                                 }}

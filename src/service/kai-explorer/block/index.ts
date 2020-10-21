@@ -1,7 +1,7 @@
-import { END_POINT, REQUEST_GET } from "../config";
+import { END_POINT, GET_REQUEST_OPTION } from "../config";
 export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
 
-    const response = await fetch(`${END_POINT}blocks?skip=${page}&limit=${size}`, REQUEST_GET)
+    const response = await fetch(`${END_POINT}blocks?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
 
     const rawBlockList = responseJSON.data.data || []
@@ -21,34 +21,34 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
             gasUsed: o.gasUsed,
             gasLimit: o.gasLimit
         } as KAIBlock
-    }) as KAIBlock[];
+    });
 }
 
 // Common for get block detail by blockhash or blocknumber
 export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
-    const response = await fetch(`${END_POINT}blocks/${block}`, REQUEST_GET)
+    const response = await fetch(`${END_POINT}blocks/${block}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    const bockDel = responseJSON.data || {}
-    if(!bockDel) {
+    const bockDetail = responseJSON.data || {}
+    if(!bockDetail) {
         return {} as KAIBlockDetails
     }
     const nowTime = (new Date()).getTime()
-    const createdTime = (new Date(bockDel.time)).getTime()
+    const createdTime = (new Date(bockDetail.time)).getTime()
     return {
-        blockHash: bockDel.hash,
-        blockHeight: bockDel.height,
-        transactions: bockDel.numTxs || 0,
-        validator: bockDel.validator,
-        commitHash: bockDel.commitHash,
-        gasLimit: bockDel.gasLimit,
-        gasUsed: block.gasUsed || 0,
-        lastBlock: bockDel.lastBlock,
-        dataHash: bockDel.dataHash,
-        validatorHash: bockDel.validatorHash,
-        consensusHash: bockDel.consensusHash,
-        appHash: bockDel.appHash,
-        evidenceHash: bockDel.evidenceHash,
-        time: bockDel.time,
-        age: (nowTime - createdTime),
+        blockHash: bockDetail.hash,
+        blockHeight: bockDetail.height,
+        transactions: bockDetail.numTxs || 0,
+        validator: bockDetail.validator,
+        commitHash: bockDetail.commitHash,
+        gasLimit: bockDetail.gasLimit,
+        gasUsed: bockDetail.gasUsed || 0,
+        lastBlock: bockDetail.lastBlock,
+        dataHash: bockDetail.dataHash,
+        validatorHash: bockDetail.validatorHash,
+        consensusHash: bockDetail.consensusHash,
+        appHash: bockDetail.appHash,
+        evidenceHash: bockDetail.evidenceHash,
+        time: bockDetail.time,
+        age: (nowTime - createdTime)
     } as KAIBlockDetails
 }

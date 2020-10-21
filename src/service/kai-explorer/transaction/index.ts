@@ -1,7 +1,7 @@
-import { END_POINT, REQUEST_GET } from "../config";
+import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 export const getTransactions = async (page: number, size: number): Promise<KAITransaction[]> => {
-    const response = await fetch(`${END_POINT}txs?page=${page}&limit=${size}`, REQUEST_GET)
+    const response = await fetch(`${END_POINT}txs?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON.data.data || []
     const nowTime = (new Date()).getTime()
@@ -30,7 +30,7 @@ export const getTransactions = async (page: number, size: number): Promise<KAITr
 }
 
 export const getTxsByBlockHeight = async (blockHeight: number, page: number, size: number) : Promise<KAITransaction[]> => {
-    const response = await fetch(`${END_POINT}block/${blockHeight}/txs?page=${page}&limit=${size}`, REQUEST_GET)
+    const response = await fetch(`${END_POINT}block/${blockHeight}/txs?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON.data.data || []
     const nowTime = (new Date()).getTime()
@@ -59,9 +59,8 @@ export const getTxsByBlockHeight = async (blockHeight: number, page: number, siz
 }
 
 export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
-    const response = await fetch(`${END_POINT}txs/${txHash}`, REQUEST_GET)
+    const response = await fetch(`${END_POINT}txs/${txHash}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    console.log('responseJSON', responseJSON);
     
     const tx = responseJSON.data || {};
     if(!tx) {
