@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Icon, Input, Modal, Panel, Row } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import QrReader from 'react-qr-reader';
 import { useViewport } from '../../context/ViewportContext';
+import { getHeightestBlockNumber } from '../../service/kai-explorer';
 
 const SearchSection = () => {
     const {isMobile} = useViewport();
     const [showQRModel, setShowQRModal] = useState(false);
+    const [heightestBlock, setHeightestBlock] = useState(0)
+
+    useEffect(() => {
+        (async () => {
+            const blockNumber = await getHeightestBlockNumber()
+            setHeightestBlock(blockNumber);
+        })()
+    },[])
 
     const scanSuccess = (data: any) => {
         console.log(data)
@@ -21,7 +30,7 @@ const SearchSection = () => {
             <Row className="stat-group">
                 <Col md={6} sm={12} xs={12}>
                     <Panel shaded bordered header="Block height" className="stat-container">
-                        <NumberFormat value={279604} displayType={'text'} thousandSeparator={true} />
+                        <NumberFormat value={heightestBlock} displayType={'text'} thousandSeparator={true} />
                     </Panel>
                 </Col>
                 <Col md={6} sm={12} xs={12}>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Icon, Panel, Row } from 'rsuite';
 import { kaiValueString } from '../../../common/utils/amount';
-import { getAccount, getBalanceByAddress } from '../../../service/wallet';
+import { getBalance } from '../../../service/kai-explorer';
+import { getAccount } from '../../../service/wallet';
 import './dashboard.css';
 
 const DashboardHeader = () => {
@@ -9,7 +10,7 @@ const DashboardHeader = () => {
     const [balance, setBalance] = useState(0)
 
     useEffect(() => {
-        getBalanceByAddress(account.publickey).then(setBalance);
+        getBalance(account.publickey).then(setBalance);
     }, [account])
 
     return (

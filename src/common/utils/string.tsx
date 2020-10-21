@@ -53,4 +53,9 @@ const millisecondToHMS = (time: number) => {
 
     return `${daysString} ${hourString} ${minuteString} ${secondString} ago`
 };
-export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect}
+
+const dateToLocalTime = (time: Date) => {
+    const d = new Date(time);
+    return d.toLocaleString()
+}
+export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime }

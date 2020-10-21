@@ -29,7 +29,7 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
     const response = await fetch(`${END_POINT}blocks/${block}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const bockDetail = responseJSON.data || {}
-    if(!bockDetail) {
+    if (!bockDetail) {
         return {} as KAIBlockDetails
     }
     const nowTime = (new Date()).getTime()
@@ -52,3 +52,12 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
         age: (nowTime - createdTime)
     } as KAIBlockDetails
 }
+
+export const getHeightestBlockNumber = async (): Promise<number> => {
+    const response = await fetch(`${END_POINT}blocks?page=1&limit=1`, GET_REQUEST_OPTION)
+    const responseJSON = await response.json()
+    const rawBlockList = responseJSON.data.data || []
+
+    if (rawBlockList.length === 0) return 0
+    return rawBlockList[0].height
+} 

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom';
-import { Breadcrumb, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Alert, Breadcrumb, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyNumber } from '../../../../common/utils/number';
-import { renderHashString } from '../../../../common/utils/string';
+import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { delegateAction, getDelegationsByValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -12,11 +12,13 @@ import './validators.css';
 const { Column, HeaderCell, Cell } = Table;
 
 const ValidatorDetail = () => {
+    const history = useHistory()
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const { isMobile } = useViewport();
     const [isLoading, setIsLoading] = useState(false)
     const [delAmount, setDelAmount] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const [hashTransaction, setHashTransaction] = useState('')
     
     const query = new URLSearchParams(useLocation().search);
     const valAddr = query.get("id") || '';
@@ -46,6 +48,11 @@ const ValidatorDetail = () => {
         const valAddr = query.get("id") || '';
         let account = getAccount() as Account
         const delegate = await delegateAction(valAddr, account, Number(delAmount))
+
+        if (delegate && delegate.transactionHash) {        
+            Alert.success('Delegate success.')
+            setHashTransaction(delegate.transactionHash)
+        }
         console.log("Delegate", delegate);
         setIsLoading(false)
     }
@@ -66,7 +73,7 @@ const ValidatorDetail = () => {
                         <Panel header={<h4>Validator information</h4>} bordered>
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Validator address: </span> 0xff3dac4f04ddbd24de5d6039f90596f0a8bb08fd
+                                    <span className="property-title">Validator address: </span> {valAddr}
                                 </List.Item>
                                 <List.Item>
                                     <span className="property-title">Commission: </span> 5%
@@ -105,6 +112,9 @@ const ValidatorDetail = () => {
                                     </ButtonToolbar>
                                 </FormGroup>
                             </Form>
+                            {
+                                hashTransaction ? <div style={{marginTop: '20px'}}> Txs create validator: {renderHashToRedirect(hashTransaction, 50, () => { history.push(`/tx?hash=${hashTransaction}`) })}</div> : <></>
+                            }
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>

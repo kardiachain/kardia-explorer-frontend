@@ -11,7 +11,7 @@ const TxDetail = () => {
     const history = useHistory();
     const query = new URLSearchParams(useLocation().search);
     const txHash = query.get("hash") || '';
-    const [txDetail, setTxDetail] = useState({} as KAITransaction)
+    const [txDetail, setTxDetail] = useState<KAITransaction>()
 
     useEffect(() => {
         (async () => {
@@ -27,32 +27,32 @@ const TxDetail = () => {
             <Panel shaded>
                 <List bordered={false}>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Transaction Hash</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{txDetail.txHash}</div>
+                                <div className="content">{txDetail?.txHash}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Block NumberNumber</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail.blockNumber, 30, () => { history.push(`/block?block=${txDetail.blockNumber}`) })}</div>
+                                <div className="content">{renderHashToRedirect(txDetail?.blockNumber, 30, () => { history.push(`/block?block=${txDetail?.blockNumber}`) })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Block Hash</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail.blockHash, 50, () => { history.push(`/block?block=${txDetail.blockHash}`) })}</div>
+                                <div className="content">{renderHashToRedirect(txDetail?.blockHash, 50, () => { history.push(`/block?block=${txDetail?.blockHash}`) })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
@@ -63,7 +63,7 @@ const TxDetail = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                 {
-                                    txDetail.status ?
+                                    txDetail?.status ?
                                         <div className="content"><Tag color="green">SUCCESS</Tag></div> :
                                         <div className="content"><Tag color="yellow">PENDING</Tag></div>
                                 }
@@ -72,92 +72,92 @@ const TxDetail = () => {
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">TimeStamp</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{dateToLocalTime(txDetail.time)}</div>
+                                <div className="content">{txDetail?.time ? dateToLocalTime(txDetail?.time) : ''}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">From</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail.from, 50, () => { })}</div>
+                                <div className="content">{renderHashToRedirect(txDetail?.from, 50, () => { })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">To</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail.to, 50, () => { })}</div>
+                                <div className="content">{renderHashToRedirect(txDetail?.to, 50, () => { })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Value</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{kaiValueString(txDetail.value)}</div>
+                                <div className="content">{kaiValueString(txDetail?.value)}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Gas Price</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{numberFormat(txDetail.gasPrice)}</div>
+                                <div className="content">{numberFormat(txDetail?.gasPrice || 0)}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Gas Limit</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{numberFormat(txDetail.gasLimit)}</div>
+                                <div className="content">{numberFormat(txDetail?.gasLimit || 0)}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Nonce</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{numberFormat(txDetail.nonce)}</div>
+                                <div className="content">{numberFormat(txDetail?.nonce || 0)}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Transaction Index</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{txDetail.transactionIndex}</div>
+                                <div className="content">{txDetail?.transactionIndex}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
                     <List.Item>
-                        <FlexboxGrid justify="start">
+                        <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
                                 <div className="title">Input Data</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{txDetail.input}</div>
+                                <div className="content">{txDetail?.input}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>

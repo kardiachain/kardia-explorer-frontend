@@ -20,7 +20,7 @@ const cellValue = (kaiValue: any) => {
 
 const kaiValueString = (value: any) => {
   if (!value || '0' === value) {
-    return '-'
+    return '0 KAI'
   }
   const cellString = value.toString().padStart(36, '0');
   const kaiNumString = parseInt(cellString.slice(0, 18));

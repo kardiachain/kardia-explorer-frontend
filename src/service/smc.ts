@@ -4,7 +4,7 @@ import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import STAKING_BYTE_CODE from '../resources/smc-compile/staking-bin.json'
 
 const stakingContract = kardiaContract(kardiaProvider, STAKING_BYTE_CODE, STAKING_ABI);
-const STAKING_SMC_ADDRESS = '0xF3E77cDEeD0A979be6fb54dEdc50551e84F9C53a';
+const STAKING_SMC_ADDRESS = '0x0000000000000000000000000000000000001337';
 
 const invokeCallData = async (methodName: string, params: any[]) => {
     const invoke = await stakingContract.invoke({
@@ -39,11 +39,11 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
 }
 
 
-const getValidators = async (): Promise<Validator[]> => {
+const getValidatorsFromSMC = async (): Promise<ValidatorFromSMC[]> => {
     const invoke = await invokeCallData("getValidatorSets", [])
-    let validators: Validator[] = [];
+    let validators: ValidatorFromSMC[] = [];
     for (let i = 0; i < invoke[0].length; i++) {
-        let validator: Validator = {
+        let validator: ValidatorFromSMC = {
             address: invoke[0][i],
             votingPower: invoke[1][i],
         }
@@ -73,9 +73,9 @@ const getValidatorsByDelegator = async (delAddr: string): Promise<String> => {
     return valAddr
 }
 
-const getValidator = async (valAddr: string): Promise<Validator> => {
+const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
     const invoke = await invokeCallData("getValidator", [valAddr])
-    let validators: Validator = {
+    let validators: ValidatorFromSMC = {
         address: invoke[0],
         delegationsShares: invoke[1],
         jailed: invoke[2]
@@ -94,18 +94,18 @@ const delegateAction = async (valAddr: string, account: Account, amountDel: numb
 }
 
 const createValidator = async (commssionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
-    const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("delegate", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, cellAmountDel);
+        const cellAmountDel = cellValue(amountDel);
+        return await invokeSendAction("createValidator", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, cellAmountDel);
 }
 
 export {
     invokeCallData,
     invokeSendAction,
-    getValidators,
     getDelegationsByValidator,
     getValidatorsByDelegator,
     getValidator,
     getValidatorCommission,
     delegateAction,
-    createValidator
+    createValidator,
+    getValidatorsFromSMC
 }

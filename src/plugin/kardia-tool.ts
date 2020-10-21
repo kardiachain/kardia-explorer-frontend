@@ -1,6 +1,5 @@
 import KardiaTool from 'kardia-tool';
-
-const RPC_ENDPOINT = 'http://10.10.0.251:8551';
+import { RPC_ENDPOINT } from '../config/api';
 
 const kardiaTool = KardiaTool(RPC_ENDPOINT);
 const kardiaApi = kardiaTool.api;
