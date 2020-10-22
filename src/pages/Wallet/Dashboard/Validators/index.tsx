@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
+import { Button, Col, FlexboxGrid, Panel, Table } from 'rsuite';
 import { truncate } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidators } from '../../../../service/kai-explorer';
@@ -31,11 +31,6 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                                 <ValidatorCreate />
                             </FlexboxGrid.Item>
-                            {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                                <Panel header="Policy" bordered>
-
-                                </Panel>
-                            </FlexboxGrid.Item> */}
                         </FlexboxGrid>
                     </Panel>
                 </div>
