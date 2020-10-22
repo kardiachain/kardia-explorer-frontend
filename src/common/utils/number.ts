@@ -6,4 +6,9 @@ const onlyNumber = (value: any) => {
     return false
 }
 
-export {onlyNumber}
+const numberFormat = (value: number) => {
+    if(value < 1) return value
+    return new Intl.NumberFormat().format(value);
+}
+
+export {onlyNumber, numberFormat}
