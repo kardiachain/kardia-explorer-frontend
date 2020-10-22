@@ -13,26 +13,15 @@ const TxList = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { isMobile } = useViewport()
     const history = useHistory();
-    const [activePage, setActivePage] = useState(1)
+    const [page, setPage] = useState(TABLE_CONFIG.page)
+    const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
 
     useEffect(() => {
         (async () => {
-            const transactions = await getTransactions(TABLE_CONFIG.skipDefault, TABLE_CONFIG.limitDefault);
+            const transactions = await getTransactions(page, size);
             setTransactionList(transactions)
         })()
-    }, [])
-
-    const handleChangePage = async (dataKey: number) => {
-        const transactions = await getTransactions(dataKey, TABLE_CONFIG.limitDefault);
-        setTransactionList(transactions)
-        setActivePage(dataKey)
-    }
-
-    const handleChangeLength = async (size: number) => {
-        const transactions = await getTransactions(TABLE_CONFIG.skipDefault, size);
-        setActivePage(TABLE_CONFIG.skipDefault)
-        setTransactionList(transactions)
-    }
+    }, [page, size])
 
     return (
         <div className="txs-container">
@@ -122,12 +111,12 @@ const TxList = () => {
                                     </Column>
                                 </Table>
                                 <TablePagination
-                                    engthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                    activePage={activePage}
-                                    displayLength={10}
+                                    lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                    activePage={page}
+                                    displayLength={size}
                                     total={150}
-                                    onChangePage={handleChangePage}
-                                    onChangeLength={handleChangeLength}
+                                    onChangePage={setPage}
+                                    onChangeLength={setSize}
                                 />
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

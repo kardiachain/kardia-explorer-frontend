@@ -1,7 +1,7 @@
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
 
-    const response = await fetch(`${END_POINT}blocks?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}blocks?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
 
     const rawBlockList = responseJSON.data.data || []

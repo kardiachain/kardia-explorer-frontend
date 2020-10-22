@@ -13,31 +13,18 @@ const { Column, HeaderCell, Cell } = Table;
 const Blocks = () => {
     const [blocks, setBlocks] = useState([] as KAIBlock[])
     const [latestBlock, setLatestBlock] = useState<KAIBlock>()
-    const [activePage, setActivePage] = useState(1)
+    const [page, setPage] = useState(TABLE_CONFIG.page)
+    const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const { isMobile } = useViewport()
     let history = useHistory();
 
     useEffect(() => {
         (async () => {
-            const blocks = await getBlocks(TABLE_CONFIG.skipDefault, TABLE_CONFIG.limitDefault);
+            const blocks = await getBlocks(page, size);
             setLatestBlock(blocks[0])
             setBlocks(blocks)
         })()
-    }, [])
-
-    const handleChangePage = async (dataKey: number) => {
-        const blocks = await getBlocks(dataKey, TABLE_CONFIG.limitDefault);
-        setActivePage(dataKey)
-        setLatestBlock(blocks[0])
-        setBlocks(blocks)
-    }
-
-    const handleChangeLength = async (size: number) => {
-        const blocks = await getBlocks(TABLE_CONFIG.skipDefault, size);
-        setActivePage(TABLE_CONFIG.skipDefault)
-        setLatestBlock(blocks[0])
-        setBlocks(blocks)
-    }
+    }, [page, size])
 
     return (
         <div className="block-container">
@@ -52,7 +39,8 @@ const Blocks = () => {
                                     virtualized
                                     hover={false}
                                     rowHeight={60}
-                                    height={650}
+                                    height={400}
+                                    autoHeight
                                     data={blocks}
                                 >
                                     <Column width={100}>
@@ -138,11 +126,11 @@ const Blocks = () => {
                                 </Table>
                                 <TablePagination
                                     lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                    activePage={activePage}
-                                    displayLength={10}
+                                    activePage={page}
+                                    displayLength={size}
                                     total={latestBlock?.blockHeight}
-                                    onChangePage={handleChangePage}
-                                    onChangeLength={handleChangeLength}
+                                    onChangePage={setPage}
+                                    onChangeLength={setSize}
                                 />
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
