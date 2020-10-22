@@ -17,6 +17,8 @@ const BlockSection = () => {
             setBlockList(blocks)
         })()
     }, [])
+
+    // TODO: use react-chartjs-2 to display chart
     return (
         <Panel header="Latest blocks" shaded>
             <FlexboxGrid justify="space-between">

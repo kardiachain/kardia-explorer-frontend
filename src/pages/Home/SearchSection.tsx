@@ -16,6 +16,7 @@ const SearchSection = () => {
         console.error(err)
     }
 
+    // TODO: use react-chartjs-2 to display chart
     return (
         <div className="search-section">
             <Row className="stat-group">
