@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Icon, Input, Modal, Panel, Row } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import QrReader from 'react-qr-reader';
 import { useViewport } from '../../context/ViewportContext';
+import { getLatestBlockNumber } from '../../service/kai-explorer';
 
 const SearchSection = ({blockHeight = 0}: {
     blockHeight: number
 }) => {
     const {isMobile} = useViewport();
     const [showQRModel, setShowQRModal] = useState(false);
+    const [latestBlock, setLatestBlock] = useState(0)
+
+    useEffect(() => {
+        (async () => {
+            const blockNumber = await getLatestBlockNumber()
+            setLatestBlock(blockNumber);
+        })()
+    },[])
 
     const scanSuccess = (data: any) => {
         console.log(data)
@@ -79,7 +88,7 @@ const SearchSection = ({blockHeight = 0}: {
                     </div>
                     :
                     <Button block appearance="primary">
-                        <Icon icon="search"  /> Search
+                        <Icon icon="search" /> Search
                     </Button>
                 }
             </div>

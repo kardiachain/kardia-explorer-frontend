@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel } from 'rsuite';
+import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
@@ -14,8 +15,8 @@ const TransactionSection = () => {
     const history = useHistory();
     useEffect(() => {
         (async () => {
-            const transactions = await getTransactions(1, TABLE_CONFIG.limitDefault);
-            setTransactionList(transactions)
+            const rs = await getTransactions(TABLE_CONFIG.page, TABLE_CONFIG.limitDefault);
+            setTransactionList(rs.transactions)
         })()
     }, [])
     return (
@@ -24,7 +25,7 @@ const TransactionSection = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
                         autoHeight
-                        rowHeight={60}
+                        rowHeight={70}
                         height={400}
                         hover={false}
                         data={transactionList}
@@ -51,16 +52,24 @@ const TransactionSection = () => {
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <div>From: {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, () => { })} </div>
-                                            <div>To: {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, () => { })}</div>
+                                            <div style={{marginBottom: '5px'}}>From: {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, () => { history.push(`/txs?addresses=${rowData.from}`) })} </div>
+                                            <div>To: {renderHashToRedirect(rowData.to, isMobile ? 10 : 30, () => { history.push(`/txs?addresses=${rowData.to}`) })}</div>
                                         </div>
                                     );
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="right">
+                        <Column align="center" width={200}>
                             <HeaderCell>Value</HeaderCell>
-                            <Cell dataKey="value" />
+                            <Cell>
+                                {(rowData: KAITransaction) => {
+                                    return (
+                                        <div>
+                                            {weiToKAI(rowData.value)} KAI
+                                        </div>
+                                    );
+                                }}
+                            </Cell>
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
