@@ -37,6 +37,7 @@ const TxList = () => {
                                     rowHeight={60}
                                     height={650}
                                     data={transactionList}
+                                    autoHeight
                                     hover={false}
                                 >
                                     <Column width={isMobile ? 120 : 400}>
