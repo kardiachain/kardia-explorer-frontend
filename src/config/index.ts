@@ -22,3 +22,5 @@ export const TABLE_CONFIG = {
         ]
     }
 }
+
+export const BLOCK_NUMBER = 10;

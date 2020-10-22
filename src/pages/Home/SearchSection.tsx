@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Icon, Input, Modal, Panel, Row } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import QrReader from 'react-qr-reader';
 import { useViewport } from '../../context/ViewportContext';
+import { calculateTPS } from '../../service/kai-explorer';
+import { BLOCK_NUMBER } from '../../config';
 
 const SearchSection = () => {
     const {isMobile} = useViewport();
     const [showQRModel, setShowQRModal] = useState(false);
+    const [tps, setTps] = useState(0)
 
     const scanSuccess = (data: any) => {
         console.log(data)
@@ -15,6 +18,13 @@ const SearchSection = () => {
     const scanError = (err: any) => {
         console.error(err)
     }
+
+    useEffect(() => {
+        setInterval(async () => {
+            const tps = await calculateTPS(BLOCK_NUMBER);
+            setTps(tps);
+        }, 1000)
+    }, [tps]);
 
     // TODO: use react-chartjs-2 to display chart
     return (
@@ -27,7 +37,7 @@ const SearchSection = () => {
                 </Col>
                 <Col md={6} sm={12} xs={12}>
                     <Panel shaded bordered header="Live TPS" className="stat-container">
-                        <NumberFormat value={0.0139} displayType={'text'} thousandSeparator={true} />
+                        <NumberFormat value={tps} displayType={'text'} thousandSeparator={true} />
                     </Panel>
                 </Col>
                 <Col md={6} sm={12} xs={12}>
