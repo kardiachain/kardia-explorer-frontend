@@ -29,9 +29,6 @@ const TransactionSection = () => {
                         height={400}
                         hover={false}
                         data={transactionList}
-                        onRowClick={data => {
-                            console.log(data);
-                        }}
                     >
                         <Column width={isMobile ? 120 : 350}>
                             <HeaderCell>Tx Hash</HeaderCell>

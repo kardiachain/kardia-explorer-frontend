@@ -20,11 +20,7 @@ const SearchSection = ({blockHeight = 0, blockList = []}: {blockHeight: number, 
     }
 
     useEffect(() => {
-        console.log(blockList);
-        
         const tps = calculateTPS(blockList);
-        console.log("TPS: ", tps);
-        
         setTps(tps);
     }, [blockList]);
 

@@ -60,8 +60,6 @@ export const calculateTPS = (blockList: KAIBlock[]) => {
     blockList.forEach((item: any) => {
         totalTxs += item.transactions;
     });
-    console.log("totalTimes", totalTimes);
-    console.log("totalTxs", totalTxs);
     return Math.round(totalTxs / (totalTimes / 1000)) || 0
 }
 
