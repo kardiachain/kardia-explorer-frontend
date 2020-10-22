@@ -7,16 +7,18 @@ import { getBlocks } from '../../service/kai-explorer';
 
 const { Column, HeaderCell, Cell } = Table;
 
-const BlockSection = () => {
-    const [blockList, setBlockList] = useState([] as KAIBlock[])
+const BlockSection = ({blockList = []}: {
+    blockList: KAIBlock[]
+}) => {
+    // const [blockList, setBlockList] = useState([] as KAIBlock[])
     const { isMobile } = useViewport()
     const history = useHistory();
-    useEffect(() => {
-        (async () => {
-            const blocks = await getBlocks(1, 10);
-            setBlockList(blocks)
-        })()
-    }, [])
+    // useEffect(() => {
+    //     (async () => {
+    //         const blocks = await getBlocks(1, 10);
+    //         setBlockList(blocks)
+    //     })()
+    // }, [])
 
     // TODO: use react-chartjs-2 to display chart
     return (
