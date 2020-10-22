@@ -52,7 +52,7 @@ interface KAIBlockDetails {
 
 
 
-interface Validator {
+interface ValidatorFromSMC {
     address: string;
     tokens?: number;
     delegationsShares?: number;
@@ -74,4 +74,12 @@ interface WalletStore {
 interface Account {
     publickey: string;
     privatekey: string;
+}
+
+interface Validator {
+    address: string;
+    votingPower: number;
+    name: string;
+    peerCount: number;
+    rpcUrl: string;
 }

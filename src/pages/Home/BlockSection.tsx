@@ -27,7 +27,7 @@ const BlockSection = ({blockList = []}: {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
                         autoHeight
-                        rowHeight={60}
+                        rowHeight={70}
                         height={400}
                         data={blockList}
                         hover={false}
@@ -59,7 +59,15 @@ const BlockSection = ({blockList = []}: {
                         </Column>
                         <Column width={100}>
                             <HeaderCell>Txn</HeaderCell>
-                            <Cell dataKey="transactions" />
+                            <Cell dataKey="transactions">
+                            {(rowData: KAIBlock) => {
+                                    return (
+                                        <div>
+                                            {renderHashToRedirect(rowData.transactions, 30, () => { history.push(`/txs?block=${rowData.blockHeight}`) })}
+                                        </div>
+                                    );
+                                }}
+                            </Cell>
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>

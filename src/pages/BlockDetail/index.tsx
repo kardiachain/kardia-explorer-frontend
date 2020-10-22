@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, List, Panel } from 'rsuite'
 import { numberFormat } from '../../common/utils/number';
-import { dateToLocalTime } from '../../common/utils/string';
+import { dateToLocalTime, renderHashToRedirect } from '../../common/utils/string';
 import { getBlockBy } from '../../service/kai-explorer/block';
 import './blockDetail.css'
 
 const BlockDetail = () => {
-
+    const history = useHistory()
     const query = new URLSearchParams(useLocation().search);
     const blockHash = query.get("block") || '';
     const [blockDetail, setBlockDetail] = useState<KAIBlockDetails>()
@@ -62,7 +62,9 @@ const BlockDetail = () => {
                                 <div className="title">Number Transactions</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{numberFormat(blockDetail?.transactions || 0)}</div>
+                                <div className="content">
+                                    {renderHashToRedirect(blockDetail?.transactions, 30, () => { history.push(`/txs?block=${blockDetail?.blockHeight}`) })}
+                                </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>

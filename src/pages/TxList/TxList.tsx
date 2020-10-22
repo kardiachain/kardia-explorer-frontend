@@ -1,31 +1,44 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
+import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
-import { getTransactions } from '../../service/kai-explorer';
+import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer';
 import './txList.css'
 const { Column, HeaderCell, Cell } = Table;
 
 const TxList = () => {
+    
+    const query = new URLSearchParams(useLocation().search);
+    const block = query.get("block") || '';
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { isMobile } = useViewport()
     const history = useHistory();
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
+    const [totalTxs, setTotalTxs] = useState(0)
 
     useEffect(() => {
         (async () => {
-            const transactions = await getTransactions(page, size);
-            setTransactionList(transactions)
+            if (block) {
+                const rs = await getTxsByBlockHeight(block, page, size);
+                setTransactionList(rs.transactions)
+                setTotalTxs(rs.totalTxs)
+            } else {
+                const rs = await getTransactions(page, size);
+                setTransactionList(rs.transactions)
+                setTotalTxs(rs.totalTxs)
+            }
         })()
-    }, [page, size])
+    }, [page, size, block])
 
     return (
         <div className="txs-container">
             <h3>Transactions</h3>
+            <div>{block ? `Block number: #${block}` : ''}</div>
             <Divider />
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
@@ -46,7 +59,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div> <Icon icon="money" style={{ marginRight: '10px' }} />
-                                                        {renderHashToRedirect(rowData.txHash, isMobile ? 10 : 45, () => { history.push(`/tx?hash=${rowData.txHash}`) })}
+                                                        {renderHashToRedirect(rowData.txHash, isMobile ? 10 : 45, () => { history.push(`/tx?hash=${rowData.txHash}`)})}
                                                     </div>
                                                 );
                                             }}
@@ -80,19 +93,19 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.from, isMobile ? 10 : 45, () => {/*TODO: //*/ })}
+                                                        {renderHashToRedirect(rowData.from, isMobile ? 10 : 45, () => { })}
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={isMobile ? 120 : 300}>
+                                    <Column width={isMobile ? 120 : 400}>
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.to, isMobile ? 10 : 45, () => {/*TODO: //*/ })}
+                                                        {renderHashToRedirect(rowData.to, isMobile ? 10 : 45, () => {  })}
                                                     </div>
                                                 );
                                             }}
@@ -104,7 +117,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {rowData.value} KAI
+                                                        {weiToKAI(rowData.value)} KAI
                                                     </div>
                                                 );
                                             }}
@@ -115,7 +128,7 @@ const TxList = () => {
                                     lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
                                     activePage={page}
                                     displayLength={size}
-                                    total={150}
+                                    total={totalTxs}
                                     onChangePage={setPage}
                                     onChangeLength={setSize}
                                 />
