@@ -60,11 +60,11 @@ export const calculateTPS = async (numberBlock: number): Promise<number> => {
     const responseJSON = await response.json()
 
     const rawBlockList = responseJSON.data.data || []
-    const totalTimes = (new Date(rawBlockList[0].time)).getTime() - (new Date(rawBlockList[rawBlockList.length - 1].time)).getTime()
+    const totalTimes = (new Date(rawBlockList[0]?.time)).getTime() - (new Date(rawBlockList[rawBlockList.length - 1]?.time)).getTime()
     let totalTxs = 0;
     rawBlockList.forEach((item: any) => {
         totalTxs += item.numTxs;
     });
 
-    return Math.round(totalTxs / (totalTimes / 1000))
+    return Math.round(totalTxs / (totalTimes / 1000)) || 0
 }
