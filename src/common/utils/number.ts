@@ -7,8 +7,7 @@ const onlyNumber = (value: any) => {
 }
 
 const numberFormat = (value: number) => {
-    if(value < 1) return value
-    return new Intl.NumberFormat().format(value);
+    return new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value);
 }
 
 export {onlyNumber, numberFormat}

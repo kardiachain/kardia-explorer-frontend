@@ -7,11 +7,12 @@ import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../config';
 import { useHistory } from 'react-router-dom';
+import { numberFormat } from '../../common/utils/number';
 const { Column, HeaderCell, Cell } = Table;
 
 const Blocks = () => {
     const [blocks, setBlocks] = useState([] as KAIBlock[])
-    const [blockLastest, setBlockLastest] = useState<KAIBlock>()
+    const [latestBlock, setLatestBlock] = useState<KAIBlock>()
     const [activePage, setActivePage] = useState(1)
     const { isMobile } = useViewport()
     let history = useHistory();
@@ -19,7 +20,7 @@ const Blocks = () => {
     useEffect(() => {
         (async () => {
             const blocks = await getBlocks(TABLE_CONFIG.skipDefault, TABLE_CONFIG.limitDefault);
-            setBlockLastest(blocks[0])
+            setLatestBlock(blocks[0])
             setBlocks(blocks)
         })()
     }, [])
@@ -27,14 +28,14 @@ const Blocks = () => {
     const handleChangePage = async (dataKey: number) => {
         const blocks = await getBlocks(dataKey, TABLE_CONFIG.limitDefault);
         setActivePage(dataKey)
-        setBlockLastest(blocks[0])
+        setLatestBlock(blocks[0])
         setBlocks(blocks)
     }
 
     const handleChangeLength = async (size: number) => {
         const blocks = await getBlocks(TABLE_CONFIG.skipDefault, size);
         setActivePage(TABLE_CONFIG.skipDefault)
-        setBlockLastest(blocks[0])
+        setLatestBlock(blocks[0])
         setBlocks(blocks)
     }
 
@@ -116,7 +117,7 @@ const Blocks = () => {
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {rowData.gasUsed}
+                                                        {numberFormat(rowData.gasUsed)}
                                                     </div>
                                                 );
                                             }}
@@ -128,7 +129,7 @@ const Blocks = () => {
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {rowData.gasLimit}
+                                                        {numberFormat(rowData.gasLimit)}
                                                     </div>
                                                 );
                                             }}
@@ -139,7 +140,7 @@ const Blocks = () => {
                                     lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
                                     activePage={activePage}
                                     displayLength={10}
-                                    total={blockLastest?.blockHeight}
+                                    total={latestBlock?.blockHeight}
                                     onChangePage={handleChangePage}
                                     onChangeLength={handleChangeLength}
                                 />
