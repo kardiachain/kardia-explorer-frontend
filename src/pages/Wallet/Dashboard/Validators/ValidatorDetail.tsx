@@ -53,7 +53,6 @@ const ValidatorDetail = () => {
             Alert.success('Delegate success.')
             setHashTransaction(delegate.transactionHash)
         }
-        console.log("Delegate", delegate);
         setIsLoading(false)
     }
 

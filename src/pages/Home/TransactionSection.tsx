@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel } from 'rsuite';
-import { kaiValueString } from '../../common/utils/amount';
+import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
@@ -15,7 +15,7 @@ const TransactionSection = () => {
     const history = useHistory();
     useEffect(() => {
         (async () => {
-            const rs = await getTransactions(1, TABLE_CONFIG.limitDefault);
+            const rs = await getTransactions(TABLE_CONFIG.page, TABLE_CONFIG.limitDefault);
             setTransactionList(rs.transactions)
         })()
     }, [])
@@ -65,7 +65,7 @@ const TransactionSection = () => {
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            {kaiValueString(rowData.value)}
+                                            {weiToKAI(rowData.value)}
                                         </div>
                                     );
                                 }}

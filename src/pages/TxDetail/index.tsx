@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, List, Panel, Tag } from 'rsuite';
-import { kaiValueString } from '../../common/utils/amount';
+import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { dateToLocalTime, renderHashToRedirect } from '../../common/utils/string';
 import { getTxByHash } from '../../service/kai-explorer';
@@ -107,7 +107,7 @@ const TxDetail = () => {
                                 <div className="title">Value</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{kaiValueString(txDetail?.value)}</div>
+                                <div className="content">{weiToKAI(txDetail?.value)}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>

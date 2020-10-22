@@ -32,9 +32,9 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 gasLimit: o.gasLimit,
                 input:  o.input,
                 logs:  o.logs,
-            } as KAITransaction
+            }
         })
-    } as TransactionsResponse
+    }
 }
 
 export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: number) : Promise<TransactionsResponse> => {
@@ -65,9 +65,9 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 gasLimit: o.gasLimit,
                 input:  o.input,
                 logs:  o.logs,
-            } as KAITransaction
+            }
         })
-    } as TransactionsResponse
+    }
 }
 
 export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
@@ -98,7 +98,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         gasLimit:tx.gasLimit,
         input: tx.input,
         logs: tx.logs,
-    } as KAITransaction
+    }
 }
 
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
@@ -129,7 +129,7 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                 gasLimit: o.gasLimit,
                 input:  o.input,
                 logs:  o.logs,
-            } as KAITransaction
+            }
         })
-    } as TransactionsResponse
+    }
 }

@@ -28,32 +28,32 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
 export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
     const response = await fetch(`${END_POINT}blocks/${block}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    const bockDetail = responseJSON.data || {}
-    if (!bockDetail) {
+    const blockDetail = responseJSON.data || {}
+    if (!blockDetail) {
         return {} as KAIBlockDetails
     }
     const nowTime = (new Date()).getTime()
-    const createdTime = (new Date(bockDetail.time)).getTime()
+    const createdTime = (new Date(blockDetail.time)).getTime()
     return {
-        blockHash: bockDetail.hash,
-        blockHeight: bockDetail.height,
-        transactions: bockDetail.numTxs || 0,
-        validator: bockDetail.validator,
-        commitHash: bockDetail.commitHash,
-        gasLimit: bockDetail.gasLimit,
-        gasUsed: bockDetail.gasUsed || 0,
-        lastBlock: bockDetail.lastBlock,
-        dataHash: bockDetail.dataHash,
-        validatorHash: bockDetail.validatorHash,
-        consensusHash: bockDetail.consensusHash,
-        appHash: bockDetail.appHash,
-        evidenceHash: bockDetail.evidenceHash,
-        time: bockDetail.time,
+        blockHash: blockDetail.hash,
+        blockHeight: blockDetail.height,
+        transactions: blockDetail.numTxs || 0,
+        validator: blockDetail.validator,
+        commitHash: blockDetail.commitHash,
+        gasLimit: blockDetail.gasLimit,
+        gasUsed: blockDetail.gasUsed || 0,
+        lastBlock: blockDetail.lastBlock,
+        dataHash: blockDetail.dataHash,
+        validatorHash: blockDetail.validatorHash,
+        consensusHash: blockDetail.consensusHash,
+        appHash: blockDetail.appHash,
+        evidenceHash: blockDetail.evidenceHash,
+        time: blockDetail.time,
         age: (nowTime - createdTime)
     } as KAIBlockDetails
 }
 
-export const getHeightestBlockNumber = async (): Promise<number> => {
+export const getLatestBlockNumber = async (): Promise<number> => {
     const response = await fetch(`${END_POINT}blocks?page=1&limit=1`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawBlockList = responseJSON.data.data || []

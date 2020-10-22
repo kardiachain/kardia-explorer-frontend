@@ -1,5 +1,5 @@
 const kaiValueNumber = (value: any) => {
-  if (!value || '0' === value) {
+  if (!value || value === '0') {
     return 0;
   }
   return Number(value) / 1000000000000000000;
@@ -18,8 +18,8 @@ const cellValue = (kaiValue: any) => {
   return cellString;
 };
 
-const kaiValueString = (value: any) => {
-  if (!value || '0' === value) {
+const weiToKAI = (value: any) => {
+  if (!value || value === '0' ) {
     return '0 KAI'
   }
   const cellString = value.toString().padStart(36, '0');
@@ -50,4 +50,4 @@ const removeTrailingZeros = (value: any) => {
 };
 
 
-export {kaiValueNumber, kaiValueString, cellValue}
+export {kaiValueNumber, weiToKAI, cellValue}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Icon, Panel, Row } from 'rsuite';
-import { kaiValueString } from '../../../common/utils/amount';
+import { weiToKAI } from '../../../common/utils/amount';
 import { getBalance } from '../../../service/kai-explorer';
 import { getAccount } from '../../../service/wallet';
 import './dashboard.css';
@@ -27,7 +27,7 @@ const DashboardHeader = () => {
                 <Panel shaded bordered className="wallet-info-card balance">
                     <div className="title"><Icon className="icon" icon="money" />Balance</div>                    
                     <div className="content">
-                        <div>{kaiValueString(balance)}</div>
+                        <div>{weiToKAI(balance)}</div>
                     </div>
                 </Panel>
             </Col>

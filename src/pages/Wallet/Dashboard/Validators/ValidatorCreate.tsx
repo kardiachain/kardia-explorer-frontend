@@ -56,7 +56,7 @@ const ValidatorCreate = () => {
             return false
         }
         if (Number(commissionRate) > 100) {
-            setMaxRateErr(ErrorMessage.MaxRateMoreThanHundred)
+            setCommissionRateErr(ErrorMessage.MaxRateMoreThanHundred)
             return false
         }
         setCommissionRateErr('')
@@ -148,7 +148,7 @@ const ValidatorCreate = () => {
         <>
             <Form fluid>
                 <FormGroup>
-                    <div className="lable">Commission Rate*:</div>
+                    <div className="label">Commission Rate*:</div>
                     <FormControl placeholder="Commission Rate"
                         name="commissionRate"
                         value={commissionRate}
@@ -161,7 +161,7 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={commissionRateErr} />
-                    <div className="lable">Max Rate*:</div>
+                    <div className="label">Max Rate*:</div>
                     <FormControl placeholder="Max Rate"
                         name="maxRate"
                         value={maxRate}
@@ -174,7 +174,7 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={maxRateErr} />
-                    <div className="lable">Max Change Rate*:</div>
+                    <div className="label">Max Change Rate*:</div>
                     <FormControl placeholder="Max Change Rate"
                         name="maxChangeRate"
                         value={maxChangeRate}
@@ -187,7 +187,7 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={maxChangeRateErr} />
-                    <div className="lable">Min Self Delegation*:</div>
+                    <div className="label">Min Self Delegation*:</div>
                     <FormControl placeholder="Min Self Delegation"
                         name="minSelfDelegation"
                         value={minSelfDelegation}
@@ -200,7 +200,7 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={maxMinSelfDelegationErr} />
-                    <div className="lable">Amount Self Delegation*:</div>
+                    <div className="label">Amount Self Delegation*:</div>
                     <FormControl placeholder="Amount Self Delegation"
                         name="amountDel"
                         value={amountDel}
