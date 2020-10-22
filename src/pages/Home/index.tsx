@@ -107,10 +107,13 @@ const Home = () => {
 
     const [blockTimeData, setBlockTimeData] = useState({})
     const [blockHeight, setBlockHeight] = useState(0)
+    const [blocks, setBlocks] = useState<KAIBlock[]>([]);
 
     const fetchBlockChart = async () => {
         const blockList = await getBlocks(1, BLOCK_COUNT)
         blockList[0] && setBlockHeight(blockList[0].blockHeight)
+        const originBlockList = JSON.parse(JSON.stringify(blockList))
+        setBlocks(originBlockList.slice(originBlockList.length - 10).reverse())
         blockList.reverse()
 
         const newData = {
@@ -145,7 +148,7 @@ const Home = () => {
                 </Grid>
                 <FlexboxGrid justify="space-between">
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
-                        <BlockSection />
+                        <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24}>
                         <TransactionSection />
