@@ -15,7 +15,6 @@ const TxList = () => {
     
     const query = new URLSearchParams(useLocation().search);
     const block = query.get("block") || '';
-    const address = query.get("addresses") || '';
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { isMobile } = useViewport()
     const history = useHistory();
@@ -23,7 +22,7 @@ const TxList = () => {
 
     useEffect(() => {
         loadTransaction(TABLE_CONFIG.skipDefault, TABLE_CONFIG.limitDefault)
-    }, [block,address])
+    }, [block])
 
     const handleChangePage = async (dataKey: number) => {
         loadTransaction(dataKey, TABLE_CONFIG.limitDefault)
@@ -39,9 +38,6 @@ const TxList = () => {
         if (block) {
             const transactions = await getTxsByBlockHeight(block, page, size);
             setTransactionList(transactions)
-        } else if(address) {
-            const transactions = await getTxsByAddress(address, page, size);
-            setTransactionList(transactions)
         } else {
             const transactions = await getTransactions(page, size);
             setTransactionList(transactions)
@@ -51,7 +47,7 @@ const TxList = () => {
     return (
         <div className="txs-container">
             <h3>Transactions</h3>
-            <div>{block ? `Block number: #${block}` : address ? `Address: #${address}` : ''}</div>
+            <div>{block ? `Block number: #${block}` : ''}</div>
             <Divider />
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
@@ -105,7 +101,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.from, isMobile ? 10 : 45, () => { history.replace(`/txs?addresses=${rowData.from}`) })}
+                                                        {renderHashToRedirect(rowData.from, isMobile ? 10 : 45, () => { })}
                                                     </div>
                                                 );
                                             }}
@@ -117,7 +113,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.to, isMobile ? 10 : 45, () => {  history.replace(`/txs?addresses=${rowData.to}`) })}
+                                                        {renderHashToRedirect(rowData.to, isMobile ? 10 : 45, () => {  })}
                                                     </div>
                                                 );
                                             }}
