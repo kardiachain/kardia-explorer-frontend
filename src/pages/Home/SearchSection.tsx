@@ -4,7 +4,9 @@ import NumberFormat from 'react-number-format';
 import QrReader from 'react-qr-reader';
 import { useViewport } from '../../context/ViewportContext';
 
-const SearchSection = () => {
+const SearchSection = ({blockHeight = 0}: {
+    blockHeight: number
+}) => {
     const {isMobile} = useViewport();
     const [showQRModel, setShowQRModal] = useState(false);
 
@@ -22,7 +24,7 @@ const SearchSection = () => {
             <Row className="stat-group">
                 <Col md={6} sm={12} xs={12}>
                     <Panel shaded bordered header="Block height" className="stat-container">
-                        <NumberFormat value={279604} displayType={'text'} thousandSeparator={true} />
+                        <NumberFormat value={blockHeight} displayType={'text'} thousandSeparator={true} />
                     </Panel>
                 </Col>
                 <Col md={6} sm={12} xs={12}>
