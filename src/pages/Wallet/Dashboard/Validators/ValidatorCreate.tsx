@@ -8,9 +8,6 @@ import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 
-const onSuccess = () => {
-    Alert.success('Create validator success.')
-}
 const ValidatorCreate = () => {
 
     const history = useHistory()
@@ -138,11 +135,9 @@ const ValidatorCreate = () => {
         setIsLoading(true)
         let account = await getAccount() as Account;
         let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
-
-        console.log("Validator: ", validator);
-        
+ 
         if (validator && validator.transactionHash) {        
-            onSuccess();
+            Alert.success('Create validator success.')
             setHashTransaction(validator.transactionHash)
         }
         resetForm();
