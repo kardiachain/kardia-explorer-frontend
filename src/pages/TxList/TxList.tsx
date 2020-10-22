@@ -7,7 +7,6 @@ import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/strin
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer';
-import { getTxsByAddress } from '../../service/kai-explorer/transaction';
 import './txList.css'
 const { Column, HeaderCell, Cell } = Table;
 
@@ -18,31 +17,23 @@ const TxList = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { isMobile } = useViewport()
     const history = useHistory();
-    const [activePage, setActivePage] = useState(1)
+    const [page, setPage] = useState(TABLE_CONFIG.page)
+    const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
+    const [totalTxs, setTotalTxs] = useState(0)
 
     useEffect(() => {
-        loadTransaction(TABLE_CONFIG.skipDefault, TABLE_CONFIG.limitDefault)
-    }, [block])
-
-    const handleChangePage = async (dataKey: number) => {
-        loadTransaction(dataKey, TABLE_CONFIG.limitDefault)
-        setActivePage(dataKey)
-    }
-
-    const handleChangeLength = async (size: number) => {
-        loadTransaction(TABLE_CONFIG.skipDefault, size)
-        setActivePage(TABLE_CONFIG.skipDefault)
-    }
-
-    const loadTransaction = async (page: number, size: number) => {
-        if (block) {
-            const transactions = await getTxsByBlockHeight(block, page, size);
-            setTransactionList(transactions)
-        } else {
-            const transactions = await getTransactions(page, size);
-            setTransactionList(transactions)
-        }
-    }
+        (async () => {
+            if (block) {
+                const rs = await getTxsByBlockHeight(block, page, size);
+                setTransactionList(rs.transactions)
+                setTotalTxs(rs.totalTxs)
+            } else {
+                const rs = await getTransactions(page, size);
+                setTransactionList(rs.transactions)
+                setTotalTxs(rs.totalTxs)
+            }
+        })()
+    }, [page, size, block])
 
     return (
         <div className="txs-container">
@@ -133,12 +124,12 @@ const TxList = () => {
                                     </Column>
                                 </Table>
                                 <TablePagination
-                                    engthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                    activePage={activePage}
-                                    displayLength={10}
-                                    total={150}
-                                    onChangePage={handleChangePage}
-                                    onChangeLength={handleChangeLength}
+                                    lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                    activePage={page}
+                                    displayLength={size}
+                                    total={totalTxs}
+                                    onChangePage={setPage}
+                                    onChangeLength={setSize}
                                 />
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

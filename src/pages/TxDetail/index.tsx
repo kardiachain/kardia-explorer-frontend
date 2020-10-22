@@ -39,7 +39,7 @@ const TxDetail = () => {
                     <List.Item>
                         <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                <div className="title">Block NumberNumber</div>
+                                <div className="title">Block Number</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                 <div className="content">{renderHashToRedirect(txDetail?.blockNumber, 30, () => { history.push(`/block?block=${txDetail?.blockNumber}`) })}</div>

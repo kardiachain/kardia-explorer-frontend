@@ -1,5 +1,5 @@
 export const TABLE_CONFIG = {
-    skipDefault: 1,
+    page: 1,
     limitDefault: 10,
     pagination: {
         lengthMenu: [

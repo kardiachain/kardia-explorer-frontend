@@ -15,8 +15,8 @@ const TransactionSection = () => {
     const history = useHistory();
     useEffect(() => {
         (async () => {
-            const transactions = await getTransactions(1, TABLE_CONFIG.limitDefault);
-            setTransactionList(transactions)
+            const rs = await getTransactions(1, TABLE_CONFIG.limitDefault);
+            setTransactionList(rs.transactions)
         })()
     }, [])
     return (
