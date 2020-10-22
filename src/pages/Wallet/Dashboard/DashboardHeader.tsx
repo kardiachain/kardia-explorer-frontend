@@ -27,7 +27,7 @@ const DashboardHeader = () => {
                 <Panel shaded bordered className="wallet-info-card balance">
                     <div className="title"><Icon className="icon" icon="money" />Balance</div>                    
                     <div className="content">
-                        <div>{weiToKAI(balance)}</div>
+                        <div>{weiToKAI(balance)} KAI</div>
                     </div>
                 </Panel>
             </Col>

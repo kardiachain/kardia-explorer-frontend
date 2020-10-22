@@ -20,13 +20,13 @@ const cellValue = (kaiValue: any) => {
 
 const weiToKAI = (value: any) => {
   if (!value || value === '0' ) {
-    return '0 KAI'
+    return '0'
   }
   const cellString = value.toString().padStart(36, '0');
   const kaiNumString = parseInt(cellString.slice(0, 18));
   const kaiDecimalString = cellString.slice(-18);
   const finalVal = `${kaiNumString}.${kaiDecimalString}`;
-  return `${removeTrailingZeros(finalVal)} KAI`;
+  return `${removeTrailingZeros(finalVal)}`;
 };
 
 const removeTrailingZeros = (value: any) => {

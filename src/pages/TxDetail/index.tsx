@@ -107,7 +107,7 @@ const TxDetail = () => {
                                 <div className="title">Value</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{weiToKAI(txDetail?.value)}</div>
+                                <div className="content">{weiToKAI(txDetail?.value)} KAI</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>

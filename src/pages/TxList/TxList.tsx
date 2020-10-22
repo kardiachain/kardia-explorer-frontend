@@ -116,7 +116,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {weiToKAI(rowData.value)}
+                                                        {weiToKAI(rowData.value)} KAI
                                                     </div>
                                                 );
                                             }}
