@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
 import { millisecondToHMS, renderHashToRedirect, truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
-import { getBlocks } from '../../service/kai-explorer';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const BlockSection = ({blockList = []}: {
     blockList: KAIBlock[]
 }) => {
-    // const [blockList, setBlockList] = useState([] as KAIBlock[])
     const { isMobile } = useViewport()
     const history = useHistory();
-    // useEffect(() => {
-    //     (async () => {
-    //         const blocks = await getBlocks(1, 10);
-    //         setBlockList(blocks)
-    //     })()
-    // }, [])
-
-    // TODO: use react-chartjs-2 to display chart
     return (
         <Panel header="Latest blocks" shaded>
             <FlexboxGrid justify="space-between">

@@ -3,21 +3,13 @@ import { Button, Col, Icon, Input, Modal, Panel, Row } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import QrReader from 'react-qr-reader';
 import { useViewport } from '../../context/ViewportContext';
-import { getLatestBlockNumber } from '../../service/kai-explorer';
+import { calculateTPS } from '../../service/kai-explorer';
 
-const SearchSection = ({blockHeight = 0}: {
-    blockHeight: number
-}) => {
+const SearchSection = ({blockHeight = 0, blockList = []}: {blockHeight: number,  blockList: KAIBlock[]}) => {
     const {isMobile} = useViewport();
     const [showQRModel, setShowQRModal] = useState(false);
-    const [latestBlock, setLatestBlock] = useState(0)
 
-    useEffect(() => {
-        (async () => {
-            const blockNumber = await getLatestBlockNumber()
-            setLatestBlock(blockNumber);
-        })()
-    },[])
+    const [tps, setTps] = useState(0)
 
     const scanSuccess = (data: any) => {
         console.log(data)
@@ -26,6 +18,11 @@ const SearchSection = ({blockHeight = 0}: {
     const scanError = (err: any) => {
         console.error(err)
     }
+
+    useEffect(() => {
+        const tps = calculateTPS(blockList);
+        setTps(tps);
+    }, [blockList]);
 
     // TODO: use react-chartjs-2 to display chart
     return (
@@ -38,17 +35,17 @@ const SearchSection = ({blockHeight = 0}: {
                 </Col>
                 <Col md={6} sm={12} xs={12}>
                     <Panel shaded bordered header="Live TPS" className="stat-container">
-                        <NumberFormat value={0.0139} displayType={'text'} thousandSeparator={true} />
+                        <NumberFormat value={tps} displayType={'text'} thousandSeparator={true} />
                     </Panel>
                 </Col>
                 <Col md={6} sm={12} xs={12}>
                     <Panel shaded bordered header="Total transactions" className="stat-container">
-                        <NumberFormat value={123456789} displayType={'text'} thousandSeparator={true} />
+                        <NumberFormat value={0} displayType={'text'} thousandSeparator={true} />
                     </Panel>
                 </Col>
                 <Col md={6} sm={12} xs={12}>
                     <Panel shaded bordered header="Total holders" className="stat-container">
-                        <NumberFormat value={12345} displayType={'text'} thousandSeparator={true} />
+                        <NumberFormat value={0} displayType={'text'} thousandSeparator={true} />
                     </Panel>
                 </Col>
             </Row>

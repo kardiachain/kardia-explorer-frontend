@@ -7,6 +7,7 @@ import BlockSection from './BlockSection';
 import { Bar } from 'react-chartjs-2';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
+import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, TABLE_CONFIG } from '../../config';
 
 const options = {
     responsive: true,
@@ -60,7 +61,6 @@ const options = {
     }
 };
 
-const BLOCK_COUNT = 31;
 
 const buildLabel = (blockList: KAIBlock[]) => {
     return blockList.map((b) => `Block ${b.blockHeight}`)
@@ -107,12 +107,18 @@ const Home = () => {
 
     const [blockTimeData, setBlockTimeData] = useState({})
     const [blockHeight, setBlockHeight] = useState(0)
+    const [tpsCalculateBlocks, setTpsCalculateBlocks] = useState<KAIBlock[]>([]);
     const [blocks, setBlocks] = useState<KAIBlock[]>([]);
 
     const fetchBlockChart = async () => {
-        const blockList = await getBlocks(1, BLOCK_COUNT)
+        const blockList = await getBlocks(TABLE_CONFIG.page, BLOCK_COUNT_FOR_CHART)
         blockList[0] && setBlockHeight(blockList[0].blockHeight)
         const originBlockList = JSON.parse(JSON.stringify(blockList))
+
+        // Get block for calculate tps
+        setTpsCalculateBlocks(originBlockList.slice(originBlockList.length - BLOCK_NUMBER_FOR_CAL_TPS))
+
+        // Get block for blocktime chart
         setBlocks(originBlockList.slice(originBlockList.length - 10).reverse())
         blockList.reverse()
 
@@ -132,7 +138,7 @@ const Home = () => {
 
     return (
         <React.Fragment>
-            <SearchSection blockHeight={blockHeight} />
+            <SearchSection blockHeight={blockHeight} blockList={tpsCalculateBlocks}/>
             <div className="home-container">
                 <Divider />
                 <Grid fluid>
@@ -146,6 +152,7 @@ const Home = () => {
                         </Col>
                     </Row>
                 </Grid>
+                <Divider />
                 <FlexboxGrid justify="space-between">
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
                         <BlockSection blockList={blocks} />

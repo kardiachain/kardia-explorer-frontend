@@ -22,3 +22,6 @@ export const TABLE_CONFIG = {
         ]
     }
 }
+
+export const BLOCK_NUMBER_FOR_CAL_TPS = 10;
+export const BLOCK_COUNT_FOR_CHART = 50;

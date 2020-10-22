@@ -14,10 +14,10 @@ const TransactionSection = () => {
     const { isMobile } = useViewport();
     const history = useHistory();
     useEffect(() => {
-        (async () => {
+        setInterval(async () => {
             const rs = await getTransactions(TABLE_CONFIG.page, TABLE_CONFIG.limitDefault);
             setTransactionList(rs.transactions)
-        })()
+        }, 2000)
     }, [])
     return (
         <Panel header="Latest transactions" shaded>
@@ -29,9 +29,6 @@ const TransactionSection = () => {
                         height={400}
                         hover={false}
                         data={transactionList}
-                        onRowClick={data => {
-                            console.log(data);
-                        }}
                     >
                         <Column width={isMobile ? 120 : 350}>
                             <HeaderCell>Tx Hash</HeaderCell>
@@ -52,7 +49,7 @@ const TransactionSection = () => {
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <div style={{marginBottom: '5px'}}>From: {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, () => { history.push(`/txs?addresses=${rowData.from}`) })} </div>
+                                            <div style={{ marginBottom: '5px' }}>From: {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, () => { history.push(`/txs?addresses=${rowData.from}`) })} </div>
                                             <div>To: {renderHashToRedirect(rowData.to, isMobile ? 10 : 30, () => { history.push(`/txs?addresses=${rowData.to}`) })}</div>
                                         </div>
                                     );
