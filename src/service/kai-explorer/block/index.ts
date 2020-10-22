@@ -54,18 +54,14 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
 }
 
 // Calculate transaction number per seconds
-export const calculateTPS = async (numberBlock: number): Promise<number> => {
-
-    const response = await fetch(`${END_POINT}blocks?page=${0}&limit=${numberBlock}`, GET_REQUEST_OPTION)
-    const responseJSON = await response.json()
-
-    const rawBlockList = responseJSON.data.data || []
-    const totalTimes = (new Date(rawBlockList[0]?.time)).getTime() - (new Date(rawBlockList[rawBlockList.length - 1]?.time)).getTime()
+export const calculateTPS = (blockList: KAIBlock[]) => {
+    const totalTimes = (new Date(blockList[0]?.time)).getTime() - (new Date(blockList[blockList.length - 1]?.time)).getTime()
     let totalTxs = 0;
-    rawBlockList.forEach((item: any) => {
-        totalTxs += item.numTxs;
+    blockList.forEach((item: any) => {
+        totalTxs += item.transactions;
     });
-
+    console.log("totalTimes", totalTimes);
+    console.log("totalTxs", totalTxs);
     return Math.round(totalTxs / (totalTimes / 1000)) || 0
 }
 
