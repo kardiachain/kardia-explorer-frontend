@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchSection from './SearchSection';
 import './home.css'
-import { Divider } from 'rsuite';
+import { Divider, FlexboxGrid, Col } from 'rsuite';
 import TransactionSection from './TransactionSection';
 import BlockSection from './BlockSection';
 
@@ -10,12 +10,16 @@ const Home = () => {
         <React.Fragment>
             <SearchSection />
             <div className="home-container">
-                <h3>Blocks</h3>
                 <Divider />
-                <BlockSection />
-                <h3>Transactions</h3>
+                <FlexboxGrid justify="space-between">
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
+                        <BlockSection />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24}>
+                        <TransactionSection />
+                    </FlexboxGrid.Item>
+                </FlexboxGrid>
                 <Divider />
-                <TransactionSection />
             </div>
         </React.Fragment>
     )

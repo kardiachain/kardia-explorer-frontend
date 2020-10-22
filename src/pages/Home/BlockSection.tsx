@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Line } from 'react-chartjs-2';
-import { Col, FlexboxGrid, Table } from 'rsuite';
-import { renderHashString } from '../../common/utils/string';
+import { useHistory } from 'react-router-dom';
+import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { millisecondToHMS, renderHashToRedirect, truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
 
@@ -10,92 +10,57 @@ const { Column, HeaderCell, Cell } = Table;
 const BlockSection = () => {
     const [blockList, setBlockList] = useState([] as KAIBlock[])
     const { isMobile } = useViewport()
+    const history = useHistory();
     useEffect(() => {
         (async () => {
-            const blocks = await getBlocks(1, 5);
+            const blocks = await getBlocks(1, 10);
             setBlockList(blocks)
         })()
     }, [])
     return (
-        <FlexboxGrid justify="space-between">
-            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
-                <Line 
-                    options={{ 
-                        maintainAspectRatio: false,
-                        scales : {
-                            xAxes : [ {
-                                gridLines : {
-                                    display : false
-                                }
-                            } ],
-                            yAxes : [ {
-                                gridLines : {
-                                    display : false
-                                }
-                            } ]
-                        }
-                    }}
-                    height={isMobile ? 200 : 400}
-                    data={{
-                        labels: ['1', '2', '3', '4', '5', '6', '7'],
-                        datasets: [{
-                            label: 'Block time',
-                            borderColor: 'rgb(167,129,227)',
-                            data: [27, 3, 10, 6, 30, 14, 16]
-                        }]
-                    }} 
-                />
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16}>
-                <h3>Latest blocks</h3>
-                <Table
-                    bordered
-                    autoHeight
-                    rowHeight={70}
-                    data={blockList}
-                    onRowClick={data => {
-                        console.log(data);
-                    }}
-                >
-                    <Column width={100}>
-                        <HeaderCell>Block height</HeaderCell>
-                        <Cell dataKey="blockHeight" />
-                    </Column>
-                    <Column width={isMobile ? 120 : 300}>
-                        <HeaderCell>Block Hash</HeaderCell>
-                        <Cell>
-                            {(rowData: KAIBlock) => {
-                                return (
-                                    <div>
-                                        <div> {renderHashString(rowData.blockHash, isMobile ? 10 : 30)} </div>
-                                        <div>{rowData.time.toLocaleDateString()} </div>
-                                    </div>
-                                );
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column width={isMobile ? 120 : 300}>
-                        <HeaderCell>Block validator</HeaderCell>
-                        <Cell>
-                            {(rowData: KAIBlock) => {
-                                return (
-                                    <div>
-                                        <div> {renderHashString(rowData.validator.hash, isMobile ? 10 : 30)} </div>
+        <Panel header="Latest blocks" shaded>
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <Table
+                        autoHeight
+                        rowHeight={60}
+                        height={400}
+                        data={blockList}
+                        hover={false}
+                    >
+                        <Column width={150}>
+                            <HeaderCell>Block height</HeaderCell>
+                            <Cell dataKey="blockHeight" >
+                                {(rowData: KAIBlock) => {
+                                    return (
                                         <div>
-                                            <a target="_blank" rel="noopener noreferrer" href={`/validator/${rowData.validator.hash}`}>{rowData.validator.label}</a>
+                                            <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, 30, () => { history.push(`/block?block=${rowData.blockHeight}`) })} </div>
+                                            <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
-                                    </div>
-                                );
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column width={100}>
-                        <HeaderCell>Transactions count</HeaderCell>
-                        <Cell dataKey="transactions" />
-                    </Column>
-                </Table>
-            </FlexboxGrid.Item>
-        </FlexboxGrid>
+                                    );
+                                }}
+                            </Cell>
+                        </Column>
+                        <Column width={isMobile ? 120 : 350}>
+                            <HeaderCell>Block validator</HeaderCell>
+                            <Cell>
+                                {(rowData: KAIBlock) => {
+                                    return (
+                                        <div>
+                                            {truncate(rowData.validator.hash, isMobile ? 10 : 30)}
+                                        </div>
+                                    );
+                                }}
+                            </Cell>
+                        </Column>
+                        <Column width={100}>
+                            <HeaderCell>Txn</HeaderCell>
+                            <Cell dataKey="transactions" />
+                        </Column>
+                    </Table>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
+        </Panel>
     )
 }
 

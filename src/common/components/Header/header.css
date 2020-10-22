@@ -2,6 +2,15 @@
     padding: 0 40px;
 }
 
+.kai-header-container .rs-dropdown-menu {
+    width: 100%;
+    background-color: #2A343D;
+    border-radius: 0;
+}
+.kai-header-container .rs-dropdown-menu .rs-dropdown-item-content {
+    color: white;
+}
+
 .kai-header-container-mobile {
     background-color: #2A343D;
     display: flex;
