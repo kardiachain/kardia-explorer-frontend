@@ -7,7 +7,7 @@ import BlockSection from './BlockSection';
 import { Bar } from 'react-chartjs-2';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
-import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, TABLE_CONFIG } from '../../config';
+import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG } from '../../config';
 
 const options = {
     responsive: true,
@@ -118,8 +118,8 @@ const Home = () => {
         // Get block for calculate tps
         setTpsCalculateBlocks(originBlockList.slice(originBlockList.length - BLOCK_NUMBER_FOR_CAL_TPS))
 
-        // Get block for blocktime chart
-        setBlocks(originBlockList.slice(originBlockList.length - 10).reverse())
+        // Get block for block list
+        setBlocks(originBlockList.slice(0, RECORDS_NUMBER_SHOW_HOMEPAGE))
         blockList.reverse()
 
         const newData = {

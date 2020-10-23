@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, List, Panel } from 'rsuite'
 import { numberFormat } from '../../common/utils/number';
 import { dateToLocalTime, renderHashToRedirect } from '../../common/utils/string';
@@ -8,16 +8,15 @@ import './blockDetail.css'
 
 const BlockDetail = () => {
     const history = useHistory()
-    const query = new URLSearchParams(useLocation().search);
-    const blockHash = query.get("block") || '';
     const [blockDetail, setBlockDetail] = useState<KAIBlockDetails>()
+    const { block }: any = useParams();
 
     useEffect(() => {
         (async () => {
-            const block = await getBlockBy(blockHash);
-            setBlockDetail(block)
+            const blockDetail = await getBlockBy(block);
+            setBlockDetail(blockDetail)
         })()
-    }, [blockHash])
+    }, [block])
 
 
     return (
