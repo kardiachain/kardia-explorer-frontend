@@ -69,6 +69,9 @@ const options = {
                 scaleLabel: {
                     display: true,
                     labelString: 'Transactions'
+                },
+                ticks: {
+                    beginAtZero: true
                 }
             },
             {
@@ -96,7 +99,7 @@ const options = {
 };
 
 const buildLabel = (blockList: KAIBlock[]) => {
-    return blockList.map((b) => ``)
+    return blockList.map(() => ``)
 }
 
 const buildBlockTimeData = (blockList: KAIBlock[]) => {
