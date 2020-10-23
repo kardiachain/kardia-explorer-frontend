@@ -1,12 +1,13 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { Col, FlexboxGrid, Table, Panel, Icon, Button } from 'rsuite';
 import { millisecondToHMS, renderHashToRedirect, truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
+import './home.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const BlockSection = ({blockList = []}: {
+const BlockSection = ({ blockList = [] }: {
     blockList: KAIBlock[]
 }) => {
     const { isMobile } = useViewport()
@@ -16,6 +17,7 @@ const BlockSection = ({blockList = []}: {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
+                        loading={blockList.length === 0}
                         autoHeight
                         rowHeight={70}
                         height={400}
@@ -28,7 +30,7 @@ const BlockSection = ({blockList = []}: {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, 30, () => { history.push(`/block?block=${rowData.blockHeight}`) })} </div>
+                                            <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, 30, () => { history.push(`/block/${rowData.blockHeight}`) })} </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
@@ -36,7 +38,7 @@ const BlockSection = ({blockList = []}: {
                             </Cell>
                         </Column>
                         <Column width={isMobile ? 120 : 350}>
-                            <HeaderCell>Block validator</HeaderCell>
+                            <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {
                                     return (
@@ -50,7 +52,7 @@ const BlockSection = ({blockList = []}: {
                         <Column width={100}>
                             <HeaderCell>Txn</HeaderCell>
                             <Cell dataKey="transactions">
-                            {(rowData: KAIBlock) => {
+                                {(rowData: KAIBlock) => {
                                     return (
                                         <div>
                                             {renderHashToRedirect(rowData.transactions, 30, () => { history.push(`/txs?block=${rowData.blockHeight}`) })}
@@ -61,6 +63,7 @@ const BlockSection = ({blockList = []}: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
+                <Button className="button-view-all" onClick={() => {history.push(`/blocks`)}}>View all blocks</Button>
             </FlexboxGrid>
         </Panel>
     )

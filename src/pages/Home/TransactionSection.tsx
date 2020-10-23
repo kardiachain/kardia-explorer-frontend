@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Table, Panel, Button } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
-import { TABLE_CONFIG } from '../../config';
+import { RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getTransactions } from '../../service/kai-explorer';
+import './home.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -14,10 +15,10 @@ const TransactionSection = () => {
     const { isMobile } = useViewport();
     const history = useHistory();
     useEffect(() => {
-        setInterval(async () => {
-            const rs = await getTransactions(TABLE_CONFIG.page, TABLE_CONFIG.limitDefault);
+        (async () => {
+            const rs = await getTransactions(TABLE_CONFIG.page, RECORDS_NUMBER_SHOW_HOMEPAGE);
             setTransactionList(rs.transactions)
-        }, 2000)
+        })()
     }, [])
     return (
         <Panel header="Latest transactions" shaded>
@@ -36,7 +37,7 @@ const TransactionSection = () => {
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <div>{renderHashToRedirect(rowData.txHash, isMobile ? 10 : 30, () => { history.push(`/tx?hash=${rowData.txHash}`) })}</div>
+                                            <div>{renderHashToRedirect(rowData.txHash, isMobile ? 10 : 30, () => { history.push(`/tx/${rowData.txHash}`) })}</div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
@@ -70,6 +71,7 @@ const TransactionSection = () => {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
+                <Button className="button-view-all" onClick={() => { history.push('/txs') }}>View all transactions</Button>
             </FlexboxGrid>
         </Panel>
     )

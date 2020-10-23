@@ -44,10 +44,10 @@ class App extends Component {
                 <Route path="/network">
                   <Network />
                 </Route>
-                <Route path="/tx">
+                <Route path="/tx/:txHash">
                   <TxDetail />
                 </Route>
-                <Route path="/block">
+                <Route path="/block/:block">
                   <BlockDetail />
                 </Route>
                 <Route path="/wallet">

@@ -59,7 +59,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div> <Icon icon="money" style={{ marginRight: '10px' }} />
-                                                        {renderHashToRedirect(rowData.txHash, isMobile ? 10 : 45, () => { history.push(`/tx?hash=${rowData.txHash}`)})}
+                                                        {renderHashToRedirect(rowData.txHash, isMobile ? 10 : 45, () => { history.push(`/tx/${rowData.txHash}`)})}
                                                     </div>
                                                 );
                                             }}
@@ -71,7 +71,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.blockNumber, 20, () => { history.push(`/block?block=${rowData.blockNumber}`) })}
+                                                        {renderHashToRedirect(rowData.blockNumber, 20, () => { history.push(`/block/${rowData.blockNumber}`) })}
                                                     </div>
                                                 );
                                             }}

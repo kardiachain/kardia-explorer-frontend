@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, List, Panel, Tag } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -9,8 +9,7 @@ import './txDetail.css'
 
 const TxDetail = () => {
     const history = useHistory();
-    const query = new URLSearchParams(useLocation().search);
-    const txHash = query.get("hash") || '';
+    const { txHash }: any = useParams();
     const [txDetail, setTxDetail] = useState<KAITransaction>()
 
     useEffect(() => {
@@ -42,7 +41,7 @@ const TxDetail = () => {
                                 <div className="title">Block Number</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail?.blockNumber, 30, () => { history.push(`/block?block=${txDetail?.blockNumber}`) })}</div>
+                                <div className="content">{renderHashToRedirect(txDetail?.blockNumber, 30, () => { history.push(`/block/${txDetail?.blockNumber}`) })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
@@ -52,7 +51,7 @@ const TxDetail = () => {
                                 <div className="title">Block Hash</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail?.blockHash, 50, () => { history.push(`/block?block=${txDetail?.blockHash}`) })}</div>
+                                <div className="content">{renderHashToRedirect(txDetail?.blockHash, 50, () => { history.push(`/block/${txDetail?.blockHash}`) })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>

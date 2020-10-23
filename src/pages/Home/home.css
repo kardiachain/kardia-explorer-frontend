@@ -52,6 +52,11 @@
     width: 15%;
 }
 
+.button-view-all {
+    width: 100%;
+    margin: 20px 0;
+}
+
 @media screen and (max-width: 620px) {
     .stat-group {
         padding: 10px;

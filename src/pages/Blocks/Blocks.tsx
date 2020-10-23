@@ -48,7 +48,7 @@ const Blocks = () => {
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
-                                                    <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, isMobile ? 20 : 45, () => { history.push(`/block?block=${rowData.blockHeight}`) })} </div>
+                                                    <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, isMobile ? 20 : 45, () => { history.push(`/block/${rowData.blockHeight}`) })} </div>
                                                 );
                                             }}
                                         </Cell>
@@ -69,14 +69,14 @@ const Blocks = () => {
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.blockHash, isMobile ? 20 : 45, () => { history.push(`/block?block=${rowData.blockHash}`) })}
+                                                        {renderHashToRedirect(rowData.blockHash, isMobile ? 20 : 45, () => { history.push(`/block/${rowData.blockHash}`) })}
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
                                     <Column width={isMobile ? 120 : 400}>
-                                        <HeaderCell>Block validator</HeaderCell>
+                                        <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (

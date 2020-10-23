@@ -53,7 +53,7 @@ const Header = () => {
                                     <Nav.Item eventKey="" icon={<Icon icon="explore" />} href="/">Home</Nav.Item>
                                     <Dropdown eventKey="blockchain" icon={<Icon icon="unlink" />} title="Blockchain">
                                         <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
-                                        <Dropdown.Item href="/blocks">View Block</Dropdown.Item>
+                                        <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
                                     </Dropdown>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
                                     <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
@@ -80,7 +80,7 @@ const Header = () => {
                     <Nav.Item eventKey="" href="/">Home</Nav.Item>
                     <Dropdown eventKey="blockchain" title="Blockchain">
                         <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
-                        <Dropdown.Item href="/blocks">View Block</Dropdown.Item>
+                        <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
                     </Dropdown>
                     <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
                     <Nav.Item eventKey="wallet" href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
