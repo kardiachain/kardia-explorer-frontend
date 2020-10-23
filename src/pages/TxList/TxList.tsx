@@ -20,15 +20,19 @@ const TxList = () => {
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         (async () => {
+            setLoading(true)
             if (block) {
                 const rs = await getTxsByBlockHeight(block, page, size);
+                setLoading(false)
                 setTransactionList(rs.transactions)
                 setTotalTxs(rs.totalTxs)
             } else {
                 const rs = await getTransactions(page, size);
+                setLoading(false)
                 setTransactionList(rs.transactions)
                 setTotalTxs(rs.totalTxs)
             }
@@ -52,6 +56,7 @@ const TxList = () => {
                                     data={transactionList}
                                     autoHeight
                                     hover={false}
+                                    loading={loading}
                                 >
                                     <Column width={isMobile ? 120 : 400}>
                                         <HeaderCell>Tx Hash</HeaderCell>

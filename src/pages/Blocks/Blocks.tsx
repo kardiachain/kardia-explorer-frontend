@@ -17,10 +17,13 @@ const Blocks = () => {
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const { isMobile } = useViewport()
     let history = useHistory();
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
             const blocks = await getBlocks(page, size);
+            setLoading(false)
             setLatestBlock(blocks[0])
             setBlocks(blocks)
         })()
@@ -42,6 +45,7 @@ const Blocks = () => {
                                     height={400}
                                     autoHeight
                                     data={blocks}
+                                    loading={loading}
                                 >
                                     <Column width={100}>
                                         <HeaderCell>Block</HeaderCell>
