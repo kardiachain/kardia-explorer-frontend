@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Button } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
-import { RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
-import { getTransactions } from '../../service/kai-explorer';
 import './home.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const TransactionSection = () => {
-    const [transactionList, setTransactionList] = useState([] as KAITransaction[])
+const TransactionSection = ({ transactionList = [] }: {
+    transactionList: KAITransaction[]
+}) => {
     const { isMobile } = useViewport();
     const history = useHistory();
-    useEffect(() => {
-        (async () => {
-            const rs = await getTransactions(TABLE_CONFIG.page, RECORDS_NUMBER_SHOW_HOMEPAGE);
-            setTransactionList(rs.transactions)
-        })()
-    }, [])
     return (
         <Panel header="Latest transactions" shaded>
             <FlexboxGrid justify="space-between">
@@ -30,6 +23,7 @@ const TransactionSection = () => {
                         height={400}
                         hover={false}
                         data={transactionList}
+                        loading={transactionList.length === 0}
                     >
                         <Column width={isMobile ? 120 : 350}>
                             <HeaderCell>Tx Hash</HeaderCell>
@@ -44,7 +38,7 @@ const TransactionSection = () => {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={isMobile ? 170 : 350}>
+                        <Column width={isMobile ? 170 : 320}>
                             <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -57,7 +51,7 @@ const TransactionSection = () => {
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="center" width={200}>
+                        <Column align="center" width={170}>
                             <HeaderCell>Value</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
