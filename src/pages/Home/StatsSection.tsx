@@ -4,7 +4,7 @@ import { numberFormat } from '../../common/utils/number';
 import { calculateTPS } from '../../service/kai-explorer';
 import './home.css'
 
-const StatsSection = ({ blockHeight = 0, blockList = [] }: { blockHeight: number, blockList: KAIBlock[] }) => {
+const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {
     const [tps, setTps] = useState(0)
     useEffect(() => {
         const tps = calculateTPS(blockList);
@@ -37,7 +37,7 @@ const StatsSection = ({ blockHeight = 0, blockList = [] }: { blockHeight: number
                         <div className="icon">
                             <Icon icon="exchange" size="lg" />
                         </div>
-                        <div className="value">{numberFormat(0)}</div>
+                        <div className="value">{numberFormat(totalTxs)}</div>
                         <div className="title">Transactions</div>
                     </Panel>
                 </Col>

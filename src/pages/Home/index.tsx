@@ -17,10 +17,15 @@ const Home = () => {
     const [blocks, setBlocks] = useState<KAIBlock[]>([]);
     const [blocksForChart, setBlocksForChart] = useState<KAIBlock[]>([]);
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
+    const [totalTxs, setTotalTxs] = useState(0)
     
     const fetchBlockChart = async () => {
+        // Get transaction
         const transactionsResponse = await getTransactions(TABLE_CONFIG.page, RECORDS_NUMBER_SHOW_HOMEPAGE);
-        setTransactionList(transactionsResponse.transactions)
+        setTransactionList(transactionsResponse.transactions);
+        setTotalTxs(transactionsResponse.totalTxs);
+
+        // Get blocks
         const blockList = await getBlocks(TABLE_CONFIG.page, BLOCK_COUNT_FOR_CHART)
         blockList[0] && setBlockHeight(blockList[0].blockHeight)
         const originBlockList = JSON.parse(JSON.stringify(blockList))
@@ -54,7 +59,7 @@ const Home = () => {
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                            <StatsSection blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
+                            <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
                 </div>
