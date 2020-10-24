@@ -1,10 +1,3 @@
-const kaiValueNumber = (value: any) => {
-  if (!value || value === '0') {
-    return 0;
-  }
-  return Number(value) / 1000000000000000000;
-};
-
 const cellValue = (kaiValue: any) => {
   let cellString = removeTrailingZeros(kaiValue);
   let decimalStr = cellString.split('.')[1];
@@ -23,6 +16,7 @@ const weiToKAI = (value: any) => {
     return '0'
   }
   const cellString = value.toString().padStart(36, '0');
+  
   const kaiNumString = parseInt(cellString.slice(0, 18));
   const kaiDecimalString = cellString.slice(-18);
   const finalVal = `${kaiNumString}.${kaiDecimalString}`;
@@ -50,4 +44,4 @@ const removeTrailingZeros = (value: any) => {
 };
 
 
-export {kaiValueNumber, weiToKAI, cellValue}
+export {weiToKAI, cellValue}
