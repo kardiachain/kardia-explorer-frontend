@@ -1,5 +1,6 @@
 .access-wallet-container,
-.access-privatekey-container {
+.access-privatekey-container,
+.access-keystore-container {
     margin-top: 50px;
 }
 
@@ -60,7 +61,8 @@
     transform: translateY(-50%);
 }
 
-.access-privatekey-container .title {
+.access-privatekey-container .title,
+.access-keystore-container .title {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 40px;
