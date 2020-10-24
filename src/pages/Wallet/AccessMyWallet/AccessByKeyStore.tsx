@@ -20,7 +20,7 @@ const AccessByKeyStore = () => {
 
     //access wallet
     const accessWallet = async () => {
-        if(!validatePassword() || !validateKeystoreFile()) {
+        if(!validatePassword(password) || !validateKeystoreFile()) {
             return
         }
         setLoadingBtnSubmit(true)
@@ -40,8 +40,8 @@ const AccessByKeyStore = () => {
         }
     }
 
-    const validatePassword = () => {
-        if(!password) {
+    const validatePassword = (pass: string) => {
+        if(!pass) {
             setPasswordErr(ErrorMessage.Require)
             return false
         }
@@ -94,9 +94,7 @@ const AccessByKeyStore = () => {
                                             type="password"
                                             value={password}
                                             onChange={(value) => {
-                                                if (!value) {
-                                                    setPasswordErr(ErrorMessage.Require)
-                                                }
+                                                validatePassword(value)
                                                 setPassword(value)
                                             }} />
                                         <ErrMessage message={passwordErr} />
