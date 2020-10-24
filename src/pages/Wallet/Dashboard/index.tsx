@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DashboardHeader from './DashboardHeader';
 import './dashboard.css'
-import { Col, Grid, Icon, Nav, Row, Sidenav } from 'rsuite';
+import { Icon, Nav, Sidenav } from 'rsuite';
 import { Route, Switch } from 'react-router-dom';
 import SendTransaction from './SendTransaction';
 import Validators from './Validators';
