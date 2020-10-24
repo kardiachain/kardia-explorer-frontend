@@ -25,30 +25,30 @@ const AccessByPrivateKey = () => {
     }
 
     return (
-        <div className="show-grid access-container">
+        <div className="show-grid access-privatekey-container">
             <FlexboxGrid justify="center">
-                <Panel shaded>
-                    <FlexboxGrid justify="center">
-                        <div className="title">ACCESS WALLET KEYSTORED FILE</div>
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
+                    <Panel shaded>
+                        <FlexboxGrid justify="center">
+                        <div className="title">ACCESS WALLET BY PRIVATE KEY</div>
                     </FlexboxGrid>
-                    <FlexboxGrid justify="center">
-                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                            <div className="text-container">
-                                <Form fluid>
-                                    <FormGroup>
-                                        <FormControl placeholder="Private key*" name="password" type="text" value={privateKey} onChange={setPrivateKey} />
-                                    </FormGroup>
-                                </Form>
-                            </div>
-                            <div className="button-container">
-                                <Link to="/access-wallet">
-                                    <Button appearance="ghost">Back</Button>
-                                </Link>
-                                <Button appearance="primary" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
-                            </div>
-                        </FlexboxGrid.Item>
-                    </FlexboxGrid>
-                </Panel>
+                        <FlexboxGrid justify="center">
+                            <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                    <Form fluid>
+                                        <FormGroup>
+                                            <FormControl placeholder="Private key*" name="password" type="password" value={privateKey} onChange={setPrivateKey} />
+                                        </FormGroup>
+                                    </Form>
+                                <div className="button-container">
+                                    <Link to="/access-wallet">
+                                        <Button appearance="ghost" color="violet">Back</Button>
+                                    </Link>
+                                    <Button appearance="primary" color="violet" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                </div>
+                            </FlexboxGrid.Item>
+                        </FlexboxGrid>
+                    </Panel>
+                </FlexboxGrid.Item>
             </FlexboxGrid>
         </div>
     )

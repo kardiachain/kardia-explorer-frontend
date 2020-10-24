@@ -1,53 +1,6 @@
+.access-wallet-container,
 .access-privatekey-container {
-    width: 100%;
-}
-
-.access-privatekey-container .rs-form-control-wrapper {
-    max-width: 500px !important;
-}
-
-.access-wallet-container {
     margin-top: 50px;
-}
-
-.access-wallet-container .panel-container.private-key .rs-panel {
-    background: #b77f00;
-}
-
-.access-wallet-container .panel-container.keystore-file .rs-panel {
-    background: #0f198e;
-}
-
-.access-wallet-container .panel-container.mnemonic-phrase .rs-panel {
-    background: #630000;
-}
-
-.access-wallet-container .panel-container .rs-panel-body {
-    height: 400px;
-}
-
-.access-wallet-container .panel-container .title {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.access-wallet-container .panel-container .icon {
-    font-size: 40px;
-    margin-top: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 40px;
-}
-
-.access-wallet-container .panel-container .move-next-step {
-    position: absolute;
-    font-size: 18px;
-    right: 30px;
-    top: 380px;
-}
-.access-wallet-container .rs-flex-box-grid-item {
-    max-width: 300px;
 }
 
 /* Style for crate wallet with private key */
@@ -71,4 +24,46 @@
 .access-container .title {
     font-size: 20px;
     margin-bottom: 30px;
+}
+
+/* Style for access wallet container */
+.access-wallet-container .panel-body {
+    padding: 50px 20px;
+}
+
+.access-wallet-container .rs-panel-heading {
+    color: #ffffff;
+    font-size: 20px;
+    background: rgb(168 62 247);
+}
+
+.access-wallet-container .panel-body .rs-btn {
+    text-align: left;
+    font-size: 20px;
+    padding: 20px 20px;
+    border: 1px solid rgb(168 62 247);
+    background: white;
+    color: #1d1b1b;
+    line-height: -6;
+    vertical-align: middle;
+    position: relative;
+    padding-left: 70px;
+    margin-bottom: 20px;
+}
+
+.access-wallet-container .panel-body .rs-btn .rs-icon {
+    font-size: 30px;
+    margin-right: 10px;
+    left: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.access-privatekey-container .title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    color: rgb(168 62 247);
 }
