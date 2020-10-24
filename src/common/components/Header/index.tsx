@@ -56,8 +56,22 @@ const Header = () => {
                                         <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
                                     </Dropdown>
                                     <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
-                                    <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
+                                    {
+                                        !isLoggedIn() ? (
+                                            <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={"/wallet"}>Wallet</Nav.Item>
+                                        ) : (
+                                                <Dropdown eventKey="wallet" icon={<Icon icon="money" />} title="Wallet">
+                                                    <Dropdown.Item href="/dashboard/send-transaction">Send transaction</Dropdown.Item>
+                                                    <Dropdown.Item href="/dashboard/staking">Staking</Dropdown.Item>
+                                                    <Dropdown.Item href="/dashboard/smart-contract">Smart contract</Dropdown.Item>
+                                                    <Dropdown.Item href="/dashboard/transaction-history">Transactions history</Dropdown.Item>
+                                                </Dropdown>
+                                            )
+                                    }
                                     <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
+                                    {
+                                        isLoggedIn() ? <Nav.Item eventKey="logout-wallet" icon={<Icon icon="sign-out" />} onClick={logout}>Logout wallet</Nav.Item> : <></>
+                                    }
                                 </Nav>
                             </Sidenav.Body>
                         </Sidenav>
@@ -102,8 +116,10 @@ const Header = () => {
                                     icon={<Icon icon="money" size="lg" />}
                                     placement="bottomEnd"
                                     noCaret>
-                                    <Dropdown.Item eventKey="send-transaction" href="/send-transaction">Send transaction</Dropdown.Item>
-                                    <Dropdown.Item eventKey="smart-contract" href="/smart-contract">Smart contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="send-transaction" href="/dashboard/send-transaction">Send transaction</Dropdown.Item>
+                                    <Dropdown.Item eventKey="staking" href="/dashboard/staking">Staking</Dropdown.Item>
+                                    <Dropdown.Item eventKey="smart-contract" href="/dashboard/smart-contract">Smart contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="transaction-history"href="/dashboard/transaction-history">Transactions history</Dropdown.Item>
                                     <Dropdown.Item eventKey="logout-wallet" href="/wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                                 </Dropdown>
                             )
