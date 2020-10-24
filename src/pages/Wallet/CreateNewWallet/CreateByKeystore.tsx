@@ -73,7 +73,7 @@ const CreateByKeystore = () => {
                                                 <FormControl placeholder="Password*" name="password" type="password" value={password} onChange={setPassword} />
                                                 <ErrMessage message={errorMessage} />
                                             </FormGroup>
-                                            <div>You will need <b>BOTH</b> your <b>Password + Keystore File</b> to access your wallet.</div>
+                                            <div>You will need <span className="note">BOTH</span>  your <span className="note">Password + Keystore File</span>  to access your wallet.</div>
                                         </Form>
                                     </div>
                                     <div className="button-container">
@@ -87,18 +87,13 @@ const CreateByKeystore = () => {
                         ) : (
                                 <FlexboxGrid justify="center">
                                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                        <div className="text-container">
-                                            <div>Please download and save the following Keystore File. You will need it and your password to access your wallet.</div>
-                                        </div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                        <div>Please <span className="note">DOWNLOAD</span> and <span className="note">SAVE</span> the following Keystore File.</div>
+                                        <div> You will need it and your password to access your wallet.</div>
                                         <div className="download-keystore-file">
                                             <a href={blobUrl} download={keystoreFilename}>
                                                 Download Keystore File
                                             </a>
                                         </div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
                                                 <Button appearance="ghost">Back</Button>

@@ -23,6 +23,7 @@ import AccessByPrivateKey from './pages/Wallet/AccessMyWallet/AccessByPrivateKey
 import TxList from './pages/TxList/TxList';
 import Blocks from './pages/Blocks/Blocks';
 import BlockDetail from './pages/BlockDetail';
+import AccessByKeyStore from './pages/Wallet/AccessMyWallet/AccessByKeyStore';
 
 class App extends Component {
   render() {
@@ -67,6 +68,9 @@ class App extends Component {
                 </Route>
                 <Route path="/access-private-key">
                   <AccessByPrivateKey />
+                </Route>
+                <Route path="/access-keystore">
+                  <AccessByKeyStore />
                 </Route>
                 <Route path="/dashboard">
                   <DashboardWallet />
