@@ -59,7 +59,7 @@ const ValidatorDetail = () => {
     return (
         <>
             <Breadcrumb separator=">">
-                <Breadcrumb.Item componentClass={Link} to="/dashboard/validators">
+                <Breadcrumb.Item componentClass={Link} to="/dashboard/staking">
                     Staking
                 </Breadcrumb.Item>
                 <Breadcrumb.Item active componentClass={Link} to="/dashboard/validator">

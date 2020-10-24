@@ -1,11 +1,5 @@
-.dashboard-container {
-    width: 80%;
-    margin: 30px auto;
-}
-
 .wallet-info-card {
-    height: 100px;
-    margin: 10px;
+    height: 160px;
     border-left: 5px solid #54e859;
     color: white;
 }
@@ -39,11 +33,33 @@
     margin-right: 15px;
 }
 
-.left-container {
-    
+.wallet-info-card .action {
+    position: absolute;
+    bottom: 15px;
 }
+
+.wallet-info-card .action .rs-icon {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+/* Style for left menu */
+
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-container {
+    width: 300px;
+    background-color: #f7f7fa;
+    padding-top: 35px;
+    min-height: calc(100vh - 115px);
+}
+
 .right-container {
-    margin-left: 20px;
+    width: calc(100% - 300px);
+    padding: 20px;
 }
 
 .register-button {
@@ -66,4 +82,16 @@
 }
 .register-form .rs-form {
     padding-right: 50px;
+}
+
+
+@media only screen and (max-width: 992px) {
+    .wallet-info-card {
+        margin-right: 0px;
+        margin-bottom: 10px;
+    }
+    
+    .wallet-info-card .action {
+        bottom: 25px;
+    }
 }
