@@ -19,7 +19,7 @@ const ValidatorDetail = () => {
     const [delAmount, setDelAmount] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [hashTransaction, setHashTransaction] = useState('')
-    
+
     const query = new URLSearchParams(useLocation().search);
     const valAddr = query.get("id") || '';
 
@@ -49,7 +49,7 @@ const ValidatorDetail = () => {
         let account = getAccount() as Account
         const delegate = await delegateAction(valAddr, account, Number(delAmount))
 
-        if (delegate && delegate.transactionHash) {        
+        if (delegate && delegate.transactionHash) {
             Alert.success('Delegate success.')
             setHashTransaction(delegate.transactionHash)
         }
@@ -69,7 +69,7 @@ const ValidatorDetail = () => {
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
                     <div className="val-info-container">
-                        <Panel header={<h4>Validator information</h4>} bordered>
+                        <Panel header={<h4>Validator information</h4>} shaded>
                             <List>
                                 <List.Item>
                                     <span className="property-title">Validator address: </span> {valAddr}
@@ -107,46 +107,46 @@ const ValidatorDetail = () => {
                                 </FormGroup>
                                 <FormGroup>
                                     <ButtonToolbar>
-                                        <Button appearance="primary" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
+                                        <Button color="violet" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
                                     </ButtonToolbar>
                                 </FormGroup>
                             </Form>
                             {
-                                hashTransaction ? <div style={{marginTop: '20px'}}> Txs create validator: {renderHashToRedirect(hashTransaction, 50, () => { history.push(`/tx/${hashTransaction}`) })}</div> : <></>
+                                hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect(hashTransaction, 50, () => { history.push(`/tx/${hashTransaction}`) })}</div> : <></>
                             }
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div className="del-list-container">
-                        <h4>Delegator list</h4>
-                        <Table
-                            bordered
-                            autoHeight
-                            rowHeight={70}
-                            data={delegators}
-                        >
-                            <Column width={isMobile ? 120 : 500}>
-                                <HeaderCell>Delegator address</HeaderCell>
-                                <Cell>
-                                    {(rowData: Delegator) => {
-                                        return (
-                                            <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
-                                        );
-                                    }}
-                                </Cell>
-                            </Column>
-                            <Column width={isMobile ? 120 : 300}>
-                                <HeaderCell>Share</HeaderCell>
-                                <Cell>
-                                    {(rowData: Delegator) => {
-                                        return (
-                                            <div> {rowData.delegationsShares} </div>
-                                        );
-                                    }}
-                                </Cell>
-                            </Column>
-                        </Table>
+                        <Panel header={<h4>Delegators</h4>} shaded>
+                            <Table
+                                autoHeight
+                                rowHeight={60}
+                                data={delegators}
+                            >
+                                <Column width={isMobile ? 120 : 500} verticalAlign="middle">
+                                    <HeaderCell>Delegator address</HeaderCell>
+                                    <Cell>
+                                        {(rowData: Delegator) => {
+                                            return (
+                                                <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
+                                            );
+                                        }}
+                                    </Cell>
+                                </Column>
+                                <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                    <HeaderCell>Share</HeaderCell>
+                                    <Cell>
+                                        {(rowData: Delegator) => {
+                                            return (
+                                                <div> {rowData.delegationsShares} </div>
+                                            );
+                                        }}
+                                    </Cell>
+                                </Column>
+                            </Table>
+                        </Panel>
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>

@@ -3,7 +3,7 @@ import React from 'react'
 const SmartContract = () => {
 
     return (
-        <div>SmartContract page;</div>
+        <div></div>
     )
 }
 

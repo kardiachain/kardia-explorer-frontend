@@ -51,7 +51,7 @@ const TxDetail = () => {
                                 <div className="title">Block Hash</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail?.blockHash, 50, () => { history.push(`/block/${txDetail?.blockHash}`) })}</div>
+                                <div className="content">{renderHashToRedirect(txDetail?.blockHash, 70, () => { history.push(`/block/${txDetail?.blockHash}`) })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>

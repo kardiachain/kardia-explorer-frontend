@@ -38,7 +38,7 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
         blockHash: blockDetail.hash,
         blockHeight: blockDetail.height,
         transactions: blockDetail.numTxs || 0,
-        validator: blockDetail.validator,
+        validator: blockDetail.proposerAddress,
         commitHash: blockDetail.commitHash,
         gasLimit: blockDetail.gasLimit,
         gasUsed: blockDetail.gasUsed || 0,
