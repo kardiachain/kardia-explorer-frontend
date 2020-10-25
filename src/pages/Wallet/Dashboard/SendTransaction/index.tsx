@@ -29,14 +29,14 @@ const SendTransaction = () => {
 
             setBalance(Number(weiToKAI(balance)))
         })()
-    }, [])
+    }, [myAccount.publickey])
 
     const validateAmount = (amount: number): boolean => {
-        if (amount == 0) {
+        if (amount === 0) {
             setAmountErr(ErrorMessage.AmountNotZero)
             return false
         }
-        if (balance == 0 || Number(balance) < amount) {
+        if (balance === 0 || Number(balance) < amount) {
             setAmountErr(ErrorMessage.BalanceNotEnough)
             return false
         }
