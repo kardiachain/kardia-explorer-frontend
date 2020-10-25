@@ -62,27 +62,6 @@
     padding: 20px;
 }
 
-.register-button {
-    border: 1px solid #041fc5;
-    background: white;
-    color: #0b0bff;
-}
-
-.register-container {
-    width: 100%;
-    margin-bottom: 40px;
-}
-
-.register-form {
-    margin: 20px 0;
-}
-
-.register-form .label {
-    margin-top: 20px;
-}
-.register-form .rs-form {
-    padding-right: 50px;
-}
 
 
 @media only screen and (max-width: 992px) {

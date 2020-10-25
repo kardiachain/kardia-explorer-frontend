@@ -26,17 +26,16 @@ const SendTransaction = () => {
     useEffect(() => {
         (async() => {
             const balance = await getBalance(myAccount.publickey)
-
             setBalance(Number(weiToKAI(balance)))
         })()
-    }, [])
+    }, [myAccount.publickey])
 
     const validateAmount = (amount: number): boolean => {
-        if (amount == 0) {
+        if (Number(amount) === 0) {
             setAmountErr(ErrorMessage.AmountNotZero)
             return false
         }
-        if (balance == 0 || Number(balance) < amount) {
+        if (Number(balance) === 0 || Number(balance) < amount) {
             setAmountErr(ErrorMessage.BalanceNotEnough)
             return false
         }

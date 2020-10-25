@@ -7,6 +7,7 @@ import { onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
+import './validators.css'
 
 const ValidatorCreate = () => {
 
@@ -216,7 +217,7 @@ const ValidatorCreate = () => {
                 </FormGroup>
                 <FormGroup>
                     <ButtonToolbar>
-                        <Button appearance="primary" loading={isLoading} onClick={registerValidator}>Register to become validator</Button>
+                        <Button color="violet" loading={isLoading} onClick={registerValidator}>Register</Button>
                     </ButtonToolbar>
                 </FormGroup>
             </Form>

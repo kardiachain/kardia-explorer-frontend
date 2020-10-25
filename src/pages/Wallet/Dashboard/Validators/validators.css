@@ -14,3 +14,27 @@
     /* width: 80%; */
     margin: 0 auto;
 }
+
+.register-button {
+    border: 1px solid #041fc5;
+    background: white;
+    color: #0b0bff;
+}
+
+.register-container {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.register-form {
+    margin: 20px 0;
+}
+
+.register-form .label {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+.register-form .rs-form {
+    padding-right: 50px;
+}

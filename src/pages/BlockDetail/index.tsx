@@ -100,7 +100,7 @@ const BlockDetail = () => {
                     <List.Item>
                         <FlexboxGrid justify="start" align="middle">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                <div className="title">Validator</div>
+                                <div className="title">Proposer</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                 <div className="content">{blockDetail?.validator}</div>
@@ -139,6 +139,7 @@ const BlockDetail = () => {
                     </List.Item>
                 </List>
             </Panel>
+
         </div>
     )
 }

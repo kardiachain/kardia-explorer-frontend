@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Button, Col, FlexboxGrid, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
 import { truncate } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidators } from '../../../../service/kai-explorer';
@@ -24,30 +24,30 @@ const Validators = () => {
 
     return (
         <FlexboxGrid>
-            <div className="register-container">
-                <div className="register-form">
-                    <Panel bordered>
-                        <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                                <ValidatorCreate />
-                            </FlexboxGrid.Item>
-                        </FlexboxGrid>
-                    </Panel>
-                </div>
-            </div>
             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                <Panel shaded>
-                    <h4>Validator list</h4>
+                <div className="register-container">
+                    <div className="register-form">
+                        <Panel header={<h3>Register to become validator</h3>} shaded>
+                            <FlexboxGrid>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                                    <ValidatorCreate />
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </Panel>
+                    </div>
+                </div>
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                <Panel header="Validators" shaded>
                     <Table
-                        virtualized
                         autoHeight
-                        rowHeight={60}
+                        rowHeight={50}
                         data={validators}
                         onRowClick={validator => {
-                            // history.push(`/dashboard/validator?id=${validator.address}`)
+                            history.push(`/dashboard/validator?id=${validator.address}`)
                         }}
                     >
-                        <Column width={150} align="center">
+                        <Column width={150} align="center" verticalAlign="middle">
                             <HeaderCell>Name</HeaderCell>
                             <Cell>
                                 {(rowData: Validator) => {
@@ -57,7 +57,7 @@ const Validators = () => {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={isMobile ? 120 : 450} align="center">
+                        <Column width={isMobile ? 120 : 450} align="center" verticalAlign="middle">
                             <HeaderCell>Validator</HeaderCell>
                             <Cell>
                                 {(rowData: Validator) => {
@@ -67,7 +67,7 @@ const Validators = () => {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={150} align="center">
+                        <Column width={150} align="center" verticalAlign="middle">
                             <HeaderCell>Voting power</HeaderCell>
                             <Cell>
                                 {(rowData: Validator) => {
@@ -77,32 +77,12 @@ const Validators = () => {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={150} align="center">
+                        <Column width={150} align="center" verticalAlign="middle">
                             <HeaderCell>Peer Count</HeaderCell>
                             <Cell>
                                 {(rowData: Validator) => {
                                     return (
                                         <div>{rowData.peerCount}</div>
-                                    );
-                                }}
-                            </Cell>
-                        </Column>
-                        <Column width={150} align="center">
-                            <HeaderCell>RPC URL</HeaderCell>
-                            <Cell>
-                                {(rowData: Validator) => {
-                                    return (
-                                        <div>{rowData.rpcUrl}</div>
-                                    );
-                                }}
-                            </Cell>
-                        </Column>
-                        <Column width={150} align="center">
-                            <HeaderCell>Action</HeaderCell>
-                            <Cell>
-                            {(rowData: Validator) => {
-                                    return (
-                                        <Button appearance="primary" onClick={() => {history.push(`/dashboard/validator?id=${rowData.address}`)}}>Delegate</Button>
                                     );
                                 }}
                             </Cell>
