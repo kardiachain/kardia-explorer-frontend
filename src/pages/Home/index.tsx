@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import SearchSection from './SearchSection';
 import './home.css'
 import { Divider, FlexboxGrid, Col } from 'rsuite';
 import TransactionSection from './TransactionSection';
@@ -52,9 +51,9 @@ const Home = () => {
             <div className="home-container">
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                        {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                             <SearchSection />
-                        </FlexboxGrid.Item>
+                        </FlexboxGrid.Item> */}
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>

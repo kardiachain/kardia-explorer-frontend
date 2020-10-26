@@ -8,14 +8,14 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
     const [tps, setTps] = useState(0)
     useEffect(() => {
         const tps = calculateTPS(blockList);
-        setTps( blockList.length === 0 ? tps : tps + 1000);
+        setTps(tps);
     }, [blockList]);
 
     return (
         <div className="stats-section">
             <Row className="stat-group">
                 <Col md={12} sm={24}>
-                    <Panel className="stat-container" shaded>
+                    <Panel className="stat-container">
                         <div className="icon">
                             <Icon icon="cubes" size="lg" />
                         </div>
@@ -24,7 +24,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                     </Panel>
                 </Col>
                 <Col md={12} sm={24}>
-                    <Panel shaded className="stat-container">
+                    <Panel className="stat-container">
                         <div className="icon">
                             <Icon icon="recycle" size="lg" />
                         </div>
@@ -33,7 +33,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                     </Panel>
                 </Col>
                 <Col md={12} sm={24}>
-                    <Panel shaded className="stat-container">
+                    <Panel className="stat-container">
                         <div className="icon">
                             <Icon icon="exchange" size="lg" />
                         </div>
@@ -42,7 +42,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                     </Panel>
                 </Col>
                 <Col md={12} sm={24}>
-                    <Panel shaded className="stat-container">
+                    <Panel className="stat-container">
                         <div className="icon">
                             <Icon icon="peoples" size="lg" />
                         </div>

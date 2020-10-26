@@ -5,6 +5,7 @@ import { useViewport } from '../../../context/ViewportContext';
 import logo from '../../../resources/kardia-logo.png';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
+import SearchSection from './SearchSection';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('explorer');
@@ -90,7 +91,7 @@ const Header = () => {
                 </Link>
             </Navbar.Header>
             <Navbar.Body>
-                <Nav onSelect={setActiveKey} activeKey={activeKey}>
+                <Nav className="kardia-nav" onSelect={setActiveKey} activeKey={activeKey}>
                     <Nav.Item eventKey="" href="/">Home</Nav.Item>
                     <Dropdown eventKey="blockchain" title="Blockchain">
                         <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
@@ -100,7 +101,7 @@ const Header = () => {
                     <Nav.Item eventKey="wallet" href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
                 </Nav>
-                <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight>
+                {/* <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight className="kardia-nav">
 
                     {
                         !isLoggedIn() ? (
@@ -124,7 +125,8 @@ const Header = () => {
                                 </Dropdown>
                             )
                     }
-                </Nav>
+                </Nav> */}
+                <Nav className="kardia-nav search-wrapper" pullRight><SearchSection /></Nav>
             </Navbar.Body>
         </Navbar>
     )

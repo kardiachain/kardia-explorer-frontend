@@ -150,7 +150,7 @@ const Network = () => {
                     {source: 'node3', target: 'node5'},
                     {source: 'node3', target: 'node6'},
                 ],
-                focusedNodeId: result[0].id
+                focusedNodeId: result[0] ? result[0].id : ""
             })
         })()
     }, [])
@@ -178,7 +178,8 @@ const Network = () => {
                         bordered
                         autoHeight
                         rowHeight={70}
-                        data={graphData.nodes.filter((v: any) => v.isValidator)}
+                        // data={graphData.nodes.filter((v: any) => v.isValidator)}
+                        data={graphData.nodes}
                         onRowClick={data => {
                             console.log(data);
                         }}
