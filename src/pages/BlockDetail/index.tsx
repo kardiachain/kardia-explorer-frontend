@@ -62,7 +62,12 @@ const BlockDetail = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                 <div className="content">
-                                    {renderHashToRedirect(blockDetail?.transactions, 30, () => { history.push(`/txs?block=${blockDetail?.blockHeight}`) })}
+                                    {renderHashToRedirect({
+                                        hash: blockDetail?.transactions,
+                                        headCount: 30,
+                                        tailCount: 4,
+                                        callback: () => { history.push(`/txs?block=${blockDetail?.blockHeight}`) }
+                                    })}
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

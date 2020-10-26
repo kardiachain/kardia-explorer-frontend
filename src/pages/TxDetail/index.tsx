@@ -41,7 +41,14 @@ const TxDetail = () => {
                                 <div className="title">Block Number</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail?.blockNumber, 30, () => { history.push(`/block/${txDetail?.blockNumber}`) })}</div>
+                                <div className="content">
+                                    {renderHashToRedirect({
+                                        hash: txDetail?.blockNumber,
+                                        headCount: 30,
+                                        tailCount: 4,
+                                        callback: () => { history.push(`/block/${txDetail?.blockNumber}`) }
+                                    })}
+                                </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
@@ -51,7 +58,14 @@ const TxDetail = () => {
                                 <div className="title">Block Hash</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail?.blockHash, 70, () => { history.push(`/block/${txDetail?.blockHash}`) })}</div>
+                                <div className="content">
+                                    {renderHashToRedirect({
+                                        hash: txDetail?.blockHash,
+                                        headCount: 70,
+                                        tailCount: 4,
+                                        callback: () => { history.push(`/block/${txDetail?.blockHash}`) }
+                                    })}
+                                </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
@@ -61,12 +75,12 @@ const TxDetail = () => {
                                 <div className="title">Status</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                {
+                                {/* {
                                     txDetail?.status ?
                                         <div className="content"><Tag color="green">SUCCESS</Tag></div> :
                                         <div className="content"><Tag color="yellow">PENDING</Tag></div>
-                                }
-
+                                } */}
+                                <div className="content"><Tag color="green">SUCCESS</Tag></div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
@@ -86,7 +100,9 @@ const TxDetail = () => {
                                 <div className="title">From</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail?.from, 50, () => { })}</div>
+                                <div className="content">
+                                    {renderHashToRedirect({hash: txDetail?.from, headCount: 50, tailCount: 4})}
+                                </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>
@@ -96,7 +112,11 @@ const TxDetail = () => {
                                 <div className="title">To</div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                <div className="content">{renderHashToRedirect(txDetail?.to, 50, () => { })}</div>
+                                <div className="content">{renderHashToRedirect({
+                                    hash: txDetail?.to,
+                                    headCount: 50,
+                                    tailCount: 4
+                                })}</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </List.Item>

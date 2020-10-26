@@ -112,7 +112,7 @@ const ValidatorDetail = () => {
                                 </FormGroup>
                             </Form>
                             {
-                                hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect(hashTransaction, 50, () => { history.push(`/tx/${hashTransaction}`) })}</div> : <></>
+                                hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect({hash: hashTransaction, headCount: 40, tailCount: 4, callback: () => { history.push(`/tx/${hashTransaction}`) }})}</div> : <></>
                             }
                         </Panel>
                     </div>

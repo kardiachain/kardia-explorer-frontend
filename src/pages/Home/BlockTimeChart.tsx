@@ -51,7 +51,7 @@ const options = {
                 },
                 barPercentage: 1,
                 minBarLength: 2,
-                barThickness: 10,
+                // barThickness: 10,
             }
         ],
         yAxes: [
@@ -88,13 +88,16 @@ const options = {
                 scaleLabel: {
                     display: true,
                     labelString: 'Time (s)'
+                },
+                ticks: {
+                    min: 1
                 }
             }
         ]
     },
     animation: {
         easing: 'easeOutQuad',
-        duration: 1000
+        duration: 1500
     }
 };
 
@@ -114,13 +117,20 @@ const buildBlockTimeData = (blockList: KAIBlock[]) => {
         type: 'line',
         data: blockTimeList,
         fill: false,
-        borderColor: 'rgba(93, 32, 91, 0.7)',
-        backgroundColor: 'rgba(93, 32, 91, 0.7)',
-        pointBorderColor: 'rgba(93, 32, 91, 0.7)',
-        pointBackgroundColor: 'rgba(93, 32, 91, 0.7)',
-        pointHoverBackgroundColor: 'rgba(93, 32, 91, 0.7)',
-        pointHoverBorderColor: 'rgba(93, 32, 91, 0.7)',
-        borderWidth:1,
+        // borderColor: 'rgba(93, 32, 91, 0.7)',
+        borderColor: '#fca903',
+        // backgroundColor: 'rgba(93, 32, 91, 0.7)',
+        backgroundColor: '#fca903',
+        // pointBorderColor: 'rgba(93, 32, 91, 0.7)',
+        pointBorderColor: '#fca903',
+        // pointBackgroundColor: 'rgba(93, 32, 91, 0.7)',
+        pointBackgroundColor: '#fca903',
+        // pointHoverBackgroundColor: 'rgba(93, 32, 91, 0.7)',
+        // pointHoverBorderColor: 'rgba(93, 32, 91, 0.7)',
+        pointHoverBackgroundColor: '#fca903',
+        pointHoverBorderColor: '#fca903',
+        pointRadius: 3,
+        borderWidth: 3,
         yAxisID: 'y-axis-2'
     }
 }

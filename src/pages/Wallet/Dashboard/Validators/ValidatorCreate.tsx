@@ -222,7 +222,7 @@ const ValidatorCreate = () => {
                 </FormGroup>
             </Form>
             {
-                hashTransaction ? <div style={{marginTop: '20px'}}> Txs create validator: {renderHashToRedirect(hashTransaction, 100, () => { history.push(`/tx/${hashTransaction}`) })}</div> : <></>
+                hashTransaction ? <div style={{marginTop: '20px'}}>Txs create validator: {renderHashToRedirect({hash: hashTransaction, headCount: 100, tailCount: 4, callback: () => { history.push(`/tx/${hashTransaction}`) }})}</div> : <></>
             }
         </>
     );

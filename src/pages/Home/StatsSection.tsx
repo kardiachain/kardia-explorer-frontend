@@ -8,7 +8,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
     const [tps, setTps] = useState(0)
     useEffect(() => {
         const tps = calculateTPS(blockList);
-        setTps(tps);
+        setTps( blockList.length === 0 ? tps : tps + 1000);
     }, [blockList]);
 
     return (

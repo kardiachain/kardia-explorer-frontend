@@ -51,7 +51,12 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div> <Icon icon="money" style={{ marginRight: '10px' }} />
-                                                        {renderHashToRedirect(rowData.txHash, isMobile ? 10 : 45, () => { history.push(`/tx/${rowData.txHash}`)})}
+                                                        {renderHashToRedirect({
+                                                            hash: rowData.txHash,
+                                                            headCount: isMobile ? 10 : 45,
+                                                            tailCount: 4,
+                                                            callback: () => { history.push(`/tx/${rowData.txHash}`)}
+                                                        })}
                                                     </div>
                                                 );
                                             }}
@@ -63,7 +68,12 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.blockNumber, 20, () => { history.push(`/block/${rowData.blockNumber}`) })}
+                                                        {renderHashToRedirect({
+                                                            hash: rowData.blockNumber,
+                                                            headCount: 20,
+                                                            tailCount: 4,
+                                                            callback: () => { history.push(`/block/${rowData.blockNumber}`) }
+                                                        })}
                                                     </div>
                                                 );
                                             }}
@@ -85,7 +95,11 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.from, isMobile ? 10 : 45, () => { })}
+                                                        {renderHashToRedirect({
+                                                            hash: rowData.from,
+                                                            headCount: isMobile ? 10 : 45,
+                                                            tailCount: 4
+                                                        })}
                                                     </div>
                                                 );
                                             }}
@@ -97,7 +111,11 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect(rowData.to, isMobile ? 10 : 45, () => {  })}
+                                                        {renderHashToRedirect({
+                                                            hash: rowData.to,
+                                                            headCount: isMobile ? 10 : 45,
+                                                            tailCount: 4
+                                                        })}
                                                     </div>
                                                 );
                                             }}
