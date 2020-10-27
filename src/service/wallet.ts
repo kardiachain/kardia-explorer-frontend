@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Alert } from 'rsuite';
-import { cellValue } from '../common/utils/amount';
 import { kardiaApi, kardiaCommon } from '../plugin/kardia-tool';
+import { cellValue } from '../common/utils/amount';
+import { Alert } from 'rsuite';
 
 const initialValue: WalletStore = {
     privatekey: '',
@@ -21,7 +21,7 @@ export const useWalletStorage = (callback?: () => void) => {
     });
 
     useEffect(() => {
-        if(storedValue !== initialValue) {
+        if(storedValue.privatekey && storedValue.isAccess) {
             window.localStorage.setItem('walletstore', JSON.stringify(storedValue))
             callback && callback();
         }
@@ -72,21 +72,23 @@ export const getAccount = (): Account => {
     } as Account
 }
 
-export const sendTransaction = async (fromAccount: Account, toAddress: string, amount: number) => {
+export const generateTx = async (fromAccount: Account, toAddr: string, amount: number, gasLimit: number) => {
     try {
-        // Get nonce
-        const nonce = await kardiaApi.accountNonce(fromAccount.publickey);
-        const tx = kardiaCommon.txGenerator(
-            toAddress,
-            cellValue(amount),  //200 KAI
+        const cellAmount = cellValue(amount);
+        let nonce = await kardiaApi.accountNonce(fromAccount.publickey);
+        const tx = await kardiaCommon.txGenerator(
+            toAddr,
+            cellAmount,
             nonce,
-            2,
-            2100
+            1,
+            gasLimit,
         );
-        const signedTx = kardiaCommon.sign(tx, fromAccount.privatekey);
-        return await kardiaApi.sendSignedTransaction(signedTx.rawTransaction);
-    } catch (error) {
-        const e = JSON.parse(error.message).error;
-        Alert.error(`Error: ${e.message}`)
+        const signedTx = await kardiaCommon.sign(tx, fromAccount.privatekey);
+        const txHash = await kardiaApi.sendSignedTransaction(signedTx.rawTransaction);
+        console.log(`TxHash: ${txHash}`)
+        return txHash
     }
-}
+    catch (err) {
+        Alert.error(`Create Transaction Failed: ${err.message}`)
+    }
+};

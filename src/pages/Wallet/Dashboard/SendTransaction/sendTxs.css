@@ -1,0 +1,8 @@
+.send-txs-container .label {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.send-txs-container .rs-flex-box-grid-item {
+    margin-bottom: 15px;
+}

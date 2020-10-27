@@ -6,4 +6,8 @@ const onlyNumber = (value: any) => {
     return false
 }
 
-export {onlyNumber}
+const numberFormat = (value: number) => {
+    return new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value);
+}
+
+export {onlyNumber, numberFormat}

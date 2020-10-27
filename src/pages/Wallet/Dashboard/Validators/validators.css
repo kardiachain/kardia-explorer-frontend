@@ -2,7 +2,8 @@
     font-weight: 700;
 }
 
-.del-list-container {
+.del-list-container,
+.val-info-container {
     margin-top: 20px;
 }
 
@@ -11,6 +12,31 @@
 }
 
 .del-staking-container {
-    /* width: 80%; */
-    margin: 0 auto;
+    margin-top: 40px
+}
+
+.register-button {
+    border: 1px solid #041fc5;
+    background: white;
+    color: #0b0bff;
+}
+
+.register-container {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.register-form {
+    margin: 20px 0;
+}
+
+.del-staking-container .label,
+.register-form .label {
+    margin-bottom: 5px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+.register-form .rs-form {
+    padding-right: 50px;
 }

@@ -1,58 +1,60 @@
-.stat-group {
-    padding: 10px 40px;
-}
-
 .stat-container {
     margin-top: 10px;
-    background-color: #FFFFFF;
-    border-left: 5px solid #54e859;
+    background-color: transparent;
     font-size: 40px;
+    border-radius: 0
 }
 
 .stat-container>.rs-panel-body {
-    text-align: right;
+    background-color: #4E71FF;
+    border-radius: 15px;
+    color: white;
 }
 
 .home-container {
-    padding: 50px;
-    margin-top: 60px;
+    padding: 0 130px;
 }
 
 .home-container>h3 {
     margin-top: 45px;
 }
 
-.search-section {
-    background-color: #2a343d;
+.home-top-section {
     min-height: 300px;
-    padding: 0 130px;
     position: relative;
+    margin-top: 40px;
 }
 
-.search-input-wrapper {
-    padding: 40px;
-    background-color: #FFFFFF;
-    position: absolute;
-    border-radius: 5px;
-    bottom: -59px;
-    left: 15%;
-    right: 15%;
-    -webkit-box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
-    -moz-box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
-    box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
+.button-view-all {
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* ---------------- Panel stats style ---------------------*/
+.stats-section .title {
+    font-size: 20px;
+    text-align: center;
+}
+
+.stats-section .value {
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.stats-section .icon {
+    font-size: 40px;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
 }
 
-.search-input-wrapper>input {
-    width: 80%;
-}
-
-.search-input-wrapper>button {
-    width: 15%;
-}
-
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 992px) {
+    .home-container {
+        padding: 0 10px;
+    }
+    
     .stat-group {
         padding: 10px;
     }
@@ -60,9 +62,8 @@
         font-size: 20px;
         font-weight: bold;
     }
-    .home-container {
-        margin-top: 0;
-        padding: 20px;
+    .home-top-section {
+        margin-top: 20px;
     }
     .search-section {
         background-color: transparent;

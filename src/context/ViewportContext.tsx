@@ -37,7 +37,7 @@ export const useViewport = (mobileBreakpoint?: number) => {
     /* We can use the "useContext" Hook to acccess a context from within
        another Hook, remember, Hooks are composable! */
 
-    const BREAKPOINT = mobileBreakpoint || 620;
+    const BREAKPOINT = mobileBreakpoint || 992;
     const { width, height } = React.useContext(viewportContext);
     return { width, height, isMobile: width < BREAKPOINT };
 }

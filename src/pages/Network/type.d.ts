@@ -7,5 +7,7 @@ interface KAINode {
     peerCount: number,
     votingPower: number,
     status: NodeStatus,
-    rpcURL: string
+    listen_addr: string,
+    rpcURL: string,
+    isValidator: boolean
 }

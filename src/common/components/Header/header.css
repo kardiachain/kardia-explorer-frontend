@@ -1,5 +1,13 @@
 .kai-header-container {
-    padding: 0 40px;
+    padding: 0 90px;
+}
+
+.kai-header-container .rs-dropdown-menu {
+    background-color: #2A343D;
+    border-radius: 0;
+}
+.kai-header-container .rs-dropdown-menu .rs-dropdown-item-content {
+    color: white;
 }
 
 .kai-header-container-mobile {
@@ -38,6 +46,17 @@
 
 .kai-logo-container>img {
     width: 100%;
+}
+
+.kardia-nav {
+    height: 56px;
+}
+
+/* ------------------- Search section style --------------*/
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    width: 500px;
 }
 
 @media only screen and (min-width: 1024px) {
