@@ -30,7 +30,16 @@ const BlockSection = ({ blockList = [] }: {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            <div> <Icon icon="th-large" /> {renderHashToRedirect(rowData.blockHeight, 30, () => { history.push(`/block/${rowData.blockHeight}`) })} </div>
+                                            <div>
+                                                <Icon icon="th-large" />
+                                                {/* {renderHashToRedirect(rowData.blockHeight, 30, 4, () => { history.push(`/block/${rowData.blockHeight}`) })} */}
+                                                {renderHashToRedirect({
+                                                    hash: rowData.blockHeight,
+                                                    headCount: 30,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/block/${rowData.blockHeight}`) }
+                                                })}
+                                                </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
@@ -43,7 +52,7 @@ const BlockSection = ({ blockList = [] }: {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            {truncate(rowData.validator.hash, isMobile ? 10 : 30)}
+                                            {truncate(rowData.validator.hash, isMobile ? 10 : 30, 4)}
                                         </div>
                                     );
                                 }}
@@ -55,7 +64,13 @@ const BlockSection = ({ blockList = [] }: {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            {renderHashToRedirect(rowData.transactions, 30, () => { history.push(`/txs?block=${rowData.blockHeight}`) })}
+                                            {renderHashToRedirect({
+                                                hash: rowData.transactions,
+                                                headCount: 30,
+                                                tailCount: 4,
+                                                callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
+                                            })}
+                                            {/* {renderHashToRedirect(rowData.transactions, 30, 4, () => { history.push(`/txs?block=${rowData.blockHeight}`) })} */}
                                         </div>
                                     );
                                 }}

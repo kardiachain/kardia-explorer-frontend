@@ -134,7 +134,7 @@ const SendTransaction = () => {
                                 <Button loading={sendBntLoading} color="violet" onClick={sendKAI}>Send KAI <Icon icon="space-shuttle"/></Button>
                             </FlexboxGrid.Item>
                             {
-                                txHash ? <div style={{marginTop: '20px'}}> Txs hash: {renderHashToRedirect(txHash, 100, () => { history.push(`/tx/${txHash}`) })}</div> : <></>
+                                txHash ? <div style={{marginTop: '20px'}}> Txs hash: {renderHashToRedirect({hash: txHash, headCount: 100, tailCount: 4, callback: () => { history.push(`/tx/${txHash}`) }})}</div> : <></>
                             }
                         </FlexboxGrid>
                     </FormGroup>

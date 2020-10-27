@@ -31,7 +31,15 @@ const TransactionSection = ({ transactionList = [] }: {
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <div>{renderHashToRedirect(rowData.txHash, isMobile ? 10 : 30, () => { history.push(`/tx/${rowData.txHash}`) })}</div>
+                                            <div>
+                                                {/* {renderHashToRedirect(rowData.txHash, isMobile ? 10 : 30, 4, () => { history.push(`/tx/${rowData.txHash}`) })} */}
+                                                {renderHashToRedirect({
+                                                    hash: rowData.txHash,
+                                                    headCount: isMobile ? 10 : 30,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                })}
+                                                </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
@@ -44,8 +52,26 @@ const TransactionSection = ({ transactionList = [] }: {
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <div style={{ marginBottom: '5px' }}>From: {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, () => { history.push(`/txs?addresses=${rowData.from}`) })} </div>
-                                            <div>To: {renderHashToRedirect(rowData.to, isMobile ? 10 : 30, () => { history.push(`/txs?addresses=${rowData.to}`) })}</div>
+                                            <div style={{ marginBottom: '5px' }}>
+                                                From: 
+                                                {/* {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, 4, () => { history.push(`/txs?addresses=${rowData.from}`) })} */}
+                                                {renderHashToRedirect({
+                                                    hash: rowData.from,
+                                                    headCount: isMobile ? 10 : 30,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/txs?addresses=${rowData.from}`) }
+                                                })}
+                                            </div>
+                                            <div>
+                                                To: 
+                                                {/* {renderHashToRedirect(rowData.to, isMobile ? 10 : 30, 4, () => { history.push(`/txs?addresses=${rowData.to}`) })} */}
+                                                {renderHashToRedirect({
+                                                    hash: rowData.to,
+                                                    headCount: isMobile ? 10 : 30,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/txs?addresses=${rowData.to}`) }
+                                                })}
+                                            </div>
                                         </div>
                                     );
                                 }}

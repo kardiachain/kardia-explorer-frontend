@@ -1,7 +1,10 @@
 import React from 'react';
 import { Alert, Icon, IconButton } from 'rsuite';
-function truncate(str: string, n: number) {
-    return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
+function truncate(str: string, n: number, e: number) {
+    if (n > str.length - e) {
+        return str
+    }
+    return str.substr(0, n - 1) + '...' + str.substr(str.length - e - 1);
 };
 
 const copyToClipboard = (text: string, onSuccess?: () => void, onFail?: () => void) => {
@@ -20,7 +23,7 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
     }
     return (
         <span>
-            {truncate(hash, headCount || 10)}{' '}
+            {truncate(hash, headCount || 10, tailCount || 4)}{' '}
             <IconButton
                 onClick={() => copyToClipboard(hash, onSuccess)}
                 size="xs"
@@ -30,10 +33,14 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
     );
 }
 
-const renderHashToRedirect = (hash: any, headCount?: number, callBack?: () => void) => {
+const renderHashToRedirect = ({
+    hash, headCount = 6, tailCount = 4, callback
+}: {
+    hash: any, headCount?: number, tailCount?: number, callback?: () => void
+}) => {
     return (
-        <span onClick={() => {callBack && callBack()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
-            {truncate(String(hash), headCount || 10)}{' '}
+        <span onClick={() => {callback && callback()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
+            {truncate(String(hash), headCount, tailCount)}{' '}
         </span>
     )
 }

@@ -11,7 +11,7 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
         return {
             blockHash: o.hash,
             blockHeight: o.height,
-            transactions: o.numTxs,
+            transactions: o.numTxs + 1000,
             validator: {
                 label: 'Validator',
                 hash: o.proposerAddress || ''

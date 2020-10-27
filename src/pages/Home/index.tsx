@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import SearchSection from './SearchSection';
 import './home.css'
 import { Divider, FlexboxGrid, Col } from 'rsuite';
 import TransactionSection from './TransactionSection';
@@ -8,6 +7,7 @@ import { getBlocks, getTransactions } from '../../service/kai-explorer';
 import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG } from '../../config';
 import BlockTimeChart from './BlockTimeChart';
 import StatsSection from './StatsSection';
+import { useViewport } from '../../context/ViewportContext';
 
 
 const Home = () => {
@@ -18,6 +18,8 @@ const Home = () => {
     const [blocksForChart, setBlocksForChart] = useState<KAIBlock[]>([]);
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const [totalTxs, setTotalTxs] = useState(0)
+
+    const {isMobile} = useViewport()
     
     const fetchBlockChart = async () => {
         // Get transaction
@@ -52,9 +54,9 @@ const Home = () => {
             <div className="home-container">
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                        {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                             <SearchSection />
-                        </FlexboxGrid.Item>
+                        </FlexboxGrid.Item> */}
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
@@ -63,7 +65,7 @@ const Home = () => {
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
                 </div>
-                <Divider />
+                {isMobile && <Divider />}
                 <FlexboxGrid justify="space-between">
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
                         <BlockSection blockList={blocks} />

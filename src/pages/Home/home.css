@@ -1,12 +1,13 @@
 .stat-container {
     margin-top: 10px;
-    background-color: #FFFFFF;
+    background-color: transparent;
     font-size: 40px;
     border-radius: 0
 }
 
 .stat-container>.rs-panel-body {
-    background: rgb(0 35 173);
+    background-color: #4E71FF;
+    border-radius: 15px;
     color: white;
 }
 
@@ -21,37 +22,13 @@
 .home-top-section {
     min-height: 300px;
     position: relative;
-}
-
-
-/* ------------------- Search section style --------------*/
-.search-section {
-    margin-top: 20px;
-}
-
-.search-input-wrapper {
-    padding: 20px;
-    background-color: #d3d3d3;
-    -webkit-box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
-    -moz-box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
-    box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
-    display: flex;
-    justify-content: space-between;
-}
-
-.search-input-wrapper>input {
-    width: 80%;
-}
-
-.search-input-wrapper>button {
-    width: 15%;
+    margin-top: 40px;
 }
 
 .button-view-all {
     width: 100%;
     margin: 20px 0;
 }
-
 
 /* ---------------- Panel stats style ---------------------*/
 .stats-section .title {
@@ -73,12 +50,6 @@
     justify-content: center;
 }
 
-/* ------------------- Block time chart style ---------------------*/
-.blocktime-chart-container {
-    /* height: 300px; */
-    margin-top: 10px;
-}
-
 @media screen and (max-width: 992px) {
     .home-container {
         padding: 0 10px;
@@ -92,7 +63,7 @@
         font-weight: bold;
     }
     .home-top-section {
-        margin-top: 0;
+        margin-top: 20px;
     }
     .search-section {
         background-color: transparent;
