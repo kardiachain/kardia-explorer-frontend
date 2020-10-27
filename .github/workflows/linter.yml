@@ -1,0 +1,21 @@
+name: Linter
+
+on: push
+
+jobs:
+  lint:
+    name: Lint code base
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Install dependencies
+      - name: Checkout code
+        run: npm install
+
+      # Lint code base
+      - name: Run Linter
+        run: npm run lint
