@@ -6,7 +6,7 @@ import { hdkey } from 'ethereumjs-wallet'
 const CreateByMnemonic = () => {
 
     const mn = Bip39.generateMnemonic();
-    const [mnemonic, setMnemonic] = useState(mn);
+    const [mnemonic] = useState(mn);
 
     const createWallet = async() => {
         const seed = await Bip39.mnemonicToSeed(mnemonic)
@@ -14,7 +14,6 @@ const CreateByMnemonic = () => {
         const masterWallet = root.getWallet()
         const masterPrivateKey = masterWallet.getPrivateKeyString()
         console.log("Private key: ", masterPrivateKey);
-        
     }
 
     return (
