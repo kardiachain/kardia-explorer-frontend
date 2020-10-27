@@ -43,9 +43,13 @@ const getValidatorsFromSMC = async (): Promise<ValidatorFromSMC[]> => {
     const invoke = await invokeCallData("getValidators", [])
     let validators: ValidatorFromSMC[] = [];
     for (let i = 0; i < invoke[0].length; i++) {
+        const totalDels = await getNumberDelOfValidator(invoke[0][i])
+        const votingPower = await getValidatorPower(invoke[0][i])
         let validator: ValidatorFromSMC = {
             address: invoke[0][i],
-            votingPower: invoke[1][i]
+            delegationsShares: invoke[2][i],
+            totalDels: totalDels,
+            votingPower: votingPower
         }
         validators.push(validator)
     }
@@ -55,9 +59,7 @@ const getValidatorsFromSMC = async (): Promise<ValidatorFromSMC[]> => {
 
 const getDelegationsByValidator = async (valAddr: string): Promise<Delegator[]> => {
     let delegators: Delegator[] = [];
-
     if (!valAddr) return delegators;
-
     const invoke = await invokeCallData("getDelegationsByValidator", [valAddr])
     for (let i = 0; i < invoke[0].length; i++) {
         let delegator: Delegator = {
@@ -69,12 +71,16 @@ const getDelegationsByValidator = async (valAddr: string): Promise<Delegator[]> 
     return delegators
 }
 
+const getNumberDelOfValidator = async (valAddr: string): Promise<number> => {
+    const invoke = await invokeCallData("getDelegationsByValidator", [valAddr])
+    const listVals = invoke[0]
+    return listVals.length
+}
+
 const getValidatorsByDelegator = async (delAddr: string): Promise<ValidatorFromSMC[]> => {
     const valAddr = await invokeCallData("getValidatorsByDelegator", [delAddr])
     let validators: ValidatorFromSMC[] = [];
-
     if (valAddr.length === 0) return validators
-    
     for (let i = 0; i < valAddr.length; i++) {
         let validator: ValidatorFromSMC = {
             address: valAddr[i],
@@ -86,10 +92,12 @@ const getValidatorsByDelegator = async (delAddr: string): Promise<ValidatorFromS
 
 const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
     const invoke = await invokeCallData("getValidator", [valAddr])
+    const votingPower = await getValidatorPower(valAddr)
     let validators: ValidatorFromSMC = {
         address: invoke[0],
         delegationsShares: invoke[1],
-        jailed: invoke[2]
+        jailed: invoke[2],
+        votingPower: votingPower
     }
     return validators
 }
@@ -105,11 +113,15 @@ const isValidator = async (valAddr: string): Promise<boolean> => {
    
 }
 
-
 const getValidatorCommission = async (valAddr: string): Promise<number> => {
     const commission = await invokeCallData("getValidatorCommission", [valAddr])
     return commission;
 }
+
+const getValidatorPower = async (valAddr: string): Promise<number> => {
+    return await invokeCallData("getValidatorPower", [valAddr])
+}
+
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
     const cellAmountDel = cellValue(amountDel);
@@ -131,5 +143,7 @@ export {
     delegateAction,
     createValidator,
     getValidatorsFromSMC,
-    isValidator
+    isValidator,
+    getNumberDelOfValidator,
+    getValidatorPower
 }

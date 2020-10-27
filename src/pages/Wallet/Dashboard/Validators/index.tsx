@@ -3,7 +3,7 @@ import { Col, FlexboxGrid, List, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { renderHashString } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { getDelegationsByValidator, isValidator } from '../../../../service/smc';
+import { getDelegationsByValidator, getValidator, isValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 import '../dashboard.css'
 import ValidatorCreate from './ValidatorCreate';
@@ -15,6 +15,7 @@ const Validators = () => {
     const { isMobile } = useViewport()
     const [ isVal, setIsVal ] = useState(false);
     const [delegators, setDelegators] = useState([] as Delegator[]);
+    const [validator, setValidator] = useState<ValidatorFromSMC>()
     const myAccount = getAccount() as Account
     
     useEffect(() => {
@@ -23,7 +24,9 @@ const Validators = () => {
             setIsVal(isVal)
             if (isVal) {
                 const delegators = await getDelegationsByValidator(myAccount.publickey);
+                const validator = await getValidator(myAccount.publickey)
                 setDelegators(delegators)
+                setValidator(validator)
             }
         })();
     }, [myAccount.publickey]);
@@ -84,16 +87,13 @@ const Validators = () => {
                         <Panel header={<h4>Validator information</h4>} shaded>
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Validator address: </span> {'0x886906c1bf89bd5a5265bc3fccc9c4e053f52050'}
+                                    <span className="property-title">Validator address: </span> {validator?.address}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Commission: </span> 5%
-                            </List.Item>
+                                    <span className="property-title">Total delegator: </span> {validator?.totalDels}
+                                </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total delegator: </span> 100
-                            </List.Item>
-                                <List.Item>
-                                    <span className="property-title">Voting power: </span> 100
+                                    <span className="property-title">Voting power: </span> {validator?.votingPower}
                             </List.Item>
                             </List>
                         </Panel>

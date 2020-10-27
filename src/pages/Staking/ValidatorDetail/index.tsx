@@ -4,7 +4,7 @@ import { Button, ButtonToolbar, Col, FlexboxGrid, List, Panel, Table } from 'rsu
 import { weiToKAI } from '../../../common/utils/amount';
 import { renderHashString } from '../../../common/utils/string';
 import { useViewport } from '../../../context/ViewportContext';
-import { getDelegationsByValidator } from '../../../service/smc';
+import { getDelegationsByValidator, getValidator } from '../../../service/smc';
 import { isLoggedIn } from '../../../service/wallet'
 import './validator.css'
 
@@ -14,32 +14,32 @@ const ValidatorDetail = () => {
     const { isMobile } = useViewport()
     const history = useHistory()
     const [delegators, setDelegators] = useState([] as Delegator[]);
+    const [validator, setValidator] = useState<ValidatorFromSMC>()
     const { valAddr }: any = useParams();
 
     useEffect(() => {
-        getDelegationsByValidator(valAddr).then(rs => {
-            setDelegators(rs)
-        });
+        getDelegationsByValidator(valAddr).then(setDelegators);
+        getValidator(valAddr).then(setValidator)
     }, [valAddr]);
 
     return (
         <div className="val-detail-container">
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
-                    <div className="val-info-container">
+                    <div>
                         <Panel header={<h4>Validator information</h4>} shaded>
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Address: </span> {valAddr}
+                                    <span className="property-title">Address: </span> {renderHashString(valAddr, 50)}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Commission: </span> 5%
+                                    <span className="property-title">Total Delegator: </span> {delegators.length}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total delegator: </span> 100
+                                    <span className="property-title">Delegations Shares: </span> {weiToKAI(validator?.delegationsShares)} KAI
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Voting power: </span> 100
+                                    <span className="property-title">Voting Power: </span> {validator?.votingPower}
                                 </List.Item>
                             </List>
                             <ButtonToolbar style={{marginTop: '30px'}}>
@@ -56,16 +56,18 @@ const ValidatorDetail = () => {
                     <div>
                         <Panel header={<h4>Delegators</h4>} shaded>
                             <Table
+                                hover={false}
+                                wordWrap
                                 autoHeight
                                 rowHeight={60}
                                 data={delegators}
                             >
-                                <Column width={isMobile ? 120 : 500} verticalAlign="middle">
+                                <Column width={400} verticalAlign="middle">
                                     <HeaderCell>Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
+                                                <div> {renderHashString(rowData.address, 50)} </div>
                                             );
                                         }}
                                     </Cell>

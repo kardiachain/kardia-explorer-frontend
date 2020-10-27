@@ -42,12 +42,13 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>
                         <Table
+                            wordWrap
                             hover={false}
                             autoHeight
                             rowHeight={70}
                             data={validators}
                         >
-                            <Column width={isMobile ? 120 : 450} verticalAlign="middle">
+                            <Column width={isMobile ? 120 : 400} verticalAlign="middle">
                                 <HeaderCell>Validator</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -64,17 +65,37 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={200} verticalAlign="middle">
-                                <HeaderCell>Voting power</HeaderCell>
+                            <Column width={200} verticalAlign="middle" align="center">
+                                <HeaderCell>Delegations Shares</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <div>{weiToKAI(rowData.votingPower)} KAI</div>
+                                            <div>{weiToKAI(rowData.delegationsShares)} KAI</div>
                                         );
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={200} verticalAlign="middle">
+                            <Column width={150} verticalAlign="middle" align="center">
+                                <HeaderCell>Voting power</HeaderCell>
+                                <Cell>
+                                    {(rowData: ValidatorFromSMC) => {
+                                        return (
+                                            <div>{rowData.votingPower || '0'}</div>
+                                        );
+                                    }}
+                                </Cell>
+                            </Column>
+                            <Column width={150} verticalAlign="middle" align="center">
+                                <HeaderCell>Total Delegators</HeaderCell>
+                                <Cell>
+                                    {(rowData: ValidatorFromSMC) => {
+                                        return (
+                                            <div>{rowData.totalDels || '0'}</div>
+                                        );
+                                    }}
+                                </Cell>
+                            </Column>
+                            <Column width={200} verticalAlign="middle" align="center">
                                 <HeaderCell>Commission</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -84,7 +105,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={200} verticalAlign="middle">
+                            <Column width={200} verticalAlign="middle" align="center">
                                 <HeaderCell>Action</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
