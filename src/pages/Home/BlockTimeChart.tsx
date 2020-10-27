@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2';
-import { Panel } from 'rsuite';
+import { useViewport } from '../../context/ViewportContext';
 
 const BlockTimeChart = ({ blockList = [] }: { blockList: KAIBlock[] }) => {
 
     const [blockTimeData, setBlockTimeData] = useState({})
+
+    const {isMobile} = useViewport()
 
     useEffect(() => {
         if (blockList.length > 0) {
@@ -17,26 +19,21 @@ const BlockTimeChart = ({ blockList = [] }: { blockList: KAIBlock[] }) => {
     }, [blockList]);
 
     return (
-        <React.Fragment>
-            <div className="blocktime-chart-container">
-                <Panel >
-                    <Bar
-                        height={350}
-                        data={blockTimeData}
-                        options={options}
-                    />
-                </Panel>
-            </div>
-        </React.Fragment>
+        <Bar
+            height={isMobile ? 200 : undefined}
+            data={blockTimeData}
+            options={options}
+        />
     );
 }
 
 const options = {
-    // responsive: true,
-    maintainAspectRatio: false,
+    responsive: true,
+    maintainAspectRatio: true,
     tooltips: {
         mode: 'label'
     },
+    redraw: true,
     elements: {
         line: {
             fill: false

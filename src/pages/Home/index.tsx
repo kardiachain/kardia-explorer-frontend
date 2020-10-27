@@ -7,6 +7,7 @@ import { getBlocks, getTransactions } from '../../service/kai-explorer';
 import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG } from '../../config';
 import BlockTimeChart from './BlockTimeChart';
 import StatsSection from './StatsSection';
+import { useViewport } from '../../context/ViewportContext';
 
 
 const Home = () => {
@@ -17,6 +18,8 @@ const Home = () => {
     const [blocksForChart, setBlocksForChart] = useState<KAIBlock[]>([]);
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const [totalTxs, setTotalTxs] = useState(0)
+
+    const {isMobile} = useViewport()
     
     const fetchBlockChart = async () => {
         // Get transaction
@@ -62,7 +65,7 @@ const Home = () => {
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
                 </div>
-                <Divider />
+                {isMobile && <Divider />}
                 <FlexboxGrid justify="space-between">
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
                         <BlockSection blockList={blocks} />
