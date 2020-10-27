@@ -98,6 +98,7 @@ const Header = () => {
                     </Dropdown>
                     <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
                     <Nav.Item eventKey="wallet" href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
+                    <Nav.Item eventKey="network" href="/validators" >Validators</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
                 </Nav>
                 <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight>

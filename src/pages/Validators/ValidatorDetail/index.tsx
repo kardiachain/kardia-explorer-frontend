@@ -1,82 +1,67 @@
 import React, { useEffect, useState } from 'react'
-import { Col, FlexboxGrid, List, Panel, Table } from 'rsuite';
-import { weiToKAI } from '../../../../common/utils/amount';
-import { renderHashString } from '../../../../common/utils/string';
-import { useViewport } from '../../../../context/ViewportContext';
-import { getDelegationsByValidator, isValidator } from '../../../../service/smc';
-import { getAccount } from '../../../../service/wallet';
-import '../dashboard.css'
-import ValidatorCreate from './ValidatorCreate';
+import { useHistory, useParams } from 'react-router-dom';
+import { Button, ButtonToolbar, Col, FlexboxGrid, List, Panel, Table } from 'rsuite';
+import { weiToKAI } from '../../../common/utils/amount';
+import { renderHashString } from '../../../common/utils/string';
+import { useViewport } from '../../../context/ViewportContext';
+import { getDelegationsByValidator } from '../../../service/smc';
+import { isLoggedIn } from '../../../service/wallet'
+import './validator.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const Validators = () => {
-
+const ValidatorDetail = () => {
     const { isMobile } = useViewport()
-    const [ isVal, setIsVal ] = useState(false);
+    const history = useHistory()
     const [delegators, setDelegators] = useState([] as Delegator[]);
-    const myAccount = getAccount() as Account
-    
+    const { valAddr }: any = useParams();
+
     useEffect(() => {
-        (async () => {
-            const isVal = await isValidator(myAccount.publickey);
-            setIsVal(isVal)
-            if (isVal) {
-                const delegators = await getDelegationsByValidator(myAccount.publickey);
-                setDelegators(delegators)
-            }
-        })();
-    }, [myAccount.publickey]);
+        getDelegationsByValidator(valAddr).then(rs => {
+            setDelegators(rs)
+        });
+    }, [valAddr]);
 
     return (
-        !isVal ? (
+        <div className="val-detail-container">
             <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <div className="register-container">
-                        <div className="register-form">
-                            <Panel header={<h3>Register to become validator</h3>} shaded>
-                                <FlexboxGrid>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                                        <ValidatorCreate />
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </Panel>
-                        </div>
-                    </div>
-                </FlexboxGrid.Item>
-            </FlexboxGrid>
-        ) : (
-            <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
                     <div className="val-info-container">
                         <Panel header={<h4>Validator information</h4>} shaded>
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Validator address: </span> {'0x886906c1bf89bd5a5265bc3fccc9c4e053f52050'}
+                                    <span className="property-title">Address: </span> {valAddr}
                                 </List.Item>
                                 <List.Item>
                                     <span className="property-title">Commission: </span> 5%
-                            </List.Item>
+                                </List.Item>
                                 <List.Item>
                                     <span className="property-title">Total delegator: </span> 100
-                            </List.Item>
+                                </List.Item>
                                 <List.Item>
                                     <span className="property-title">Voting power: </span> 5%
-                            </List.Item>
+                                </List.Item>
                             </List>
+                            <ButtonToolbar style={{marginTop: '30px'}}>
+                                <Button color="violet"
+                                    onClick={() => { isLoggedIn() ? history.push(`/dashboard/validator/${valAddr}`) : history.push('/wallet') }}
+                                >
+                                    Delegate for this validator
+                                </Button>
+                            </ButtonToolbar>
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <div className="del-list-container">
-                        <Panel header={<h4>Your Delegators</h4>} shaded>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16}>
+                    <div>
+                        <Panel header={<h4>Delegators</h4>} shaded>
                             <Table
                                 autoHeight
                                 rowHeight={60}
                                 data={delegators}
                             >
                                 <Column width={isMobile ? 120 : 500} verticalAlign="middle">
-                                    <HeaderCell>Delegator address</HeaderCell>
+                                    <HeaderCell>Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
@@ -86,7 +71,7 @@ const Validators = () => {
                                     </Cell>
                                 </Column>
                                 <Column width={isMobile ? 120 : 300} verticalAlign="middle">
-                                    <HeaderCell>Share</HeaderCell>
+                                    <HeaderCell>Delegate Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
@@ -100,8 +85,8 @@ const Validators = () => {
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
-        )
+        </div>
     )
 }
 
-export default Validators;
+export default ValidatorDetail;

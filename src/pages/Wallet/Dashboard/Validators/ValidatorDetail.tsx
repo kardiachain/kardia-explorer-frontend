@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Alert, Breadcrumb, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
+import { useHistory, useParams } from 'react-router-dom';
+import { Alert, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
+import { weiToKAI } from '../../../../common/utils/amount';
 import { onlyNumber } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
@@ -19,9 +20,7 @@ const ValidatorDetail = () => {
     const [delAmount, setDelAmount] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [hashTransaction, setHashTransaction] = useState('')
-
-    const query = new URLSearchParams(useLocation().search);
-    const valAddr = query.get("id") || '';
+    const { valAddr }: any = useParams();
 
     useEffect(() => {
         getDelegationsByValidator(valAddr).then(rs => {
@@ -45,7 +44,6 @@ const ValidatorDetail = () => {
             return;
         }
         setIsLoading(true)
-        const valAddr = query.get("id") || '';
         let account = getAccount() as Account
         const delegate = await delegateAction(valAddr, account, Number(delAmount))
 
@@ -58,62 +56,48 @@ const ValidatorDetail = () => {
 
     return (
         <>
-            <Breadcrumb separator=">">
-                <Breadcrumb.Item componentClass={Link} to="/dashboard/staking">
-                    Staking
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active componentClass={Link} to="/dashboard/validator">
-                    Validator detail
-                </Breadcrumb.Item>
-            </Breadcrumb>
             <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                     <div className="val-info-container">
-                        <Panel header={<h4>Validator information</h4>} shaded>
-                            <List>
-                                <List.Item>
-                                    <span className="property-title">Validator address: </span> {valAddr}
-                                </List.Item>
-                                <List.Item>
+                        <Panel header={<h4>{`Validator: ${valAddr}`}</h4>} shaded>
+                            <List bordered={false}>
+                                <List.Item bordered={false}>
                                     <span className="property-title">Commission: </span> 5%
                                 </List.Item>
-                                <List.Item>
+                                <List.Item bordered={false}>
                                     <span className="property-title">Total delegator: </span> 100
                                 </List.Item>
-                                <List.Item>
+                                <List.Item  bordered={false}>
                                     <span className="property-title">Voting power: </span> 5%
                                 </List.Item>
                             </List>
-                        </Panel>
-                    </div>
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={10}>
-                    <div className="del-staking-container">
-                        <Panel header={<h4>Delegate for validator</h4>} shaded>
-                            <Form fluid>
-                                <FormGroup>
-                                    <FormControl
-                                        placeholder="Delegation amount*"
-                                        value={delAmount} name="delAmount"
-                                        onChange={(value) => {
-                                            if (!value) {
-                                                setErrorMessage(ErrorMessage.Require)
-                                            }
-                                            if (onlyNumber(value)) {
-                                                setDelAmount(value)
-                                            }
-                                        }} />
-                                    <ErrMessage message={errorMessage} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <ButtonToolbar>
-                                        <Button color="violet" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
-                                    </ButtonToolbar>
-                                </FormGroup>
-                            </Form>
-                            {
-                                hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect(hashTransaction, 50, () => { history.push(`/tx/${hashTransaction}`) })}</div> : <></>
-                            }
+                            <div className="del-staking-container">
+                                <Form fluid>
+                                    <FormGroup>
+                                        <div className="label">Delegation amount*:</div>
+                                        <FormControl
+                                            placeholder="Delegation amount*"
+                                            value={delAmount} name="delAmount"
+                                            onChange={(value) => {
+                                                if (!value) {
+                                                    setErrorMessage(ErrorMessage.Require)
+                                                }
+                                                if (onlyNumber(value)) {
+                                                    setDelAmount(value)
+                                                }
+                                            }} />
+                                        <ErrMessage message={errorMessage} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <ButtonToolbar>
+                                            <Button color="violet" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
+                                        </ButtonToolbar>
+                                    </FormGroup>
+                                </Form>
+                                {
+                                    hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect(hashTransaction, 50, () => { history.push(`/tx/${hashTransaction}`) })}</div> : <></>
+                                }
+                            </div>
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
@@ -140,7 +124,7 @@ const ValidatorDetail = () => {
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {rowData.delegationsShares} </div>
+                                                <div> {weiToKAI(rowData.delegationsShares)} KAI</div>
                                             );
                                         }}
                                     </Cell>

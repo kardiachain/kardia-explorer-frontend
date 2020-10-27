@@ -58,6 +58,7 @@ interface ValidatorFromSMC {
     delegationsShares?: number;
     votingPower?: number;
     jailed?: boolean;
+    commission?: number;
 }
 
 interface Delegator {

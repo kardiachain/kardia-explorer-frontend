@@ -136,8 +136,8 @@ const ValidatorCreate = () => {
         setIsLoading(true)
         let account = await getAccount() as Account;
         let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
- 
-        if (validator && validator.transactionHash) {        
+        
+        if (validator && validator.status === 1) {        
             Alert.success('Create validator success.')
             setHashTransaction(validator.transactionHash)
         }
