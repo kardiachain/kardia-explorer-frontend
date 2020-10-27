@@ -6,5 +6,5 @@ export const ErrorMessage = {
     PrivateKeyInvalid: 'Private Key format is invalid',
     AddressInvalid: 'Address format is invalid',
     AmountNotZero: 'Send amount must be greater than 0',
-    BalanceNotEnough: 'Not enough KAI to send'
+    BalanceNotEnough: 'Not enough KAI to send',
 }
