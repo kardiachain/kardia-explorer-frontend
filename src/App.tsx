@@ -24,6 +24,8 @@ import TxList from './pages/TxList/TxList';
 import Blocks from './pages/Blocks/Blocks';
 import BlockDetail from './pages/BlockDetail';
 import AccessByKeyStore from './pages/Wallet/AccessMyWallet/AccessByKeyStore';
+import ValidatorDetail from './pages/Staking/ValidatorDetail';
+import Validators from './pages/Staking';
 
 class App extends Component {
   render() {
@@ -44,6 +46,12 @@ class App extends Component {
                 </Route>
                 <Route path="/network">
                   <Network />
+                </Route>
+                <Route path="/validators">
+                  <Validators />
+                </Route>
+                <Route path="/validator/:valAddr">
+                  <ValidatorDetail />
                 </Route>
                 <Route path="/tx/:txHash">
                   <TxDetail />

@@ -99,9 +99,10 @@ const Header = () => {
                     </Dropdown>
                     <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
                     <Nav.Item eventKey="wallet" href={!isLoggedIn() ? "/wallet" : "/dashboard/send-transaction"}>Wallet</Nav.Item>
+                    <Nav.Item eventKey="network" href="/validators" >Staking</Nav.Item>
                     <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
                 </Nav>
-                {/* <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight className="kardia-nav">
+                <Nav onSelect={setActiveKey} activeKey={activeKey} pullRight className="kardia-nav">
 
                     {
                         !isLoggedIn() ? (
@@ -113,19 +114,19 @@ const Header = () => {
                                 <Dropdown.Item eventKey="access-wallet" href="/access-your-wallet">Access your wallet</Dropdown.Item>
                             </Dropdown>
                         ) : (
-                                <Dropdown
-                                    icon={<Icon icon="money" size="lg" />}
-                                    placement="bottomEnd"
-                                    noCaret>
-                                    <Dropdown.Item eventKey="send-transaction" href="/dashboard/send-transaction">Send transaction</Dropdown.Item>
-                                    <Dropdown.Item eventKey="staking" href="/dashboard/staking">Staking</Dropdown.Item>
-                                    <Dropdown.Item eventKey="smart-contract" href="/dashboard/smart-contract">Smart contract</Dropdown.Item>
-                                    <Dropdown.Item eventKey="transaction-history"href="/dashboard/transaction-history">Transactions history</Dropdown.Item>
-                                    <Dropdown.Item eventKey="logout-wallet" href="/wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
-                                </Dropdown>
-                            )
+                            <Dropdown
+                                icon={<Icon icon="money" size="lg" />}
+                                placement="bottomEnd"
+                                noCaret>
+                                <Dropdown.Item eventKey="send-transaction" href="/dashboard/send-transaction">Send transaction</Dropdown.Item>
+                                <Dropdown.Item eventKey="staking" href="/dashboard/staking">Staking</Dropdown.Item>
+                                <Dropdown.Item eventKey="smart-contract" href="/dashboard/smart-contract">Smart contract</Dropdown.Item>
+                                <Dropdown.Item eventKey="transaction-history"href="/dashboard/transaction-history">Transactions history</Dropdown.Item>
+                                <Dropdown.Item eventKey="logout-wallet" href="/wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
+                            </Dropdown>
+                        )
                     }
-                </Nav> */}
+                </Nav>
                 <Nav className="kardia-nav search-wrapper" pullRight><SearchSection /></Nav>
             </Navbar.Body>
         </Navbar>

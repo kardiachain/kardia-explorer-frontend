@@ -2,7 +2,8 @@
     font-weight: 700;
 }
 
-.del-list-container {
+.del-list-container,
+.val-info-container {
     margin-top: 20px;
 }
 
@@ -11,8 +12,7 @@
 }
 
 .del-staking-container {
-    /* width: 80%; */
-    margin: 0 auto;
+    margin-top: 40px
 }
 
 .register-button {
@@ -30,7 +30,9 @@
     margin: 20px 0;
 }
 
+.del-staking-container .label,
 .register-form .label {
+    margin-bottom: 5px;
     margin-top: 20px;
     font-size: 16px;
     font-weight: 600;
