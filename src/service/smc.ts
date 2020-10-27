@@ -69,9 +69,19 @@ const getDelegationsByValidator = async (valAddr: string): Promise<Delegator[]> 
     return delegators
 }
 
-const getValidatorsByDelegator = async (delAddr: string): Promise<String> => {
+const getValidatorsByDelegator = async (delAddr: string): Promise<ValidatorFromSMC[]> => {
     const valAddr = await invokeCallData("getValidatorsByDelegator", [delAddr])
-    return valAddr
+    let validators: ValidatorFromSMC[] = [];
+
+    if (valAddr.length === 0) return validators
+    
+    for (let i = 0; i < valAddr.length; i++) {
+        let validator: ValidatorFromSMC = {
+            address: valAddr[i],
+        }
+        validators.push(validator)
+    }
+    return validators
 }
 
 const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {

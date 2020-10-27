@@ -2,7 +2,8 @@
     font-weight: 700;
 }
 
-.del-list-container {
+.del-list-container,
+.val-info-container {
     margin-top: 20px;
 }
 

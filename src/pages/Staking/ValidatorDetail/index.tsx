@@ -39,12 +39,12 @@ const ValidatorDetail = () => {
                                     <span className="property-title">Total delegator: </span> 100
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Voting power: </span> 5%
+                                    <span className="property-title">Voting power: </span> 100
                                 </List.Item>
                             </List>
                             <ButtonToolbar style={{marginTop: '30px'}}>
                                 <Button color="violet"
-                                    onClick={() => { isLoggedIn() ? history.push(`/dashboard/validator/${valAddr}`) : history.push('/wallet') }}
+                                    onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${valAddr}`) : history.push('/wallet') }}
                                 >
                                     Delegate for this validator
                                 </Button>

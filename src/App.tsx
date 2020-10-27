@@ -24,8 +24,8 @@ import TxList from './pages/TxList/TxList';
 import Blocks from './pages/Blocks/Blocks';
 import BlockDetail from './pages/BlockDetail';
 import AccessByKeyStore from './pages/Wallet/AccessMyWallet/AccessByKeyStore';
-import Validators from './pages/Validators';
-import ValidatorDetail from './pages/Validators/ValidatorDetail';
+import ValidatorDetail from './pages/Staking/ValidatorDetail';
+import Validators from './pages/Staking';
 
 class App extends Component {
   render() {

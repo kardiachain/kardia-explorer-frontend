@@ -7,8 +7,9 @@ import SendTransaction from './SendTransaction';
 import Validators from './Validators';
 import SmartContract from './SmartContract';
 import TransactionHistory from './TransactionHistory';
-import ValidatorDetail from './Validators/ValidatorDetail';
+import DelegatorCreate from './Delegators/DelegatorCreate';
 import { useViewport } from '../../../context/ViewportContext';
+import Delegator from './Delegators';
 
 const DashboardWallet = () => {
     const [activeKey, setActiveKey] = useState("0");
@@ -19,18 +20,15 @@ const DashboardWallet = () => {
             {
                 !isMobile ? (
                     <div className="left-container">
-                    <Sidenav onSelect={setActiveKey}>
+                    <Sidenav defaultOpenKeys={['staking']} onSelect={setActiveKey}>
                         <Sidenav.Body>
                             <Nav>
                                 <Nav.Item eventKey="1" active={activeKey === "1"} href="/dashboard/send-transaction" icon={<Icon icon="send" />}>
                                     Send transaction
                                 </Nav.Item>
-                                {/* <Nav.Item eventKey="2" active={activeKey === "2"} href="/dashboard/staking" icon={<Icon icon="group" />}>
-                                    Staking
-                                </Nav.Item> */}
-                                <Dropdown eventKey="wallet" icon={<Icon icon="group" />} title="Staking" open={true}>
-                                    <Dropdown.Item href="/dashboard/staking/validator">Validator</Dropdown.Item>
-                                    <Dropdown.Item href="/dashboard/staking/delegator">Delegator</Dropdown.Item>
+                                <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
+                                    <Dropdown.Item eventKey="validator" href="/dashboard/staking/your-delegators">Your Delegators</Dropdown.Item>
+                                    <Dropdown.Item  eventKey="delegator" href="/dashboard/staking/your-validators">Your Validators</Dropdown.Item>
                                 </Dropdown>
                                 <Nav.Item eventKey="3" active={activeKey === "3"} href="/dashboard/smart-contract" icon={<Icon icon="file-code-o" />}>
                                     Smart contract
@@ -51,11 +49,11 @@ const DashboardWallet = () => {
                     <Route path="/dashboard/send-transaction">
                         <SendTransaction />
                     </Route>
-                    {/* <Route path="/dashboard/staking">
+                    <Route path="/dashboard/staking/your-delegators">
                         <Validators />
-                    </Route> */}
-                    <Route path="/dashboard/staking/validator">
-                        <Validators />
+                    </Route>
+                    <Route path="/dashboard/staking/your-validators">
+                        <Delegator />
                     </Route>
                     <Route path="/dashboard/smart-contract">
                         <SmartContract />
@@ -63,8 +61,8 @@ const DashboardWallet = () => {
                     <Route path="/dashboard/transaction-history">
                         <TransactionHistory />
                     </Route>
-                    <Route path="/dashboard/validator/:valAddr">
-                        <ValidatorDetail />
+                    <Route path="/dashboard/staking/:valAddr">
+                        <DelegatorCreate />
                     </Route>
                 </Switch>
             </div>

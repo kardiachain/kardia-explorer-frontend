@@ -9,10 +9,10 @@ import { renderHashString, renderHashToRedirect } from '../../../../common/utils
 import { useViewport } from '../../../../context/ViewportContext';
 import { delegateAction, getDelegationsByValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
-import './validators.css';
+// import './validators.css';
 const { Column, HeaderCell, Cell } = Table;
 
-const ValidatorDetail = () => {
+const DelegatorCreate = () => {
     const history = useHistory()
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const { isMobile } = useViewport();
@@ -67,8 +67,8 @@ const ValidatorDetail = () => {
                                 <List.Item bordered={false}>
                                     <span className="property-title">Total delegator: </span> 100
                                 </List.Item>
-                                <List.Item  bordered={false}>
-                                    <span className="property-title">Voting power: </span> 5%
+                                <List.Item bordered={false}>
+                                    <span className="property-title">Voting power: </span> 100
                                 </List.Item>
                             </List>
                             <div className="del-staking-container">
@@ -95,7 +95,12 @@ const ValidatorDetail = () => {
                                     </FormGroup>
                                 </Form>
                                 {
-                                    hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect(hashTransaction, 50, () => { history.push(`/tx/${hashTransaction}`) })}</div> : <></>
+                                    hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect({
+                                        hash: hashTransaction,
+                                        headCount: 50,
+                                        tailCount: 4,
+                                        callback: () => { history.push(`/tx/${hashTransaction}`) }
+                                    })}</div> : <></>
                                 }
                             </div>
                         </Panel>
@@ -138,4 +143,4 @@ const ValidatorDetail = () => {
     )
 }
 
-export default ValidatorDetail;
+export default DelegatorCreate;

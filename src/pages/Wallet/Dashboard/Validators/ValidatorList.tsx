@@ -35,7 +35,7 @@ const ValidatorList = () => {
                         <Cell>
                             {(rowData: ValidatorFromSMC) => {
                                 return (
-                                    <div>{truncate(rowData.address, isMobile ? 10 : 50)}</div>
+                                    <div>{truncate(rowData.address, isMobile ? 10 : 50, 4)}</div>
                                 );
                             }}
                         </Cell>

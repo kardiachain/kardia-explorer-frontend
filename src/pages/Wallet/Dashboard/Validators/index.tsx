@@ -48,26 +48,6 @@ const Validators = () => {
         ) : (
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
-                    <div className="val-info-container">
-                        <Panel header={<h4>Validator information</h4>} shaded>
-                            <List>
-                                <List.Item>
-                                    <span className="property-title">Validator address: </span> {'0x886906c1bf89bd5a5265bc3fccc9c4e053f52050'}
-                                </List.Item>
-                                <List.Item>
-                                    <span className="property-title">Commission: </span> 5%
-                            </List.Item>
-                                <List.Item>
-                                    <span className="property-title">Total delegator: </span> 100
-                            </List.Item>
-                                <List.Item>
-                                    <span className="property-title">Voting power: </span> 5%
-                            </List.Item>
-                            </List>
-                        </Panel>
-                    </div>
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div className="del-list-container">
                         <Panel header={<h4>Your Delegators</h4>} shaded>
                             <Table
@@ -96,6 +76,26 @@ const Validators = () => {
                                     </Cell>
                                 </Column>
                             </Table>
+                        </Panel>
+                    </div>
+                </FlexboxGrid.Item>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={10}>
+                    <div className="val-info-container">
+                        <Panel header={<h4>Validator information</h4>} shaded>
+                            <List>
+                                <List.Item>
+                                    <span className="property-title">Validator address: </span> {'0x886906c1bf89bd5a5265bc3fccc9c4e053f52050'}
+                                </List.Item>
+                                <List.Item>
+                                    <span className="property-title">Commission: </span> 5%
+                            </List.Item>
+                                <List.Item>
+                                    <span className="property-title">Total delegator: </span> 100
+                            </List.Item>
+                                <List.Item>
+                                    <span className="property-title">Voting power: </span> 100
+                            </List.Item>
+                            </List>
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>

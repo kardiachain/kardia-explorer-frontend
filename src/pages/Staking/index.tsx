@@ -6,7 +6,7 @@ import { renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getValidatorsFromSMC } from '../../service/smc';
 import { isLoggedIn } from '../../service/wallet';
-import './validators.css'
+import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
 const Validators = () => {
@@ -19,6 +19,8 @@ const Validators = () => {
             setValidators(valFromSmc)
         })()
     }, []);
+    
+
     return (
         <div className="validators-container">
             <FlexboxGrid justify="space-between">
@@ -28,7 +30,7 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ textAlign: 'right' }}>
                     <ButtonToolbar>
                         <Button color="violet"
-                            onClick={() => { isLoggedIn() ? history.push("/dashboard/staking") : history.push('/wallet') }}
+                            onClick={() => { isLoggedIn() ? history.push("/dashboard/staking/your-delegators") : history.push('/wallet') }}
                         >
                             Register to become validator
                         </Button>
@@ -51,7 +53,12 @@ const Validators = () => {
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
                                             <div>
-                                                {renderHashToRedirect(rowData.address, isMobile ? 20 : 50, () => { history.push(`/validator/${rowData.address}`) })}
+                                                {renderHashToRedirect({
+                                                    hash: rowData?.address,
+                                                    headCount: isMobile ? 20 : 50,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/validator/${rowData?.address}`) }
+                                                })}
                                             </div>
                                         );
                                     }}
@@ -72,7 +79,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <div>{`${rowData.commission} %`}</div>
+                                            <div>{`${rowData.commission || '0'} %`}</div>
                                         );
                                     }}
                                 </Cell>
@@ -82,7 +89,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <Button color="violet" onClick={() => { isLoggedIn() ? history.push(`/dashboard/validator/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                            <Button color="violet" onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                                         );
                                     }}
                                 </Cell>
