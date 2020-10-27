@@ -39,6 +39,7 @@ const Blocks = () => {
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
+                                    wordWrap
                                     virtualized
                                     hover={false}
                                     rowHeight={60}
@@ -67,7 +68,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column width={400}>
                                         <HeaderCell>Block Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -84,7 +85,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column width={400}>
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -101,7 +102,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={100}>
+                                    <Column width={400}>
                                         <HeaderCell>Txn</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {

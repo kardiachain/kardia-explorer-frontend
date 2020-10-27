@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Alert, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, Message, Panel } from 'rsuite';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
-import { renderHashString, validAddress } from '../../common/utils/string';
+import { renderHashString } from '../../common/utils/string';
+import { addressValid } from '../../common/utils/validate';
 import { FAUCET_ENDPOINT } from '../../config/api';
 import './faucet.css';
 
@@ -16,8 +17,8 @@ const Faucet = () => {
             setWalletAddrErr(ErrorMessage.Require)
             return false
         }
-        if (!validAddress(walletAddress)) {
-            setWalletAddrErr(ErrorMessage.InvalidAddress)
+        if (!addressValid(walletAddress)) {
+            setWalletAddrErr(ErrorMessage.AddressInvalid)
             return false
         }
         setWalletAddrErr('')
