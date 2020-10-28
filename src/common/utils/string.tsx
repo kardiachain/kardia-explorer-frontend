@@ -38,11 +38,7 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
     return (
         <span>
             {truncate(hash, headCount || 10, tailCount || 4)}{' '}
-            <IconButton
-                onClick={() => copyToClipboard(hash, onSuccess)}
-                size="xs"
-                icon={<Icon icon="copy" />}
-            />
+            {renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
         </span>
     );
 }
