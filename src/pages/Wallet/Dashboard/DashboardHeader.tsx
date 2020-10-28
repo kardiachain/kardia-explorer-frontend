@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Icon, Panel, Row } from 'rsuite';
+import { Alert, Col, Icon, Panel, Row } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
+import { copyToClipboard } from '../../../common/utils/string';
 import { getBalance } from '../../../service/kai-explorer';
 import { getAccount } from '../../../service/wallet';
 import './dashboard.css';
@@ -13,6 +14,10 @@ const DashboardHeader = () => {
         getBalance(account.publickey).then(setBalance);
     }, [account])
 
+    const onSuccess = () => {
+        Alert.success('Copied to clipboard.')
+    }
+
     return (
         <Row className="wallet-header-container">
             <Col md={12} sm={24} xs={24}>
@@ -22,7 +27,7 @@ const DashboardHeader = () => {
                         <div style={{ wordBreak: 'break-all' }}>{account.publickey}</div>
                         <div className="action">
                             <Icon icon="qrcode" size="lg" />
-                            <Icon icon="copy" size="lg" />
+                            <Icon icon="copy" size="lg" onClick={() => copyToClipboard(account.publickey, onSuccess)} />
                             <Icon icon="print" size="lg" />
                         </div>
                     </div>
