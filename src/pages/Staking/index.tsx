@@ -29,7 +29,7 @@ const Validators = () => {
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ textAlign: 'right' }}>
                     <ButtonToolbar>
-                        <Button color="violet"
+                        <Button appearance="primary"
                             onClick={() => { isLoggedIn() ? history.push("/dashboard/staking/your-delegators") : history.push('/wallet') }}
                         >
                             Register to become validator
@@ -66,11 +66,11 @@ const Validators = () => {
                                 </Cell>
                             </Column>
                             <Column width={200} verticalAlign="middle" align="center">
-                                <HeaderCell>Delegations Shares</HeaderCell>
+                                <HeaderCell>Total Staked Amount</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <div>{weiToKAI(rowData.delegationsShares)} KAI</div>
+                                            <div>{weiToKAI(rowData.totalStakedAmount)} KAI</div>
                                         );
                                     }}
                                 </Cell>
@@ -110,7 +110,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <Button color="violet" onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                            <Button appearance="primary" onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                                         );
                                     }}
                                 </Cell>

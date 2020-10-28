@@ -30,20 +30,20 @@ const ValidatorDetail = () => {
                         <Panel header={<h4>Validator information</h4>} shaded>
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Address: </span> {renderHashString(valAddr, 50)}
+                                    <span className="property-title">Address: </span> {renderHashString(validator?.address || '', 50)}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total Delegator: </span> {delegators.length}
+                                    <span className="property-title">Total Delegator: </span> {validator?.totalDels}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Delegations Shares: </span> {weiToKAI(validator?.delegationsShares)} KAI
+                                    <span className="property-title">Total staked amount: </span> {weiToKAI(validator?.totalStakedAmount)}
                                 </List.Item>
                                 <List.Item>
                                     <span className="property-title">Voting Power: </span> {validator?.votingPower}
                                 </List.Item>
                             </List>
                             <ButtonToolbar style={{marginTop: '30px'}}>
-                                <Button color="violet"
+                                <Button appearance="primary"
                                     onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${valAddr}`) : history.push('/wallet') }}
                                 >
                                     Delegate for this validator
@@ -63,7 +63,7 @@ const ValidatorDetail = () => {
                                 data={delegators}
                             >
                                 <Column width={400} verticalAlign="middle">
-                                    <HeaderCell>Address</HeaderCell>
+                                    <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
@@ -73,11 +73,21 @@ const ValidatorDetail = () => {
                                     </Cell>
                                 </Column>
                                 <Column width={isMobile ? 120 : 300} verticalAlign="middle">
-                                    <HeaderCell>Delegate Amount</HeaderCell>
+                                    <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {weiToKAI(rowData.delegationsShares)} KAI</div>
+                                                <div> {weiToKAI(rowData.stakeAmount)} KAI</div>
+                                            );
+                                        }}
+                                    </Cell>
+                                </Column>
+                                <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                    <HeaderCell>Rewards Amount</HeaderCell>
+                                    <Cell>
+                                        {(rowData: Delegator) => {
+                                            return (
+                                                <div> {weiToKAI(rowData.rewardsAmount)} KAI</div>
                                             );
                                         }}
                                     </Cell>

@@ -140,6 +140,8 @@ const ValidatorCreate = () => {
         if (validator && validator.status === 1) {        
             Alert.success('Create validator success.')
             setHashTransaction(validator.transactionHash)
+        } else {
+            Alert.error('Create validator failed')
         }
         resetForm();
         setIsLoading(false)
@@ -217,7 +219,7 @@ const ValidatorCreate = () => {
                 </FormGroup>
                 <FormGroup>
                     <ButtonToolbar>
-                        <Button color="violet" loading={isLoading} onClick={registerValidator}>Register</Button>
+                        <Button appearance="primary" loading={isLoading} onClick={registerValidator}>Register</Button>
                     </ButtonToolbar>
                 </FormGroup>
             </Form>

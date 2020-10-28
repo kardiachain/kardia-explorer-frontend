@@ -1,4 +1,3 @@
-import { cellValue } from '../common/utils/amount';
 import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import STAKING_BYTE_CODE from '../resources/smc-compile/staking-bin.json'
@@ -47,6 +46,7 @@ const getValidatorsFromSMC = async (): Promise<ValidatorFromSMC[]> => {
         const votingPower = await getValidatorPower(invoke[0][i])
         let validator: ValidatorFromSMC = {
             address: invoke[0][i],
+            totalStakedAmount: invoke[1][i],
             delegationsShares: invoke[2][i],
             totalDels: totalDels,
             votingPower: votingPower
@@ -62,13 +62,32 @@ const getDelegationsByValidator = async (valAddr: string): Promise<Delegator[]> 
     if (!valAddr) return delegators;
     const invoke = await invokeCallData("getDelegationsByValidator", [valAddr])
     for (let i = 0; i < invoke[0].length; i++) {
+        const delAddr = invoke[0][i]
+        const stakeAmount = await getDelegatorStake(valAddr, delAddr)
+        const rewardAmount = await getDelegationRewards(valAddr, delAddr)
         let delegator: Delegator = {
-            address: invoke[0][i],
-            delegationsShares: invoke[1][i]
+            address: delAddr,
+            delegationsShares: invoke[1][i],
+            stakeAmount: stakeAmount,
+            validatorAddress: valAddr,
+            rewardsAmount: rewardAmount
         }
         delegators.push(delegator)
     }
     return delegators
+}
+
+
+// Get delegator stake amount for validator
+// @return stakeAmount
+const getDelegatorStake = async (valAddr: string, delAddr: string): Promise<number> => {
+    return await invokeCallData("getDelegatorStake", [valAddr, delAddr])
+}
+
+// Get delegator rewards amount with special validator
+// @return rewardAmount
+const getDelegationRewards = async (valAddr: string, delAddr: string): Promise<number> => {
+    return await invokeCallData("getDelegationRewards", [valAddr, delAddr])
 }
 
 const getNumberDelOfValidator = async (valAddr: string): Promise<number> => {
@@ -77,13 +96,18 @@ const getNumberDelOfValidator = async (valAddr: string): Promise<number> => {
     return listVals.length
 }
 
-const getValidatorsByDelegator = async (delAddr: string): Promise<ValidatorFromSMC[]> => {
+const getValidatorsByDelegator = async (delAddr: string): Promise<YourValidator[]> => {
     const valAddr = await invokeCallData("getValidatorsByDelegator", [delAddr])
-    let validators: ValidatorFromSMC[] = [];
+    let validators: YourValidator[] = [];
     if (valAddr.length === 0) return validators
     for (let i = 0; i < valAddr.length; i++) {
-        let validator: ValidatorFromSMC = {
-            address: valAddr[i],
+        const valAddress = valAddr[i];
+        const stakeAmount = await getDelegatorStake(valAddress, delAddr)
+        const rewardAmount = await getDelegationRewards(valAddress, delAddr)
+        const validator: YourValidator = {
+            validatorAddr: valAddress,
+            yourStakeAmount: stakeAmount,
+            yourRewardAmount: rewardAmount
         }
         validators.push(validator)
     }
@@ -93,13 +117,18 @@ const getValidatorsByDelegator = async (delAddr: string): Promise<ValidatorFromS
 const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
     const invoke = await invokeCallData("getValidator", [valAddr])
     const votingPower = await getValidatorPower(valAddr)
-    let validators: ValidatorFromSMC = {
-        address: invoke[0],
+    const totalDels = await getNumberDelOfValidator(valAddr)
+    
+    let validator: ValidatorFromSMC = {
+        address: valAddr,
+        totalStakedAmount: invoke[0],
         delegationsShares: invoke[1],
         jailed: invoke[2],
-        votingPower: votingPower
+        votingPower: votingPower,
+        totalDels: totalDels
     }
-    return validators
+    
+    return validator
 }
 
 const isValidator = async (valAddr: string): Promise<boolean> => {
@@ -124,13 +153,23 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
-    const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
+    // const cellAmountDel = cellValue(amountDel);
+    return await invokeSendAction("delegate", [valAddr], account, amountDel);
 }
 
 const createValidator = async (commssionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
-    const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("createValidator", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, cellAmountDel);
+    // const cellAmountDel = cellValue(amountDel);
+    return await invokeSendAction("createValidator", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, amountDel);
+}
+
+// Delegator withdraw reward
+const withdrawReward = async (valAddr: string, account: Account) => {
+    return await invokeSendAction("withdrawReward", [valAddr], account, 0)
+}
+
+// Delegator withdraw
+const withdraw = async (valAddr: string, account: Account) => {
+    return await invokeSendAction("withdraw", [valAddr], account, 0)
 }
 
 export {
@@ -145,5 +184,7 @@ export {
     getValidatorsFromSMC,
     isValidator,
     getNumberDelOfValidator,
-    getValidatorPower
+    getValidatorPower,
+    withdrawReward,
+    withdraw
 }

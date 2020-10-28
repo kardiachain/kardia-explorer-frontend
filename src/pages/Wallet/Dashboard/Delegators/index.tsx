@@ -39,6 +39,8 @@ const Delegator = () => {
         setWithdrawLoading(valAddr)
         try {
             const withdrawTx = await withdraw(valAddr, myAccount);
+            console.log(withdrawTx);
+            
             if (withdrawTx && withdrawTx.status) {
                 Alert.success('Withdraw success.')
             } else {
@@ -112,9 +114,9 @@ const Delegator = () => {
                             {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
-                                        <Button appearance="primary"
-                                            loading={withdrawLoading === rowData.validatorAddr}
-                                            onClick={() => { widthdraw(rowData.validatorAddr) }}>
+                                        <Button  appearance="primary"
+                                        loading={withdrawLoading === rowData.validatorAddr }
+                                        onClick={() => {widthdraw(rowData.validatorAddr)}}>
                                             Withdraw
                                         </Button>
                                     </ButtonToolbar>
