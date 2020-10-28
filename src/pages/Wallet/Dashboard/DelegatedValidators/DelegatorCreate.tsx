@@ -91,7 +91,7 @@ const DelegatorCreate = () => {
                                     </FormGroup>
                                     <FormGroup>
                                         <ButtonToolbar>
-                                            <Button color="violet" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
+                                            <Button  appearance="primary" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
                                         </ButtonToolbar>
                                     </FormGroup>
                                 </Form>

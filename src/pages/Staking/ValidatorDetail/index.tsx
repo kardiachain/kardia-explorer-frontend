@@ -43,7 +43,7 @@ const ValidatorDetail = () => {
                                 </List.Item>
                             </List>
                             <ButtonToolbar style={{marginTop: '30px'}}>
-                                <Button color="violet"
+                                <Button appearance="primary"
                                     onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${valAddr}`) : history.push('/wallet') }}
                                 >
                                     Delegate for this validator

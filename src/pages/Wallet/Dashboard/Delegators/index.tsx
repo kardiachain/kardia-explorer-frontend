@@ -114,7 +114,7 @@ const Delegator = () => {
                             {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
-                                        <Button appearance="primary"
+                                        <Button  appearance="primary"
                                         loading={withdrawLoading === rowData.validatorAddr }
                                         onClick={() => {widthdraw(rowData.validatorAddr)}}>
                                             Withdraw
