@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Alert, Button, ButtonToolbar, Form, FormControl, FormGroup } from 'rsuite';
+import { Alert, Button, ButtonToolbar, Form, FormControl, FormGroup, Modal } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyNumber } from '../../../../common/utils/number';
@@ -26,6 +26,7 @@ const ValidatorCreate = () => {
     const [amountDelErr, setAmountDelErr] = useState('')
 
     const [hashTransaction, setHashTransaction] = useState('')
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     useEffect(() => {
         if (commissionRate) setCommissionRateErr('');
@@ -129,15 +130,18 @@ const ValidatorCreate = () => {
         return true
     }
 
-    const registerValidator = async () => {
+    const submitValidator = () => {
         if (!validateCommissionRate() || !validateMaxRate() || !validateMaxChangeRate() || !validateMinSelfDelegation() || !validateAmountDel()) {
             return
         }
+        setShowConfirmModal(true)
+    }
+
+    const registerValidator = async () => {
         setIsLoading(true)
         let account = await getAccount() as Account;
         let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
-        
-        if (validator && validator.status === 1) {        
+        if (validator && validator.status === 1) {
             Alert.success('Create validator success.')
             setHashTransaction(validator.transactionHash)
         } else {
@@ -145,6 +149,7 @@ const ValidatorCreate = () => {
         }
         resetForm();
         setIsLoading(false)
+        setShowConfirmModal(false)
     }
 
     return (
@@ -219,13 +224,36 @@ const ValidatorCreate = () => {
                 </FormGroup>
                 <FormGroup>
                     <ButtonToolbar>
-                        <Button appearance="primary" loading={isLoading} onClick={registerValidator}>Register</Button>
+                        <Button appearance="primary" onClick={submitValidator}>Register</Button>
                     </ButtonToolbar>
                 </FormGroup>
             </Form>
             {
-                hashTransaction ? <div style={{marginTop: '20px'}}>Txs create validator: {renderHashToRedirect({hash: hashTransaction, headCount: 100, tailCount: 4, callback: () => { history.push(`/tx/${hashTransaction}`) }})}</div> : <></>
+                hashTransaction ? <div style={{ marginTop: '20px' }}>Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, callback: () => { history.push(`/tx/${hashTransaction}`) } })}</div> : <></>
             }
+
+            {/* Modal confirm when create validator */}
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Confirm create validator</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to create validator with: </div>
+                    <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {commissionRate} %</span></div>
+                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxRate} KAI</span></div>
+                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxChangeRate} KAI</span></div>
+                    <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
+                    <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {amountDel} KAI</span></div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => { setShowConfirmModal(false) }} appearance="subtle">
+                        Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={registerValidator} appearance="primary">
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
