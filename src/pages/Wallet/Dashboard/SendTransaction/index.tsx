@@ -159,9 +159,9 @@ const SendTransaction = () => {
                     <Modal.Title>Confirm send transaction</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{textAlign:'center'}}>Are you sure you want to transfer <span style={{fontWeight: 'bold', color: 'red'}}>{amount} KAI</span></div>
+                    <div style={{textAlign:'center'}}>Are you sure you want to transfer <span style={{fontWeight: 'bold', color: '#36638A'}}>{amount} KAI</span></div>
                     <div style={{textAlign:'center'}}>TO</div>
-                    <div style={{textAlign:'center'}}>{toAddress}</div>
+                    <div style={{textAlign:'center', fontWeight: 'bold', color: '#36638A'}}>{toAddress}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => {setShowConfirmModal(false)}} appearance="subtle">
