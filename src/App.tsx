@@ -47,7 +47,7 @@ class App extends Component {
                 <Route path="/network">
                   <Network />
                 </Route>
-                <Route path="/validators">
+                <Route path="/staking">
                   <Validators />
                 </Route>
                 <Route path="/validator/:valAddr">
@@ -59,7 +59,7 @@ class App extends Component {
                 <Route path="/block/:block">
                   <BlockDetail />
                 </Route>
-                <Route path="/wallet">
+                <Route path="/wallet-login">
                   <Wallet />
                 </Route>
                 <Route path="/create-wallet">
@@ -80,7 +80,7 @@ class App extends Component {
                 <Route path="/access-keystore">
                   <AccessByKeyStore />
                 </Route>
-                <Route path="/dashboard">
+                <Route path="/wallet">
                   <DashboardWallet />
                 </Route>
                 <Route path="/faucet">

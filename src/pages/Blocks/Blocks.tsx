@@ -30,7 +30,7 @@ const Blocks = () => {
     }, [page, size])
 
     return (
-        <div className="block-container">
+        <div className="container block-container">
             <h3>Blocks</h3>
             <Divider />
             <FlexboxGrid justify="space-between">

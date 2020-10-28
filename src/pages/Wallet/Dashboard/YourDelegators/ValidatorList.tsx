@@ -27,7 +27,7 @@ const ValidatorList = () => {
                     rowHeight={50}
                     data={validators}
                     onRowClick={validator => {
-                        history.push(`/dashboard/validator?id=${validator.address}`)
+                        history.push(`/wallet/validator?id=${validator.address}`)
                     }}
                 >
                     <Column width={isMobile ? 120 : 450} verticalAlign="middle">

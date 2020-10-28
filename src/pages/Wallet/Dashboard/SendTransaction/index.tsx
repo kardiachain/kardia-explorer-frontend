@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Button, Icon, Alert, ControlLabel } from 'rsuite'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Button, Icon, Alert, ControlLabel, Modal } from 'rsuite'
 import { ErrorMessage } from '../../../../common/constant/Message'
 import { onlyNumber } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
@@ -9,7 +9,6 @@ import { getAccount, generateTx } from '../../../../service/wallet'
 import { getBalance } from '../../../../service/kai-explorer'
 import { weiToKAI } from '../../../../common/utils/amount'
 import { renderHashToRedirect } from '../../../../common/utils/string'
-import { useHistory } from 'react-router-dom'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState(0)
@@ -22,9 +21,9 @@ const SendTransaction = () => {
     const myAccount = getAccount() as Account
     const [sendBntLoading, setSendBntLoading] = useState(false)
     const [txHash, setTxHash] = useState(false)
-    const history = useHistory()
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
     useEffect(() => {
-        (async() => {
+        (async () => {
             const balance = await getBalance(myAccount.publickey)
             setBalance(Number(weiToKAI(balance)))
         })()
@@ -69,16 +68,31 @@ const SendTransaction = () => {
         return true
     }
 
-    const sendKAI = async () => {
-        if(!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit)) {
+    const resetFrom = () => {
+        setAmount(0);
+        setToAddress('');
+        setGasLimit(21000)
+    }
+
+    const submitSend = () => {
+        if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit)) {
             return
         }
-        
+        setShowConfirmModal(true)
+    }
+
+    const confirmSend = async () => {
         setSendBntLoading(true)
         const txHash = await generateTx(myAccount, toAddress, amount, gasLimit)
-        setTxHash(txHash);
+        if (txHash) {
+            setTxHash(txHash);
+            Alert.success('Send transaction success.')
+        } else {
+            Alert.error('Send transaction failed.')
+        }
+        resetFrom()
+        setShowConfirmModal(false)
         setSendBntLoading(false)
-        Alert.success('Create transaction success.') 
     }
 
     return (
@@ -131,15 +145,33 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button loading={sendBntLoading} appearance="primary" onClick={sendKAI}>Send KAI <Icon icon="space-shuttle"/></Button>
+                                <Button appearance="primary" onClick={submitSend}>Send KAI <Icon icon="space-shuttle" /></Button>
                             </FlexboxGrid.Item>
                             {
-                                txHash ? <div style={{marginTop: '20px'}}> Txs hash: {renderHashToRedirect({hash: txHash, headCount: 100, tailCount: 4, callback: () => { history.push(`/tx/${txHash}`) }})}</div> : <></>
+                                txHash ? <div style={{ marginTop: '20px' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, callback: () => {window.open(`/tx/${txHash}`) } })}</div> : <></>
                             }
                         </FlexboxGrid>
                     </FormGroup>
                 </Form>
             </Panel>
+            <Modal backdrop="static" size="xs" enforceFocus={true} show={showConfirmModal} onHide={() => {setShowConfirmModal(false)}}>
+                <Modal.Header>
+                    <Modal.Title>Confirm send transaction</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{textAlign:'center'}}>Are you sure you want to transfer <span style={{fontWeight: 'bold', color: '#36638A'}}>{amount} KAI</span></div>
+                    <div style={{textAlign:'center'}}>TO</div>
+                    <div style={{textAlign:'center', fontWeight: 'bold', color: '#36638A'}}>{toAddress}</div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => {setShowConfirmModal(false)}} appearance="subtle">
+                        Cancel
+                    </Button>
+                    <Button loading={sendBntLoading} onClick={confirmSend} appearance="primary">
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

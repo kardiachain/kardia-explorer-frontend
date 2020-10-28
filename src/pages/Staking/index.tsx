@@ -22,15 +22,15 @@ const Validators = () => {
     
 
     return (
-        <div className="validators-container">
+        <div className="container validators-container">
             <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{marginBottom: isMobile ? '15px' : '0'}}>
                     <h3>Validators</h3>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ textAlign: 'right' }}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: isMobile ? 'left' : 'right' }}>
                     <ButtonToolbar>
                         <Button appearance="primary"
-                            onClick={() => { isLoggedIn() ? history.push("/dashboard/staking/your-delegators") : history.push('/wallet') }}
+                            onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
                         >
                             Register to become validator
                         </Button>
@@ -110,7 +110,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <Button appearance="primary" onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                            <Button appearance="primary" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                                         );
                                     }}
                                 </Cell>

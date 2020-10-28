@@ -1,13 +1,5 @@
-.tx-detail-container {
-    padding: 50px 100px;
-}
+
 .tx-detail-container .title {
     padding: 5px 0;
     font-weight: 700;
-}
-
-@media screen and (max-width: 620px) {
-    .tx-detail-container {
-        padding: 50px 10px;
-    }
 }

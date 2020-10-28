@@ -13,7 +13,7 @@ const CreateByPrivateKey = () => {
     }
 
     const [showPrivKey, setShowPrivKey] = useState(false)
-    const setWalletStored = useWalletStorage(() => history.push('/dashboard/send-transaction'))[1]
+    const setWalletStored = useWalletStorage(() => history.push('/wallet/send-transaction'))[1]
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 
