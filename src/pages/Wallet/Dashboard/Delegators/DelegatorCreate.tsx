@@ -7,7 +7,7 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { onlyNumber } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { delegateAction, getDelegationsByValidator } from '../../../../service/smc';
+import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 // import './validators.css';
 const { Column, HeaderCell, Cell } = Table;
@@ -15,6 +15,7 @@ const { Column, HeaderCell, Cell } = Table;
 const DelegatorCreate = () => {
     const history = useHistory()
     const [delegators, setDelegators] = useState([] as Delegator[]);
+    const [validator, setValidator] = useState<ValidatorFromSMC>()
     const { isMobile } = useViewport();
     const [isLoading, setIsLoading] = useState(false)
     const [delAmount, setDelAmount] = useState('')
@@ -23,9 +24,9 @@ const DelegatorCreate = () => {
     const { valAddr }: any = useParams();
 
     useEffect(() => {
-        getDelegationsByValidator(valAddr).then(rs => {
-            setDelegators(rs)
-        });
+        getDelegationsByValidator(valAddr).then(setDelegators);
+        getValidator(valAddr).then(setValidator)
+        
     }, [valAddr]);
 
     useEffect(() => {
@@ -62,13 +63,13 @@ const DelegatorCreate = () => {
                         <Panel header={<h4>{`Validator: ${valAddr}`}</h4>} shaded>
                             <List bordered={false}>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Commission: </span> 5%
+                                    <span className="property-title">Commission: </span> {validator?.commission || 0}
                                 </List.Item>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Total delegator: </span> 100
+                                    <span className="property-title">Total delegator: </span> {validator?.totalDels}
                                 </List.Item>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Voting power: </span> 100
+                                    <span className="property-title">Voting power: </span> {validator?.votingPower}
                                 </List.Item>
                             </List>
                             <div className="del-staking-container">
@@ -115,7 +116,7 @@ const DelegatorCreate = () => {
                                 data={delegators}
                             >
                                 <Column width={isMobile ? 120 : 500} verticalAlign="middle">
-                                    <HeaderCell>Delegator address</HeaderCell>
+                                    <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
@@ -125,11 +126,21 @@ const DelegatorCreate = () => {
                                     </Cell>
                                 </Column>
                                 <Column width={isMobile ? 120 : 300} verticalAlign="middle">
-                                    <HeaderCell>Share</HeaderCell>
+                                    <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {weiToKAI(rowData.delegationsShares)} KAI</div>
+                                                <div> {weiToKAI(rowData.stakeAmount)} KAI</div>
+                                            );
+                                        }}
+                                    </Cell>
+                                </Column>
+                                <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                    <HeaderCell>Rewards Amount</HeaderCell>
+                                    <Cell>
+                                        {(rowData: Delegator) => {
+                                            return (
+                                                <div> {weiToKAI(rowData.rewardsAmount)} KAI</div>
                                             );
                                         }}
                                     </Cell>

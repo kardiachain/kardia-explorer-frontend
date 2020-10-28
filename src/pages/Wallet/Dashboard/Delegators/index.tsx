@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonToolbar, Panel, Table } from 'rsuite';
-import { useViewport } from '../../../../context/ViewportContext';
+import { weiToKAI } from '../../../../common/utils/amount';
 import { getValidatorsByDelegator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 
 const { Column, HeaderCell, Cell } = Table;
 const Delegator = () => {
 
-    const { isMobile } = useViewport()
-    const [validators, setValidators] = useState([] as ValidatorFromSMC[])
+    const [yourValidators, setYourValidators] = useState([] as YourValidator[])
     const myAccount = getAccount() as Account
 
     useEffect(() => {
         (async () => {
-            const valFromSmc = await getValidatorsByDelegator(myAccount.publickey)
-            setValidators(valFromSmc)
+            const yourVals = await getValidatorsByDelegator(myAccount.publickey)
+            setYourValidators(yourVals)
         })()
     }, [myAccount.publickey]);
 
@@ -24,34 +23,34 @@ const Delegator = () => {
                 <Table
                     autoHeight
                     rowHeight={70}
-                    data={validators}
+                    data={yourValidators}
                 >
-                    <Column width={isMobile ? 200 : 400} verticalAlign="middle">
+                    <Column width={400} verticalAlign="middle">
                         <HeaderCell>Validator</HeaderCell>
                         <Cell>
-                            {(rowData: ValidatorFromSMC) => {
+                            {(rowData: YourValidator) => {
                                 return (
-                                    <div>{rowData.address}</div>
+                                    <div>{rowData.validatorAddr}</div>
                                 )
                             }}
                         </Cell>
                     </Column>
                     <Column width={200} verticalAlign="middle">
-                        <HeaderCell>Your delegate amount</HeaderCell>
+                        <HeaderCell>Stakes Amount</HeaderCell>
                         <Cell>
-                            {(rowData: ValidatorFromSMC) => {
+                            {(rowData: YourValidator) => {
                                 return (
-                                    <div>0</div>
+                                    <div>{weiToKAI(rowData.yourStakeAmount)} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
                     <Column width={200} verticalAlign="middle">
-                        <HeaderCell>Your rewards</HeaderCell>
+                        <HeaderCell>Rewards Amount</HeaderCell>
                         <Cell>
-                            {(rowData: ValidatorFromSMC) => {
+                            {(rowData: YourValidator) => {
                                 return (
-                                    <div>0</div>
+                                    <div>{weiToKAI(rowData.yourRewardAmount)} KAI</div>
                                 )
                             }}
                         </Cell>
@@ -59,7 +58,7 @@ const Delegator = () => {
                     <Column width={200} verticalAlign="middle">
                         <HeaderCell>Withdraw Rewards</HeaderCell>
                         <Cell>
-                            {(rowData: ValidatorFromSMC) => {
+                            {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
                                         <Button color="violet">
@@ -73,11 +72,11 @@ const Delegator = () => {
                     <Column width={200} verticalAlign="middle">
                         <HeaderCell>Withdraw </HeaderCell>
                         <Cell>
-                            {(rowData: ValidatorFromSMC) => {
+                            {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
                                         <Button color="violet">
-                                            Withdraw All
+                                            Withdraw
                                         </Button>
                                     </ButtonToolbar>
                                 )

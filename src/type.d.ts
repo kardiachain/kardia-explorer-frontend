@@ -54,17 +54,26 @@ interface KAIBlockDetails {
 
 interface ValidatorFromSMC {
     address: string;
-    tokens?: number;
     delegationsShares?: number;
     votingPower?: number;
     jailed?: boolean;
     commission?: number;
     totalDels?: number;
+    totalStakedAmount?: number;
+}
+
+interface YourValidator {
+    validatorAddr: string;
+    yourStakeAmount: number;
+    yourRewardAmount: number;
 }
 
 interface Delegator {
     address: string;
     delegationsShares: number;
+    stakeAmount: number;
+    validatorAddress: string;
+    rewardsAmount: number;
 }
 
 interface WalletStore {

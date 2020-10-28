@@ -66,11 +66,11 @@ const Validators = () => {
                                 </Cell>
                             </Column>
                             <Column width={200} verticalAlign="middle" align="center">
-                                <HeaderCell>Delegations Shares</HeaderCell>
+                                <HeaderCell>Total Staked Amount</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <div>{weiToKAI(rowData.delegationsShares)} KAI</div>
+                                            <div>{weiToKAI(rowData.totalStakedAmount)} KAI</div>
                                         );
                                     }}
                                 </Cell>
