@@ -39,8 +39,6 @@ const Delegator = () => {
         setWithdrawLoading(valAddr)
         try {
             const withdrawTx = await withdraw(valAddr, myAccount);
-            console.log(withdrawTx);
-            
             if (withdrawTx && withdrawTx.status) {
                 Alert.success('Withdraw success.')
             } else {
