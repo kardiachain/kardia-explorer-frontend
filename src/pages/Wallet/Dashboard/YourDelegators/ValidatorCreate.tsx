@@ -227,7 +227,7 @@ const ValidatorCreate = () => {
                 </FormGroup>
             </Form>
             {
-                hashTransaction ? <div style={{ marginTop: '20px' }}>Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
+                hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
             }
 
             {/* Modal confirm when create validator */}
