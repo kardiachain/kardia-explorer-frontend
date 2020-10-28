@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, ButtonToolbar, Panel, Table } from 'rsuite';
+import { Alert, Button, ButtonToolbar, Modal, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { getValidatorsByDelegator, withdraw, withdrawReward } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -9,8 +9,10 @@ const Delegator = () => {
 
     const [yourValidators, setYourValidators] = useState([] as YourValidator[])
     const myAccount = getAccount() as Account
-    const [withdrawRewardsLoading, setWithdrawRewardsLoading] = useState('')
-    const [withdrawLoading, setWithdrawLoading] = useState('')
+    const [showConfirmWithdrawRewardsModal, setShowConfirmWithdrawRewardsModal] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [validatorActive, setValidatorActive] = useState('')
+    const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false)
 
     useEffect(() => {
         (async () => {
@@ -19,36 +21,38 @@ const Delegator = () => {
         })()
     }, [myAccount.publickey]);
 
-    const withdrawRewards = async (valAddr: string) => {
-        setWithdrawRewardsLoading(valAddr)
+    const withdrawRewards = async () => {
+        setIsLoading(true)
         try {
-            const withdrawTx = await withdrawReward(valAddr, myAccount);
+            const withdrawTx = await withdrawReward(validatorActive, myAccount);
             if (withdrawTx && withdrawTx.status) {
                 Alert.success('Withdraw rewards success.')
             } else {
                 Alert.error('Withdraw rewards failed.')
             }
-            setWithdrawRewardsLoading('')
         } catch (error) {
             Alert.error(`Withdraw failed: ${error.message}`)
-            setWithdrawRewardsLoading('')
         }
+        setIsLoading(false)
+        setShowConfirmWithdrawRewardsModal(false)
+        setValidatorActive('')
     }
 
-    const widthdraw = async (valAddr: string) => {
-        setWithdrawLoading(valAddr)
+    const widthdraw = async () => {
+        setIsLoading(true)
         try {
-            const withdrawTx = await withdraw(valAddr, myAccount);
+            const withdrawTx = await withdraw(validatorActive, myAccount);
             if (withdrawTx && withdrawTx.status) {
                 Alert.success('Withdraw success.')
             } else {
                 Alert.error('Withdraw failed.')
             }
-            setWithdrawLoading('')
         } catch (error) {
             Alert.error(`Withdraw failed: ${error.message}`)
-            setWithdrawLoading('')
         }
+        setIsLoading(false)
+        setShowConfirmWithdrawModal(false)
+        setValidatorActive('')
     }
 
     return (
@@ -58,6 +62,7 @@ const Delegator = () => {
                     autoHeight
                     rowHeight={70}
                     data={yourValidators}
+                    hover={false}
                 >
                     <Column width={400} verticalAlign="middle">
                         <HeaderCell>Validator</HeaderCell>
@@ -96,9 +101,9 @@ const Delegator = () => {
                                 return (
                                     <ButtonToolbar>
                                         <Button appearance="primary" onClick={() => {
-                                            withdrawRewards(rowData.validatorAddr)
-                                        }}
-                                            loading={withdrawRewardsLoading === rowData.validatorAddr}>
+                                            setShowConfirmWithdrawRewardsModal(true)
+                                            setValidatorActive(rowData.validatorAddr)
+                                        }}>
                                             Withdraw Rewards
                                         </Button>
                                     </ButtonToolbar>
@@ -113,9 +118,11 @@ const Delegator = () => {
                                 return (
                                     <ButtonToolbar>
                                         <Button appearance="primary"
-                                            loading={withdrawLoading === rowData.validatorAddr}
-                                            onClick={() => { widthdraw(rowData.validatorAddr) }}>
-                                            Withdraw
+                                            onClick={() => {
+                                                setShowConfirmWithdrawModal(true)
+                                                setValidatorActive(rowData.validatorAddr)
+                                            }}>
+                                            Withdraw Staked Amount
                                         </Button>
                                     </ButtonToolbar>
                                 )
@@ -124,6 +131,40 @@ const Delegator = () => {
                     </Column>
                 </Table>
             </Panel>
+            {/* Modal confirm when withdraw rewards */}
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmWithdrawRewardsModal} onHide={() => { setShowConfirmWithdrawRewardsModal(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Confirm Withdraw Rewards</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to withdraw all your rewarded token.</div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} appearance="subtle">
+                        Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={withdrawRewards} appearance="primary">
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            {/* Modal confirm when withdraw staked token */}
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmWithdrawModal} onHide={() => { setShowConfirmWithdrawModal(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Confirm withdraw all your staked token</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to withdraw all your staked token.</div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => { setShowConfirmWithdrawModal(false) }} appearance="subtle">
+                        Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={widthdraw} appearance="primary">
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
