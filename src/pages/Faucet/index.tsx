@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Alert, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, Message, Panel } from 'rsuite';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
-import { renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { renderHashToRedirect } from '../../common/utils/string';
 import { addressValid } from '../../common/utils/validate';
 import { FAUCET_ENDPOINT } from '../../config/api';
 import './faucet.css';
