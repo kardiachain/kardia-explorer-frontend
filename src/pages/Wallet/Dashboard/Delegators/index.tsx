@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonToolbar, Panel, Table } from 'rsuite';
+import { Alert, Button, ButtonToolbar, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { getValidatorsByDelegator } from '../../../../service/smc';
+import { getValidatorsByDelegator, withdraw, withdrawReward } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -9,6 +9,8 @@ const Delegator = () => {
 
     const [yourValidators, setYourValidators] = useState([] as YourValidator[])
     const myAccount = getAccount() as Account
+    const [withdrawRewardsLoading, setWithdrawRewardsLoading] = useState('')
+    const [withdrawLoading, setWithdrawLoading] = useState('')
 
     useEffect(() => {
         (async () => {
@@ -16,6 +18,40 @@ const Delegator = () => {
             setYourValidators(yourVals)
         })()
     }, [myAccount.publickey]);
+
+    const withdrawRewards = async (valAddr: string) => {
+        setWithdrawRewardsLoading(valAddr)
+        try {
+            const withdrawTx = await withdrawReward(valAddr, myAccount);
+            if (withdrawTx && withdrawTx.status) {
+                Alert.success('Withdraw rewards success.')
+            } else {
+                Alert.error('Withdraw rewards failed.')
+            }
+            setWithdrawRewardsLoading('')
+        } catch (error) {
+            Alert.error(`Withdraw failed: ${error.message}`)
+            setWithdrawRewardsLoading('')
+        }
+    }
+
+    const widthdraw = async (valAddr: string) => {
+        setWithdrawLoading(valAddr)
+        try {
+            const withdrawTx = await withdraw(valAddr, myAccount);
+            console.log(withdrawTx);
+            
+            if (withdrawTx && withdrawTx.status) {
+                Alert.success('Withdraw success.')
+            } else {
+                Alert.error('Withdraw failed.')
+            }
+            setWithdrawLoading('')
+        } catch (error) {
+            Alert.error(`Withdraw failed: ${error.message}`)
+            setWithdrawLoading('')
+        }
+    }
 
     return (
         <div>
@@ -61,7 +97,10 @@ const Delegator = () => {
                             {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
-                                        <Button color="violet">
+                                        <Button color="violet" onClick={() => {
+                                            withdrawRewards(rowData.validatorAddr)
+                                        }}
+                                            loading={withdrawRewardsLoading === rowData.validatorAddr}>
                                             Withdraw Rewards
                                         </Button>
                                     </ButtonToolbar>
@@ -75,7 +114,9 @@ const Delegator = () => {
                             {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
-                                        <Button color="violet">
+                                        <Button color="violet"
+                                        loading={withdrawLoading === rowData.validatorAddr }
+                                        onClick={() => {widthdraw(rowData.validatorAddr)}}>
                                             Withdraw
                                         </Button>
                                     </ButtonToolbar>

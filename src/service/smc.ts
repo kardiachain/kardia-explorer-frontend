@@ -162,6 +162,16 @@ const createValidator = async (commssionRate: number, maxRate: number, maxRateCh
     return await invokeSendAction("createValidator", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, amountDel);
 }
 
+// Delegator withdraw reward
+const withdrawReward = async (valAddr: string, account: Account) => {
+    return await invokeSendAction("withdrawReward", [valAddr], account, 0)
+}
+
+// Delegator withdraw
+const withdraw = async (valAddr: string, account: Account) => {
+    return await invokeSendAction("withdraw", [valAddr], account, 0)
+}
+
 export {
     invokeCallData,
     invokeSendAction,
@@ -174,5 +184,7 @@ export {
     getValidatorsFromSMC,
     isValidator,
     getNumberDelOfValidator,
-    getValidatorPower
+    getValidatorPower,
+    withdrawReward,
+    withdraw
 }
