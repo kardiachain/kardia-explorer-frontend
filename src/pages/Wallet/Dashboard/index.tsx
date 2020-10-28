@@ -23,17 +23,17 @@ const DashboardWallet = () => {
                     <Sidenav defaultOpenKeys={['staking']} onSelect={setActiveKey}>
                         <Sidenav.Body>
                             <Nav>
-                                <Nav.Item eventKey="1" active={activeKey === "1"} href="/dashboard/send-transaction" icon={<Icon icon="send" />}>
+                                <Nav.Item eventKey="1" active={activeKey === "1"} href="/wallet/send-transaction" icon={<Icon icon="send" />}>
                                     Send transaction
                                 </Nav.Item>
                                 <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
-                                    <Dropdown.Item eventKey="validator" href="/dashboard/staking/your-delegators">Your Delegators</Dropdown.Item>
-                                    <Dropdown.Item  eventKey="delegator" href="/dashboard/staking/delegated-validators">Delegated validators</Dropdown.Item>
+                                    <Dropdown.Item eventKey="validator" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
+                                    <Dropdown.Item  eventKey="delegator" href="/wallet/staking/delegated-validators">Delegated validators</Dropdown.Item>
                                 </Dropdown>
-                                <Nav.Item eventKey="3" active={activeKey === "3"} href="/dashboard/smart-contract" icon={<Icon icon="file-code-o" />}>
+                                <Nav.Item eventKey="3" active={activeKey === "3"} href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>
                                     Smart contract
                                 </Nav.Item>
-                                <Nav.Item eventKey="4" active={activeKey === "4"} href="/dashboard/transaction-history" icon={<Icon icon="order-form" />}>
+                                <Nav.Item eventKey="4" active={activeKey === "4"} href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>
                                     Transactions history
                                 </Nav.Item>
                             </Nav>
@@ -46,22 +46,22 @@ const DashboardWallet = () => {
             <div className="right-container" style={isMobile ? {width: '100%'} : {}}>
                 <DashboardHeader />
                 <Switch>
-                    <Route path="/dashboard/send-transaction">
+                    <Route path="/wallet/send-transaction">
                         <SendTransaction />
                     </Route>
-                    <Route path="/dashboard/staking/your-delegators">
+                    <Route path="/wallet/staking/your-delegators">
                         <YourDelegators />
                     </Route>
-                    <Route path="/dashboard/staking/delegated-validators">
+                    <Route path="/wallet/staking/delegated-validators">
                         <DelegatedValidators />
                     </Route>
-                    <Route path="/dashboard/smart-contract">
+                    <Route path="/wallet/smart-contract">
                         <SmartContract />
                     </Route>
-                    <Route path="/dashboard/transaction-history">
+                    <Route path="/wallet/transaction-history">
                         <TransactionHistory />
                     </Route>
-                    <Route path="/dashboard/staking/:valAddr">
+                    <Route path="/wallet/staking/:valAddr">
                         <DelegatorCreate />
                     </Route>
                 </Switch>

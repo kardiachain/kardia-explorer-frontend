@@ -11,10 +11,6 @@
     color: white;
 }
 
-.home-container {
-    padding: 0 130px;
-}
-
 .home-container>h3 {
     margin-top: 45px;
 }
@@ -22,7 +18,6 @@
 .home-top-section {
     min-height: 300px;
     position: relative;
-    margin-top: 40px;
 }
 
 .button-view-all {
@@ -51,9 +46,6 @@
 }
 
 @media screen and (max-width: 992px) {
-    .home-container {
-        padding: 0 10px;
-    }
     
     .stat-group {
         padding: 10px;
@@ -61,9 +53,6 @@
     .stat-container>.rs-panel-body{
         font-size: 20px;
         font-weight: bold;
-    }
-    .home-top-section {
-        margin-top: 20px;
     }
     .search-section {
         background-color: transparent;

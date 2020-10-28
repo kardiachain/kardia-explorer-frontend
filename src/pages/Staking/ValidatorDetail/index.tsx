@@ -23,7 +23,7 @@ const ValidatorDetail = () => {
     }, [valAddr]);
 
     return (
-        <div className="val-detail-container">
+        <div className="container val-detail-container">
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
                     <div>
@@ -44,7 +44,7 @@ const ValidatorDetail = () => {
                             </List>
                             <ButtonToolbar style={{marginTop: '30px'}}>
                                 <Button appearance="primary"
-                                    onClick={() => { isLoggedIn() ? history.push(`/dashboard/staking/${valAddr}`) : history.push('/wallet') }}
+                                    onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${valAddr}`) : history.push('/wallet') }}
                                 >
                                     Delegate for this validator
                                 </Button>

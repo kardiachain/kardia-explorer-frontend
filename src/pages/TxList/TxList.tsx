@@ -40,7 +40,7 @@ const TxList = () => {
     }, [page, size, block])
 
     return (
-        <div className="txs-container">
+        <div className="container txs-container">
             <h3>Transactions</h3>
             <div>{block ? `Block number: #${block}` : ''}</div>
             <Divider />
