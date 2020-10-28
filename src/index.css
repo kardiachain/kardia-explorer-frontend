@@ -13,3 +13,7 @@ code {
 .kai-explorer-app {
   min-height: 100vh;
 }
+
+.required-mask {
+  color: red;
+}

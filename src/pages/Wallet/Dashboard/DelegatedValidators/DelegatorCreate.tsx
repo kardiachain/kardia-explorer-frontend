@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom';
-import { Alert, Button, ButtonToolbar, Col, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
+import { useParams } from 'react-router-dom';
+import { Alert, Button, ButtonToolbar, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
@@ -13,7 +13,6 @@ import { getAccount } from '../../../../service/wallet';
 const { Column, HeaderCell, Cell } = Table;
 
 const DelegatorCreate = () => {
-    const history = useHistory()
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const [validator, setValidator] = useState<ValidatorFromSMC>()
     const { isMobile } = useViewport();
@@ -63,7 +62,7 @@ const DelegatorCreate = () => {
                         <Panel header={<h4>{`Validator: ${valAddr}`}</h4>} shaded>
                             <List bordered={false}>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Commission: </span> {validator?.commission || 0}
+                                    <span className="property-title">Commission: </span> {validator?.commission || 0} %
                                 </List.Item>
                                 <List.Item bordered={false}>
                                     <span className="property-title">Total delegator: </span> {validator?.totalDels}
@@ -75,7 +74,7 @@ const DelegatorCreate = () => {
                             <div className="del-staking-container">
                                 <Form fluid>
                                     <FormGroup>
-                                        <div className="label">Delegation amount*:</div>
+                                        <ControlLabel>Delegation amount <span className="required-mask">*</span></ControlLabel>
                                         <FormControl
                                             placeholder="Delegation amount*"
                                             value={delAmount} name="delAmount"
@@ -96,11 +95,11 @@ const DelegatorCreate = () => {
                                     </FormGroup>
                                 </Form>
                                 {
-                                    hashTransaction ? <div style={{ marginTop: '20px' }}> Txs create validator: {renderHashToRedirect({
+                                    hashTransaction ? <div style={{ marginTop: '20px' }}> Transaction created: {renderHashToRedirect({
                                         hash: hashTransaction,
-                                        headCount: 50,
+                                        headCount: 30,
                                         tailCount: 4,
-                                        callback: () => { history.push(`/tx/${hashTransaction}`) }
+                                        callback: () => { window.open(`/tx/${hashTransaction}`) }
                                     })}</div> : <></>
                                 }
                             </div>
