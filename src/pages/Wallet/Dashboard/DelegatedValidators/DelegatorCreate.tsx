@@ -103,7 +103,7 @@ const DelegatorCreate = () => {
                                     </FormGroup>
                                 </Form>
                                 {
-                                    hashTransaction ? <div style={{ marginTop: '20px' }}> Transaction created: {renderHashToRedirect({
+                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
                                         hash: hashTransaction,
                                         headCount: 30,
                                         tailCount: 4,
