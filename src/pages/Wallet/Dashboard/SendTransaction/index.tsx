@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Button, Icon, Alert } from 'rsuite'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Button, Icon, Alert, ControlLabel } from 'rsuite'
 import { ErrorMessage } from '../../../../common/constant/Message'
 import { onlyNumber } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
@@ -87,8 +87,8 @@ const SendTransaction = () => {
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={10}>
-                                <div className="label">Amount*:</div>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
+                                <ControlLabel>Amount <span className="required-mask">*</span></ControlLabel>
                                 <FormControl
                                     placeholder="Amount"
                                     name="amount"
@@ -102,8 +102,8 @@ const SendTransaction = () => {
                                 />
                                 <ErrMessage message={amountErr} />
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
-                                <div className="label">To Address*:</div>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
+                                <ControlLabel>To Address <span className="required-mask">*</span></ControlLabel>
                                 <FormControl
                                     placeholder="Please enter the address"
                                     name="toAddress"
@@ -115,8 +115,8 @@ const SendTransaction = () => {
                                 />
                                 <ErrMessage message={toAddressErr} />
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6}>
-                                <div className="label">Gas Limit*:</div>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
+                                <ControlLabel>Gas Limit <span className="required-mask">*</span></ControlLabel>
                                 <FormControl
                                     placeholder="Gas limit"
                                     name="gasLimit"
@@ -131,7 +131,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button loading={sendBntLoading} color="violet" onClick={sendKAI}>Send KAI <Icon icon="space-shuttle"/></Button>
+                                <Button loading={sendBntLoading} appearance="primary" onClick={sendKAI}>Send KAI <Icon icon="space-shuttle"/></Button>
                             </FlexboxGrid.Item>
                             {
                                 txHash ? <div style={{marginTop: '20px'}}> Txs hash: {renderHashToRedirect({hash: txHash, headCount: 100, tailCount: 4, callback: () => { history.push(`/tx/${txHash}`) }})}</div> : <></>

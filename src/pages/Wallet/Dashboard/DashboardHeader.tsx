@@ -15,7 +15,7 @@ const DashboardHeader = () => {
 
     return (
         <Row className="wallet-header-container">
-            <Col md={8} sm={24} xs={24}>
+            <Col md={12} sm={24} xs={24}>
                 <Panel shaded bordered className="wallet-info-card address">
                     <div className="title"><Icon className="icon" icon="views-authorize" />Address</div>
                     <div className="content">
@@ -28,7 +28,7 @@ const DashboardHeader = () => {
                     </div>
                 </Panel>
             </Col>
-            <Col md={8} sm={24} xs={24}>
+            <Col md={12} sm={24} xs={24}>
                 <Panel shaded bordered className="wallet-info-card balance">
                     <div className="title"><Icon className="icon" icon="money" />Balance</div>
                     <div className="content">
@@ -36,17 +36,6 @@ const DashboardHeader = () => {
                     </div>
                     <div className="action">
                         <Icon icon="refresh2">&nbsp;&nbsp;Reload balance</Icon>
-                    </div>
-                </Panel>
-            </Col>
-            <Col md={8} sm={24} xs={24}>
-                <Panel shaded bordered className="wallet-info-card network">
-                    <div className="title"><Icon className="icon" icon="cubes" />Network</div>
-                    <div className="content">
-                        <div>Archi Testnet 2.0</div>
-                    </div>
-                    <div className="action">
-                        <Icon icon="exchange">&nbsp;&nbsp;Change Network</Icon>
                     </div>
                 </Panel>
             </Col>

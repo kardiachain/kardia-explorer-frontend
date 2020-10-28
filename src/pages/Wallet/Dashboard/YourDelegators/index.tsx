@@ -10,7 +10,7 @@ import ValidatorCreate from './ValidatorCreate';
 
 const { Column, HeaderCell, Cell } = Table;
 
-const Validators = () => {
+const YourDelegators = () => {
 
     const { isMobile } = useViewport()
     const [ isVal, setIsVal ] = useState(false);
@@ -104,4 +104,4 @@ const Validators = () => {
     )
 }
 
-export default Validators;
+export default YourDelegators;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Icon, IconButton } from 'rsuite';
+import { Alert, ButtonProps, Icon, IconButton } from 'rsuite';
 function truncate(str: string, n: number, e: number) {
     if (n > str.length - e) {
         return str
@@ -13,6 +13,20 @@ const copyToClipboard = (text: string, onSuccess?: () => void, onFail?: () => vo
     }, function (err) {
         onFail && onFail()
     });
+}
+
+export const renderCopyButton = ({str, size, callback}: {
+    str: string,
+    size: ButtonProps["size"],
+    callback: () => void
+}) => {
+    return (
+        <IconButton
+            onClick={() => copyToClipboard(str, callback)}
+            size={size}
+            icon={<Icon icon="copy" />}
+        />
+    )
 }
 
 

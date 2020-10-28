@@ -4,12 +4,12 @@ import './dashboard.css'
 import { Dropdown, Icon, Nav, Sidenav } from 'rsuite';
 import { Route, Switch } from 'react-router-dom';
 import SendTransaction from './SendTransaction';
-import Validators from './Validators';
+import YourDelegators from './YourDelegators';
 import SmartContract from './SmartContract';
 import TransactionHistory from './TransactionHistory';
-import DelegatorCreate from './Delegators/DelegatorCreate';
+import DelegatorCreate from './DelegatedValidators/DelegatorCreate';
 import { useViewport } from '../../../context/ViewportContext';
-import Delegator from './Delegators';
+import DelegatedValidators from './DelegatedValidators';
 
 const DashboardWallet = () => {
     const [activeKey, setActiveKey] = useState("0");
@@ -28,7 +28,7 @@ const DashboardWallet = () => {
                                 </Nav.Item>
                                 <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
                                     <Dropdown.Item eventKey="validator" href="/dashboard/staking/your-delegators">Your Delegators</Dropdown.Item>
-                                    <Dropdown.Item  eventKey="delegator" href="/dashboard/staking/your-validators">Your Validators</Dropdown.Item>
+                                    <Dropdown.Item  eventKey="delegator" href="/dashboard/staking/delegated-validators">Delegated validators</Dropdown.Item>
                                 </Dropdown>
                                 <Nav.Item eventKey="3" active={activeKey === "3"} href="/dashboard/smart-contract" icon={<Icon icon="file-code-o" />}>
                                     Smart contract
@@ -50,10 +50,10 @@ const DashboardWallet = () => {
                         <SendTransaction />
                     </Route>
                     <Route path="/dashboard/staking/your-delegators">
-                        <Validators />
+                        <YourDelegators />
                     </Route>
-                    <Route path="/dashboard/staking/your-validators">
-                        <Delegator />
+                    <Route path="/dashboard/staking/delegated-validators">
+                        <DelegatedValidators />
                     </Route>
                     <Route path="/dashboard/smart-contract">
                         <SmartContract />
