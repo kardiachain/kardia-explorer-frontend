@@ -4,12 +4,11 @@ import { Alert, Button, ButtonToolbar, Col, ControlLabel, FlexboxGrid, Form, For
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { onlyNumber } from '../../../../common/utils/number';
+import { onlyNumber, verifyAmount } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
-// import './validators.css';
 const { Column, HeaderCell, Cell } = Table;
 
 const DelegatorCreate = () => {
@@ -29,19 +28,25 @@ const DelegatorCreate = () => {
 
     }, [valAddr]);
 
-    useEffect(() => {
-        if (delAmount) {
-            setErrorMessage('')
+    const validateDelAmount = (value: any): boolean => {
+        if (!verifyAmount(value)) {
+            setErrorMessage(ErrorMessage.NumberInvalid)
+            return false
         }
-    }, [delAmount]);
+        if (!value) {
+            setErrorMessage(ErrorMessage.Require)
+            return false
+        }
+        if (Number(value) === 0) {
+            setErrorMessage(ErrorMessage.ValueInvalid)
+            return false
+        }
+        setErrorMessage('')
+        return true
+    }
 
     const submitDelegate = async () => {
-        if (!delAmount) {
-            setErrorMessage(ErrorMessage.Require)
-            return;
-        }
-        if (Number(delAmount) === 0) {
-            setErrorMessage(ErrorMessage.ValueInvalid)
+        if (!validateDelAmount(delAmount)) {
             return;
         }
         setShowConfirmModal(true)
@@ -87,11 +92,9 @@ const DelegatorCreate = () => {
                                             placeholder="Delegation amount*"
                                             value={delAmount} name="delAmount"
                                             onChange={(value) => {
-                                                if (!value) {
-                                                    setErrorMessage(ErrorMessage.Require)
-                                                }
                                                 if (onlyNumber(value)) {
                                                     setDelAmount(value)
+                                                    validateDelAmount(value)
                                                 }
                                             }} />
                                         <ErrMessage message={errorMessage} />

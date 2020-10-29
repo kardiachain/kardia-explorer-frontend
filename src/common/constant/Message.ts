@@ -7,4 +7,5 @@ export const ErrorMessage = {
     AddressInvalid: 'Address format is invalid',
     AmountNotZero: 'Send amount must be greater than 0',
     BalanceNotEnough: 'Not enough KAI to send',
+    NumberInvalid: 'The number format is invalid',
 }

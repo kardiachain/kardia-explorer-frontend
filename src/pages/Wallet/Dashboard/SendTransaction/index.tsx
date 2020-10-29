@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './sendTxs.css'
 import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Button, Icon, Alert, ControlLabel, Modal } from 'rsuite'
 import { ErrorMessage } from '../../../../common/constant/Message'
-import { onlyNumber } from '../../../../common/utils/number'
+import { onlyNumber, verifyAmount } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx } from '../../../../service/wallet'
@@ -30,6 +30,11 @@ const SendTransaction = () => {
     }, [myAccount.publickey])
 
     const validateAmount = (amount: number): boolean => {
+        if (!verifyAmount(amount)) {
+            setAmountErr(ErrorMessage.NumberInvalid)
+            return false
+        }
+
         if (Number(amount) === 0) {
             setAmountErr(ErrorMessage.AmountNotZero)
             return false
