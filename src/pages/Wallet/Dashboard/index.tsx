@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DashboardHeader from './DashboardHeader';
 import './dashboard.css'
 import { Dropdown, Icon, Nav, Sidenav } from 'rsuite';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import SendTransaction from './SendTransaction';
 import YourDelegators from './YourDelegators';
 import SmartContract from './SmartContract';
@@ -63,6 +63,9 @@ const DashboardWallet = () => {
                     </Route>
                     <Route path="/wallet/staking/:valAddr">
                         <DelegatorCreate />
+                    </Route>
+                    <Route path="/wallet">
+                        <Redirect to="/wallet/send-transaction" />
                     </Route>
                 </Switch>
             </div>
