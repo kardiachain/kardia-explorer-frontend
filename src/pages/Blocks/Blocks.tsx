@@ -53,7 +53,7 @@ const Blocks = () => {
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
-                                                    <div> <Icon icon="th-large" style={{ marginRight: '5px' }} />
+                                                    <div> <Icon icon="cubes" style={{ marginRight: '5px' }} />
                                                         {renderHashToRedirect({
                                                             hash: rowData.blockHeight,
                                                             headCount: isMobile ? 20 : 45,

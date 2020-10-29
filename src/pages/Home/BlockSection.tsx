@@ -31,7 +31,7 @@ const BlockSection = ({ blockList = [] }: {
                                     return (
                                         <div>
                                             <div>
-                                                <Icon icon="th-large" style={{ marginRight: '10px' }} />
+                                                <Icon icon="cubes" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.blockHeight,
                                                     headCount: 30,
