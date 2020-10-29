@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardHeader from './DashboardHeader';
 import './dashboard.css'
 import { Dropdown, Icon, Nav, Sidenav } from 'rsuite';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import SendTransaction from './SendTransaction';
 import YourDelegators from './YourDelegators';
 import SmartContract from './SmartContract';
@@ -12,29 +12,34 @@ import { useViewport } from '../../../context/ViewportContext';
 import DelegatedValidators from './DelegatedValidators';
 
 const DashboardWallet = () => {
-    const [activeKey, setActiveKey] = useState("0");
+    const [activeKey, setActiveKey] = useState("send-transaction");
     const { isMobile } = useViewport()
+    const location = useLocation()
+
+    useEffect(() => {
+        setActiveKey(location.pathname.split('/')[location.pathname.split('/').length - 1])
+    }, [location])
 
     return (
         <div className="dashboard-container">
             {
                 !isMobile ? (
                     <div className="left-container">
-                    <Sidenav defaultOpenKeys={['staking']} onSelect={setActiveKey}>
+                    <Sidenav defaultOpenKeys={['staking']}>
                         <Sidenav.Body>
-                            <Nav>
-                                <Nav.Item eventKey="1" active={activeKey === "1"} href="/wallet/send-transaction" icon={<Icon icon="send" />}>
+                            <Nav onSelect={setActiveKey} activeKey={activeKey}>
+                                <Nav.Item eventKey="send-transaction" active={activeKey === "1"} href="/wallet/send-transaction" icon={<Icon icon="send" />}>
                                     Send transaction
                                 </Nav.Item>
-                                <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
-                                    <Dropdown.Item eventKey="validator" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
-                                    <Dropdown.Item  eventKey="delegator" href="/wallet/staking/delegated-validators">Delegated validators</Dropdown.Item>
-                                </Dropdown>
-                                <Nav.Item eventKey="3" active={activeKey === "3"} href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>
-                                    Smart contract
-                                </Nav.Item>
-                                <Nav.Item eventKey="4" active={activeKey === "4"} href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>
+                                <Nav.Item eventKey="transaction-history" active={activeKey === "4"} href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>
                                     Transactions history
+                                </Nav.Item>
+                                <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
+                                    <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
+                                    <Dropdown.Item  eventKey="delegated-validators" href="/wallet/staking/delegated-validators">Delegated validators</Dropdown.Item>
+                                </Dropdown>
+                                <Nav.Item eventKey="smart-contract" active={activeKey === "3"} href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>
+                                    Smart contract
                                 </Nav.Item>
                             </Nav>
                         </Sidenav.Body>

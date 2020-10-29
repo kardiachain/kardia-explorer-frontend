@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Button } from 'rsuite';
-import { millisecondToHMS, renderHashToRedirect, truncate } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 
@@ -31,15 +31,14 @@ const BlockSection = ({ blockList = [] }: {
                                     return (
                                         <div>
                                             <div>
-                                                <Icon icon="th-large" />
-                                                {/* {renderHashToRedirect(rowData.blockHeight, 30, 4, () => { history.push(`/block/${rowData.blockHeight}`) })} */}
+                                                <Icon icon="th-large" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.blockHeight,
                                                     headCount: 30,
                                                     tailCount: 4,
                                                     callback: () => { history.push(`/block/${rowData.blockHeight}`) }
                                                 })}
-                                                </div>
+                                            </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
@@ -52,7 +51,14 @@ const BlockSection = ({ blockList = [] }: {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            {truncate(rowData.validator.hash, isMobile ? 10 : 30, 4)}
+                                            {
+                                                renderHashToRedirect({
+                                                    hash: rowData.validator.hash,
+                                                    headCount: 45,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/address/${rowData.validator.hash}`) }
+                                                })
+                                            }
                                         </div>
                                     );
                                 }}
@@ -70,7 +76,6 @@ const BlockSection = ({ blockList = [] }: {
                                                 tailCount: 4,
                                                 callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
                                             })}
-                                            {/* {renderHashToRedirect(rowData.transactions, 30, 4, () => { history.push(`/txs?block=${rowData.blockHeight}`) })} */}
                                         </div>
                                     );
                                 }}
@@ -78,7 +83,7 @@ const BlockSection = ({ blockList = [] }: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                <Button className="button-view-all" onClick={() => {history.push(`/blocks`)}}>View all blocks</Button>
+                <Button className="button-view-all" onClick={() => { history.push(`/blocks`) }}>View all blocks</Button>
             </FlexboxGrid>
         </Panel>
     )

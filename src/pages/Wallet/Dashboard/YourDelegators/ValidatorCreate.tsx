@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Alert, Button, ButtonToolbar, ControlLabel, Form, FormControl, FormGroup, Modal } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
-import { onlyNumber } from '../../../../common/utils/number';
+import { onlyNumber, verifyAmount } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -26,40 +26,97 @@ const ValidatorCreate = () => {
     const [hashTransaction, setHashTransaction] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
-    useEffect(() => {
-        if (commissionRate) setCommissionRateErr('');
-    }, [commissionRate])
-
-    useEffect(() => {
-        if (maxRate) setMaxRateErr('');
-    }, [maxRate])
-
-    useEffect(() => {
-        if (maxChangeRate) setMaxChangeRateErr('');
-    }, [maxChangeRate])
-
-    useEffect(() => {
-        if (minSelfDelegation) setMaxMinSelfDelegationErr('');
-    }, [minSelfDelegation])
-
-    useEffect(() => {
-        if (amountDel) setAmountDelErr('');
-    }, [amountDel])
-
-    const validateCommissionRate = () => {
-        if (!commissionRate) {
+    const validateCommissionRate = (value: any) => {
+        if (!verifyAmount(value)) {
+            setCommissionRateErr(ErrorMessage.NumberInvalid)
+            return false
+        }
+        if (!value) {
             setCommissionRateErr(ErrorMessage.Require)
             return false
         }
-        if (Number(commissionRate) === 0) {
+        if (Number(value) === 0) {
             setCommissionRateErr(ErrorMessage.ValueInvalid)
             return false
         }
-        if (Number(commissionRate) > 100) {
+        if (Number(value) > 100) {
             setCommissionRateErr(ErrorMessage.MaxRateMoreThanHundred)
             return false
         }
         setCommissionRateErr('')
+        return true
+    }
+
+    const validateMaxRate = (value: any) => {
+        if (!verifyAmount(value)) {
+            setMaxRateErr(ErrorMessage.NumberInvalid)
+            return false
+        }
+        if (!value) {
+            setMaxRateErr(ErrorMessage.Require)
+            return false
+        }
+        if (Number(value) === 0) {
+            setMaxRateErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+        setMaxRateErr('')
+        return true
+    }
+
+    const validateMaxChangeRate = (value: any) => {
+        if (!verifyAmount(value)) {
+            setMaxChangeRateErr(ErrorMessage.NumberInvalid)
+            return false
+        }
+        if (!value) {
+            setMaxChangeRateErr(ErrorMessage.Require)
+            return false
+        }
+        if (Number(value) === 0) {
+            setMaxChangeRateErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+        setMaxChangeRateErr('')
+        return true
+    }
+
+    const validateMinSelfDelegation = (value: any) => {
+        if (!verifyAmount(value)) {
+            setMaxMinSelfDelegationErr(ErrorMessage.NumberInvalid)
+            return false
+        }
+        if (!value) {
+            setMaxMinSelfDelegationErr(ErrorMessage.Require)
+            return false
+        }
+        if (Number(value) === 0) {
+            setMaxMinSelfDelegationErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+        setMaxMinSelfDelegationErr('')
+        return true
+    }
+
+    const validateAmountDel = (value: any) => {
+        if (!verifyAmount(value)) {
+            setAmountDelErr(ErrorMessage.NumberInvalid)
+            return false
+        }
+        if (!value) {
+            setAmountDelErr(ErrorMessage.Require)
+            return false
+        }
+        if (Number(value) === 0) {
+            setAmountDelErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+
+        if (Number(value) < Number(minSelfDelegation)) {
+            setAmountDelErr(ErrorMessage.DelBelowMinimum)
+            return false
+        }
+        setAmountDelErr('')
         return true
     }
 
@@ -71,65 +128,8 @@ const ValidatorCreate = () => {
         setAmountDel('')
     }
 
-    const validateMaxRate = () => {
-        if (!maxRate) {
-            setMaxRateErr(ErrorMessage.Require)
-            return false
-        }
-        if (Number(maxRate) === 0) {
-            setMaxRateErr(ErrorMessage.ValueInvalid)
-            return false
-        }
-        setMaxRateErr('')
-        return true
-    }
-
-    const validateMaxChangeRate = () => {
-        if (!maxChangeRate) {
-            setMaxChangeRateErr(ErrorMessage.Require)
-            return false
-        }
-        if (Number(maxChangeRate) === 0) {
-            setMaxChangeRateErr(ErrorMessage.ValueInvalid)
-            return false
-        }
-        setMaxChangeRateErr('')
-        return true
-    }
-
-    const validateMinSelfDelegation = () => {
-        if (!minSelfDelegation) {
-            setMaxMinSelfDelegationErr(ErrorMessage.Require)
-            return false
-        }
-        if (Number(minSelfDelegation) === 0) {
-            setMaxMinSelfDelegationErr(ErrorMessage.ValueInvalid)
-            return false
-        }
-        setMaxMinSelfDelegationErr('')
-        return true
-    }
-
-    const validateAmountDel = () => {
-        if (!amountDel) {
-            setAmountDelErr(ErrorMessage.Require)
-            return false
-        }
-        if (Number(amountDel) === 0) {
-            setAmountDelErr(ErrorMessage.ValueInvalid)
-            return false
-        }
-
-        if (Number(amountDel) < Number(minSelfDelegation)) {
-            setAmountDelErr(ErrorMessage.DelBelowMinimum)
-            return false
-        }
-        setAmountDelErr('')
-        return true
-    }
-
     const submitValidator = () => {
-        if (!validateCommissionRate() || !validateMaxRate() || !validateMaxChangeRate() || !validateMinSelfDelegation() || !validateAmountDel()) {
+        if (!validateCommissionRate(commissionRate) || !validateMaxRate(maxRate) || !validateMaxChangeRate(maxChangeRate) || !validateMinSelfDelegation(minSelfDelegation) || !validateAmountDel(amountDel)) {
             return
         }
         setShowConfirmModal(true)
@@ -159,11 +159,9 @@ const ValidatorCreate = () => {
                         name="commissionRate"
                         value={commissionRate}
                         onChange={(value) => {
-                            if (!value) {
-                                setCommissionRateErr(ErrorMessage.Require)
-                            }
                             if (onlyNumber(value)) {
                                 setCommissionRate(value)
+                                validateCommissionRate(value)
                             }
                         }} />
                     <ErrMessage message={commissionRateErr} />
@@ -174,11 +172,9 @@ const ValidatorCreate = () => {
                         name="maxRate"
                         value={maxRate}
                         onChange={(value) => {
-                            if (!value) {
-                                setMaxRateErr(ErrorMessage.Require)
-                            }
                             if (onlyNumber(value)) {
                                 setMaxRate(value)
+                                validateMaxRate(value)
                             }
                         }} />
                     <ErrMessage message={maxRateErr} />
@@ -189,11 +185,9 @@ const ValidatorCreate = () => {
                         name="maxChangeRate"
                         value={maxChangeRate}
                         onChange={(value) => {
-                            if (!value) {
-                                setMaxChangeRateErr(ErrorMessage.Require)
-                            }
                             if (onlyNumber(value)) {
                                 setMaxChangeRate(value)
+                                validateMaxChangeRate(value)
                             }
                         }} />
                     <ErrMessage message={maxChangeRateErr} />
@@ -204,11 +198,9 @@ const ValidatorCreate = () => {
                         name="minSelfDelegation"
                         value={minSelfDelegation}
                         onChange={(value) => {
-                            if (!value) {
-                                setMaxMinSelfDelegationErr(ErrorMessage.Require)
-                            }
                             if (onlyNumber(value)) {
                                 setMinSelfDelegation(value)
+                                validateMinSelfDelegation(value)
                             }
                         }} />
                     <ErrMessage message={maxMinSelfDelegationErr} />
@@ -219,11 +211,9 @@ const ValidatorCreate = () => {
                         name="amountDel"
                         value={amountDel}
                         onChange={(value) => {
-                            if (!value) {
-                                setAmountDelErr(ErrorMessage.Require)
-                            }
                             if (onlyNumber(value)) {
                                 setAmountDel(value)
+                                validateAmountDel(value)
                             }
                         }} />
                     <ErrMessage message={amountDelErr} />

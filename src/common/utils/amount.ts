@@ -11,11 +11,23 @@ const cellValue = (kaiValue: any) => {
   return cellString;
 };
 
-const weiToKAI = (value?: number) => {
-  if (!value) return ''
-  const kaiValue = (value / 10**18).toFixed(18)
-  return removeTrailingZeros(kaiValue)
-}
+// const weiToKAI = (value?: number) => {
+  // if (!value) return ''
+  // const kaiValue = (value / (10**18)).toFixed(18)
+  // return removeTrailingZeros(kaiValue)
+// }
+
+const weiToKAI = (value: any) => {
+  if (!value || value === '0' ) {
+    return '0'
+  }
+  const cellString = value.toString().padStart(36, '0');
+  
+  const kaiNumString = parseInt(cellString.slice(0, 18));
+  const kaiDecimalString = cellString.slice(-18);
+  const finalVal = `${kaiNumString}.${kaiDecimalString}`;
+  return `${removeTrailingZeros(finalVal)}`;
+};
 
 const removeTrailingZeros = (value: any) => {
   const regEx1 = /^[0]+/;

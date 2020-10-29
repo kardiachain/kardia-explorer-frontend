@@ -53,7 +53,13 @@ const Blocks = () => {
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
-                                                    <div> <Icon icon="th-large" /> {renderHashToRedirect({hash: rowData.blockHeight, headCount: isMobile ? 20 : 45, tailCount: 4, callback: () => { history.push(`/block/${rowData.blockHeight}`) }})} </div>
+                                                    <div> <Icon icon="th-large" style={{ marginRight: '5px' }} />
+                                                        {renderHashToRedirect({
+                                                            hash: rowData.blockHeight,
+                                                            headCount: isMobile ? 20 : 45,
+                                                            tailCount: 4,
+                                                            callback: () => { history.push(`/block/${rowData.blockHeight}`) }
+                                                        })} </div>
                                                 );
                                             }}
                                         </Cell>
@@ -68,7 +74,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={400}>
+                                    <Column width={450}>
                                         <HeaderCell>Block Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -85,35 +91,34 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={400}>
+                                    <Column width={450}>
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
                                                         {renderHashToRedirect({
-                                                            hash: rowData.blockHash,
+                                                            hash: rowData.validator.hash,
                                                             headCount: isMobile ? 20 : 45,
                                                             tailCount: 4,
-                                                        })}
-                                                        {/* {renderHashToRedirect(rowData.validator.hash, isMobile ? 20 : 45, 4, () => { })} */}
-                                                    </div>
+                                                            callback: () => { history.push(`/address/${rowData.validator.hash}`) }
+                                                        })}                                                    </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={400}>
+                                    <Column width={100}>
                                         <HeaderCell>Txn</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
                                                         {renderHashToRedirect({
-                                                            hash: rowData.blockHash,
-                                                            headCount: isMobile ? 20 : 45,
-                                                            tailCount: 4
+                                                            hash: rowData.transactions,
+                                                            headCount: 20,
+                                                            tailCount: 4,
+                                                            callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
                                                         })}
-                                                        {/* {renderHashToRedirect(rowData.transactions, 20, 4, () => { })} */}
                                                     </div>
                                                 );
                                             }}

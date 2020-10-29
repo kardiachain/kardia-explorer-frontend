@@ -26,6 +26,7 @@ import BlockDetail from './pages/BlockDetail';
 import AccessByKeyStore from './pages/Wallet/AccessMyWallet/AccessByKeyStore';
 import ValidatorDetail from './pages/Staking/ValidatorDetail';
 import Validators from './pages/Staking';
+import AddressDetail from './pages/AddressDetail';
 
 class App extends Component {
   render() {
@@ -58,6 +59,9 @@ class App extends Component {
                 </Route>
                 <Route path="/block/:block">
                   <BlockDetail />
+                </Route>
+                <Route path="/address/:address">
+                  <AddressDetail />
                 </Route>
                 <Route path="/wallet-login">
                   <Wallet />
