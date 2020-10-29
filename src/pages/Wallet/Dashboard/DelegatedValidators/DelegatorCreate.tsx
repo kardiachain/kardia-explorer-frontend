@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Alert, Button, ButtonToolbar, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, List, Panel, Table } from 'rsuite';
+import { Alert, Button, ButtonToolbar, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, List, Modal, Panel, Table } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
@@ -21,11 +21,12 @@ const DelegatorCreate = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const [hashTransaction, setHashTransaction] = useState('')
     const { valAddr }: any = useParams();
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     useEffect(() => {
         getDelegationsByValidator(valAddr).then(setDelegators);
         getValidator(valAddr).then(setValidator)
-        
+
     }, [valAddr]);
 
     useEffect(() => {
@@ -43,15 +44,22 @@ const DelegatorCreate = () => {
             setErrorMessage(ErrorMessage.ValueInvalid)
             return;
         }
+        setShowConfirmModal(true)
+    }
+
+    const confirmDelegate = async () => {
         setIsLoading(true)
         let account = getAccount() as Account
         const delegate = await delegateAction(valAddr, account, Number(delAmount))
 
-        if (delegate && delegate.transactionHash) {
+        if (delegate && delegate.status === 1) {
             Alert.success('Delegate success.')
             setHashTransaction(delegate.transactionHash)
+        } else {
+            Alert.error('Delegate failed.')
         }
         setIsLoading(false)
+        setShowConfirmModal(false)
     }
 
     return (
@@ -90,12 +98,12 @@ const DelegatorCreate = () => {
                                     </FormGroup>
                                     <FormGroup>
                                         <ButtonToolbar>
-                                            <Button  appearance="primary" loading={isLoading} onClick={submitDelegate}>Delegate</Button>
+                                            <Button appearance="primary" onClick={submitDelegate}>Delegate</Button>
                                         </ButtonToolbar>
                                     </FormGroup>
                                 </Form>
                                 {
-                                    hashTransaction ? <div style={{ marginTop: '20px' }}> Transaction created: {renderHashToRedirect({
+                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
                                         hash: hashTransaction,
                                         headCount: 30,
                                         tailCount: 4,
@@ -149,6 +157,25 @@ const DelegatorCreate = () => {
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
+            {/* Modal confirm when delegate */}
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Confirm your delegate</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{ textAlign:'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{delAmount} KAI</span></div>
+                    <div style={{ textAlign:'center' }}>TO</div>
+                    <div style={{ textAlign:'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => { setShowConfirmModal(false) }} appearance="subtle">
+                        Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={confirmDelegate} appearance="primary">
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

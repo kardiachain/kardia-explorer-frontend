@@ -14,7 +14,7 @@ const AccessByPrivateKey = () => {
     const [loadingBtnSubmit, setLoadingBtnSubmit] = useState(false)
     const [privateKey, setPrivateKey] = useState('');
     const [privateKeyErr, setPrivateKeyErr] = useState('')
-    const setWalletStored = useWalletStorage(() => history.push('/dashboard/send-transaction'))[1];
+    const setWalletStored = useWalletStorage(() => history.push('/wallet/send-transaction'))[1];
 
     //access wallet
     const accessWallet = () => {

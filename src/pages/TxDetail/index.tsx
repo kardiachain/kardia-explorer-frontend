@@ -25,7 +25,7 @@ const TxDetail = () => {
     }, [txHash])
 
     return (
-        <div className="tx-detail-container">
+        <div className="container tx-detail-container">
             <h3>Transaction Details</h3>
             <Divider />
             <Panel shaded>

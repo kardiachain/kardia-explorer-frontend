@@ -19,3 +19,12 @@ code {
 .required-mask {
   color: red;
 }
+.container {
+  padding: 40px 90px;
+}
+
+@media screen and (max-width: 992px) {
+  .container {
+    padding: 10px;
+  }
+}

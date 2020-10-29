@@ -25,7 +25,7 @@ const BlockDetail = () => {
 
 
     return (
-        <div className="block-detail-container">
+        <div className="container block-detail-container">
             <h3>Block Details</h3>
             <Divider />
             <Panel shaded>
