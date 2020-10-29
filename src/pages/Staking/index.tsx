@@ -48,7 +48,7 @@ const Validators = () => {
                             rowHeight={70}
                             data={validators}
                         >
-                            <Column width={isMobile ? 120 : 400} verticalAlign="middle">
+                            <Column minWidth={isMobile ? 120 : 300} flexGrow={2} verticalAlign="middle">
                                 <HeaderCell>Validator</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -65,7 +65,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={200} verticalAlign="middle" align="center">
+                            <Column minWidth={200} flexGrow={1} verticalAlign="middle" align="center">
                                 <HeaderCell>Total Staked Amount</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -75,7 +75,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={150} verticalAlign="middle" align="center">
+                            <Column minWidth={100} flexGrow={1} verticalAlign="middle" align="center">
                                 <HeaderCell>Voting power</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -85,7 +85,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={150} verticalAlign="middle" align="center">
+                            <Column minWidth={100} flexGrow={1} verticalAlign="middle" align="center">
                                 <HeaderCell>Total Delegators</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -95,7 +95,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={200} verticalAlign="middle" align="center">
+                            <Column minWidth={100} flexGrow={1} verticalAlign="middle" align="center">
                                 <HeaderCell>Commission</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -105,7 +105,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column width={200} verticalAlign="middle" align="center">
+                            <Column minWidth={100} flexGrow={1} verticalAlign="middle" align="center">
                                 <HeaderCell>Action</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
