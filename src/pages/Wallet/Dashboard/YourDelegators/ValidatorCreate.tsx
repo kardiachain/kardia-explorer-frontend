@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Alert, Button, ButtonToolbar, Form, FormControl, FormGroup } from 'rsuite';
+import { Alert, Button, ButtonToolbar, ControlLabel, Form, FormControl, FormGroup } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyNumber } from '../../../../common/utils/number';
@@ -151,7 +151,7 @@ const ValidatorCreate = () => {
         <>
             <Form fluid>
                 <FormGroup>
-                    <div className="label">Commission Rate*:</div>
+                    <ControlLabel>Commission Rate <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Commission Rate"
                         name="commissionRate"
                         value={commissionRate}
@@ -164,7 +164,9 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={commissionRateErr} />
-                    <div className="label">Max Rate*:</div>
+                </FormGroup>
+                <FormGroup>
+                    <ControlLabel>Max Rate <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Max Rate"
                         name="maxRate"
                         value={maxRate}
@@ -177,7 +179,9 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={maxRateErr} />
-                    <div className="label">Max Change Rate*:</div>
+                </FormGroup>
+                <FormGroup>
+                    <ControlLabel>Max Change Rate <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Max Change Rate"
                         name="maxChangeRate"
                         value={maxChangeRate}
@@ -190,7 +194,9 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={maxChangeRateErr} />
-                    <div className="label">Min Self Delegation*:</div>
+                </FormGroup>
+                <FormGroup>
+                    <ControlLabel>Min Self Delegation <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Min Self Delegation"
                         name="minSelfDelegation"
                         value={minSelfDelegation}
@@ -203,7 +209,9 @@ const ValidatorCreate = () => {
                             }
                         }} />
                     <ErrMessage message={maxMinSelfDelegationErr} />
-                    <div className="label">Amount Self Delegation*:</div>
+                </FormGroup>
+                <FormGroup>
+                    <ControlLabel>Amount Self Delegation <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Amount Self Delegation"
                         name="amountDel"
                         value={amountDel}
