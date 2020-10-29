@@ -1,0 +1,6 @@
+.address-detail-container .content {
+    word-break: break-all;
+}
+.address-detail-container .title {
+    font-weight: bold;
+}

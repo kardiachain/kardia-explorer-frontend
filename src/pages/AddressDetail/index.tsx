@@ -1,52 +1,75 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom';
-import { Col, Divider, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
+import { useHistory, useParams } from 'react-router-dom';
+import { Col, Divider, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
-import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
-import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer';
-import './txList.css'
+import { getBalance } from '../../service/kai-explorer';
+import { getTxsByAddress } from '../../service/kai-explorer/transaction';
+import './addressDetail.css'
+
+
 const { Column, HeaderCell, Cell } = Table;
 
-const TxList = () => {
-    
-    const query = new URLSearchParams(useLocation().search);
-    const block = query.get("block") || '';
-    const [transactionList, setTransactionList] = useState([] as KAITransaction[])
+const AddressDetail = () => {
     const { isMobile } = useViewport()
     const history = useHistory();
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [transactionList, setTransactionList] = useState([] as KAITransaction[])
+    const { address }: any = useParams()
+    const [balance, setBalance] = useState(0)
 
     useEffect(() => {
         (async () => {
             setLoading(true)
-            if (block) {
-                const rs = await getTxsByBlockHeight(block, page, size);
-                setLoading(false)
-                setTransactionList(rs.transactions)
-                setTotalTxs(rs.totalTxs)
-            } else {
-                const rs = await getTransactions(page, size);
-                setLoading(false)
-                setTransactionList(rs.transactions)
-                setTotalTxs(rs.totalTxs)
-            }
+            const rs = await getTxsByAddress(address, page, size);
+            const balance = await getBalance(address)
+            setLoading(false)
+            setTransactionList(rs.transactions)
+            setTotalTxs(rs.totalTxs)
+            setBalance(balance)
         })()
-    }, [page, size, block])
-
+    }, [page, size, address])
     return (
-        <div className="container txs-container">
-            <h3>Transactions</h3>
-            <div>{block ? `Block number: #${block}` : ''}</div>
+        <div className="container address-detail-container">
+            <h3>Address Detail</h3>
             <Divider />
             <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
+                    <Panel header="Overview" shaded>
+                        <List bordered={false}>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
+                                        <div className="title">Address: </div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
+                                        <div className="content">
+                                            {renderHashString(address, 45)}
+                                        </div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
+                                        <div className="title">Balance: </div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
+                                        <div className="content">{weiToKAI(balance)} KAI</div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
+                        </List>
+                    </Panel>
+                </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <Panel header="Transaction History" shaded>
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -66,9 +89,9 @@ const TxList = () => {
                                                     <div> <Icon icon="exchange" style={{ marginRight: '10px' }} />
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
-                                                            headCount: isMobile ? 10 : 45,
+                                                            headCount: isMobile ? 10 : 40,
                                                             tailCount: 4,
-                                                            callback: () => { history.push(`/tx/${rowData.txHash}`)}
+                                                            callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                         })}
                                                     </div>
                                                 );
@@ -108,11 +131,14 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.from,
-                                                            headCount: isMobile ? 10 : 45,
-                                                            tailCount: 4
-                                                        })}
+                                                        {
+                                                            address === rowData.from ? rowData.from : renderHashToRedirect({
+                                                                hash: rowData.from,
+                                                                headCount: isMobile ? 10 : 45,
+                                                                tailCount: 4,
+                                                                callback: () => { history.push(`/address/${rowData.from}`) }
+                                                            })
+                                                        }
                                                     </div>
                                                 );
                                             }}
@@ -124,11 +150,14 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.to,
-                                                            headCount: isMobile ? 10 : 45,
-                                                            tailCount: 4
-                                                        })}
+                                                        {
+                                                            address === rowData.to ? rowData.to : renderHashToRedirect({
+                                                                hash: rowData.to,
+                                                                headCount: isMobile ? 10 : 45,
+                                                                tailCount: 4,
+                                                                callback: () => { history.push(`/address/${rowData.to}`) }
+                                                            })
+                                                        }
                                                     </div>
                                                 );
                                             }}
@@ -164,4 +193,4 @@ const TxList = () => {
     )
 }
 
-export default TxList
+export default AddressDetail;

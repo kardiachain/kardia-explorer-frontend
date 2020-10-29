@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel, Button } from 'rsuite';
+import { Col, FlexboxGrid, Table, Panel, Button, Icon } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -32,45 +32,43 @@ const TransactionSection = ({ transactionList = [] }: {
                                     return (
                                         <div>
                                             <div>
-                                                {/* {renderHashToRedirect(rowData.txHash, isMobile ? 10 : 30, 4, () => { history.push(`/tx/${rowData.txHash}`) })} */}
+                                                <Icon icon="exchange" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.txHash,
                                                     headCount: isMobile ? 10 : 30,
                                                     tailCount: 4,
                                                     callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                 })}
-                                                </div>
+                                            </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={isMobile ? 170 : 320}>
+                        <Column width={isMobile ? 170 : 350}>
                             <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
                                             <div style={{ marginBottom: '5px' }}>
-                                                From: 
-                                                {/* {renderHashToRedirect(rowData.from, isMobile ? 10 : 30, 4, () => { history.push(`/txs?addresses=${rowData.from}`) })} */}
+                                                From:
                                                 {renderHashToRedirect({
-                                                    hash: rowData.from,
-                                                    headCount: isMobile ? 10 : 30,
-                                                    tailCount: 4,
-                                                    callback: () => { history.push(`/txs?addresses=${rowData.from}`) }
-                                                })}
+                                                hash: rowData.from,
+                                                headCount: isMobile ? 10 : 30,
+                                                tailCount: 4,
+                                                callback: () => { history.push(`/address/${rowData.from}`) }
+                                            })}
                                             </div>
                                             <div>
-                                                To: 
-                                                {/* {renderHashToRedirect(rowData.to, isMobile ? 10 : 30, 4, () => { history.push(`/txs?addresses=${rowData.to}`) })} */}
+                                                To:
                                                 {renderHashToRedirect({
-                                                    hash: rowData.to,
-                                                    headCount: isMobile ? 10 : 30,
-                                                    tailCount: 4,
-                                                    callback: () => { history.push(`/txs?addresses=${rowData.to}`) }
-                                                })}
+                                                hash: rowData.to,
+                                                headCount: isMobile ? 10 : 30,
+                                                tailCount: 4,
+                                                callback: () => { history.push(`/address/${rowData.to}`) }
+                                            })}
                                             </div>
                                         </div>
                                     );
