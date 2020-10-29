@@ -9,14 +9,14 @@ import NetworkSelect from './NetworkSelect';
 import SearchSection from './SearchSection';
 
 const Header = () => {
-    const [activeKey, setActiveKey] = useState('explorer');
+    const [activeKey, setActiveKey] = useState('');
     const [showMenu, setShowMenu] = useState(false);
     const { isMobile } = useViewport()
 
     const location = useLocation()
 
     useEffect(() => {
-        setActiveKey(location.pathname.split('/')[1])
+        setActiveKey(location.pathname.split('/')[location.pathname.split('/').length - 1])
     }, [location])
 
     let history = useHistory();
@@ -95,12 +95,12 @@ const Header = () => {
             <Navbar.Body>
                 <Nav className="kardia-nav" onSelect={setActiveKey} activeKey={activeKey}>
                     <Nav.Item eventKey="" href="/">Home</Nav.Item>
-                    <Dropdown eventKey="blockchain" title="Blockchain">
-                        <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
-                        <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
+                    <Dropdown title="Blockchain">
+                        <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
+                        <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
                     </Dropdown>
                     <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
-                    <Nav.Item eventKey="network" href="/staking" >Staking</Nav.Item>
+                    <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
                     {
                         isLoggedIn() ? (
                             <Dropdown
@@ -109,7 +109,7 @@ const Header = () => {
                             >
                                 <Dropdown.Item eventKey="send-transaction" href="/wallet/send-transaction">Send transaction</Dropdown.Item>
                                 <Dropdown.Item eventKey="transaction-history"href="/wallet/transaction-history">Transactions history</Dropdown.Item>
-                                <Dropdown.Item eventKey="staking" href="/wallet/staking/your-delegators">Staking</Dropdown.Item>
+                                <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Staking</Dropdown.Item>
                                 <Dropdown.Item eventKey="smart-contract" href="/wallet/smart-contract">Smart contract</Dropdown.Item>
                                 <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                             </Dropdown>

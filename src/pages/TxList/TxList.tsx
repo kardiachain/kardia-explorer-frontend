@@ -136,7 +136,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={200} align="center">
+                                    <Column width={150} align="center">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
