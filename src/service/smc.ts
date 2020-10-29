@@ -1,9 +1,9 @@
+import { STAKING_SMC_ADDRESS } from '../config/api';
 import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import STAKING_BYTE_CODE from '../resources/smc-compile/staking-bin.json'
 
 const stakingContract = kardiaContract(kardiaProvider, STAKING_BYTE_CODE, STAKING_ABI);
-const STAKING_SMC_ADDRESS = '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1';
 
 const invokeCallData = async (methodName: string, params: any[]) => {
     const invoke = await stakingContract.invoke({
