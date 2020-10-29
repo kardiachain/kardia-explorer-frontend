@@ -2,3 +2,6 @@
     padding: 5px 0;
     font-weight: 700;
 }
+.block-detail-container .content {
+    word-break: break-all;
+}

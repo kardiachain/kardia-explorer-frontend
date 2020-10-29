@@ -31,14 +31,14 @@ const BlockSection = ({ blockList = [] }: {
                                     return (
                                         <div>
                                             <div>
-                                                <Icon icon="th-large"  style={{ marginRight: '10px' }}/>
+                                                <Icon icon="th-large" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.blockHeight,
                                                     headCount: 30,
                                                     tailCount: 4,
                                                     callback: () => { history.push(`/block/${rowData.blockHeight}`) }
                                                 })}
-                                                </div>
+                                            </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
                                     );
@@ -51,7 +51,14 @@ const BlockSection = ({ blockList = [] }: {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            {truncate(rowData.validator.hash, isMobile ? 10 : 45, 4)}
+                                            {
+                                                renderHashToRedirect({
+                                                    hash: rowData.validator.hash,
+                                                    headCount: 45,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/address/${rowData.validator.hash}`) }
+                                                })
+                                            }
                                         </div>
                                     );
                                 }}
@@ -76,7 +83,7 @@ const BlockSection = ({ blockList = [] }: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                <Button className="button-view-all" onClick={() => {history.push(`/blocks`)}}>View all blocks</Button>
+                <Button className="button-view-all" onClick={() => { history.push(`/blocks`) }}>View all blocks</Button>
             </FlexboxGrid>
         </Panel>
     )

@@ -66,7 +66,7 @@ const TxList = () => {
                                                     <div> <Icon icon="exchange" style={{ marginRight: '10px' }} />
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
-                                                            headCount: isMobile ? 10 : 45,
+                                                            headCount: isMobile ? 10 : 40,
                                                             tailCount: 4,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`)}
                                                         })}
@@ -111,7 +111,8 @@ const TxList = () => {
                                                         {renderHashToRedirect({
                                                             hash: rowData.from,
                                                             headCount: isMobile ? 10 : 45,
-                                                            tailCount: 4
+                                                            tailCount: 4,
+                                                            callback: () => { history.push(`/address/${rowData.from}`) }
                                                         })}
                                                     </div>
                                                 );
@@ -127,7 +128,8 @@ const TxList = () => {
                                                         {renderHashToRedirect({
                                                             hash: rowData.to,
                                                             headCount: isMobile ? 10 : 45,
-                                                            tailCount: 4
+                                                            tailCount: 4,
+                                                            callback: () => { history.push(`/address/${rowData.to}`) }
                                                         })}
                                                     </div>
                                                 );
