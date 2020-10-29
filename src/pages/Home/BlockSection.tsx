@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Button } from 'rsuite';
-import { millisecondToHMS, renderHashToRedirect, truncate } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 
