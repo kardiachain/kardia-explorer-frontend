@@ -3,8 +3,8 @@ import { Dropdown } from 'rsuite';
 
 const networkList = [
     {
-        label: 'Archi Testnet 2.0',
-        value: 'testnet-2.0',
+        label: 'Archi Testnet 3.0',
+        value: 'testnet-3.0',
         disabled: false
     },
     {
@@ -20,7 +20,7 @@ const getNetworkLabel = (value: string) => {
 }
 
 const NetworkSelect = () => {
-    const [network, setNetwork] = useState('testnet-2.0')
+    const [network, setNetwork] = useState('testnet-3.0')
     return (
         <div className="network-select-wrapper">
             <Dropdown activeKey={network} title={getNetworkLabel(network)}>
