@@ -21,6 +21,10 @@ const DashboardHeader = () => {
         Alert.success('Copied to clipboard.')
     }
 
+    const reloadBalance = () => {
+        getBalance(account.publickey).then(setBalance);
+    }
+
     return (
         <>
             <Row className="wallet-header-container">
@@ -44,7 +48,7 @@ const DashboardHeader = () => {
                             <div>{weiToKAI(balance)} KAI</div>
                         </div>
                         <div className="action">
-                            <Icon icon="refresh2">&nbsp;&nbsp;Reload balance</Icon>
+                            <Icon icon="refresh2" onClick={reloadBalance}>&nbsp;&nbsp;Reload balance</Icon>
                         </div>
                     </Panel>
                 </Col>
