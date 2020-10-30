@@ -13,6 +13,7 @@ const Delegator = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [validatorActive, setValidatorActive] = useState('')
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false)
+    // const [showConfirmUndelegateModal, setShowConfirmUndelegateModal] = useState(false)
 
     useEffect(() => {
         (async () => {
@@ -63,6 +64,7 @@ const Delegator = () => {
                     rowHeight={70}
                     data={yourValidators}
                     hover={false}
+                    wordWrap={true}
                 >
                     <Column width={400} verticalAlign="middle">
                         <HeaderCell>Validator</HeaderCell>
@@ -94,17 +96,24 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column width={200} verticalAlign="middle">
-                        <HeaderCell>Withdraw Rewards</HeaderCell>
+                    <Column width={300} verticalAlign="middle">
+                        <HeaderCell>Withdraw</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
-                                        <Button appearance="primary" onClick={() => {
+                                        <Button appearance="primary" style={{marginRight: '10px'}} onClick={() => {
                                             setShowConfirmWithdrawRewardsModal(true)
                                             setValidatorActive(rowData.validatorAddr)
                                         }}>
-                                            Withdraw Rewards
+                                            Rewards Amount
+                                        </Button>
+                                        <Button appearance="primary"
+                                            onClick={() => {
+                                                setShowConfirmWithdrawModal(true)
+                                                setValidatorActive(rowData.validatorAddr)
+                                            }}>
+                                            Staked Amount
                                         </Button>
                                     </ButtonToolbar>
                                 )
@@ -112,17 +121,15 @@ const Delegator = () => {
                         </Cell>
                     </Column>
                     <Column width={200} verticalAlign="middle">
-                        <HeaderCell>Withdraw </HeaderCell>
+                        <HeaderCell>Undelegate </HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
                                     <ButtonToolbar>
                                         <Button appearance="primary"
                                             onClick={() => {
-                                                setShowConfirmWithdrawModal(true)
-                                                setValidatorActive(rowData.validatorAddr)
                                             }}>
-                                            Withdraw Staked Amount
+                                            Undelegate
                                         </Button>
                                     </ButtonToolbar>
                                 )

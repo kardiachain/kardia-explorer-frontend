@@ -53,18 +53,25 @@ const DelegatorCreate = () => {
     }
 
     const confirmDelegate = async () => {
-        setIsLoading(true)
-        let account = getAccount() as Account
-        const delegate = await delegateAction(valAddr, account, Number(delAmount))
+        try {
+            setIsLoading(true)
+            let account = getAccount() as Account
+            const delegate = await delegateAction(valAddr, account, Number(delAmount))
 
-        if (delegate && delegate.status === 1) {
-            Alert.success('Delegate success.')
-            setHashTransaction(delegate.transactionHash)
-        } else {
-            Alert.error('Delegate failed.')
+            if (delegate && delegate.status === 1) {
+                Alert.success('Delegate success.')
+                setHashTransaction(delegate.transactionHash)
+            } else {
+                Alert.error('Delegate failed.')
+            }
+            setIsLoading(false)
+            setShowConfirmModal(false)
+        } catch (error) {
+            const errJson = JSON.parse(error?.message)
+            Alert.error(`Delegate failed: ${errJson?.error?.message || ''}`)
+            setIsLoading(false)
+            setShowConfirmModal(false)
         }
-        setIsLoading(false)
-        setShowConfirmModal(false)
     }
 
     return (
@@ -166,9 +173,9 @@ const DelegatorCreate = () => {
                     <Modal.Title>Confirm your delegate</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign:'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{delAmount} KAI</span></div>
-                    <div style={{ textAlign:'center' }}>TO</div>
-                    <div style={{ textAlign:'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
+                    <div style={{ textAlign: 'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{delAmount} KAI</span></div>
+                    <div style={{ textAlign: 'center' }}>TO</div>
+                    <div style={{ textAlign: 'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowConfirmModal(false) }} appearance="subtle">

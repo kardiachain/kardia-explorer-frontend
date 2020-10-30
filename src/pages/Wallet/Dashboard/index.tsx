@@ -29,17 +29,17 @@ const DashboardWallet = () => {
                         <Sidenav.Body>
                             <Nav onSelect={setActiveKey} activeKey={activeKey}>
                                 <Nav.Item eventKey="send-transaction" active={activeKey === "1"} href="/wallet/send-transaction" icon={<Icon icon="send" />}>
-                                    Send transaction
+                                    Send Transaction
                                 </Nav.Item>
                                 <Nav.Item eventKey="transaction-history" active={activeKey === "4"} href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>
-                                    Transactions history
+                                    Transactions History
                                 </Nav.Item>
                                 <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
                                     <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
-                                    <Dropdown.Item  eventKey="delegated-validators" href="/wallet/staking/delegated-validators">Delegated validators</Dropdown.Item>
+                                    <Dropdown.Item  eventKey="delegated-validators" href="/wallet/staking/delegated-validators">Delegated Validators</Dropdown.Item>
                                 </Dropdown>
                                 <Nav.Item eventKey="smart-contract" active={activeKey === "3"} href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>
-                                    Smart contract
+                                    Smart Contract
                                 </Nav.Item>
                             </Nav>
                         </Sidenav.Body>
