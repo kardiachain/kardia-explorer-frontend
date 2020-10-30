@@ -1,3 +1,4 @@
+import { cellValue } from '../common/utils/amount';
 import { STAKING_SMC_ADDRESS } from '../config/api';
 import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
@@ -157,9 +158,17 @@ const delegateAction = async (valAddr: string, account: Account, amountDel: numb
     return await invokeSendAction("delegate", [valAddr], account, amountDel);
 }
 
-const createValidator = async (commssionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
+const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
+
+    // convert value number type to decimal type
     // const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("createValidator", [commssionRate, maxRate, maxRateChange, minSeftDelegation], account, amountDel);
+    // const minSeftDelegationDec = cellValue(minSeftDelegation);
+    
+    // convert value percent type to decimal type
+    const commissionRateDec = cellValue(commissionRate / 100);
+    const maxRateDec = cellValue(maxRate / 100);
+    const maxRateChangeDec = cellValue(maxRateChange / 100)
+    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegation], account, amountDel);
 }
 
 // Delegator withdraw reward

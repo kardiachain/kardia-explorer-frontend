@@ -39,8 +39,16 @@ const ValidatorCreate = () => {
             setCommissionRateErr(ErrorMessage.ValueInvalid)
             return false
         }
+
+        // The commission value cannot be more than 100%
         if (Number(value) > 100) {
-            setCommissionRateErr(ErrorMessage.MaxRateMoreThanHundred)
+            setCommissionRateErr(ErrorMessage.CommissionRateMoreThanHundred)
+            return false
+        }
+
+        //commission rate cannot be more than the max rate
+        if (Number(value) > Number(maxRate)) {
+            setCommissionRateErr(ErrorMessage.CommissionRateMoreThanMaxRate)
             return false
         }
         setCommissionRateErr('')
@@ -60,6 +68,29 @@ const ValidatorCreate = () => {
             setMaxRateErr(ErrorMessage.ValueInvalid)
             return false
         }
+
+        // The commission max rate value cannot be more than 100%
+        if (Number(value) > 100) {
+            setMaxRateErr(ErrorMessage.MaxRateMoreThanHundred)
+            return false
+        }
+
+        //commission rate cannot be more than the max rate
+        if (Number(value) < Number(commissionRate)) {
+            setCommissionRateErr(ErrorMessage.CommissionRateMoreThanMaxRate)
+            return false
+        } else {
+            setCommissionRateErr('')
+        }
+
+        //commission max change rate can not be more than the max rate
+        if (Number(value) < Number(maxChangeRate)) {
+            setMaxChangeRateErr(ErrorMessage.MaxChangeRateMoreThanMaxRate)
+            return false
+        } else {
+            setMaxChangeRateErr('')
+        }
+
         setMaxRateErr('')
         return true
     }
@@ -77,6 +108,19 @@ const ValidatorCreate = () => {
             setMaxChangeRateErr(ErrorMessage.ValueInvalid)
             return false
         }
+
+        // The commission max change rate value cannot be more than 100%
+        if (Number(value) > 100) {
+            setMaxChangeRateErr(ErrorMessage.MaxChangeRateMoreThanHundred)
+            return false
+        }
+
+        //commission max change rate can not be more than the max rate
+        if (Number(value) > Number(maxRate)) {
+            setMaxChangeRateErr(ErrorMessage.MaxChangeRateMoreThanMaxRate)
+            return false
+        }
+
         setMaxChangeRateErr('')
         return true
     }
@@ -93,6 +137,14 @@ const ValidatorCreate = () => {
         if (Number(value) === 0) {
             setMaxMinSelfDelegationErr(ErrorMessage.ValueInvalid)
             return false
+        }
+
+        // Self-delegated amount is below minimum
+        if (Number(value) > Number(amountDel)) {
+            setAmountDelErr(ErrorMessage.DelBelowMinimum)
+            return false
+        } else {
+            setAmountDelErr('')
         }
         setMaxMinSelfDelegationErr('')
         return true
@@ -112,6 +164,7 @@ const ValidatorCreate = () => {
             return false
         }
 
+        // Self-delegated amount is below minimum
         if (Number(value) < Number(minSelfDelegation)) {
             setAmountDelErr(ErrorMessage.DelBelowMinimum)
             return false
@@ -154,7 +207,7 @@ const ValidatorCreate = () => {
         <>
             <Form fluid>
                 <FormGroup>
-                    <ControlLabel>Commission Rate <span className="required-mask">*</span></ControlLabel>
+                    <ControlLabel>Commission Rate (%) <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Commission Rate"
                         name="commissionRate"
                         value={commissionRate}
@@ -167,7 +220,7 @@ const ValidatorCreate = () => {
                     <ErrMessage message={commissionRateErr} />
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Max Rate <span className="required-mask">*</span></ControlLabel>
+                    <ControlLabel>Max Rate (%) <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Max Rate"
                         name="maxRate"
                         value={maxRate}
@@ -180,7 +233,7 @@ const ValidatorCreate = () => {
                     <ErrMessage message={maxRateErr} />
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Max Change Rate <span className="required-mask">*</span></ControlLabel>
+                    <ControlLabel>Max Change Rate (%) <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Max Change Rate"
                         name="maxChangeRate"
                         value={maxChangeRate}
@@ -236,8 +289,8 @@ const ValidatorCreate = () => {
                 <Modal.Body>
                     <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to create validator with: </div>
                     <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {commissionRate} %</span></div>
-                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxRate} KAI</span></div>
-                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxChangeRate} KAI</span></div>
+                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxRate} %</span></div>
+                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxChangeRate} %</span></div>
                     <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
                     <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {amountDel} KAI</span></div>
                 </Modal.Body>
