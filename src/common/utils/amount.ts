@@ -11,16 +11,12 @@ const cellValue = (kaiValue: any) => {
   return cellString;
 };
 
-// const weiToKAI = (value?: number) => {
-  // if (!value) return ''
-  // const kaiValue = (value / (10**18)).toFixed(18)
-  // return removeTrailingZeros(kaiValue)
-// }
-
 const weiToKAI = (value: any) => {
   if (!value || value === '0' ) {
     return '0'
   }
+  value = value.toLocaleString('en-US', {useGrouping:false});
+  
   const cellString = value.toString().padStart(36, '0');
   
   const kaiNumString = parseInt(cellString.slice(0, 18));
