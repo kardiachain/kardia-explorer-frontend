@@ -15,7 +15,7 @@ const invokeCallData = async (methodName: string, params: any[]) => {
     return result
 }
 
-const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number) => {
+const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0) => {
     const invoke = await stakingContract.invoke({
         params: params,
         name: methodName,
@@ -31,7 +31,7 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
     const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
         from: account.publickey,
         amount: amountVal,
-        gas: 900000 + estimatedGas,
+        gas: 30000000 + estimatedGas,
         gasPrice: 2
     });
 
@@ -154,21 +154,31 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
-    const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
+    // const cellAmountDel = cellValue(amountDel);
+    return await invokeSendAction("delegate", [valAddr], account, amountDel);
 }
 
 const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
 
     // convert value number type to decimal type
-    const cellAmountDel = cellValue(amountDel);
-    const minSeftDelegationDec = cellValue(minSeftDelegation);
+    // const cellAmountDel = cellValue(amountDel);
+    // const minSeftDelegationDec = cellValue(minSeftDelegation);
 
     // convert value percent type to decimal type
     const commissionRateDec = cellValue(commissionRate / 100);
     const maxRateDec = cellValue(maxRate / 100);
     const maxRateChangeDec = cellValue(maxRateChange / 100)
-    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegationDec], account, cellAmountDel);
+    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegation], account, amountDel);
+}
+
+// @Function: update validator
+const updateValidator = async (commissionRate: number, minSeftDelegation: number, account: Account) => {
+    // convert value number type to decimal type
+    // const minSeftDelegationDec = cellValue(minSeftDelegation);
+
+    // convert value percent type to decimal type
+    const commissionRateDec = cellValue(commissionRate / 100);
+    return await invokeSendAction("updateValidator", [commissionRateDec, minSeftDelegation], account);
 }
 
 // Delegator withdraw reward
@@ -195,5 +205,6 @@ export {
     getNumberDelOfValidator,
     getValidatorPower,
     withdrawReward,
-    withdraw
+    withdraw,
+    updateValidator
 }

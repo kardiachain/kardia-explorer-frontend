@@ -189,18 +189,25 @@ const ValidatorCreate = () => {
     }
 
     const registerValidator = async () => {
-        setIsLoading(true)
-        let account = await getAccount() as Account;
-        let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
-        if (validator && validator.status === 1) {
-            Alert.success('Create validator success.')
-            setHashTransaction(validator.transactionHash)
-        } else {
-            Alert.error('Create validator failed')
+        try {
+            setIsLoading(true)
+            let account = await getAccount() as Account;
+            let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
+            if (validator && validator.status === 1) {
+                Alert.success('Create validator success.')
+                setHashTransaction(validator.transactionHash)
+            } else {
+                Alert.error('Create validator failed')
+            }
+            resetForm();
+            setIsLoading(false)
+            setShowConfirmModal(false)
+        } catch (error) {
+            const errJson = JSON.parse(error?.message)
+            Alert.error(`Create validator failed: ${errJson?.error?.message || ''}`)
+            setIsLoading(false)
+            setShowConfirmModal(false)
         }
-        resetForm();
-        setIsLoading(false)
-        setShowConfirmModal(false)
     }
 
     return (
@@ -246,7 +253,7 @@ const ValidatorCreate = () => {
                     <ErrMessage message={maxChangeRateErr} />
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Min Self Delegation <span className="required-mask">*</span></ControlLabel>
+                    <ControlLabel>Min Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Min Self Delegation"
                         name="minSelfDelegation"
                         value={minSelfDelegation}
@@ -259,7 +266,7 @@ const ValidatorCreate = () => {
                     <ErrMessage message={maxMinSelfDelegationErr} />
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Amount Self Delegation <span className="required-mask">*</span></ControlLabel>
+                    <ControlLabel>Amount Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
                     <FormControl placeholder="Amount Self Delegation"
                         name="amountDel"
                         value={amountDel}
