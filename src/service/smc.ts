@@ -154,21 +154,21 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
-    // const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("delegate", [valAddr], account, amountDel);
+    const cellAmountDel = cellValue(amountDel);
+    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
 }
 
 const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
 
     // convert value number type to decimal type
-    // const cellAmountDel = cellValue(amountDel);
-    // const minSeftDelegationDec = cellValue(minSeftDelegation);
-    
+    const cellAmountDel = cellValue(amountDel);
+    const minSeftDelegationDec = cellValue(minSeftDelegation);
+
     // convert value percent type to decimal type
     const commissionRateDec = cellValue(commissionRate / 100);
     const maxRateDec = cellValue(maxRate / 100);
     const maxRateChangeDec = cellValue(maxRateChange / 100)
-    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegation], account, amountDel);
+    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegationDec], account, cellAmountDel);
 }
 
 // Delegator withdraw reward
