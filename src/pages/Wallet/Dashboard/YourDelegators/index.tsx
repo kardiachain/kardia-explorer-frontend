@@ -3,12 +3,11 @@ import { Alert, Button, ButtonToolbar, Col, ControlLabel, FlexboxGrid, Form, For
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { onlyNumber, verifyAmount } from '../../../../common/utils/number';
+import { onlyNumber, verifyAmount, numberFormat } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
-import { useViewport } from '../../../../context/ViewportContext';
 import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
-import '../dashboard.css'
+import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -16,7 +15,6 @@ const { Column, HeaderCell, Cell } = Table;
 const YourDelegators = () => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const { isMobile } = useViewport()
     const [isVal, setIsVal] = useState(false);
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const [validator, setValidator] = useState<ValidatorFromSMC>()
@@ -143,13 +141,13 @@ const YourDelegators = () => {
                                 <Panel header={<h4>Validator information</h4>} shaded>
                                     <List>
                                         <List.Item>
-                                            <span className="property-title">Validator address: </span> {validator?.address}
+                                            <span className="property-title">Validator address: </span> <span style={{wordBreak: 'break-all'}}>{renderHashString(validator?.address || '', 45)}</span>
                                         </List.Item>
                                         <List.Item>
-                                            <span className="property-title">Total delegator: </span> {validator?.totalDels}
+                                            <span className="property-title">Total delegator: </span> {numberFormat(validator?.totalDels || 0)}
                                         </List.Item>
                                         <List.Item>
-                                            <span className="property-title">Voting power: </span> {validator?.votingPower}
+                                            <span className="property-title">Voting power: </span> {numberFormat(validator?.votingPower || 0)}
                                         </List.Item>
                                     </List>
                                     <ButtonToolbar style={{ marginTop: '30px', marginBottom: '20px' }}>
@@ -194,7 +192,7 @@ const YourDelegators = () => {
                                                     </ButtonToolbar>
                                                 </FormGroup>
                                                 {
-                                                    !hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
+                                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
                                                 }
                                             </Form>
                                         ) : <></>
@@ -207,21 +205,22 @@ const YourDelegators = () => {
                             <div className="del-list-container">
                                 <Panel header={<h4>Your Delegators</h4>} shaded>
                                     <Table
+                                        hover={false}
                                         autoHeight
                                         rowHeight={60}
                                         data={delegators}
                                     >
-                                        <Column width={isMobile ? 120 : 500} verticalAlign="middle">
+                                        <Column width={400} verticalAlign="middle">
                                             <HeaderCell>Delegator address</HeaderCell>
                                             <Cell>
                                                 {(rowData: Delegator) => {
                                                     return (
-                                                        <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
+                                                        <div> {renderHashString(rowData.address, 45)} </div>
                                                     );
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                        <Column width={150} verticalAlign="middle">
                                             <HeaderCell>Share</HeaderCell>
                                             <Cell>
                                                 {(rowData: Delegator) => {

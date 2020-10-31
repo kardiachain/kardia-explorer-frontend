@@ -12,17 +12,17 @@ const cellValue = (kaiValue: any) => {
 };
 
 const weiToKAI = (value: any) => {
-  if (!value || value === '0' ) {
+  if (!value || value === '0') {
     return '0'
   }
-  value = value.toLocaleString('en-US', {useGrouping:false});
   
+  value = value.toLocaleString('en-US', { useGrouping: false });
   const cellString = value.toString().padStart(36, '0');
-  
+
   const kaiNumString = parseInt(cellString.slice(0, 18));
   const kaiDecimalString = cellString.slice(-18);
-  const finalVal = `${kaiNumString}.${kaiDecimalString}`;
-  return `${removeTrailingZeros(finalVal)}`;
+  const finalVal = `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+  return formatAmount(Number(finalVal));
 };
 
 const removeTrailingZeros = (value: any) => {
@@ -42,8 +42,25 @@ const removeTrailingZeros = (value: any) => {
   if (after.indexOf('.') === 0) {
     after = '0' + after
   }
-  return after ? after : '0';
+  return after ? after : 0;
 };
 
+const formatAmount = (value: number) => {
 
-export {weiToKAI, cellValue}
+  if (value >= 1000000000) {
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000000000)} B`;
+  }
+
+  if (value >= 1000000) {
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000000)} M`;
+  }
+
+  if (value >= 1000) {
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000)} K`;
+  }
+
+  return new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value);
+}
+
+
+export { weiToKAI, cellValue }

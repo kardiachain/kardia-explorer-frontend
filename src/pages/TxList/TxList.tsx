@@ -58,7 +58,7 @@ const TxList = () => {
                                     hover={false}
                                     loading={loading}
                                 >
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column width={isMobile ? 120 : 400} verticalAlign="middle">
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -75,7 +75,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={100} align="center">
+                                    <Column width={100} align="center" verticalAlign="middle">
                                         <HeaderCell>Block Height</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -92,7 +92,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={200} align="center">
+                                    <Column width={200} align="center" verticalAlign="middle">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -102,7 +102,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column width={isMobile ? 120 : 400} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -119,7 +119,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column width={isMobile ? 120 : 400} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -136,7 +136,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={150} align="center">
+                                    <Column width={150} align="center" verticalAlign="middle">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

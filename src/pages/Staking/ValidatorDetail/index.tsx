@@ -7,6 +7,7 @@ import { useViewport } from '../../../context/ViewportContext';
 import { getDelegationsByValidator, getValidator } from '../../../service/smc';
 import { isLoggedIn } from '../../../service/wallet'
 import './validator.css'
+import { numberFormat } from '../../../common/utils/number';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -25,7 +26,7 @@ const ValidatorDetail = () => {
     return (
         <div className="container val-detail-container">
             <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} style={{marginBottom: '30px'}}>
                     <div>
                         <Panel header={<h4>Validator information</h4>} shaded>
                             <List>
@@ -33,13 +34,13 @@ const ValidatorDetail = () => {
                                     <span className="property-title">Address: </span> {renderHashString(validator?.address || '', 50)}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total Delegator: </span> {validator?.totalDels}
+                                    <span className="property-title">Total Delegator: </span> {numberFormat(validator?.totalDels || 0)}
                                 </List.Item>
                                 <List.Item>
                                     <span className="property-title">Total staked amount: </span> {weiToKAI(validator?.totalStakedAmount)}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Voting Power: </span> {validator?.votingPower}
+                                    <span className="property-title">Voting Power: </span> {numberFormat(validator?.votingPower || 0)}
                                 </List.Item>
                             </List>
                             <ButtonToolbar style={{marginTop: '30px'}}>

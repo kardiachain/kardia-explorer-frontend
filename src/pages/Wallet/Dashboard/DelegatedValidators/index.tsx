@@ -120,7 +120,7 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column width={200} verticalAlign="middle">
+                    {/* <Column width={200} verticalAlign="middle">
                         <HeaderCell>Undelegate </HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -135,7 +135,7 @@ const Delegator = () => {
                                 )
                             }}
                         </Cell>
-                    </Column>
+                    </Column> */}
                 </Table>
             </Panel>
             {/* Modal confirm when withdraw rewards */}
