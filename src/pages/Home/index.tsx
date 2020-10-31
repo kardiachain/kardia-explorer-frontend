@@ -63,11 +63,11 @@ const Home = () => {
                     </FlexboxGrid>
                 </div>
                 {isMobile && <Divider />}
-                <FlexboxGrid justify="space-between">
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
+                <FlexboxGrid justify="space-between" style={{marginTop: !isMobile ? '30px' : '0' }}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24} style={{marginBottom: '20px'}}>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{marginBottom: '20px'}}>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>
                 </FlexboxGrid>

@@ -7,6 +7,7 @@ import { useViewport } from '../../context/ViewportContext';
 import { getValidatorsFromSMC } from '../../service/smc';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
+import { numberFormat } from '../../common/utils/number';
 
 const { Column, HeaderCell, Cell } = Table;
 const Validators = () => {
@@ -80,7 +81,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <div>{rowData.votingPower || '0'}</div>
+                                            <div>{numberFormat(Number(rowData.votingPower)) || '0'}</div>
                                         );
                                     }}
                                 </Cell>

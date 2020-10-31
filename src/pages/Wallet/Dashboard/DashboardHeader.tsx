@@ -45,7 +45,7 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card balance">
                         <div className="title"><Icon className="icon" icon="money" />Balance</div>
                         <div className="content">
-                            <div>{weiToKAI(balance)} KAI</div>
+                            <div>{weiToKAI(balance)} <span style={{fontWeight: 'bold'}}>KAI</span></div>
                         </div>
                         <div className="action">
                             <Icon icon="refresh2" onClick={reloadBalance}>&nbsp;&nbsp;Reload balance</Icon>
