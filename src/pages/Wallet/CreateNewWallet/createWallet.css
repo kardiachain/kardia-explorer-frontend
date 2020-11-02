@@ -93,3 +93,7 @@
     color: #0f198e;
     font-weight: bold;
 }
+
+.privatekey-input-container:hover {
+    border-color: none;
+}

@@ -76,12 +76,12 @@ const CreateByPrivateKey = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                             <div style={{ wordBreak: 'break-all' }}>
-                                                <InputGroup style={{ width: '100%' }}>
+                                                <InputGroup style={{ width: '100%' }} className="privatekey-input-container">
                                                     <Input value={renderCredential()} />
-                                                    <InputGroup.Button style={{backgroundColor: '#bac0ff'}} onClick={() => setShowPrivKey(!showPrivKey)}>
+                                                    <InputGroup.Button onClick={() => setShowPrivKey(!showPrivKey)}>
                                                         <Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />
                                                     </InputGroup.Button>
-                                                    <InputGroup.Button style={{backgroundColor: '#9ba5f5'}} onClick={() => copyToClipboard(wallet.privatekey, onSuccess)}>
+                                                    <InputGroup.Button onClick={() => copyToClipboard(wallet.privatekey, onSuccess)}>
                                                         <Icon icon="copy" />
                                                     </InputGroup.Button>
                                                 </InputGroup>
