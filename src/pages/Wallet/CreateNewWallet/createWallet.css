@@ -97,3 +97,15 @@
 .privatekey-input-container:hover {
     border-color: none;
 }
+
+/* Style for create wallet with mnemonic */
+.mnemonic .tag-container {
+    background-color: #494d7d;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 5px 20px;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+}

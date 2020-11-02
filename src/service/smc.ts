@@ -24,15 +24,13 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
     const estimatedGas = await invoke.estimateGas({
         from: account.publickey,
         amount: amountVal,
-        gas: 21000,
-        gasPrice: 1
     });
 
     const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
         from: account.publickey,
         amount: amountVal,
-        gas: estimatedGas + 1,
-        gasPrice: 1
+        gas: 900000 + estimatedGas,
+        gasPrice: 2
     });
 
     return invokeResult;
@@ -155,6 +153,8 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
     const cellAmountDel = cellValue(amountDel);
+    console.log("cellAmountDel", cellAmountDel);
+    
     return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
 }
 

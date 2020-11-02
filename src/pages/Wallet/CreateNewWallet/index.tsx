@@ -36,7 +36,7 @@ const CreateNewWallet = () => {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={6}>
                         <div className="panel-container mnemonic-phrase">
-                            <Panel shaded>
+                            <Panel shaded onClick={() => { history.push('/create-mnemonic-phrase') }}>
                                 <div className="title">CREATE WITH MNEMONIC PHRASE</div>
                                 <div className="icon">
                                     <Icon icon="paragraph" size="lg" />
