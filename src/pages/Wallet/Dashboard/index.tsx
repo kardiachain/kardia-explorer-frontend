@@ -10,6 +10,7 @@ import TransactionHistory from './TransactionHistory';
 import DelegatorCreate from './DelegatedValidators/DelegatorCreate';
 import { useViewport } from '../../../context/ViewportContext';
 import DelegatedValidators from './DelegatedValidators';
+import AuthRouter from '../../../AuthRouter';
 
 const DashboardWallet = () => {
     const [activeKey, setActiveKey] = useState("send-transaction");
@@ -51,24 +52,12 @@ const DashboardWallet = () => {
             <div className="right-container" style={isMobile ? {width: '100%'} : {}}>
                 <DashboardHeader />
                 <Switch>
-                    <Route path="/wallet/send-transaction">
-                        <SendTransaction />
-                    </Route>
-                    <Route path="/wallet/staking/your-delegators">
-                        <YourDelegators />
-                    </Route>
-                    <Route path="/wallet/staking/delegated-validators">
-                        <DelegatedValidators />
-                    </Route>
-                    <Route path="/wallet/smart-contract">
-                        <SmartContract />
-                    </Route>
-                    <Route path="/wallet/transaction-history">
-                        <TransactionHistory />
-                    </Route>
-                    <Route path="/wallet/staking/:valAddr">
-                        <DelegatorCreate />
-                    </Route>
+                    <AuthRouter component={SendTransaction}  path="/wallet/send-transaction" />
+                    <AuthRouter component={YourDelegators}  path="/wallet/staking/your-delegators" />
+                    <AuthRouter component={DelegatedValidators}  path="/wallet/staking/delegated-validators" />
+                    <AuthRouter component={SmartContract}  path="/wallet/smart-contract" />
+                    <AuthRouter component={TransactionHistory}  path="/wallet/transaction-history" />
+                    <AuthRouter component={DelegatorCreate}  path="/wallet/staking/:valAddr" />
                     <Route path="/wallet">
                         <Redirect to="/wallet/send-transaction" />
                     </Route>
