@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Alert, Button, Col, FlexboxGrid, Icon, IconButton, Panel } from 'rsuite';
+import { Alert, Button, Col, FlexboxGrid, Icon, Input, InputGroup, Panel } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
 import { copyToClipboard } from '../../../common/utils/string';
@@ -44,7 +44,7 @@ const CreateByPrivateKey = () => {
     return (
         <div className="show-grid creact-container private-key">
             <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={12} sm={20} xs={24}>
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
                     <Panel shaded>
                         <FlexboxGrid justify="center">
                             <div className="title">CREATE WITH PRIVATE KEY</div>
@@ -75,18 +75,16 @@ const CreateByPrivateKey = () => {
                                             <div><b>Please <span className="note">COPY</span>  and <span className="note">SAVE</span>  the following Private key:</b></div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                            <div style={{wordBreak: 'break-all'}}>
-                                                {renderCredential()}
-                                                <IconButton
-                                                    onClick={() => copyToClipboard(wallet.privatekey, onSuccess)}
-                                                    size="xs"
-                                                    icon={<Icon icon="copy" />}
-                                                />
-                                                <IconButton
-                                                    onClick={() => setShowPrivKey(!showPrivKey)}
-                                                    size="xs"
-                                                    icon={<Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />}
-                                                />
+                                            <div style={{ wordBreak: 'break-all' }}>
+                                                <InputGroup style={{ width: '100%' }} className="privatekey-input-container">
+                                                    <Input value={renderCredential()} />
+                                                    <InputGroup.Button onClick={() => setShowPrivKey(!showPrivKey)}>
+                                                        <Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />
+                                                    </InputGroup.Button>
+                                                    <InputGroup.Button onClick={() => copyToClipboard(wallet.privatekey, onSuccess)}>
+                                                        <Icon icon="copy" />
+                                                    </InputGroup.Button>
+                                                </InputGroup>
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>

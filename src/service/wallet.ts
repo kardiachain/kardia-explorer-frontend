@@ -12,8 +12,9 @@ const initialValue: WalletStore = {
 export const useWalletStorage = (callback?: () => void) => {
     const [storedValue, setStoredValue] = useState(() => {
         try {
-            const item = window.localStorage.getItem('walletstore');
-            return item ? JSON.parse(item) : initialValue;
+            const walletstore = window.localStorage.getItem('walletstore');
+            const walletstoreDecode = window.atob(walletstore || '')
+            return walletstoreDecode ? JSON.parse(walletstoreDecode) : initialValue;
         } catch (err) { 
             console.log(err)
             return initialValue;
@@ -22,7 +23,8 @@ export const useWalletStorage = (callback?: () => void) => {
 
     useEffect(() => {
         if(storedValue.privatekey && storedValue.isAccess) {
-            window.localStorage.setItem('walletstore', JSON.stringify(storedValue))
+            const encodeVal = window.btoa(JSON.stringify(storedValue))
+            window.localStorage.setItem('walletstore', encodeVal)
             callback && callback();
         }
 
@@ -41,13 +43,18 @@ export const useWalletStorage = (callback?: () => void) => {
 }
 
 export const isLoggedIn = () => {
-    const walletstore = window.localStorage.getItem('walletstore') || '{}';
-    const walletstoreObj = JSON.parse(walletstore) as WalletStore;
-    
-    if(walletstoreObj && walletstoreObj.isAccess) {
-        return true;
+    try {
+        const walletstore = window.localStorage.getItem('walletstore') || '{}';
+        const walletstoreDecode = window.atob(walletstore || '')
+        const walletstoreObj = JSON.parse(walletstoreDecode ) as WalletStore;
+        if(walletstoreObj && walletstoreObj.isAccess) {
+            return true;
+        }
+        return false;
+        
+    } catch (error) {
+        return false
     }
-    return false;
 }
 
 export const logoutWallet = () => {
@@ -64,12 +71,17 @@ export const getBalanceByAddress = async (address: string) => {
 } 
 
 export const getAccount = (): Account => {
-    const walletstoreStr = window.localStorage.getItem('walletstore') || '';
-    const walletstoreJson = JSON.parse(walletstoreStr) || initialValue;
-    return {
-        publickey: walletstoreJson.address,
-        privatekey: walletstoreJson.privatekey
-    } as Account
+    const walletstoreStr = window.localStorage.getItem('walletstore') || '{}';
+    try {
+        const walletstoreDecode = window.atob(walletstoreStr || '')
+        const walletstoreJson = JSON.parse(walletstoreDecode) || initialValue;
+        return {
+            publickey: walletstoreJson.address,
+            privatekey: walletstoreJson.privatekey
+        } as Account
+    } catch (error) {
+        return {} as Account
+    }
 }
 
 export const generateTx = async (fromAccount: Account, toAddr: string, amount: number, gasLimit: number) => {
