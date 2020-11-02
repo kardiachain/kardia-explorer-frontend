@@ -48,15 +48,15 @@ const removeTrailingZeros = (value: any) => {
 const formatAmount = (value: number) => {
 
   if (value >= 1000000000) {
-    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000000000)} B`;
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000000000)}B`;
   }
 
   if (value >= 1000000) {
-    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000000)} M`;
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000000)}M`;
   }
 
   if (value >= 1000) {
-    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000)} K`;
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000)}K`;
   }
 
   return new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value);

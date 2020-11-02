@@ -131,10 +131,10 @@ const Network = () => {
                             <HeaderCell>Peer count</HeaderCell>
                             <Cell dataKey="peerCount" />
                         </Column>
-                        <Column width={100}>
+                        {/* <Column width={100}>
                             <HeaderCell>Voting power</HeaderCell>
                             <Cell dataKey="votingPower" />
-                        </Column>
+                        </Column> */}
                         {/* <Column width={200}>
                             <HeaderCell>RPC URL</HeaderCell>
                             <Cell dataKey="rpcURL" />

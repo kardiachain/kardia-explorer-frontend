@@ -15,12 +15,17 @@ const BlockDetail = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        (async () => {
-            setLoading(true)
+        setLoading(true)
+        // Refetch txD
+        const fetchBlockDetail = setInterval(async () => {
             const blockDetail = await getBlockBy(block);
-            setBlockDetail(blockDetail)
-            setLoading(false)
-        })()
+            if (blockDetail.blockHash) {
+                setBlockDetail(blockDetail)
+                setLoading(false)
+                clearInterval(fetchBlockDetail)
+            }
+        }, 1000)
+        return () => clearInterval(fetchBlockDetail);
     }, [block])
 
 

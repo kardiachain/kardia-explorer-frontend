@@ -32,7 +32,7 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card address">
                         <div className="title"><Icon className="icon" icon="views-authorize" />Address</div>
                         <div className="content">
-                            <div style={{ wordBreak: 'break-all' }}>{account.publickey}</div>
+                            <div style={{ wordBreak: 'break-all',fontWeight: 'bold'}}>{account.publickey}</div>
                             <div className="action">
                                 <Icon icon="qrcode" size="lg" onClick={() => {setShowAddress(true)}} />
                                 <Icon icon="copy" size="lg" onClick={() => copyToClipboard(account.publickey, onSuccess)} />
@@ -45,10 +45,10 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card balance">
                         <div className="title"><Icon className="icon" icon="money" />Balance</div>
                         <div className="content">
-                            <div>{weiToKAI(balance)} <span style={{fontWeight: 'bold'}}>KAI</span></div>
+                            <div><span style={{fontWeight: 'bold'}}>{weiToKAI(balance)}</span> KAI</div>
                         </div>
                         <div className="action">
-                            <Icon icon="refresh2" onClick={reloadBalance}>&nbsp;&nbsp;Reload balance</Icon>
+                            <Icon icon="refresh2" onClick={reloadBalance}  style={{marginRight: '5px'}} />Reload balance
                         </div>
                     </Panel>
                 </Col>
