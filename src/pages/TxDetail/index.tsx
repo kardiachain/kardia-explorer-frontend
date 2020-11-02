@@ -15,13 +15,19 @@ const TxDetail = () => {
     const [txDetail, setTxDetail] = useState<KAITransaction>()
     const [loading, setLoading] = useState(false)
 
+
     useEffect(() => {
-        (async () => {
-            setLoading(true)
+        setLoading(true)
+        // Refetch txD
+        const fetchTxDetail = setInterval(async () => {
             const tx = await getTxByHash(txHash);
-            setTxDetail(tx)
-            setLoading(false)
-        })()
+            if (tx.txHash) {
+                setTxDetail(tx)
+                setLoading(false)
+                clearInterval(fetchTxDetail)
+            }
+        }, 1000)
+        return () => clearInterval(fetchTxDetail);
     }, [txHash])
 
     return (
@@ -30,7 +36,7 @@ const TxDetail = () => {
             <Divider />
             <Panel shaded>
                 {
-                    loading ? <Paragraph style={{ marginTop: 30 }} rows={20} active={true} /> :
+                    loading ? <Paragraph style={{ marginTop: 30 }} rows={20} /> :
                         <List bordered={false}>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
