@@ -1,13 +1,24 @@
 .kai-header-container {
-    padding: 0 90px;
+    /* padding: 0 90px; */
+    width: 1300px;
+    margin: 0 auto;
+}
+
+.rs-navbar{
+    display: flex;
+}
+
+.rs-navbar-header{
+    flex:1;
+    padding: 18px 0px;
 }
 
 .kai-header-container .rs-dropdown-menu {
-    background-color: #2A343D;
+    /* background-color: #2A343D; */
     border-radius: 0;
 }
 .kai-header-container .rs-dropdown-menu .rs-dropdown-item-content {
-    color: white;
+    /* color: white; */
 }
 
 .kai-header-container-mobile {
@@ -38,10 +49,10 @@
 
 .kai-logo-container {
     max-width: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* height: 100%; */
 }
 
 .kai-logo-container>img {
@@ -49,14 +60,24 @@
 }
 
 .kardia-nav {
-    height: 56px;
+    /* height: 56px; */
 }
+
 
 /* ------------------- Search section style --------------*/
 .search-wrapper {
-    display: flex;
-    align-items: center;
-    width: 500px;
+    /* display: flex; */
+    /* align-items: center; */
+    width: 600px;
+    margin: 0 auto;
+}
+
+.rs-input{
+    padding:12px 11px;
+}
+
+.rs-nav-item-content{
+    background:none !important;
 }
 
 @media only screen and (min-width: 1024px) {

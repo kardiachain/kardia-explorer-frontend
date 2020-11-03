@@ -19,8 +19,28 @@ code {
 .required-mask {
   color: red;
 }
+
+.rs-content{
+  display:flex;
+  justify-content: center;
+}
+
+.rs-header{
+  background-color: #2a343d;
+  height:125px;
+}
+
+.chartjs-size-monitor{
+  visibility: visible !important;
+  border-radius:4px;
+  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.3)
+}
+
 .container {
-  padding: 40px 90px;
+  /* padding: 40px 90px; */
+  max-width:1920px;
+  width:1300px;
+  padding:40px 0px;
 }
 
 @media screen and (max-width: 992px) {

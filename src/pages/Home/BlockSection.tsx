@@ -13,7 +13,7 @@ const BlockSection = ({ blockList = [] }: {
     const { isMobile } = useViewport()
     const history = useHistory();
     return (
-        <Panel header="Latest blocks" shaded>
+        <Panel shaded>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
@@ -83,7 +83,7 @@ const BlockSection = ({ blockList = [] }: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                <Button className="button-view-all" onClick={() => { history.push(`/blocks`) }}>View all blocks</Button>
+                {/* <Button className="button-view-all" onClick={() => { history.push(`/blocks`) }}>View all blocks</Button> */}
             </FlexboxGrid>
         </Panel>
     )

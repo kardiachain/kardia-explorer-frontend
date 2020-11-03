@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './home.css'
 import { Divider, FlexboxGrid, Col } from 'rsuite';
 import TransactionSection from './TransactionSection';
+import { useHistory } from 'react-router-dom';
 import BlockSection from './BlockSection';
 import { getBlocks, getTransactions } from '../../service/kai-explorer';
 import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG } from '../../config';
 import BlockTimeChart from './BlockTimeChart';
 import StatsSection from './StatsSection';
 import { useViewport } from '../../context/ViewportContext';
+import Validators from '../Staking';
 
 
 const Home = () => {
@@ -18,6 +20,7 @@ const Home = () => {
     const [blocksForChart, setBlocksForChart] = useState<KAIBlock[]>([]);
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const [totalTxs, setTotalTxs] = useState(0)
+    const history = useHistory();
 
     const {isMobile} = useViewport()
     
@@ -57,21 +60,35 @@ const Home = () => {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                            <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
-                        </FlexboxGrid.Item>
+                        {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}> */}
+                            {/* <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} /> */}
+                        {/* </FlexboxGrid.Item> */}
                     </FlexboxGrid>
                 </div>
+
+                <FlexboxGrid>
+                <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
+                </FlexboxGrid>
+
                 {isMobile && <Divider />}
                 <FlexboxGrid justify="space-between" style={{marginTop: !isMobile ? '30px' : '0' }}>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24} style={{marginBottom: '20px'}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginBottom: '20px', width: 'calc(50% - 10px)'}}>
+                        <div className="block-title">
+                        <p className="title">Latest Blocks</p>
+                        <p className="mt0 title title-right" onClick={() => { history.push(`/blocks`) }}>View All</p>
+                        </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{marginBottom: '20px'}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginBottom: '20px', width: 'calc(50% - 10px)'}}>
+                        <div className="block-title">
+                        <p className="title">Latest Transactions</p>
+                        <p className="mt0 title title-right" onClick={() => { history.push('/txs') }}>View All</p>
+                        </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
-                <Divider />
+
+                <Validators />
             </div>
         </React.Fragment>
     )

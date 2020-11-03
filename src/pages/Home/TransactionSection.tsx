@@ -14,7 +14,7 @@ const TransactionSection = ({ transactionList = [] }: {
     const { isMobile } = useViewport();
     const history = useHistory();
     return (
-        <Panel header="Latest transactions" shaded>
+        <Panel shaded>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
@@ -89,7 +89,7 @@ const TransactionSection = ({ transactionList = [] }: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                <Button className="button-view-all" onClick={() => { history.push('/txs') }}>View all transactions</Button>
+                {/* <Button className="button-view-all" onClick={() => { history.push('/txs') }}>View all transactions</Button> */}
             </FlexboxGrid>
         </Panel>
     )
