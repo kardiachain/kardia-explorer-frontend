@@ -57,7 +57,10 @@ const DashboardWallet = () => {
                     <AuthRouter component={DelegatedValidators}  path="/wallet/staking/delegated-validators" />
                     <AuthRouter component={SmartContract}  path="/wallet/smart-contract" />
                     <AuthRouter component={TransactionHistory}  path="/wallet/transaction-history" />
-                    <AuthRouter component={DelegatorCreate}  path="/wallet/staking/:valAddr" />
+                    {/* <AuthRouter component={DelegatorCreate}  path="/wallet/staking/:valAddr" /> */}
+                    <Route path="/wallet/staking/:valAddr">
+                        <DelegatorCreate />
+                    </Route>
                     <Route path="/wallet">
                         <Redirect to="/wallet/send-transaction" />
                     </Route>
