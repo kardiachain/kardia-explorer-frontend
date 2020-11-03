@@ -8,10 +8,10 @@ interface TransactionsResponse {
 export const getTransactions = async (page: number, size: number): Promise<TransactionsResponse> => {
     const response = await fetch(`${END_POINT}txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    const rawTxs = responseJSON.data.data || []
+    const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime();
     return {
-        totalTxs: responseJSON.data.total || 0,
+        totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
             return {
@@ -40,11 +40,11 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
 export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: number) : Promise<TransactionsResponse> => {
     const response = await fetch(`${END_POINT}block/${blockHeight}/txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    const rawTxs = responseJSON.data.data || []
+    const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime()
 
     return {
-        totalTxs: responseJSON.data.total || 0,
+        totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
             return {
@@ -74,7 +74,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     const response = await fetch(`${END_POINT}txs/${txHash}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     
-    const tx = responseJSON.data || {};
+    const tx = responseJSON?.data || {};
     if(!tx) {
         return {} as KAITransaction
     }
@@ -104,11 +104,11 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
     const response = await fetch(`${END_POINT}addresses/${address}/txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    const rawTxs = responseJSON.data.data || []
+    const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime()
 
     return {
-        totalTxs: responseJSON.data.total || 0,
+        totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
             return {

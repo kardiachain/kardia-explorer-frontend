@@ -43,6 +43,10 @@ const Home = () => {
     }
     
     useEffect(() => {
+        (async () => {
+            await fetchBlockChart()
+        })()
+
         const loop = setInterval(fetchBlockChart, 2000)
         return () => {
             clearInterval(loop)

@@ -4,7 +4,7 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
     const response = await fetch(`${END_POINT}blocks?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
 
-    const rawBlockList = responseJSON.data.data || []
+    const rawBlockList = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime()
     return rawBlockList.map((o: any) => {
         const createdTime = (new Date(o.time)).getTime()
@@ -28,7 +28,7 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
 export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
     const response = await fetch(`${END_POINT}blocks/${block}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    const blockDetail = responseJSON.data || {}
+    const blockDetail = responseJSON?.data || {}
     if (!blockDetail) {
         return {} as KAIBlockDetails
     }

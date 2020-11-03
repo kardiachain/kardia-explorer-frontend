@@ -27,6 +27,7 @@ import AccessByKeyStore from './pages/Wallet/AccessMyWallet/AccessByKeyStore';
 import ValidatorDetail from './pages/Staking/ValidatorDetail';
 import Validators from './pages/Staking';
 import AddressDetail from './pages/AddressDetail';
+import CreateByMnemonic from './pages/Wallet/CreateNewWallet/CreateByMnemonic';
 
 class App extends Component {
   render() {
@@ -74,6 +75,9 @@ class App extends Component {
                 </Route>
                 <Route path="/create-keystore-file">
                   <CreateByKeystore />
+                </Route>
+                <Route path="/create-mnemonic-phrase">
+                  <CreateByMnemonic />
                 </Route>
                 <Route path="/access-wallet">
                   <AccessMyWallet />
