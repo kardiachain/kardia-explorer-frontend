@@ -11,8 +11,8 @@ const invokeCallData = async (methodName: string, params: any[]) => {
         params: params,
         name: methodName
     })
-    const result = await invoke.call(STAKING_SMC_ADDRESS)
-    return result
+    
+    return await invoke.call(STAKING_SMC_ADDRESS)
 }
 
 const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0) => {
@@ -24,15 +24,13 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
     const estimatedGas = await invoke.estimateGas({
         from: account.publickey,
         amount: amountVal,
-        gas: 21000,
-        gasPrice: 1
     });
 
     const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
         from: account.publickey,
         amount: amountVal,
-        gas: estimatedGas + 1,
-        gasPrice: 1
+        gas: 900000 + estimatedGas,
+        gasPrice: 2
     });
 
     return invokeResult;
@@ -116,24 +114,33 @@ const getValidatorsByDelegator = async (delAddr: string): Promise<YourValidator[
 }
 
 const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
-    const invoke = await invokeCallData("getValidator", [valAddr])
-    const votingPower = await getValidatorPower(valAddr)
-    const totalDels = await getNumberDelOfValidator(valAddr)
-    
-    let validator: ValidatorFromSMC = {
-        address: valAddr,
-        totalStakedAmount: invoke[0],
-        delegationsShares: invoke[1],
-        jailed: invoke[2],
-        votingPower: votingPower,
-        totalDels: totalDels
+    try {
+        if (!valAddr) {
+            return {} as ValidatorFromSMC
+        }
+        const invoke = await invokeCallData("getValidator", [valAddr])
+        const votingPower = await getValidatorPower(valAddr)
+        const totalDels = await getNumberDelOfValidator(valAddr)
+        
+        let validator: ValidatorFromSMC = {
+            address: valAddr,
+            totalStakedAmount: invoke[0],
+            delegationsShares: invoke[1],
+            jailed: invoke[2],
+            votingPower: votingPower,
+            totalDels: totalDels
+        }
+        
+        return validator
+        
+    } catch (error) {
+        return {} as ValidatorFromSMC
     }
-    
-    return validator
 }
 
 const isValidator = async (valAddr: string): Promise<boolean> => {
     try {
+        if (!valAddr) return false;
         const invoke = await invokeCallData("getValidator", [valAddr])
         if(invoke) return true
     } catch (error) {
@@ -154,11 +161,13 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
+    if(!valAddr || !account || !amountDel) return
     const cellAmountDel = cellValue(amountDel);
     return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
 }
 
 const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
+    if(!commissionRate || !maxRate || !maxRateChange || !minSeftDelegation || !account || !amountDel) return;
 
     // convert value number type to decimal type
     const cellAmountDel = cellValue(amountDel);
@@ -173,6 +182,7 @@ const createValidator = async (commissionRate: number, maxRate: number, maxRateC
 
 // @Function: update validator
 const updateValidator = async (commissionRate: number, minSeftDelegation: number, account: Account) => {
+    if(!commissionRate || !minSeftDelegation || !account) return
     // convert value number type to decimal type
     const minSeftDelegationDec = cellValue(minSeftDelegation);
 
@@ -183,11 +193,13 @@ const updateValidator = async (commissionRate: number, minSeftDelegation: number
 
 // Delegator withdraw reward
 const withdrawReward = async (valAddr: string, account: Account) => {
+    if (!valAddr || !account) return;
     return await invokeSendAction("withdrawReward", [valAddr], account, 0)
 }
 
 // Delegator withdraw
 const withdraw = async (valAddr: string, account: Account) => {
+    if (!valAddr || !account) return;
     return await invokeSendAction("withdraw", [valAddr], account, 0)
 }
 

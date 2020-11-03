@@ -11,6 +11,6 @@ export const ErrorMessage = {
     MaxChangeRateMoreThanMaxRate: 'Commission max change rate can not be more than the max rate',
     CommissionRateMoreThanMaxRate: 'Commission rate cannot be more than the max rate',
     MaxRateMoreThanHundred: 'The commission max rate value cannot be more than 100%',
-    MaxChangeRateMoreThanHundred: 'The commission max change rate value cannot be more than 100%'
-
+    MaxChangeRateMoreThanHundred: 'The commission max change rate value cannot be more than 100%',
+    MnemonicVerifyIncorrect: 'Mnemonic verify incorrect! Please write it down correctly!'
 }

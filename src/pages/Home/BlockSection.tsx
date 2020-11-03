@@ -12,12 +12,13 @@ const BlockSection = ({ blockList = [] }: {
 }) => {
     const { isMobile } = useViewport()
     const history = useHistory();
+    console.log(blockList);
+    
     return (
         <Panel shaded>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
-                        loading={blockList.length === 0}
                         autoHeight
                         rowHeight={70}
                         height={400}
@@ -70,12 +71,15 @@ const BlockSection = ({ blockList = [] }: {
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            {renderHashToRedirect({
-                                                hash: rowData.transactions,
-                                                headCount: 30,
-                                                tailCount: 4,
-                                                callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
-                                            })}
+                                            {
+                                                !rowData.transactions ? '0' :
+                                                renderHashToRedirect({
+                                                    hash: rowData.transactions,
+                                                    headCount: 30,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
+                                                })
+                                            }
                                         </div>
                                     );
                                 }}

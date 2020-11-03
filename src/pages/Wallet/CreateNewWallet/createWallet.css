@@ -97,3 +97,28 @@
 .privatekey-input-container:hover {
     border-color: none;
 }
+
+/* Style for create wallet with mnemonic */
+.mnemonic .tag-container {
+    background-color: #494d7d;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 5px 20px;
+    margin-bottom: 10px;
+    text-align: left;
+    margin: 5px;   
+}
+.mnemonic .mnemonic-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* background: #f1f1f1a6; */
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Style modal veryfication mnemonic phrase */
+.mn-phrase-verification .rs-input-group {
+    border: 1px solid #c8c8d81f;
+    margin-bottom: 10px;
+}

@@ -57,6 +57,7 @@ const DelegatorCreate = () => {
             setIsLoading(true)
             let account = getAccount() as Account
             const delegate = await delegateAction(valAddr, account, Number(delAmount))
+            console.log("Delegate", delegate);
 
             if (delegate && delegate.status === 1) {
                 Alert.success('Delegate success.')
@@ -79,7 +80,7 @@ const DelegatorCreate = () => {
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                     <div className="val-info-container">
-                        <Panel header={<h4>{`Validator: ${valAddr}`}</h4>} shaded>
+                        <Panel header={<div style={{wordBreak: 'break-all'}}>{`Validator: ${valAddr}`}</div>} shaded>
                             <List bordered={false}>
                                 <List.Item bordered={false}>
                                     <span className="property-title">Commission: </span> {validator?.commission || 0} %

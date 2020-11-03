@@ -8,7 +8,7 @@ import './home.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const TransactionSection = ({ transactionList = [] }: {
+const TransactionSection = ({ transactionList = []}: {
     transactionList: KAITransaction[]
 }) => {
     const { isMobile } = useViewport();
@@ -23,7 +23,6 @@ const TransactionSection = ({ transactionList = [] }: {
                         height={400}
                         hover={false}
                         data={transactionList}
-                        loading={transactionList.length === 0}
                     >
                         <Column width={isMobile ? 120 : 350}>
                             <HeaderCell>Tx Hash</HeaderCell>
