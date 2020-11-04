@@ -45,7 +45,10 @@ font-weight:600;
 }
 
 .title-right{
-    background: #4737ff;
+    /* background: #4737ff; */
+
+    background:linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
+
     padding: 5px 31px;
     color: white;
     cursor: pointer;

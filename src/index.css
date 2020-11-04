@@ -19,11 +19,17 @@ code {
 }
 
 .highlight {
-  color: #4737ff !important;
+  /* color: #4737ff !important; */
+  background: -webkit-linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent;
 }
 
 .bg-highlight{
-  background-color: #4737ff !important;
+  /* background-color: #4737ff !important; */
+  background: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%) !important;
+
+
   color: white !important;
   border-radius: 0px !important;
 }

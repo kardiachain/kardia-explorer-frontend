@@ -6,7 +6,6 @@ import logo from '../../../resources/kardia-logo.png';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';
-import SearchSection from './SearchSection';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('');
@@ -125,9 +124,6 @@ const Header = () => {
                 </Nav>
                 </Navbar.Body>
             </Navbar>
-            {/* <div className="kardia-nav search">
-                <SearchSection />
-            </div> */}
         </div>
     )
 }
