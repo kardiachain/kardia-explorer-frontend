@@ -45,6 +45,7 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
         lastBlock: blockDetail.lastBlock,
         dataHash: blockDetail.dataHash,
         validatorHash: blockDetail.validatorHash,
+        nextValidatorHash: blockDetail.nextValidatorHash,
         consensusHash: blockDetail.consensusHash,
         appHash: blockDetail.appHash,
         evidenceHash: blockDetail.evidenceHash,

@@ -20,7 +20,13 @@ code {
   color: red;
 }
 .container {
-  padding: 40px 90px;
+  padding: 40px 160px;
+}
+
+@media screen and (max-width: 1440px) {
+  .container {
+    padding: 40px 80px;
+  }
 }
 
 @media screen and (max-width: 992px) {
