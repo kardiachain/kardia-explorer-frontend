@@ -118,6 +118,7 @@ const DelegatorCreate = () => {
                                         hash: hashTransaction,
                                         headCount: 30,
                                         tailCount: 4,
+                                        showTooltip: false,
                                         callback: () => { window.open(`/tx/${hashTransaction}`) }
                                     })}</div> : <></>
                                 }

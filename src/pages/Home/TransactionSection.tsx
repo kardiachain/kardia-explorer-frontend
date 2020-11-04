@@ -36,6 +36,7 @@ const TransactionSection = ({ transactionList = []}: {
                                                 {renderHashToRedirect({
                                                     hash: rowData.txHash,
                                                     headCount: isMobile ? 10 : 15,
+                                                    showTooltip: false,
                                                     callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                 })}
                                             </div>
@@ -57,6 +58,7 @@ const TransactionSection = ({ transactionList = []}: {
                                                 hash: rowData.from,
                                                 headCount: isMobile ? 10 : 15,
                                                 tailCount: 4,
+                                                showTooltip: false,
                                                 callback: () => { history.push(`/address/${rowData.from}`) }
                                             })}
                                             </div>
@@ -66,6 +68,7 @@ const TransactionSection = ({ transactionList = []}: {
                                                 hash: rowData.to,
                                                 headCount: isMobile ? 10 : 15,
                                                 tailCount: 4,
+                                                showTooltip: false,
                                                 callback: () => { history.push(`/address/${rowData.to}`) }
                                             })}
                                             </div>

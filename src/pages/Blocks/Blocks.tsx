@@ -69,6 +69,7 @@ const Blocks = () => {
                                                             hash: rowData.blockHeight,
                                                             headCount: isMobile ? 20 : 45,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/block/${rowData.blockHeight}`) }
                                                         })} </div>
                                                 );
@@ -95,6 +96,7 @@ const Blocks = () => {
                                                             hash: rowData.blockHash,
                                                             headCount: isMobile ? 10 : 25,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/block/${rowData.blockHash}`) }
                                                         })}
                                                     </div>
@@ -112,6 +114,7 @@ const Blocks = () => {
                                                             hash: rowData.validator.hash,
                                                             headCount: isMobile ? 10 : 25,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.validator.hash}`) }
                                                         })}                                                   
                                                     </div>
@@ -128,7 +131,7 @@ const Blocks = () => {
                                                         {renderHashToRedirect({
                                                             hash: rowData.transactions,
                                                             headCount: 20,
-                                                            tailCount: 4,
+                                                            showTooltip: false,
                                                             callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
                                                         })}
                                                     </div>

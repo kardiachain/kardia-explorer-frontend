@@ -36,6 +36,7 @@ const BlockSection = ({ blockList = [] }: {
                                                 <Icon icon="cubes" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.blockHeight,
+                                                    showTooltip: false,
                                                     callback: () => { history.push(`/block/${rowData.blockHeight}`) }
                                                 })}
                                             </div>
@@ -54,6 +55,7 @@ const BlockSection = ({ blockList = [] }: {
                                             {
                                                 renderHashToRedirect({
                                                     headCount: isMobile ? 10 : 15,
+                                                    showTooltip: false,
                                                     hash: rowData.validator.hash,
                                                     callback: () => { history.push(`/address/${rowData.validator.hash}`) }
                                                 })
@@ -73,6 +75,7 @@ const BlockSection = ({ blockList = [] }: {
                                                 !rowData.transactions ? '0' :
                                                 renderHashToRedirect({
                                                     hash: rowData.transactions,
+                                                    showTooltip: false,
                                                     callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
                                                 })
                                             }
