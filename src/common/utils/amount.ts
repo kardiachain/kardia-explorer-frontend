@@ -21,8 +21,7 @@ const weiToKAI = (value: any) => {
 
   const kaiNumString = parseInt(cellString.slice(0, 18));
   const kaiDecimalString = cellString.slice(-18);
-  const finalVal = `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
-  return formatAmount(Number(finalVal));
+  return`${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
 };
 
 const removeTrailingZeros = (value: any) => {
@@ -63,4 +62,4 @@ const formatAmount = (value: number) => {
 }
 
 
-export { weiToKAI, cellValue }
+export { weiToKAI, cellValue,formatAmount }

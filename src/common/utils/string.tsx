@@ -68,7 +68,16 @@ const millisecondToHMS = (time: number) => {
     const secondString = seconds ? `${seconds} sec${seconds > 1 ? 's' : ''}` : '';
     const daysString = days ? `${days} day${days > 1 ? 's' : ''}` : '';
 
-    return `${daysString} ${hourString} ${minuteString} ${secondString} ago`
+    if(daysString) {
+        return `${daysString} ago`
+    }
+    if(hourString) {
+        return `${hourString} ago`
+    }
+    if(minuteString) {
+        return `${minuteString} ago`
+    }
+    return `${secondString} ago`
 };
 const dateToLocalTime = (time: Date) => {
     const d = new Date(time);

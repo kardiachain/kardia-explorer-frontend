@@ -8,6 +8,7 @@ import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HO
 import BlockTimeChart from './BlockTimeChart';
 import StatsSection from './StatsSection';
 import { useViewport } from '../../context/ViewportContext';
+import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 
 
 const Home = () => {
@@ -47,7 +48,7 @@ const Home = () => {
             await fetchBlockChart()
         })()
 
-        const loop = setInterval(fetchBlockChart, 2000)
+        const loop = setInterval(fetchBlockChart, TIME_INTERVAL_MILISECONDS)
         return () => {
             clearInterval(loop)
         }

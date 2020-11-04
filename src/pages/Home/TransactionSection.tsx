@@ -23,8 +23,9 @@ const TransactionSection = ({ transactionList = []}: {
                         height={400}
                         hover={false}
                         data={transactionList}
+                        wordWrap
                     >
-                        <Column width={isMobile ? 120 : 350}>
+                        <Column flexGrow={2}>
                             <HeaderCell>Tx Hash</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -34,8 +35,7 @@ const TransactionSection = ({ transactionList = []}: {
                                                 <Icon icon="exchange" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.txHash,
-                                                    headCount: isMobile ? 10 : 30,
-                                                    tailCount: 4,
+                                                    headCount: isMobile ? 10 : 15,
                                                     callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                 })}
                                             </div>
@@ -45,7 +45,7 @@ const TransactionSection = ({ transactionList = []}: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={isMobile ? 170 : 350}>
+                        <Column flexGrow={2}>
                             <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -55,16 +55,16 @@ const TransactionSection = ({ transactionList = []}: {
                                                 From:
                                                 {renderHashToRedirect({
                                                 hash: rowData.from,
-                                                headCount: isMobile ? 10 : 30,
+                                                headCount: isMobile ? 10 : 15,
                                                 tailCount: 4,
                                                 callback: () => { history.push(`/address/${rowData.from}`) }
                                             })}
                                             </div>
                                             <div>
-                                                To:
+                                                <Icon icon="arrow-circle-right" style={{ marginRight: '5px' }}/>To:
                                                 {renderHashToRedirect({
                                                 hash: rowData.to,
-                                                headCount: isMobile ? 10 : 30,
+                                                headCount: isMobile ? 10 : 15,
                                                 tailCount: 4,
                                                 callback: () => { history.push(`/address/${rowData.to}`) }
                                             })}
@@ -74,7 +74,7 @@ const TransactionSection = ({ transactionList = []}: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="center" width={170}>
+                        <Column align="center" flexGrow={1}>
                             <HeaderCell>Value</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
