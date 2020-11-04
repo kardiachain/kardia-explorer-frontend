@@ -74,7 +74,7 @@ const AddressDetail = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
                                     rowHeight={60}
-                                    height={650}
+                                    height={200}
                                     data={transactionList}
                                     autoHeight
                                     hover={false}
