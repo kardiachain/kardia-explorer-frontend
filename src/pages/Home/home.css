@@ -1,3 +1,4 @@
+
 .stat-container {
     margin-top: 10px;
     background-color: transparent;
@@ -44,10 +45,15 @@ font-weight:600;
 }
 
 .title-right{
-    background: #2a343d;
+    background: #4737ff;
     padding: 5px 31px;
     color: white;
     cursor: pointer;
+}
+
+.boxshadow{
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+    border: 1px solid #e7eaf3;
 }
 
 

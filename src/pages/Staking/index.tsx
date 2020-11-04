@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, Divider, FlexboxGrid, Panel, Table } from 'rsuite';
+import { Button, ButtonToolbar, Col, FlexboxGrid, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -8,7 +8,7 @@ import { getValidatorsFromSMC } from '../../service/smc';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
 import { numberFormat } from '../../common/utils/number';
-
+import { Icon } from 'rsuite'
 const { Column, HeaderCell, Cell } = Table;
 const Validators = () => {
     let history = useHistory();
@@ -20,17 +20,20 @@ const Validators = () => {
             setValidators(valFromSmc)
         })()
     }, []);
-    
+
 
     return (
         <div className="container validators-container">
-            <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{marginBottom: isMobile ? '15px' : '0'}}>
-                    <h3>Validators</h3>
+            <FlexboxGrid justify="space-between" align="middle" style={{marginBottom: '10px'}}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{ marginBottom: isMobile ? '15px' : '0' }}>
+                    <div style={{display:'flex', alignItems: 'center'}}>
+                        <Icon className="highlight" icon="list-ul" size={"lg"} />
+                        <p style={{marginLeft: '12px', fontWeight: 600}}>Validators</p>
+                    </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: isMobile ? 'left' : 'right' }}>
                     <ButtonToolbar>
-                        <Button appearance="primary"
+                        <Button className="bg-highlight"
                             onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
                         >
                             Register to become validator
@@ -38,7 +41,6 @@ const Validators = () => {
                     </ButtonToolbar>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
-            <Divider />
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>

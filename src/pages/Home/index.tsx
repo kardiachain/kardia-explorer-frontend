@@ -10,7 +10,8 @@ import BlockTimeChart from './BlockTimeChart';
 import StatsSection from './StatsSection';
 import { useViewport } from '../../context/ViewportContext';
 import Validators from '../Staking';
-
+import { Icon } from 'rsuite';
+import SearchSection from '../../common/components/Header/SearchSection';
 
 const Home = () => {
 
@@ -22,8 +23,8 @@ const Home = () => {
     const [totalTxs, setTotalTxs] = useState(0)
     const history = useHistory();
 
-    const {isMobile} = useViewport()
-    
+    const { isMobile } = useViewport()
+
     const fetchBlockChart = async () => {
         // Get transaction
         const transactionsResponse = await getTransactions(TABLE_CONFIG.page, RECORDS_NUMBER_SHOW_HOMEPAGE);
@@ -44,7 +45,7 @@ const Home = () => {
         // Get blocks for block time chart
         setBlocksForChart(blockList.reverse())
     }
-    
+
     useEffect(() => {
         (async () => {
             await fetchBlockChart()
@@ -59,34 +60,44 @@ const Home = () => {
     return (
         <React.Fragment>
             <div className="container home-container">
+
+            <SearchSection />
+
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
+
                         {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}> */}
-                            {/* <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} /> */}
+                        {/* <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} /> */}
                         {/* </FlexboxGrid.Item> */}
                     </FlexboxGrid>
                 </div>
 
                 <FlexboxGrid>
-                <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
+                    <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
                 </FlexboxGrid>
 
                 {isMobile && <Divider />}
-                <FlexboxGrid justify="space-between" style={{marginTop: !isMobile ? '30px' : '0' }}>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginBottom: '20px', width: 'calc(50% - 10px)'}}>
+                <FlexboxGrid justify="space-between" style={{ marginTop: !isMobile ? '30px' : '0' }}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px', width: 'calc(50% - 10px)' }}>
                         <div className="block-title">
-                        <p className="title">Latest Blocks</p>
-                        <p className="mt0 title title-right" onClick={() => { history.push(`/blocks`) }}>View All</p>
+                            <div style={{display:'flex', alignItems: 'center'}}>
+                                <Icon className="highlight" icon="th-large" size={"lg"} />
+                                <p style={{marginLeft: '12px'}} className="title">Latest Blocks</p>
+                            </div>
+                            <p className="mt0 title title-right" onClick={() => { history.push(`/blocks`) }}>View All</p>
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginBottom: '20px', width: 'calc(50% - 10px)'}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px', width: 'calc(50% - 10px)' }}>
                         <div className="block-title">
-                        <p className="title">Latest Transactions</p>
-                        <p className="mt0 title title-right" onClick={() => { history.push('/txs') }}>View All</p>
+                            <div style={{display:'flex', alignItems: 'center'}}>
+                                <Icon className="highlight" icon="exchange" size={"lg"} />
+                                <p style={{marginLeft: '12px'}} className="title">Latest Transactions</p>
+                            </div>
+                            <p className="mt0 title title-right" onClick={() => { history.push('/txs') }}>View All</p>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

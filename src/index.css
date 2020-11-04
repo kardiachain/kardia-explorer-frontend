@@ -1,7 +1,5 @@
 body {
   margin: 0;
-  /* font-family: 'Space Mono', monospace !important; */
-  /* font-family: 'Roboto Mono', monospace !important; */
   font-family: 'Quicksand', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -20,24 +18,52 @@ code {
   color: red;
 }
 
+.highlight {
+  color: #4737ff !important;
+}
+
+.bg-highlight{
+  background-color: #4737ff !important;
+  color: white !important;
+  border-radius: 0px !important;
+}
+
+/* override css rsuite */
+
 .rs-content{
   display:flex;
   justify-content: center;
+  background: #f8f9fa;
+}
+
+.rs-panel-body{
+  background: white;
+}
+
+.rs-panel{
+  border-radius:4px !important; 
+}
+
+.rs-panel-shaded{
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.05) !important;
+  border: 1px solid #e7eaf3 !important;
 }
 
 .rs-header{
   background-color: #2a343d;
-  height:125px;
+  height:56px;
 }
+
+/* end override rsuite */
 
 .chartjs-size-monitor{
   visibility: visible !important;
-  border-radius:4px;
-  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.05) !important;
+  border: 1px solid #e7eaf3 !important;
+  z-index:999 !important;
 }
 
 .container {
-  /* padding: 40px 90px; */
   max-width:1920px;
   width:1300px;
   padding:40px 0px;

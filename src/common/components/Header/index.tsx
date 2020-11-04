@@ -123,14 +123,11 @@ const Header = () => {
                     <Nav className="kardia-nav" pullRight>
                     <NetworkSelect />
                 </Nav>
-                    {/* <Nav className="kardia-nav search-wrapper">
-                    <SearchSection />
-                </Nav> */}
                 </Navbar.Body>
             </Navbar>
-            <div className="kardia-nav search">
+            {/* <div className="kardia-nav search">
                 <SearchSection />
-            </div>
+            </div> */}
         </div>
     )
 }
