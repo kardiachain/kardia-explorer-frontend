@@ -79,6 +79,7 @@ const BlockDetail = () => {
                                                     hash: blockDetail?.transactions,
                                                     headCount: 30,
                                                     tailCount: 4,
+                                                    showTooltip: true,
                                                     callback: () => { history.push(`/txs?block=${blockDetail?.blockHeight}`) }
                                                 })}
                                         </div>

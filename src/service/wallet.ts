@@ -98,7 +98,6 @@ export const generateTx = async (fromAccount: Account, toAddr: string, amount: n
         );
         const signedTx = await kardiaCommon.sign(tx, fromAccount.privatekey);
         const txHash = await kardiaApi.sendSignedTransaction(signedTx.rawTransaction);
-        console.log(`TxHash: ${txHash}`)
         return txHash
     }
     catch (err) {

@@ -81,6 +81,7 @@ const TxList = () => {
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 10 : 20,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`)}
                                                         })}
                                                     </div>
@@ -99,6 +100,7 @@ const TxList = () => {
                                                             hash: rowData.blockNumber,
                                                             headCount: 20,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/block/${rowData.blockNumber}`) }
                                                         })}
                                                     </div>
@@ -129,6 +131,7 @@ const TxList = () => {
                                                             hash: rowData.from,
                                                             headCount: isMobile ? 10 : 20,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.from}`) }
                                                         })}
                                                     </div>
@@ -147,6 +150,7 @@ const TxList = () => {
                                                             hash: rowData.to,
                                                             headCount: isMobile ? 10 : 20,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.to}`) }
                                                         })}
                                                     </div>

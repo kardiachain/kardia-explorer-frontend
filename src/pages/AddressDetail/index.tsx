@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
-import { millisecondToHMS, renderHashString, renderHashToRedirect, truncate } from '../../common/utils/string';
+import { millisecondToHMS, renderHashString, renderHashToRedirect, renderHashStringAndTooltip } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getBalance } from '../../service/kai-explorer';
@@ -92,6 +92,7 @@ const AddressDetail = () => {
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 10 : 25,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                         })}
                                                     </div>
@@ -110,6 +111,7 @@ const AddressDetail = () => {
                                                             hash: rowData.blockNumber,
                                                             headCount: 20,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/block/${rowData.blockNumber}`) }
                                                         })}
                                                     </div>
@@ -137,10 +139,11 @@ const AddressDetail = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            address === rowData.from ? truncate(rowData.from, isMobile ? 10 : 25, 4) : renderHashToRedirect({
+                                                            address === rowData.from ? renderHashStringAndTooltip(rowData.from, isMobile ? 10 : 25, 4, true) : renderHashToRedirect({
                                                                 hash: rowData.from,
                                                                 headCount: isMobile ? 10 : 25,
                                                                 tailCount: 4,
+                                                                showTooltip: true,
                                                                 callback: () => { history.push(`/address/${rowData.from}`) }
                                                             })
                                                         }
@@ -157,10 +160,11 @@ const AddressDetail = () => {
                                                     <div>
                                                         {isMobile ? <></> : <Icon icon="arrow-circle-right" style={{ marginRight: '5px' }}/>}
                                                         {
-                                                            address === rowData.to ? truncate(rowData.to, isMobile ? 10 : 25, 4) : renderHashToRedirect({
+                                                            address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 10 : 25, 4, true) : renderHashToRedirect({
                                                                 hash: rowData.to,
                                                                 headCount: isMobile ? 10 : 25,
                                                                 tailCount: 4,
+                                                                showTooltip: true,
                                                                 callback: () => { history.push(`/address/${rowData.to}`) }
                                                             })
                                                         }
