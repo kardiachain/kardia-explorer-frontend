@@ -76,6 +76,7 @@ code {
   border: 1px solid #e7eaf3 !important;
   z-index:999 !important;
   border-radius:4px;
+  min-height:328px;
 }
 
 .container {
@@ -98,6 +99,10 @@ code {
 
   .rs-panel-body{
     padding:0 !important;
+  }
+
+  .chartjs-size-monitor{
+    min-height: 0;
   }
 }
 .custom-tooltip .rs-tooltip-inner {

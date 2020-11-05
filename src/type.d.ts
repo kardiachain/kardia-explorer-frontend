@@ -104,3 +104,17 @@ interface Validator {
     peerCount: number;
     rpcUrl: string;
 }
+
+interface KaiToken {
+    change_1h?: number;
+    change_7d?: number;
+    change_24h?: number;
+    circulating_supply?: number;
+    decimal?: number;
+    market_cap?: number;
+    name?: string;
+    price?: number;
+    symbol?: string;
+    total_supply?: number;
+    volume_24h?: number;
+}
