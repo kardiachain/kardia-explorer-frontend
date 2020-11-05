@@ -58,15 +58,12 @@ const ValidatorsPieChart = ({ dataForChart = [] }: { dataForChart: DataChartConf
     const [chartOptionsConfig, setChartOptionsConfig] = useState({})
     useEffect(() => {
         chartConfigDefault.series[0].data = dataForChart;
-        console.log(dataForChart);
         setChartOptionsConfig(chartConfigDefault)
     }, [dataForChart]);
 
 
     return (
-        <div>
-            <HighchartsReact options={chartOptionsConfig} highcharts={Highcharts} />
-        </div>
+        <HighchartsReact options={chartOptionsConfig} highcharts={Highcharts} />
     )
 }
 

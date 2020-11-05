@@ -12,8 +12,6 @@ const BlockSection = ({ blockList = [] }: {
 }) => {
     const { isMobile } = useViewport()
     const history = useHistory();
-    console.log(blockList);
-    
     return (
         <Panel shaded>
             <FlexboxGrid justify="space-between">

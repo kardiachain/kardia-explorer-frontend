@@ -55,9 +55,7 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
     }, [dataForChart])
 
     return (
-        <div>
-            <HighchartsReact options={chartOptionsConfig} highcharts={Highcharts} />
-        </div>
+        <HighchartsReact options={chartOptionsConfig} highcharts={Highcharts} />
     )
 }
 

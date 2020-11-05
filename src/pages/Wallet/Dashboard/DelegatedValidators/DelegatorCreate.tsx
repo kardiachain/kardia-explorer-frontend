@@ -57,7 +57,6 @@ const DelegatorCreate = () => {
             setIsLoading(true)
             let account = getAccount() as Account
             const delegate = await delegateAction(valAddr, account, Number(delAmount))
-            console.log("Delegate", delegate);
 
             if (delegate && delegate.status === 1) {
                 Alert.success('Delegate success.')

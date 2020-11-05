@@ -95,9 +95,6 @@ const Network = () => {
                     rowHeight={70}
                     // data={graphData.nodes.filter((v: any) => v.isValidator)}
                     data={graphData.nodes}
-                    onRowClick={data => {
-                        console.log(data);
-                    }}
                 >
                     <Column width={100} fixed>
                         <HeaderCell>Name</HeaderCell>
