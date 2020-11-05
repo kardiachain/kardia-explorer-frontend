@@ -58,8 +58,26 @@ const formatAmount = (value: number) => {
     return `${new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value / 1000)}K`;
   }
 
-  return new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value);
+  return new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value);
+}
+
+const formatAmountwithPlus = (value: number) => {
+
+  if (value >= 1000000000) {
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 1 }).format(value / 1000000000)}B+`;
+  }
+
+  if (value >= 1000000) {
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 1 }).format(value / 1000000)}M+`;
+  }
+
+  if (value >= 1000) {
+    return `${new Intl.NumberFormat('en', { maximumFractionDigits: 1 }).format(value / 1000)}K+`;
+  }
+
+  return new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value);
 }
 
 
-export { weiToKAI, cellValue,formatAmount }
+
+export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus }

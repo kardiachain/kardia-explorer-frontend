@@ -6,7 +6,7 @@ import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/strin
 import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../config';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { numberFormat } from '../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import SearchSection from '../../common/components/Header/SearchSection';
@@ -46,7 +46,7 @@ const Blocks = () => {
     return (
         <div className="container block-container">
             <SearchSection />
-            <div className="block-title" style={{padding: '0px 5px'}}>
+            <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon className="highlight" icon="exchange" size={"lg"} />
                     <p style={{ marginLeft: '12px' }} className="title">Blocks</p>
@@ -71,19 +71,15 @@ const Blocks = () => {
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
-                                                    <div><Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.blockHeight,
-                                                            headCount: isMobile ? 20 : 45,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/block/${rowData.blockHeight}`) }
-                                                        })} </div>
+                                                    <div>
+                                                        <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
+                                                        <Link to={`/block/${rowData.blockHeight}`} >{rowData.blockHeight}</Link>
+                                                    </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -93,7 +89,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={3} verticalAlign="middle">
                                         <HeaderCell>Block Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -101,7 +97,7 @@ const Blocks = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.blockHash,
-                                                            headCount: isMobile ? 10 : 25,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/block/${rowData.blockHash}`) }
@@ -111,7 +107,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={3} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -119,7 +115,7 @@ const Blocks = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.validator.hash,
-                                                            headCount: isMobile ? 10 : 25,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.validator.hash}`) }
@@ -129,7 +125,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} verticalAlign="middle" align="center">
+                                    <Column flexGrow={1} verticalAlign="middle">
                                         <HeaderCell>Txn</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -146,7 +142,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} verticalAlign="middle" align="center">
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>Gas Used</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -158,7 +154,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} verticalAlign="middle" align="center">
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>Gas Limit</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {

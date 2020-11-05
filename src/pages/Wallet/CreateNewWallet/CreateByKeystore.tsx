@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Col, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite';
 import Wallet from 'ethereumjs-wallet'
 import { useWalletStorage } from '../../../service/wallet';
 import { Link, useHistory } from 'react-router-dom';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../common/constant/Message';
+import Button from '../../../common/components/Button';
 
 const CreateByKeystore = () => {
     const [password, setPassword] = useState('');
@@ -79,9 +80,9 @@ const CreateByKeystore = () => {
                                         </div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button appearance="ghost">Back</Button>
+                                                <Button size="big" className="primary-button">Back</Button>
                                             </Link>
-                                            <Button appearance="primary" className="submit-buttom" loading={isLoading} onClick={createWallet}>Create wallet</Button>
+                                            <Button size="big" className="submit-buttom" loading={isLoading} onClick={createWallet}>Create wallet</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -97,9 +98,9 @@ const CreateByKeystore = () => {
                                             </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button appearance="ghost">Back</Button>
+                                                    <Button size="big" className="primary-button">Back</Button>
                                                 </Link>
-                                                <Button appearance="primary" className="submit-buttom" onClick={accessWallet}>Access now</Button>
+                                                <Button size="big" className="submit-buttom" onClick={accessWallet}>Access now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

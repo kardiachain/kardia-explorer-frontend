@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Message, Panel } from 'rsuite';
+import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Message, Panel } from 'rsuite';
 import Button from '../../common/components/Button';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
@@ -49,33 +49,41 @@ const Faucet = () => {
     }
 
     return (
-        <FlexboxGrid justify="center" className="container">
-            <FlexboxGrid.Item componentClass={Col} colspan={22} md={14}>
-                <Panel header={<h3>Received free KAIs with KardiaChain Faucet</h3>} shaded>
-                    <Form fluid>
-                        <FormGroup>
-                            <FormControl
-                                placeholder="Wallet address"
-                                name="walletAddress"
-                                value={walletAddress}
-                                onChange={(value) => {
-                                    if(!value) setWalletAddrErr(ErrorMessage.Require);
-                                    setWalletAddress(value)
-                                }}
-                                type="text" />
-                            <ErrMessage message={walletAddrErr} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Button size="big" onClick={sendKai}>Send me some KAI</Button>
-                        </FormGroup>
-                    </Form>
-                    {
-                        hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all'}}>Transaction hash: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
-                    }
-                    <Message className="faucet-warning" type="warning" description="These tokens are for testing purpose only. They can't be used to trade or pay for any services." />
-                </Panel>
-            </FlexboxGrid.Item>
-        </FlexboxGrid>
+        <div className="container">
+            <div className="block-title" style={{ padding: '0px 5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="eyedropper" size={"lg"} />
+                    <p style={{ marginLeft: '12px' }} className="title">Received free KAIs with KardiaChain Faucet</p>
+                </div>
+            </div>
+            <FlexboxGrid justify="center">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                    <Panel shaded>
+                        <Form fluid>
+                            <FormGroup>
+                                <FormControl
+                                    placeholder="Wallet address"
+                                    name="walletAddress"
+                                    value={walletAddress}
+                                    onChange={(value) => {
+                                        if(!value) setWalletAddrErr(ErrorMessage.Require);
+                                        setWalletAddress(value)
+                                    }}
+                                    type="text" />
+                                <ErrMessage message={walletAddrErr} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Button size="big" onClick={sendKai}>Send me some KAI</Button>
+                            </FormGroup>
+                        </Form>
+                        {
+                            hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all'}}>Transaction hash: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
+                        }
+                        <Message className="faucet-warning" type="warning" description="These tokens are for testing purpose only. They can't be used to trade or pay for any services." />
+                    </Panel>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
+        </div>
     )
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Alert, Button, ButtonToolbar, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, List, Modal, Panel, Table } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, Table } from 'rsuite';
+import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
@@ -79,7 +80,13 @@ const DelegatorCreate = () => {
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                     <div className="val-info-container">
-                        <Panel header={<div style={{wordBreak: 'break-all'}}>{`Validator: ${valAddr}`}</div>} shaded>
+                        <div className="block-title" style={{ padding: '0px 5px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Icon className="highlight" icon="group" />
+                                <p style={{ marginLeft: '12px' }} className="title">Delegate</p>
+                            </div>
+                        </div>
+                        <Panel header={<div style={{wordBreak: 'break-all'}}>Validator: <span style={{fontWeight: 'bold'}}>{valAddr}</span></div>} shaded>
                             <List bordered={false}>
                                 <List.Item bordered={false}>
                                     <span className="property-title">Commission: </span> {validator?.commission || 0} %
@@ -107,9 +114,7 @@ const DelegatorCreate = () => {
                                         <ErrMessage message={errorMessage} />
                                     </FormGroup>
                                     <FormGroup>
-                                        <ButtonToolbar>
-                                            <Button appearance="primary" onClick={submitDelegate}>Delegate</Button>
-                                        </ButtonToolbar>
+                                        <Button size="big" onClick={submitDelegate}>Delegate</Button>
                                     </FormGroup>
                                 </Form>
                                 {
@@ -127,7 +132,13 @@ const DelegatorCreate = () => {
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div className="del-list-container">
-                        <Panel header={<h4>Delegators</h4>} shaded>
+                        <div className="block-title" style={{ padding: '0px 5px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Icon className="highlight" icon="group" />
+                                <p style={{ marginLeft: '12px' }} className="title">Delegators</p>
+                            </div>
+                        </div>
+                        <Panel shaded>
                             <Table
                                 autoHeight
                                 rowHeight={60}
@@ -179,11 +190,11 @@ const DelegatorCreate = () => {
                     <div style={{ textAlign: 'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { setShowConfirmModal(false) }} appearance="subtle">
-                        Cancel
-                    </Button>
-                    <Button loading={isLoading} onClick={confirmDelegate} appearance="primary">
+                    <Button loading={isLoading} onClick={confirmDelegate}>
                         Confirm
+                    </Button>
+                    <Button className="primary-button" onClick={() => { setShowConfirmModal(false) }}>
+                        Cancel
                     </Button>
                 </Modal.Footer>
             </Modal>

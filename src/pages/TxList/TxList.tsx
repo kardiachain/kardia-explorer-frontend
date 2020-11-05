@@ -77,7 +77,7 @@ const TxList = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={3} verticalAlign="middle">
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -86,7 +86,7 @@ const TxList = () => {
                                                         {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }} />}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
-                                                            headCount: isMobile ? 10 : 20,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`) }
@@ -96,8 +96,8 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} align="center" verticalAlign="middle">
-                                        <HeaderCell>Block Height</HeaderCell>
+                                    <Column flexGrow={1} verticalAlign="middle">
+                                        <HeaderCell>Block</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -109,7 +109,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -122,7 +122,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={3} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -130,7 +130,7 @@ const TxList = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.from,
-                                                            headCount: isMobile ? 10 : 20,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.from}`) }
@@ -140,7 +140,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={3} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -149,7 +149,7 @@ const TxList = () => {
                                                         {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                         {renderHashToRedirect({
                                                             hash: rowData.to,
-                                                            headCount: isMobile ? 10 : 20,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.to}`) }

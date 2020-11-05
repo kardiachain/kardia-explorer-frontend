@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, ButtonToolbar, Modal, Panel, Table } from 'rsuite';
+import { Alert, Button, ButtonToolbar, Icon, Modal, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { getValidatorsByDelegator, withdraw, withdrawReward } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -58,7 +58,13 @@ const Delegator = () => {
 
     return (
         <div>
-            <Panel header={<h4>Your validators</h4>} shaded>
+            <div className="block-title" style={{ padding: '0px 5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="group" />
+                    <p style={{ marginLeft: '12px' }} className="title">Your validators</p>
+                </div>
+            </div>
+            <Panel shaded>
                 <Table
                     autoHeight
                     rowHeight={70}
@@ -97,7 +103,7 @@ const Delegator = () => {
                         </Cell>
                     </Column>
                     <Column width={300} verticalAlign="middle">
-                        <HeaderCell>Withdraw</HeaderCell>
+                        <HeaderCell>Action</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (

@@ -5,7 +5,7 @@ import { renderHashToRedirect, millisecondToHMS } from '../../../../common/utils
 import { weiToKAI } from '../../../../common/utils/amount';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../../../config';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { getTxsByAddress } from '../../../../service/kai-explorer/transaction';
 import { getAccount } from '../../../../service/wallet';
 const { Column, HeaderCell, Cell } = Table;
@@ -32,9 +32,15 @@ const TransactionHistory = () => {
 
     return (
         <div>
+            <div className="block-title" style={{ padding: '0px 5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="exchange" size={"lg"} />
+                    <p style={{ marginLeft: '12px' }} className="title">Transaction history</p>
+                </div>
+            </div>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel header={<h4>Transaction history</h4>} shaded>
+                    <Panel shaded>
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -46,16 +52,16 @@ const TransactionHistory = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={2}>
+                                    <Column flexGrow={3}>
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="exchange" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }}/>}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
-                                                            headCount: isMobile ? 10 : 20,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`)}
@@ -66,38 +72,32 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={1} align="center">
-                                        <HeaderCell>Block Height</HeaderCell>
+                                        <HeaderCell>Block</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="cubes" style={{ marginRight: '5px' }}/>}
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.blockNumber,
-                                                            headCount: 20,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/block/${rowData.blockNumber}`) }
-                                                        })}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }}/>}
+                                                        <Link to={`/block/${rowData.blockNumber}`}>{rowData.blockNumber}</Link>
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} align="center">
+                                    <Column flexGrow={2} align="center">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="clock-o" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }}/>}
                                                         {millisecondToHMS(rowData.age || 0)}
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2}>
+                                    <Column flexGrow={3}>
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -105,7 +105,7 @@ const TransactionHistory = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.from,
-                                                            headCount: isMobile ? 10 : 20,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.from}`) }
@@ -115,16 +115,16 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2}>
+                                    <Column flexGrow={3}>
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="arrow-circle-right" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }}/>}
                                                         {renderHashToRedirect({
                                                             hash: rowData.to,
-                                                            headCount: isMobile ? 10 : 20,
+                                                            headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.to}`) }
