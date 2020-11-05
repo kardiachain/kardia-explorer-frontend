@@ -11,21 +11,28 @@ import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
+import { numberFormat } from '../../common/utils/number';
 
 
 const { Column, HeaderCell, Cell } = Table;
 
 const Validators = () => {
     let history = useHistory();
-    const { isMobile } = useViewport()
-    const [validators, setValidators] = useState([] as ValidatorFromSMC[])
-    const [dataForValidatorsChart, setDataForValidatorsChart] = useState([] as DataChartConfig[])
-    const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig)
+    const { isMobile } = useViewport();
+    const [validators, setValidators] = useState([] as ValidatorFromSMC[]);
+    const [dataForValidatorsChart, setDataForValidatorsChart] = useState([] as DataChartConfig[]);
+    const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig);
+    const [tableLoading, setTableLoading] = useState(true)
+    const [totalStakedAmount, setTotalStakedAmount] = useState(0)
     useEffect(() => {
         (async () => {
+            setTableLoading(true)
             const stakingData = await getValidatorsFromSMC();
             const valDetails = stakingData.validators;
             setValidators(valDetails);
+            setTableLoading(false)
+
+            // Calculate data for chart
             const dataForValidatorsChart = [] as any[];
             valDetails.forEach((value: ValidatorFromSMC, index: number) => {
                 dataForValidatorsChart.push({
@@ -44,6 +51,7 @@ const Validators = () => {
                 totalValidatorStakedAmount: stakingData?.totalValidatorStakedAmount,
                 totalDelegatorStakedAmount: stakingData?.totalDelegatorStakedAmount
             });
+            setTotalStakedAmount(stakingData.totalStakedAmont)
         })()
     }, []);
 
@@ -64,32 +72,35 @@ const Validators = () => {
                     </Button>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
-            <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
+            <FlexboxGrid justify="space-between" align="top" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '15px' : '0' }}>
                     <Panel shaded>
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '15px' : '0' }}>
-                    <Panel shaded>
+                    <Panel shaded style={{ marginBottom: '15px' }}>
                         <StakedPieChart dataForChart={dataForStakedPieChart || {}} />
                     </Panel>
-                    <Panel className="stat-container" shaded>
-                        <div className="stat">
-                            <div className="icon">
-                                <Icon className="highlight" icon="cubes" size={"lg"} />
-                            </div>
-                            <div className="title">Total Validators</div>
-                            <div className="value">{123}</div>
-                        </div>
-
-                        <div className="stat">
-                            <div className="icon">
-                                <Icon className="highlight" icon="recycle" size={"lg"} />
-                            </div>
-                            <div className="title">Total Staked</div>
-                            <div className="value">{123}</div>
-                        </div>
+                    <Panel shaded>
+                        <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }} className="staking-stats">
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                                <div className="stats-container">
+                                    <div className="title">
+                                        <Icon className="highlight icon" icon="braille" size={"lg"} />Total Validators
+                                    </div>
+                                    <div className="value">{validators.length}</div>
+                                </div>
+                            </FlexboxGrid.Item>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                                <div className="stats-container">
+                                    <div className="title">
+                                        <Icon className="highlight icon" icon="bolt" size={"lg"} />Total Staked
+                                    </div>
+                                    <div className="value">{numberFormat(totalStakedAmount)} KAI</div>
+                                </div>
+                            </FlexboxGrid.Item>
+                        </FlexboxGrid>
                     </Panel>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
@@ -102,6 +113,7 @@ const Validators = () => {
                             autoHeight
                             rowHeight={70}
                             data={validators}
+                            loading={tableLoading}
                         >
 
                             <Column width={60} verticalAlign="middle">

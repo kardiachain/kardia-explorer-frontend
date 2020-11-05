@@ -8,7 +8,7 @@ const chartConfigDefault = {
         type: 'pie',
     },
     title: {
-        text: ''
+        text: 'Stakes'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -40,7 +40,8 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
     const [chartOptionsConfig, setChartOptionsConfig] = useState({})
 
     useEffect(() => {
-        chartConfigDefault.series[0].data = [{
+        const newConfig = JSON.parse(JSON.stringify(chartConfigDefault))
+        newConfig.series[0].data = [{
             name: "Validators' Staked",
             y: dataForChart.totalValidatorStakedAmount,
             sliced: true,
@@ -51,7 +52,7 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
             y: dataForChart.totalDelegatorStakedAmount,
             color: '#e62c2c'
         }]
-        setChartOptionsConfig(chartConfigDefault)
+        setChartOptionsConfig(newConfig)
     }, [dataForChart])
 
     return (

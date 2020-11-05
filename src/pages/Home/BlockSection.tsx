@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -32,11 +32,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             <div>
                                                 <Icon icon="cubes" style={{ marginRight: '10px' }} />
-                                                {renderHashToRedirect({
-                                                    hash: rowData.blockHeight,
-                                                    showTooltip: false,
-                                                    callback: () => { history.push(`/block/${rowData.blockHeight}`) }
-                                                })}
+                                                <Link to={`/block/${rowData.blockHeight}`} >{rowData.blockHeight}</Link>
                                             </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
@@ -71,11 +67,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             {
                                                 !rowData.transactions ? '0' :
-                                                renderHashToRedirect({
-                                                    hash: rowData.transactions,
-                                                    showTooltip: false,
-                                                    callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
-                                                })
+                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{rowData.transactions}</Link>
                                             }
                                         </div>
                                     );

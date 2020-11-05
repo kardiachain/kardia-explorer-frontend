@@ -25,7 +25,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
 
                     <div className="stat">
                         <div className="icon">
-                            <Icon className="highlight" icon="recycle" size={"lg"} />
+                            <Icon className="highlight" icon="realtime" size={"lg"} />
                         </div>
                         <div className="title">Live TPS</div>
                         <div className="value">{numberFormat(tps)}</div>
