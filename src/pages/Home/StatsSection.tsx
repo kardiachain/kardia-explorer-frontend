@@ -43,7 +43,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                         <div className="icon">
                             <Icon className="highlight" icon="peoples" size={"lg"} />
                         </div>
-                        <div className="title">Holders</div>
+                        <div className="title">Addresses</div>
                         <div className="value">{numberFormat(0)}</div>
                     </div>
                 </Panel>
