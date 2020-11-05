@@ -1,0 +1,15 @@
+.kai-button {
+    background: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
+    color: white;
+    cursor: pointer;
+    border-radius: 2px;
+    font-weight: 600;
+}
+
+.size-normal {
+    padding: 5px 31px;
+}
+
+.size-big {
+    padding: 13px 45px;
+}
