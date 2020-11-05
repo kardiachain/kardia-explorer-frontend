@@ -3,7 +3,8 @@ interface DataChartConfig {
     name: string;
     y: string;
     color: string;
-    selected: boolean
+    selected: boolean;
+    sliced: boolean;
 }
 
 interface StakedPieChartConfig {

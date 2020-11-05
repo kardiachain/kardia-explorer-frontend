@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, FlexboxGrid, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
 import { randomRGBColor, renderHashToRedirect, truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -10,6 +10,7 @@ import './staking.css'
 import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
+import Button from '../../common/components/Button';
 
 
 const { Column, HeaderCell, Cell } = Table;
@@ -22,29 +23,27 @@ const Validators = () => {
     const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig)
     useEffect(() => {
         (async () => {
-            const stakingData = await getValidatorsFromSMC()
-            console.log(stakingData);
-            
-            const valDetails = stakingData.validators
-            setValidators(valDetails)
-            const dataForValidatorsChart = [] as any[]
+            const stakingData = await getValidatorsFromSMC();
+            const valDetails = stakingData.validators;
+            setValidators(valDetails);
+            const dataForValidatorsChart = [] as any[];
             valDetails.forEach((value: ValidatorFromSMC, index: number) => {
-            dataForValidatorsChart.push({
-                custom: value.address,
-                name: truncate(value.address, 5, 3),
-                y: value.votingPower,
-                color: randomRGBColor()
+                dataForValidatorsChart.push({
+                    custom: value.address,
+                    name: truncate(value.address, 5, 3),
+                    y: value.votingPower,
+                    color: randomRGBColor(),
+                    sliced: true
+                });
             });
-
-        })
-        setDataForValidatorsChart(dataForValidatorsChart)
-        setDataForStakedPieChart({
-            totalVals: stakingData?.totalVals,
-            totalDels: stakingData?.totalDels,
-            totalStakedAmont: stakingData?.totalStakedAmont,
-            totalValidatorStakedAmount: stakingData?.totalValidatorStakedAmount,
-            totalDelegatorStakedAmount: stakingData?.totalDelegatorStakedAmount
-        })
+            setDataForValidatorsChart(dataForValidatorsChart)
+            setDataForStakedPieChart({
+                totalVals: stakingData?.totalVals,
+                totalDels: stakingData?.totalDels,
+                totalStakedAmont: stakingData?.totalStakedAmont,
+                totalValidatorStakedAmount: stakingData?.totalValidatorStakedAmount,
+                totalDelegatorStakedAmount: stakingData?.totalDelegatorStakedAmount
+            });
         })()
     }, []);
 
@@ -58,24 +57,39 @@ const Validators = () => {
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: isMobile ? 'left' : 'right' }}>
-                    <ButtonToolbar>
-                        <Button className="bg-highlight"
-                            onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
-                        >
-                            Register to become validator
-                        </Button>
-                    </ButtonToolbar>
+                    <Button size="big"
+                        onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
+                    >
+                        Register to become validator
+                    </Button>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{ marginBottom: isMobile ? '15px' : '0' }}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '15px' : '0' }}>
                     <Panel shaded>
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ marginBottom: isMobile ? '15px' : '0' }}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '15px' : '0' }}>
                     <Panel shaded>
-                        <StakedPieChart dataForChart={dataForStakedPieChart || {}}/>
+                        <StakedPieChart dataForChart={dataForStakedPieChart || {}} />
+                    </Panel>
+                    <Panel className="stat-container" shaded>
+                        <div className="stat">
+                            <div className="icon">
+                                <Icon className="highlight" icon="cubes" size={"lg"} />
+                            </div>
+                            <div className="title">Total Validators</div>
+                            <div className="value">{123}</div>
+                        </div>
+
+                        <div className="stat">
+                            <div className="icon">
+                                <Icon className="highlight" icon="recycle" size={"lg"} />
+                            </div>
+                            <div className="title">Total Staked</div>
+                            <div className="value">{123}</div>
+                        </div>
                     </Panel>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
@@ -89,19 +103,19 @@ const Validators = () => {
                             rowHeight={70}
                             data={validators}
                         >
-                            
+
                             <Column width={60} verticalAlign="middle">
                                 <HeaderCell>Rank</HeaderCell>
                                 <Cell>
-                                        {(rowData: ValidatorFromSMC) => {
-                                            return (
-                                                <div className="rank-tab" style={{backgroundColor: dataForValidatorsChart[rowData.rank || 0]?.color}}>
-                                                    {Number(rowData.rank) + 1}
-                                                </div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
+                                    {(rowData: ValidatorFromSMC) => {
+                                        return (
+                                            <div className="rank-tab" style={{ backgroundColor: dataForValidatorsChart[rowData.rank || 0]?.color }}>
+                                                {Number(rowData.rank) + 1}
+                                            </div>
+                                        );
+                                    }}
+                                </Cell>
+                            </Column>
                             <Column flexGrow={2} verticalAlign="middle">
                                 <HeaderCell>Validator</HeaderCell>
                                 <Cell>
@@ -165,7 +179,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <Button appearance="primary" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                            <Button onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                                         );
                                     }}
                                 </Cell>

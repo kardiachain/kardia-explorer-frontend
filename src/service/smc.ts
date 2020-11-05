@@ -39,13 +39,12 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
 
 const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
     const invoke = await invokeCallData("getValidators", [])
-    let validators: ValidatorFromSMC[] = [];
     let totalVotingPower = 0;
     let totalDels = 0;
     let totalStakedAmont = 0
     let totalValidatorStakedAmount = 0;
-    for (let i = 0; i < invoke[0].length; i++) {
-        const valAddr = invoke[0][i]
+    const promiseArr = invoke[0].map(async (item: any, i: number) => {
+        const valAddr = item
         const totalDelsOfVal = await getNumberDelOfValidator(valAddr);
         const votingPower = await getValidatorPower(valAddr);
         const validatorStaked = await getDelegatorStake(valAddr, valAddr)
@@ -54,22 +53,24 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
         totalStakedAmont += Number(weiToKAI(invoke[1][i]));
         totalValidatorStakedAmount += Number(weiToKAI(validatorStaked));
 
-        let validator: ValidatorFromSMC = {
+        return {
             rank: i,
             address: valAddr,
             totalStakedAmount: invoke[1][i],
             delegationsShares: invoke[2][i],
             totalDels: totalDelsOfVal,
             votingPower: votingPower || 0
-        }
-        validators.push(validator)
-    }
+        } as ValidatorFromSMC
+    })
 
-    validators.sort(function(a: ValidatorFromSMC, b: ValidatorFromSMC) {
+    let validators: ValidatorFromSMC[] = await Promise.all(promiseArr);
+
+    validators.sort(function (a: ValidatorFromSMC, b: ValidatorFromSMC) {
         return (b.votingPower || 0) - (a.votingPower || 0)
-     }).map((val, index) => {
-        val.votingPower =  Number(new Intl.NumberFormat('en', { maximumFractionDigits: 3 }).format((Number(val.votingPower) / totalVotingPower) * 100));
+    }).map((val, index) => {
+        val.votingPower = Number(new Intl.NumberFormat('en', { maximumFractionDigits: 3 }).format((Number(val.votingPower) / totalVotingPower) * 100));
         val.rank = index;
+        return val;
     })
 
     return {
@@ -82,9 +83,6 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
         validators: validators
     } as StakingContractResponse
 }
-
-
-
 
 const getDelegationsByValidator = async (valAddr: string): Promise<Delegator[]> => {
     let delegators: Delegator[] = [];
