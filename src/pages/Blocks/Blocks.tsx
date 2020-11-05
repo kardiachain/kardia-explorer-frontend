@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Panel, FlexboxGrid, Table, Icon, Col, Divider } from 'rsuite';
+import { Panel, FlexboxGrid, Table, Icon, Col } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -9,6 +9,8 @@ import { TABLE_CONFIG } from '../../config';
 import { useHistory } from 'react-router-dom';
 import { numberFormat } from '../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
+import SearchSection from '../../common/components/Header/SearchSection';
+
 const { Column, HeaderCell, Cell } = Table;
 
 const Blocks = () => {
@@ -29,7 +31,7 @@ const Blocks = () => {
     }, [page, size])
 
     useEffect(() => {
-        const loop = setInterval(async() => {
+        const loop = setInterval(async () => {
             await fetchBlocks(page, size);
         }, TIME_INTERVAL_MILISECONDS)
         return () => clearInterval(loop);
@@ -43,8 +45,13 @@ const Blocks = () => {
 
     return (
         <div className="container block-container">
-            <h3>Blocks</h3>
-            <Divider />
+            <SearchSection />
+            <div className="block-title" style={{padding: '0px 5px'}}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="exchange" size={"lg"} />
+                    <p style={{ marginLeft: '12px' }} className="title">Blocks</p>
+                </div>
+            </div>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>
@@ -64,7 +71,7 @@ const Blocks = () => {
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
-                                                    <div><Icon icon="cubes" style={{ marginRight: '5px' }} />
+                                                    <div><Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
                                                         {renderHashToRedirect({
                                                             hash: rowData.blockHeight,
                                                             headCount: isMobile ? 20 : 45,
@@ -81,7 +88,7 @@ const Blocks = () => {
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
-                                                    <div><Icon icon="clock-o" style={{ marginRight: '5px' }}/> {millisecondToHMS(rowData.age || 0)}</div>
+                                                    <div><Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} /> {millisecondToHMS(rowData.age || 0)}</div>
                                                 );
                                             }}
                                         </Cell>
@@ -116,7 +123,7 @@ const Blocks = () => {
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.validator.hash}`) }
-                                                        })}                                                   
+                                                        })}
                                                     </div>
                                                 );
                                             }}

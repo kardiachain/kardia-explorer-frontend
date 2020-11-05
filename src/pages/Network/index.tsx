@@ -4,6 +4,7 @@ import { Col, FlexboxGrid, Panel, Table, Tag } from 'rsuite';
 import { renderHashString } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';
+import SearchSection from '../../common/components/Header/SearchSection';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -70,11 +71,12 @@ const Network = () => {
     }, [])
 
     return (
-        <FlexboxGrid style={{width: '100%'}}>
+        <FlexboxGrid style={{width: '70%', maxWidth: '1920px', padding:'40px 0px'}}>
+            <SearchSection/>
             {
                 !isMobile && 
-                <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={10} style={{padding: 30}}>
-                    <Panel bordered header="Kardia network">
+                <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={10}>
+                    <Panel bordered header="Kardia Network">
                         {
                             graphConfig.width && graphData.nodes.length > 0 &&
                             <Graph
@@ -86,7 +88,7 @@ const Network = () => {
                     </Panel>
                 </FlexboxGrid.Item>
             }
-            <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={14} style={{padding: 30}}>
+            <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={14}>
                 <Table
                     bordered
                     autoHeight
