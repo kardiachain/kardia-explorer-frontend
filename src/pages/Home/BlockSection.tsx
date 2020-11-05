@@ -31,7 +31,7 @@ const BlockSection = ({ blockList = [] }: {
                                     return (
                                         <div>
                                             <div>
-                                                <Icon icon="cubes" style={{ marginRight: '10px' }} />
+                                                <Icon icon="cubes" className="highlight" style={{ marginRight: '10px' }} />
                                                 <Link to={`/block/${rowData.blockHeight}`} >{rowData.blockHeight}</Link>
                                             </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>

@@ -32,7 +32,7 @@ const TransactionSection = ({ transactionList = []}: {
                                     return (
                                         <div>
                                             <div>
-                                                <Icon icon="exchange" style={{ marginRight: '10px' }} />
+                                                <Icon className="highlight" icon="exchange" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.txHash,
                                                     headCount: isMobile ? 10 : 15,
@@ -63,7 +63,7 @@ const TransactionSection = ({ transactionList = []}: {
                                             })}
                                             </div>
                                             <div>
-                                                <Icon icon="arrow-circle-right" style={{ marginRight: '5px' }}/>To:
+                                                <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }}/>To:
                                                 {renderHashToRedirect({
                                                 hash: rowData.to,
                                                 headCount: isMobile ? 10 : 15,
