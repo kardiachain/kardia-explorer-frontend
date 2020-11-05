@@ -14,8 +14,8 @@ const verifyAmount = (amount: any) => {
     return false
 }
 
-const numberFormat = (value: number) => {
-    return new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value);
+const numberFormat = (value: number, fractionDigits = 18) => {
+    return new Intl.NumberFormat('en', { maximumFractionDigits: fractionDigits }).format(value);
 }
 
 export {onlyNumber, numberFormat, verifyAmount}
