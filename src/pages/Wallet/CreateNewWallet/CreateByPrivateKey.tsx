@@ -42,7 +42,7 @@ const CreateByPrivateKey = () => {
     }
 
     return (
-        <div className="show-grid creact-container private-key">
+        <div className="show-grid create-container private-key">
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
                     <Panel shaded>
