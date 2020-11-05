@@ -70,7 +70,7 @@ const TxList = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
                                     rowHeight={60}
-                                    height={650}
+                                    height={400}
                                     data={transactionList}
                                     autoHeight
                                     hover={false}

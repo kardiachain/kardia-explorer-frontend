@@ -57,8 +57,9 @@ const chartConfigDefault = {
 const ValidatorsPieChart = ({ dataForChart = [] }: { dataForChart: DataChartConfig[] }) => {
     const [chartOptionsConfig, setChartOptionsConfig] = useState({})
     useEffect(() => {
-        chartConfigDefault.series[0].data = dataForChart;
-        setChartOptionsConfig(chartConfigDefault)
+        const newConfig = JSON.parse(JSON.stringify(chartConfigDefault))
+        newConfig.series[0].data = dataForChart;
+        setChartOptionsConfig(newConfig);
     }, [dataForChart]);
 
 
