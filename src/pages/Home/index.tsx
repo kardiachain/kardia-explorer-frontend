@@ -98,7 +98,7 @@ const Home = () => {
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="signal" size={"2x"} />
+                                        <Icon className="highlight" icon="line-chart" size={"2x"} />
                                     </div>
                                     <div className="right">
                                         <p>Market Cap:</p>
@@ -116,7 +116,7 @@ const Home = () => {
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="database" size={"2x"} />
+                                        <Icon className="highlight" icon="refresh" size={"2x"} />
                                     </div>
                                     <div className="right">
                                         <p>Circulating Supply:</p>
