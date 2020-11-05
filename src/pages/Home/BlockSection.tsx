@@ -27,7 +27,7 @@ const BlockSection = ({ blockList = [] }: {
                         wordWrap
                     >
                         <Column flexGrow={1}>
-                            <HeaderCell>Block height</HeaderCell>
+                            <HeaderCell>Block Height</HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
                                     return (

@@ -65,12 +65,9 @@
     padding:12px 11px;
 }
 
-.rs-nav-item-content{
-    background:none !important;
-}
-
-@media only screen and (min-width: 1024px) {
-    .kai-logo-container {
-        margin-right: 15px;
-    }
+@media only screen and (max-width: 740px) {
+   .search-wrapper{
+       width: 100%;
+       margin-bottom:30px;
+   }
 }
