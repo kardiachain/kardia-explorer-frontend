@@ -43,7 +43,6 @@ const CreateByMnemonic = () => {
 
     const createWallet = () => {
         const indexRandomArr = randomIndexEmptyBox() as number[]
-        console.log(indexRandomArr);
         let mnemonicArrVerify = [] as any[];
         indexRandomArr.forEach((val: number) => {
             mnemonicArrVerify.push({
@@ -98,7 +97,7 @@ const CreateByMnemonic = () => {
     }
 
     return (
-        <div className="show-grid creact-container mnemonic">
+        <div className="show-grid create-container mnemonic">
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
                     <Panel shaded>

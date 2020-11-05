@@ -17,7 +17,7 @@ export const useWalletStorage = (callback?: () => void) => {
             const walletstoreDecode = window.atob(walletstore || '')
             return walletstoreDecode ? JSON.parse(walletstoreDecode) : initialValue;
         } catch (err) { 
-            console.log(err)
+            console.error(err)
             return initialValue;
         }
     });
@@ -36,7 +36,7 @@ export const useWalletStorage = (callback?: () => void) => {
             const valueToStore = value instanceof Function ? value(storedValue) : value;
             setStoredValue(valueToStore);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 
@@ -67,7 +67,7 @@ export const getBalanceByAddress = async (address: string) => {
         const balance = await kardiaApi.balance(toChecksum(address), '', null)
         return balance
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 } 
 

@@ -61,8 +61,9 @@
 }
 
 /* Style for crate wallet with private key */
-.creact-container {
+.create-container {
     margin-top: 50px;
+    width: 100%;
 }
 
 .button-container {
@@ -76,7 +77,7 @@
     color: white;
 }
 
-.creact-container .title {
+.create-container .title {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 40px;

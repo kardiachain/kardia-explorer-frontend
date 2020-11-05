@@ -1,0 +1,29 @@
+.rank-tab {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 35px;
+    border-radius: 50%;
+    color: white;
+    font-family: 600;
+}
+
+.staking-stats .stats-container {
+    text-align: center;
+}
+
+.staking-stats .title {
+    margin-bottom: 15px;
+}
+
+.staking-stats .value {
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.staking-stats .icon {
+    margin-right: 10px;
+    font-size: 30px;
+    font-weight: 600;
+}
