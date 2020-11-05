@@ -103,4 +103,11 @@ const dateToLocalTime = (time: Date) => {
     const d = new Date(time);
     return d.toLocaleString()
 }
-export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime, renderHashStringAndTooltip}
+
+const randomRGBColor = (): string => {
+    const rrr =  Math.floor(Math.random() * 255);
+    const ggg =  Math.floor(Math.random() * 255);
+    const bbb =  Math.floor(Math.random() * 255);
+    return `rgb(${rrr},${ggg},${bbb})`
+} 
+export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime, renderHashStringAndTooltip, randomRGBColor}

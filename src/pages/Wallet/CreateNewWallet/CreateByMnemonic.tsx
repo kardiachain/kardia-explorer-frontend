@@ -43,7 +43,6 @@ const CreateByMnemonic = () => {
 
     const createWallet = () => {
         const indexRandomArr = randomIndexEmptyBox() as number[]
-        console.log(indexRandomArr);
         let mnemonicArrVerify = [] as any[];
         indexRandomArr.forEach((val: number) => {
             mnemonicArrVerify.push({

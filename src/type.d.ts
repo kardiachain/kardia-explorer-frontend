@@ -51,9 +51,18 @@ interface KAIBlockDetails {
     age: number;
 }
 
-
+interface StakingContractResponse {
+    totalVals: number;
+    totalDels: number;
+    totalVotingPower: number;
+    totalStakedAmont: number;
+    totalValidatorStakedAmount: number;
+    totalDelegatorStakedAmount: number
+    validators: ValidatorFromSMC[]
+}
 
 interface ValidatorFromSMC {
+    rank?: number;
     address: string;
     delegationsShares?: number;
     votingPower?: number;
