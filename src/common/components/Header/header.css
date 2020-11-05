@@ -1,6 +1,6 @@
 .kai-header-container {
     /* padding: 0 90px; */
-    width: 1300px;
+    width: 75%;
     margin: 0 auto;
 }
 
@@ -11,6 +11,9 @@
 .rs-navbar-header{
     flex:1;
     padding: 10px 0px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
 }
 
 .kai-header-container .rs-dropdown-menu {
@@ -72,8 +75,8 @@
 }
 
 @media only screen and (max-width: 740px) {
-   .search-wrapper{
-       width: 100%;
-       margin-bottom:30px;
-   }
+    .search-wrapper{
+        width: 100%;
+        margin-bottom:30px;
+    }
 }

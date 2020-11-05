@@ -1,9 +1,10 @@
 
 .tx-detail-container .title {
     padding: 5px 0;
-    font-weight: 700;
+    color: #a8a8a8;
 }
 
 .tx-detail-container .content {
     word-break: break-all;
+    font-weight: 900;
 }

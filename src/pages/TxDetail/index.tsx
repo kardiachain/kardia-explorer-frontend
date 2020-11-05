@@ -158,7 +158,7 @@ const TxDetail = () => {
                                         <div className="title">Gas Price</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{numberFormat(txDetail?.gasPrice || 0)}</div>
+                                        <div className="content">{numberFormat(txDetail?.gasPrice || 0)} GWEI</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -168,7 +168,7 @@ const TxDetail = () => {
                                         <div className="title">Gas Limit</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{numberFormat(txDetail?.gasLimit || 0)}</div>
+                                        <div className="content">{numberFormat(txDetail?.gas || 0)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

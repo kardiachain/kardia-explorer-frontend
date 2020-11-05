@@ -5,6 +5,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.hex {
+  font-family: 'Inconsolata', monospace;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -82,8 +86,9 @@ code {
 
 @media screen and (max-width: 740px) {
   .rs-header{
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .container {

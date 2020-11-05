@@ -12,6 +12,7 @@ import { useViewport } from '../../context/ViewportContext';
 import { Icon } from 'rsuite';
 import SearchSection from '../../common/components/Header/SearchSection';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
+import Button from '../../common/components/Button';
 
 
 const Home = () => {
@@ -62,7 +63,7 @@ const Home = () => {
         <React.Fragment>
             <div className="container home-container">
 
-            <SearchSection />
+                <SearchSection />
 
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
@@ -87,7 +88,7 @@ const Home = () => {
                                 <Icon className="highlight" icon="th-large" size={"lg"} />
                                 <p style={{marginLeft: '12px'}} className="title">Latest Blocks</p>
                             </div>
-                            <p className="mt0 title title-right" onClick={() => { history.push(`/blocks`) }}>View All</p>
+                            <Button onClick={() => { history.push('/blocks') }}>View all</Button>
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
@@ -97,7 +98,7 @@ const Home = () => {
                                 <Icon className="highlight" icon="exchange" size={"lg"} />
                                 <p style={{marginLeft: '12px'}} className="title">Latest Transactions</p>
                             </div>
-                            <p className="mt0 title title-right" onClick={() => { history.push('/txs') }}>View All</p>
+                            <Button onClick={() => { history.push('/txs') }}>View all</Button>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

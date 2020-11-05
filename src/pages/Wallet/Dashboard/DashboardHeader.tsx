@@ -33,11 +33,11 @@ const DashboardHeader = () => {
                         <div className="title"><Icon className="icon" icon="views-authorize" />Address</div>
                         <div className="content">
                             <div style={{ wordBreak: 'break-all',fontWeight: 'bold'}}>{account.publickey}</div>
-                            <div className="action">
-                                <Icon icon="qrcode" size="lg" onClick={() => {setShowAddress(true)}} />
-                                <Icon icon="copy" size="lg" onClick={() => copyToClipboard(account.publickey, onSuccess)} />
-                                <Icon icon="lock" size="lg" onClick={() => {setShowPrivateKey(true)}}/>
-                            </div>
+                        </div>
+                        <div className="action">
+                            <Icon icon="qrcode" size="lg" onClick={() => {setShowAddress(true)}} />
+                            <Icon icon="copy" size="lg" onClick={() => copyToClipboard(account.publickey, onSuccess)} />
+                            <Icon icon="lock" size="lg" onClick={() => {setShowPrivateKey(true)}}/>
                         </div>
                     </Panel>
                 </Col>

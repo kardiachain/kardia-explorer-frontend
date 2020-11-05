@@ -36,7 +36,7 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
         Alert.success('Copied to clipboard.')
     }
     return (
-        <span>
+        <span className="hex">
             {truncate(hash, headCount || 10, tailCount || 4)}{' '}
             {renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
         </span>
@@ -46,12 +46,12 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
 const renderHashStringAndTooltip = (hash: string, headCount?: number, tailCount?: number, showTooltip?: boolean) => {
     return showTooltip ? (
         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
-            <span>
+            <span className="hex">
                 {truncate(hash, headCount || 10, tailCount || 4)}{' '}
             </span>
         </Whisper>
     ) : (
-            <span>
+            <span className="hex">
                 {truncate(hash, headCount || 10, tailCount || 4)}{' '}
             </span>
         );
@@ -64,12 +64,12 @@ const renderHashToRedirect = ({
 }) => {
     return showTooltip ? (
         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
-            <span onClick={() => {callback && callback()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
+            <span className="hex" onClick={() => {callback && callback()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
                 {truncate(String(hash), headCount, tailCount)}{' '}
             </span>
         </Whisper>
     ) : (
-        <span onClick={() => {callback && callback()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
+        <span className="hex" onClick={() => {callback && callback()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
             {truncate(String(hash), headCount, tailCount)}{' '}
         </span>
     )

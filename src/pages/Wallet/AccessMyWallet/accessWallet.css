@@ -2,6 +2,7 @@
 .access-privatekey-container,
 .access-keystore-container {
     margin-top: 50px;
+    width: 100%;
 }
 
 /* Style for crate wallet with private key */
