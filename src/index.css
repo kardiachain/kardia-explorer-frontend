@@ -76,7 +76,7 @@ code {
 
 .container {
   max-width:1920px;
-  width:1300px;
+  width:70%;
   padding:40px 0px;
 }
 
@@ -89,6 +89,7 @@ code {
 
   .container {
     padding: 30px 10px;
+    width: 100%;
   }
 
   .rs-panel-body{
