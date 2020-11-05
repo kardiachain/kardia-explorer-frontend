@@ -3,7 +3,7 @@ import { Icon, Panel } from 'rsuite';
 import { numberFormat } from '../../common/utils/number';
 import { useViewport } from '../../context/ViewportContext';
 import { calculateTPS } from '../../service/kai-explorer';
-import './home.css'
+import './stat.css'
 
 const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {
     const [tps, setTps] = useState(0)

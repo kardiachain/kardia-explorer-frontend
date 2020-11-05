@@ -91,7 +91,6 @@ const TransactionSection = ({ transactionList = []}: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                {/* <Button className="button-view-all" onClick={() => { history.push('/txs') }}>View all transactions</Button> */}
             </FlexboxGrid>
         </Panel>
     )

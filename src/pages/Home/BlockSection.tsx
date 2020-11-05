@@ -86,7 +86,6 @@ const BlockSection = ({ blockList = [] }: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                {/* <Button className="button-view-all" onClick={() => { history.push(`/blocks`) }}>View all blocks</Button> */}
             </FlexboxGrid>
         </Panel>
     )

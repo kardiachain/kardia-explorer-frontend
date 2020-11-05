@@ -81,8 +81,17 @@ code {
 }
 
 @media screen and (max-width: 740px) {
+  .rs-header{
+  display: flex;
+  align-items: center;
+  }
+
   .container {
     padding: 30px 10px;
+  }
+
+  .rs-panel-body{
+    padding:0 !important;
   }
 }
 .custom-tooltip .rs-tooltip-inner {
