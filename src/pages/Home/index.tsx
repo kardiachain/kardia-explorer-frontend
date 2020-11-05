@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './home.css'
-import { Divider, FlexboxGrid, Col } from 'rsuite';
+import { FlexboxGrid, Col } from 'rsuite';
 import TransactionSection from './TransactionSection';
 import { useHistory } from 'react-router-dom';
 import BlockSection from './BlockSection';
@@ -9,7 +9,6 @@ import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HO
 import BlockTimeChart from './BlockTimeChart';
 import StatsSection from './StatsSection';
 import { useViewport } from '../../context/ViewportContext';
-import Validators from '../Staking';
 import { Icon } from 'rsuite';
 import SearchSection from '../../common/components/Header/SearchSection';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
@@ -67,7 +66,7 @@ const Home = () => {
 
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{background: 'white'}}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
 
@@ -81,9 +80,8 @@ const Home = () => {
                     <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
                 </FlexboxGrid>
 
-                {isMobile && <Divider />}
                 <FlexboxGrid justify="space-between" style={{ marginTop: !isMobile ? '30px' : '0' }}>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px', width: 'calc(50% - 10px)' }}>
+                    <FlexboxGrid.Item className="section-left" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{display:'flex', alignItems: 'center'}}>
                                 <Icon className="highlight" icon="th-large" size={"lg"} />
@@ -93,7 +91,7 @@ const Home = () => {
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px', width: 'calc(50% - 10px)' }}>
+                    <FlexboxGrid.Item className="section-right" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{display:'flex', alignItems: 'center'}}>
                                 <Icon className="highlight" icon="exchange" size={"lg"} />
@@ -105,7 +103,6 @@ const Home = () => {
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
 
-                <Validators />
             </div>
         </React.Fragment>
     )

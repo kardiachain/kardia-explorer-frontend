@@ -138,10 +138,10 @@ const buildBlockTransactionsData = (blockList: KAIBlock[]) => {
         label: 'Block transactions',
         data: blockList.map((b) => b.transactions || 0),
         fill: false,
-        backgroundColor: '#36638A',
-        borderColor: '#36638A',
-        hoverBackgroundColor: '#36638A',
-        hoverBorderColor: '#36638A',
+        backgroundColor: '#2a343d',
+        borderColor: '#2a343d',
+        hoverBackgroundColor: '#2a343d',
+        hoverBorderColor: '#2a343d',
         yAxisID: 'y-axis-1',
     }
 }

@@ -17,7 +17,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
 
     return (
         <div className="stats-section">
-                <Panel className="stat-container">
+                <Panel className="stat-container" shaded>
                     <div className="stat">
                         <div className="icon">
                             <Icon className="highlight" icon="cubes" size={"lg"} />
