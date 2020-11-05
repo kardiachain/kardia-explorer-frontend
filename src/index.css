@@ -80,3 +80,12 @@ code {
     padding: 10px;
   }
 }
+.custom-tooltip .rs-tooltip-inner {
+  background: #5f7689 !important;
+  font-weight: 600;
+  font-size: 12px;
+}
+.custom-tooltip .rs-tooltip-arrow {
+  border-bottom-color: #5f7689 !important;
+  border-top-color: #5f7689 !important;
+}

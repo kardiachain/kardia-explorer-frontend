@@ -43,6 +43,7 @@ interface KAIBlockDetails {
     lastBlock: string;
     dataHash: string;
     validatorHash: string;
+    nextValidatorHash: string;
     consensusHash: string;
     appHash: string;
     evidenceHash: string;

@@ -59,6 +59,7 @@ const TxDetail = () => {
                                                 hash: txDetail?.blockNumber,
                                                 headCount: 30,
                                                 tailCount: 4,
+                                                showTooltip: true,
                                                 callback: () => { history.push(`/block/${txDetail?.blockNumber}`) }
                                             })}
                                         </div>
@@ -76,6 +77,7 @@ const TxDetail = () => {
                                                 hash: txDetail?.blockHash,
                                                 headCount: 70,
                                                 tailCount: 4,
+                                                showTooltip: true,
                                                 callback: () => { history.push(`/block/${txDetail?.blockHash}`) }
                                             })}
                                         </div>
@@ -118,6 +120,7 @@ const TxDetail = () => {
                                                 hash: txDetail?.from,
                                                 headCount: 50,
                                                 tailCount: 4,
+                                                showTooltip: true,
                                                 callback: () => { history.push(`/address/${txDetail?.from}`) }
                                             })}
                                         </div>

@@ -14,7 +14,15 @@ const addressValid = (address: string) : boolean => {
     return false;
 }
 
+const hashValid = (txHash: string) : boolean => {
+    if (txHash.length === 66 && txHash.startsWith('0x')) {
+        return true
+    }
+    return false;
+}
+
 export {
     privateKeyValid,
-    addressValid
+    addressValid,
+    hashValid
 }

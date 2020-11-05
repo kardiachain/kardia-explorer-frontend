@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, ButtonProps, Icon, IconButton } from 'rsuite';
+import { Alert, ButtonProps, Icon, IconButton, Tooltip, Whisper } from 'rsuite';
 function truncate(str: string, n: number, e: number) {
     if (n > str.length - e) {
         return str
@@ -43,12 +43,32 @@ const renderHashString = (hash: string, headCount?: number, tailCount?: number) 
     );
 }
 
+const renderHashStringAndTooltip = (hash: string, headCount?: number, tailCount?: number, showTooltip?: boolean) => {
+    return showTooltip ? (
+        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
+            <span>
+                {truncate(hash, headCount || 10, tailCount || 4)}{' '}
+            </span>
+        </Whisper>
+    ) : (
+            <span>
+                {truncate(hash, headCount || 10, tailCount || 4)}{' '}
+            </span>
+        );
+}
+
 const renderHashToRedirect = ({
-    hash, headCount = 6, tailCount = 4, callback
+    hash, headCount = 6, tailCount = 4, showTooltip = true, callback
 }: {
-    hash: any, headCount?: number, tailCount?: number, callback?: () => void
+    hash: any, headCount?: number, tailCount?: number, showTooltip?: boolean, callback?: () => void
 }) => {
-    return (
+    return showTooltip ? (
+        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
+            <span onClick={() => {callback && callback()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
+                {truncate(String(hash), headCount, tailCount)}{' '}
+            </span>
+        </Whisper>
+    ) : (
         <span onClick={() => {callback && callback()}}  style={{ cursor: 'pointer', color:'#1f0080' }}>
             {truncate(String(hash), headCount, tailCount)}{' '}
         </span>
@@ -68,10 +88,19 @@ const millisecondToHMS = (time: number) => {
     const secondString = seconds ? `${seconds} sec${seconds > 1 ? 's' : ''}` : '';
     const daysString = days ? `${days} day${days > 1 ? 's' : ''}` : '';
 
-    return `${daysString} ${hourString} ${minuteString} ${secondString} ago`
+    if(daysString) {
+        return `${daysString} ago`
+    }
+    if(hourString) {
+        return `${hourString} ago`
+    }
+    if(minuteString) {
+        return `${minuteString} ago`
+    }
+    return `${secondString} ago`
 };
 const dateToLocalTime = (time: Date) => {
     const d = new Date(time);
     return d.toLocaleString()
 }
-export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime}
+export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime, renderHashStringAndTooltip}

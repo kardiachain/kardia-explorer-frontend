@@ -24,8 +24,9 @@ const BlockSection = ({ blockList = [] }: {
                         height={400}
                         data={blockList}
                         hover={false}
+                        wordWrap
                     >
-                        <Column width={150}>
+                        <Column flexGrow={1}>
                             <HeaderCell>Block height</HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
@@ -35,8 +36,7 @@ const BlockSection = ({ blockList = [] }: {
                                                 <Icon icon="cubes" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.blockHeight,
-                                                    headCount: 30,
-                                                    tailCount: 4,
+                                                    showTooltip: false,
                                                     callback: () => { history.push(`/block/${rowData.blockHeight}`) }
                                                 })}
                                             </div>
@@ -46,7 +46,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={isMobile ? 120 : 350}>
+                        <Column align="center" flexGrow={2}>
                             <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {
@@ -54,9 +54,9 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             {
                                                 renderHashToRedirect({
+                                                    headCount: isMobile ? 10 : 15,
+                                                    showTooltip: false,
                                                     hash: rowData.validator.hash,
-                                                    headCount: 45,
-                                                    tailCount: 4,
                                                     callback: () => { history.push(`/address/${rowData.validator.hash}`) }
                                                 })
                                             }
@@ -65,7 +65,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={100}>
+                        <Column flexGrow={1} align="right">
                             <HeaderCell>Txn</HeaderCell>
                             <Cell dataKey="transactions">
                                 {(rowData: KAIBlock) => {
@@ -75,8 +75,7 @@ const BlockSection = ({ blockList = [] }: {
                                                 !rowData.transactions ? '0' :
                                                 renderHashToRedirect({
                                                     hash: rowData.transactions,
-                                                    headCount: 30,
-                                                    tailCount: 4,
+                                                    showTooltip: false,
                                                     callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
                                                 })
                                             }

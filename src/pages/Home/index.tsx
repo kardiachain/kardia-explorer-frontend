@@ -12,6 +12,8 @@ import { useViewport } from '../../context/ViewportContext';
 import Validators from '../Staking';
 import { Icon } from 'rsuite';
 import SearchSection from '../../common/components/Header/SearchSection';
+import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
+
 
 const Home = () => {
 
@@ -51,7 +53,7 @@ const Home = () => {
             await fetchBlockChart()
         })()
 
-        const loop = setInterval(fetchBlockChart, 2000)
+        const loop = setInterval(fetchBlockChart, TIME_INTERVAL_MILISECONDS)
         return () => {
             clearInterval(loop)
         }

@@ -61,6 +61,7 @@ const Validators = () => {
                                                     hash: rowData?.address,
                                                     headCount: isMobile ? 20 : 50,
                                                     tailCount: 4,
+                                                    showTooltip: true,
                                                     callback: () => { history.push(`/validator/${rowData?.address}`) }
                                                 })}
                                             </div>

@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
-import { millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS, renderHashString, renderHashToRedirect, renderHashStringAndTooltip } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getBalance } from '../../service/kai-explorer';
@@ -73,24 +73,26 @@ const AddressDetail = () => {
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
-                                    virtualized
                                     rowHeight={60}
-                                    height={650}
+                                    height={200}
                                     data={transactionList}
                                     autoHeight
                                     hover={false}
                                     loading={loading}
+                                    wordWrap
                                 >
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
-                                                    <div> <Icon icon="exchange" style={{ marginRight: '10px' }} />
+                                                    <div>
+                                                        {isMobile ? <></> : <Icon icon="exchange" style={{ marginRight: '5px' }}/>}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
-                                                            headCount: isMobile ? 10 : 40,
+                                                            headCount: isMobile ? 10 : 25,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                         })}
                                                     </div>
@@ -98,16 +100,18 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={100} align="center">
+                                    <Column flexGrow={1} align="center" verticalAlign="middle">
                                         <HeaderCell>Block Height</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
+                                                        {isMobile ? <></> : <Icon icon="cubes" style={{ marginRight: '5px' }}/>}
                                                         {renderHashToRedirect({
                                                             hash: rowData.blockNumber,
                                                             headCount: 20,
                                                             tailCount: 4,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/block/${rowData.blockNumber}`) }
                                                         })}
                                                     </div>
@@ -115,27 +119,31 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={200} align="center">
+                                    <Column flexGrow={1} align="center" verticalAlign="middle">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
-                                                    <div>{millisecondToHMS(rowData.age || 0)}</div>
+                                                    <div>
+                                                        {isMobile ? <></> : <Icon icon="clock-o" style={{ marginRight: '5px' }}/>}
+                                                        {millisecondToHMS(rowData.age || 0)}
+                                                    </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
                                                         {
-                                                            address === rowData.from ? rowData.from : renderHashToRedirect({
+                                                            address === rowData.from ? renderHashStringAndTooltip(rowData.from, isMobile ? 10 : 25, 4, true) : renderHashToRedirect({
                                                                 hash: rowData.from,
-                                                                headCount: isMobile ? 10 : 45,
+                                                                headCount: isMobile ? 10 : 25,
                                                                 tailCount: 4,
+                                                                showTooltip: true,
                                                                 callback: () => { history.push(`/address/${rowData.from}`) }
                                                             })
                                                         }
@@ -144,17 +152,19 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={isMobile ? 120 : 400}>
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
+                                                        {isMobile ? <></> : <Icon icon="arrow-circle-right" style={{ marginRight: '5px' }}/>}
                                                         {
-                                                            address === rowData.to ? rowData.to : renderHashToRedirect({
+                                                            address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 10 : 25, 4, true) : renderHashToRedirect({
                                                                 hash: rowData.to,
-                                                                headCount: isMobile ? 10 : 45,
+                                                                headCount: isMobile ? 10 : 25,
                                                                 tailCount: 4,
+                                                                showTooltip: true,
                                                                 callback: () => { history.push(`/address/${rowData.to}`) }
                                                             })
                                                         }
@@ -163,7 +173,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column width={200} align="center">
+                                    <Column flexGrow={1} align="center" verticalAlign="middle">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
