@@ -1,0 +1,10 @@
+.rank-tab {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 35px;
+    border-radius: 50%;
+    color: white;
+    font-family: 600;
+}
