@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Col, Divider, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
@@ -96,13 +96,7 @@ const TxList = () => {
                                                 return (
                                                     <div>
                                                         {isMobile ? <></> : <Icon icon="cubes" style={{ marginRight: '5px' }}/>}
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.blockNumber,
-                                                            headCount: 20,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/block/${rowData.blockNumber}`) }
-                                                        })}
+                                                        <Link to={`/block/${rowData.blockNumber}`}>{rowData.blockNumber}</Link>
                                                     </div>
                                                 );
                                             }}
