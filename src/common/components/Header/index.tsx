@@ -83,7 +83,6 @@ const Header = () => {
         )
     }
     return (
-        <div>
             <Navbar appearance="inverse" className="kai-header-container">
                 <Navbar.Header>
                     <Link to="/" className="navbar-brand logo">
@@ -124,7 +123,6 @@ const Header = () => {
                 </Nav>
                 </Navbar.Body>
             </Navbar>
-        </div>
     )
 }
 

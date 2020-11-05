@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, FlexboxGrid, Panel, Table } from 'rsuite';
+import { Button, ButtonToolbar, Col, FlexboxGrid, Panel, Table, Icon } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -8,7 +8,6 @@ import { getValidatorsFromSMC } from '../../service/smc';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
 import { numberFormat } from '../../common/utils/number';
-import { Icon } from 'rsuite'
 const { Column, HeaderCell, Cell } = Table;
 const Validators = () => {
     let history = useHistory();
