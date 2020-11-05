@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel, Icon, Button } from 'rsuite';
+import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
@@ -27,7 +27,7 @@ const BlockSection = ({ blockList = [] }: {
                         wordWrap
                     >
                         <Column flexGrow={1}>
-                            <HeaderCell>Block height</HeaderCell>
+                            <HeaderCell>Block Height</HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
                                     return (
@@ -86,7 +86,6 @@ const BlockSection = ({ blockList = [] }: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                {/* <Button className="button-view-all" onClick={() => { history.push(`/blocks`) }}>View all blocks</Button> */}
             </FlexboxGrid>
         </Panel>
     )

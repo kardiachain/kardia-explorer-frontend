@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel, Button, Icon } from 'rsuite';
+import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -91,7 +91,6 @@ const TransactionSection = ({ transactionList = []}: {
                         </Column>
                     </Table>
                 </FlexboxGrid.Item>
-                {/* <Button className="button-view-all" onClick={() => { history.push('/txs') }}>View all transactions</Button> */}
             </FlexboxGrid>
         </Panel>
     )

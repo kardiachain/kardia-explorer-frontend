@@ -1,19 +1,3 @@
-
-.stat-container {
-    margin-top: 10px;
-    background-color: transparent;
-    font-size: 40px;
-    border-radius: 0
-}
-
-.stat-container>.rs-panel-body {
-    border-radius: 5px;
-    display:flex;
-    justify-content: space-around;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
-    border: 1px solid #e7eaf3;
-}
-
 .home-container>h3 {
     margin-top: 45px;
 }
@@ -21,11 +5,6 @@
 .home-top-section {
     min-height: 300px;
     position: relative;
-}
-
-.button-view-all {
-    width: 100%;
-    margin: 20px 0;
 }
 
 .block-title{
@@ -45,58 +24,30 @@ font-weight:600;
 }
 
 .title-right{
-    /* background: #4737ff; */
-
     background:linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
 
     padding: 5px 31px;
     color: white;
     cursor: pointer;
-}
-
-.boxshadow{
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
-    border: 1px solid #e7eaf3;
+    border-radius:2px;
 }
 
 
-/* ---------------- Panel stats style ---------------------*/
-.stats-section{
-    width:100%;
-    margin-top:20px;
-}
+@media screen and (min-width: 1300px){
+    .section-left, .section-right {
+        width: calc(50% - 5px);
+    }
 
-.stats-section .title {
-    text-align: center;
-    font-size: 14px;
-    font-weight: 600;
-    color: #302b3c;
-}
+    .section-left {
+        margin-right: 5px;
+    }
 
-.stats-section .value {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
-    color: #302b3c;
-    line-height: 30px;
-}
-
-.stats-section .icon {
-    font-size: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .section-right {
+        margin-left: 5px;
+    }
 }
 
 @media screen and (max-width: 992px) {
-    
-    .stat-group {
-        padding: 10px;
-    }
-    .stat-container>.rs-panel-body{
-        font-size: 20px;
-        font-weight: bold;
-    }
     .search-section {
         background-color: transparent;
         min-height: unset;
@@ -118,3 +69,12 @@ font-weight:600;
         width: unset;
     }
 }
+
+/* mobile screen */
+@media screen and (max-width: 740px){
+.home-top-section{
+    min-height: 0;
+}
+}
+
+/* end mobile screen */
