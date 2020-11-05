@@ -17,13 +17,22 @@
     color: white;
     cursor: pointer;
 }
-.panel-container.create  .rs-panel{
+.panel-container.create .rs-panel {
     background: #4d71ff;
+}
+
+.panel-container.create .rs-panel-body {
+    background-color: unset;
 }
 
 .panel-container.access .rs-panel {
     background: rgb(168 62 247);
 }
+
+.panel-container.access .rs-panel-body {
+    background-color: unset;
+}
+
 .wallet-container .panel-container:hover {
     margin-top: 0px !important;
     transition: 0.2s;
@@ -56,5 +65,13 @@
     }
     .wallet-container .text-container {
         padding-left: 0;
+    }
+
+    .panel-container.create .rs-panel {
+        padding: 8px;
+    }
+
+    .panel-container.access .rs-panel {
+        padding: 8px;
     }
 }

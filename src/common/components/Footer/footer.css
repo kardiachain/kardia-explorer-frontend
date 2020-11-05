@@ -8,15 +8,15 @@
 }
 
 .footer-icon{
-color:white;
-margin-right: 22px;
+    color:white;
+    margin-right: 22px;
 }
 
 /* mobile screen */
 @media screen and (max-width: 740px) {
-.kai-footer{
-    flex-direction: column-reverse;
-    padding: 10px 0px;
-}
+    .kai-footer{
+        flex-direction: column-reverse;
+        padding: 15px;
+    }
 }
 /* end mobile screen */
