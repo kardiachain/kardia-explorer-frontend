@@ -62,7 +62,7 @@ const Home = () => {
         <React.Fragment>
             <div className="container home-container">
 
-            <SearchSection />
+                <SearchSection />
 
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
