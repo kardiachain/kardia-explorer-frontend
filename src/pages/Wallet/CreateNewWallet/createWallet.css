@@ -1,5 +1,6 @@
 .create-wallet-container {
-    margin-top: 50px;
+    padding: 50px 0;
+    width: 100%;
 }
 
 .create-by-key {
@@ -53,6 +54,10 @@
 }
 .create-wallet-container .rs-flex-box-grid-item {
     max-width: 300px;
+}
+
+.create-wallet-container .rs-panel-body {
+    background-color: unset;
 }
 
 /* Style for crate wallet with private key */
