@@ -57,7 +57,7 @@ const CreateByKeystore = () => {
     }, [password]);
 
     return (
-        <div className="show-grid creact-container">
+        <div className="show-grid create-container">
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
                     <Panel shaded>

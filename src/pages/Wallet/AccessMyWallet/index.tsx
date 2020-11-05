@@ -17,7 +17,7 @@ const AccessMyWallet = () => {
                                 <Button className="access-button" size="lg" block onClick={() => { history.push('/access-keystore') }}>
                                     <Icon icon="file-code-o" /> By Keystore File
                                 </Button>
-                                <Button className="access-button" size="lg" block onClick={() => { history.push('/access-keystore') }}>
+                                <Button className="access-button" size="lg" block disabled>
                                     <Icon icon="list" /> By Mnemonic Phrase
                                 </Button>
                             </div>
