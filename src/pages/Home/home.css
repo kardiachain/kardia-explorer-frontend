@@ -1,3 +1,4 @@
+
 .stat-container {
     margin-top: 10px;
     background-color: transparent;
@@ -6,9 +7,11 @@
 }
 
 .stat-container>.rs-panel-body {
-    background-color: #5F768A;
-    border-radius: 15px;
-    color: white;
+    border-radius: 5px;
+    display:flex;
+    justify-content: space-around;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+    border: 1px solid #e7eaf3;
 }
 
 .home-container>h3 {
@@ -25,17 +28,57 @@
     margin: 20px 0;
 }
 
+.block-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom:10px;
+}
+
+.title{
+font-weight:600;
+}
+
+.mt0{
+    margin-top:0;
+}
+
+.title-right{
+    /* background: #4737ff; */
+
+    background:linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
+
+    padding: 5px 31px;
+    color: white;
+    cursor: pointer;
+}
+
+.boxshadow{
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+    border: 1px solid #e7eaf3;
+}
+
+
 /* ---------------- Panel stats style ---------------------*/
+.stats-section{
+    width:100%;
+    margin-top:20px;
+}
+
 .stats-section .title {
-    font-size: 20px;
     text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #302b3c;
 }
 
 .stats-section .value {
-    font-size: 25px;
-    font-weight: 700;
     text-align: center;
-    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #302b3c;
+    line-height: 30px;
 }
 
 .stats-section .icon {

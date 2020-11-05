@@ -1,14 +1,22 @@
 .kai-header-container {
-    padding: 0 90px;
+    /* padding: 0 90px; */
+    width: 1300px;
+    margin: 0 auto;
+}
+
+.rs-navbar{
+    display: flex;
+}
+
+.rs-navbar-header{
+    flex:1;
+    padding: 10px 0px;
 }
 
 .kai-header-container .rs-dropdown-menu {
-    background-color: #2A343D;
     border-radius: 0;
 }
-.kai-header-container .rs-dropdown-menu .rs-dropdown-item-content {
-    color: white;
-}
+
 
 .kai-header-container-mobile {
     background-color: #2A343D;
@@ -38,25 +46,27 @@
 
 .kai-logo-container {
     max-width: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
 }
 
 .kai-logo-container>img {
     width: 100%;
 }
 
-.kardia-nav {
-    height: 56px;
-}
+
 
 /* ------------------- Search section style --------------*/
 .search-wrapper {
-    display: flex;
-    align-items: center;
-    width: 500px;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom:40px;
+}
+
+.rs-input{
+    padding:12px 11px;
+}
+
+.rs-nav-item-content{
+    background:none !important;
 }
 
 @media only screen and (min-width: 1024px) {

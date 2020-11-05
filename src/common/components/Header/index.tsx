@@ -6,7 +6,6 @@ import logo from '../../../resources/kardia-logo.png';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';
-import SearchSection from './SearchSection';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('');
@@ -84,49 +83,46 @@ const Header = () => {
         )
     }
     return (
-        <Navbar appearance="inverse" className="kai-header-container">
-            <Navbar.Header>
-                <Link to="/" className="navbar-brand logo">
-                    <div className="kai-logo-container">
-                        <img src={logo} alt="Kardia block explorer" />
-                    </div>
-                </Link>
-            </Navbar.Header>
-            <Navbar.Body>
-                <Nav className="kardia-nav" onSelect={setActiveKey} activeKey={activeKey}>
-                    <Nav.Item eventKey="" href="/">Home</Nav.Item>
-                    <Dropdown title="Blockchain">
-                        <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
-                        <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
-                    </Dropdown>
-                    <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
-                    <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
-                    {
-                        isLoggedIn() ? (
-                            <Dropdown
-                                title="Wallet"
-                                placement="bottomEnd"
-                            >
-                                <Dropdown.Item eventKey="send-transaction" href="/wallet/send-transaction">Send transaction</Dropdown.Item>
-                                <Dropdown.Item eventKey="transaction-history"href="/wallet/transaction-history">Transactions history</Dropdown.Item>
-                                <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Staking</Dropdown.Item>
-                                <Dropdown.Item eventKey="smart-contract" href="/wallet/smart-contract">Smart contract</Dropdown.Item>
-                                <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
-                            </Dropdown>
-                        ) : (
-                            <Nav.Item eventKey="wallet" href="/wallet-login">Wallet</Nav.Item>
-                        )
-                    }
-                    <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
-                </Nav>
-                <Nav className="kardia-nav" pullRight>
+            <Navbar appearance="inverse" className="kai-header-container">
+                <Navbar.Header>
+                    <Link to="/" className="navbar-brand logo">
+                        <div className="kai-logo-container">
+                            <img src={logo} alt="Kardia block explorer" />
+                        </div>
+                    </Link>
+                </Navbar.Header>
+                <Navbar.Body>
+                    <Nav className="kardia-nav" onSelect={setActiveKey} activeKey={activeKey}>
+                        <Nav.Item eventKey="" href="/">Home</Nav.Item>
+                        <Dropdown title="Blockchain">
+                            <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
+                            <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
+                        </Dropdown>
+                        <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
+                        <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
+                        {
+                            isLoggedIn() ? (
+                                <Dropdown
+                                    title="Wallet"
+                                    placement="bottomEnd"
+                                >
+                                    <Dropdown.Item eventKey="send-transaction" href="/wallet/send-transaction">Send transaction</Dropdown.Item>
+                                    <Dropdown.Item eventKey="transaction-history" href="/wallet/transaction-history">Transactions history</Dropdown.Item>
+                                    <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Staking</Dropdown.Item>
+                                    <Dropdown.Item eventKey="smart-contract" href="/wallet/smart-contract">Smart contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
+                                </Dropdown>
+                            ) : (
+                                    <Nav.Item eventKey="wallet" href="/wallet-login">Wallet</Nav.Item>
+                                )
+                        }
+                        <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
+                    </Nav>
+                    <Nav className="kardia-nav" pullRight>
                     <NetworkSelect />
                 </Nav>
-                <Nav className="kardia-nav search-wrapper" pullRight>
-                    <SearchSection />
-                </Nav>
-            </Navbar.Body>
-        </Navbar>
+                </Navbar.Body>
+            </Navbar>
     )
 }
 
