@@ -34,7 +34,7 @@ const SearchSection = () => {
                 history.push(`/address/${searchInput}`)
                 break;
             default:
-                history.push(`/search-not-found`)
+                setSearchInput('')
                 break;
         }
         setSearchInput('')

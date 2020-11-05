@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Graph, GraphConfiguration } from 'react-d3-graph';
-import { Col, FlexboxGrid, Panel, Table, Tag } from 'rsuite';
-import { renderHashString } from '../../common/utils/string';
+import {  GraphConfiguration } from 'react-d3-graph';
+import { Col, FlexboxGrid, Icon, Panel, Table, Tag } from 'rsuite';
+import { renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';
 import SearchSection from '../../common/components/Header/SearchSection';
+import { useHistory } from 'react-router-dom';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const Network = () => {
-    const [graphConfig, setGraphConfig] = useState({} as Partial<GraphConfiguration<KAINode, {source: string, target: string}>>)
-    const [graphData, setGraphData] = useState<any>({nodes: [], links: [], focusedNodeId: ""})
+    const history = useHistory()
+    const [graphConfig, setGraphConfig] = useState({} as Partial<GraphConfiguration<KAINode, { source: string, target: string }>>)
+    const [graphData, setGraphData] = useState<any>({ nodes: [], links: [], focusedNodeId: "" })
 
-    const {width, height} = useViewport()
+    const { width, height } = useViewport()
 
-    const {isMobile} = useViewport()
+    const { isMobile } = useViewport()
 
     useEffect(() => {
         const graphWidth = width / 3
         const graphHeight = height * 70 / 100
-        
+
         setGraphConfig({
             nodeHighlightBehavior: true,
             node: {
@@ -49,21 +51,23 @@ const Network = () => {
     useEffect(() => {
         (async () => {
             const result = await getNodes()
+            console.log(result);
+            
             setGraphData({
                 nodes: result,
                 links: [
-                    {source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-2'},
-                    {source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-3'},
-                    {source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-1'},
-                    {source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-2'},
-                    {source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-3'},
-                    {source: 'KAI-Bootnode-2', target: 'KAI-Bootnode-3'},
-                    {source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-1'},
-                    {source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-2'},
-                    {source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-3'},
-                    {source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-1'},
-                    {source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-2'},
-                    {source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-3'},
+                    { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-2' },
+                    { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-3' },
+                    { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-1' },
+                    { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-2' },
+                    { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-3' },
+                    { source: 'KAI-Bootnode-2', target: 'KAI-Bootnode-3' },
+                    { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-1' },
+                    { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-2' },
+                    { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-3' },
+                    { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-1' },
+                    { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-2' },
+                    { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-3' },
                 ],
                 focusedNodeId: result[0] ? result[0].id : ""
             })
@@ -71,9 +75,16 @@ const Network = () => {
     }, [])
 
     return (
-        <FlexboxGrid style={{width: '70%', maxWidth: '1920px', padding:'40px 0px'}}>
-            <SearchSection/>
-            {
+        <div className="container">
+            <SearchSection />
+            <div className="block-title" style={{ padding: '0px 5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="connectdevelop" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title">Network</p>
+                </div>
+            </div>
+            <FlexboxGrid>
+                {/* {
                 !isMobile && 
                 <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={10}>
                     <Panel bordered header="Kardia Network">
@@ -87,59 +98,75 @@ const Network = () => {
                         }
                     </Panel>
                 </FlexboxGrid.Item>
-            }
-            <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={14}>
-                <Table
-                    bordered
-                    autoHeight
-                    rowHeight={70}
-                    // data={graphData.nodes.filter((v: any) => v.isValidator)}
-                    data={graphData.nodes}
-                >
-                    <Column width={100} fixed>
-                        <HeaderCell>Name</HeaderCell>
-                        <Cell dataKey="id" />
-                    </Column>
-                    <Column width={100}>
-                        <HeaderCell>Status</HeaderCell>
-                        <Cell>
-                            {(rowData: KAINode) => {
-                                if (rowData.status === "online") {
-                                    return <Tag color="green">Online</Tag>
-                                }
-                                return <Tag color="red">Offline</Tag>
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column width={isMobile ? 120 : 500}>
-                        <HeaderCell>Address</HeaderCell>
-                        <Cell>
-                            {(rowData: KAINode) => {
-                                return (
-                                    <div> {renderHashString(rowData.address, isMobile ? 10 : 40)} </div>
-                                );
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column width={100}>
-                        <HeaderCell>Protocol</HeaderCell>
-                        <Cell dataKey="protocol" />
-                    </Column>
-                    <Column width={100}>
-                        <HeaderCell>Peer count</HeaderCell>
-                        <Cell dataKey="peerCount" />
-                    </Column>
-                    {/* <Column width={100}>
-                        <HeaderCell>Voting power</HeaderCell>
-                        <Cell dataKey="votingPower" />
-                    </Column> */}
-                    {/* <Column width={200}>
-                        <HeaderCell>RPC URL</HeaderCell>
-                        <Cell dataKey="rpcURL" />
-                    </Column> */}
-                </Table>
-            </FlexboxGrid.Item>
-        </FlexboxGrid>
+            } */}
+                <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={24}>
+                    <Panel shaded>
+                        <FlexboxGrid justify="space-between">
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                <Table
+                                    autoHeight
+                                    rowHeight={60}
+                                    data={graphData.nodes}
+                                    hover={false}
+                                    wordWrap
+                                >
+                                    <Column flexGrow={1} verticalAlign="middle">
+                                        <HeaderCell>Name</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAINode) => {
+                                                return (
+                                                    <div>
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
+                                                        {rowData.id}
+                                                    </div>
+                                                )
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={1} verticalAlign="middle" align="center">
+                                        <HeaderCell>Status</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAINode) => {
+                                                if (rowData.status === "online") {
+                                                    return <Tag style={{backgroundColor: '#e62c2c', color:'white'}}>Online</Tag>
+                                                }
+                                                return <Tag style={{backgroundColor: '#1d0416', color:'white'}}>Offline</Tag>
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={2} verticalAlign="middle" align="center">
+                                        <HeaderCell>Address</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAINode) => {
+                                                return (
+                                                    <div>
+                                                        {renderHashToRedirect({
+                                                            hash: rowData.address,
+                                                            headCount: isMobile ? 10 : 30,
+                                                            tailCount: 4,
+                                                            showTooltip: true,
+                                                            callback: () => { history.push(`/address/${rowData.address}`) }
+                                                        })}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={1} verticalAlign="middle" align="center">
+                                        <HeaderCell>Protocol</HeaderCell>
+                                        <Cell dataKey="protocol" />
+                                    </Column>
+                                    <Column flexGrow={1} verticalAlign="middle" align="center">
+                                        <HeaderCell>Peer count</HeaderCell>
+                                        <Cell dataKey="peerCount" />
+                                    </Column>
+                                </Table>
+                            </FlexboxGrid.Item>
+                        </FlexboxGrid>
+                    </Panel>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
+        </div>
     )
 }
 
