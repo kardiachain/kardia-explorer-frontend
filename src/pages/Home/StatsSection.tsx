@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Icon, Panel } from 'rsuite';
 import { numberFormat } from '../../common/utils/number';
-import { useViewport } from '../../context/ViewportContext';
 import { calculateTPS } from '../../service/kai-explorer';
 import './home.css'
 
 const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {
     const [tps, setTps] = useState(0)
-
-    const { isMobile } = useViewport()
 
     useEffect(() => {
         const tps = calculateTPS(blockList);
