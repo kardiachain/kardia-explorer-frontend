@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Col, Divider, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -9,6 +9,8 @@ import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import { useViewport } from '../../context/ViewportContext';
 import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer';
 import './txList.css'
+import SearchSection from '../../common/components/Header/SearchSection';
+
 const { Column, HeaderCell, Cell } = Table;
 
 const TxList = () => {
@@ -53,9 +55,14 @@ const TxList = () => {
 
     return (
         <div className="container txs-container">
-            <h3>Transactions</h3>
+            <SearchSection/>
+            <div className="block-title" style={{padding: '0px 5px'}}>
+                            <div style={{display:'flex', alignItems: 'center'}}>
+                                <Icon className="highlight" icon="exchange" size={"lg"} />
+                                <p style={{marginLeft: '12px'}} className="title">Transactions</p>
+                            </div>
+                        </div>
             <div>{block ? `Block number: #${block}` : ''}</div>
-            <Divider />
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>
@@ -76,7 +83,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="exchange" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }}/>}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 10 : 20,
@@ -95,7 +102,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="cubes" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }}/>}
                                                         <Link to={`/block/${rowData.blockNumber}`}>{rowData.blockNumber}</Link>
                                                     </div>
                                                 );
@@ -108,7 +115,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="clock-o" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }}/>}
                                                         {millisecondToHMS(rowData.age || 0)}
                                                     </div>
                                                 );
@@ -139,7 +146,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon icon="arrow-circle-right" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }}/>}
                                                         {renderHashToRedirect({
                                                             hash: rowData.to,
                                                             headCount: isMobile ? 10 : 20,

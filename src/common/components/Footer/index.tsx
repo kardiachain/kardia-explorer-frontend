@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <div className="kai-footer">
             <div>
-                Copyright © 2020 KardiaChain Foundation | All rights reserved
+                Copyright © 2020 KardiaChain Foundation
             </div>
             <div>
                 <a href="https://medium.com/kardiachain" target="_blank" rel="noopener noreferrer" className="footer-icon" ><Icon icon="medium" size={"lg"} /></a>
