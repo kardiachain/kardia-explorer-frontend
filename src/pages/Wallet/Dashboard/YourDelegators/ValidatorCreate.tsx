@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Alert, Button, ButtonToolbar, ControlLabel, Form, FormControl, FormGroup, Modal } from 'rsuite';
+import { Alert, ButtonToolbar, ControlLabel, Form, FormControl, FormGroup, Modal } from 'rsuite';
+import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyNumber, verifyAmount } from '../../../../common/utils/number';
@@ -279,9 +280,7 @@ const ValidatorCreate = () => {
                     <ErrMessage message={amountDelErr} />
                 </FormGroup>
                 <FormGroup>
-                    <ButtonToolbar>
-                        <Button appearance="primary" onClick={submitValidator}>Register</Button>
-                    </ButtonToolbar>
+                    <Button size="big" onClick={submitValidator}>Register</Button>
                 </FormGroup>
             </Form>
             {
@@ -302,11 +301,11 @@ const ValidatorCreate = () => {
                     <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {amountDel} KAI</span></div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { setShowConfirmModal(false) }} appearance="subtle">
-                        Cancel
-                    </Button>
-                    <Button loading={isLoading} onClick={registerValidator} appearance="primary">
+                    <Button loading={isLoading} onClick={registerValidator}>
                         Confirm
+                    </Button>
+                    <Button className="primary-button" onClick={() => { setShowConfirmModal(false) }}>
+                        Cancel
                     </Button>
                 </Modal.Footer>
             </Modal>

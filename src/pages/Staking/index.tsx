@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
-import { formatAmount, weiToKAI } from '../../common/utils/amount';
+import { formatAmount, formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
 import { randomRGBColor, renderHashToRedirect, truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getValidatorsFromSMC } from '../../service/smc';
@@ -11,7 +11,6 @@ import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
-import { numberFormat } from '../../common/utils/number';
 
 
 const { Column, HeaderCell, Cell } = Table;
@@ -87,7 +86,8 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="title">
-                                        <Icon className="highlight icon" icon="braille" size={"lg"} />Total Validators
+                                        {/* <Icon className="highlight icon" icon="braille" size={"lg"} /> */}
+                                        Total Validators
                                     </div>
                                     <div className="value">{validators.length}</div>
                                 </div>
@@ -95,9 +95,10 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="title">
-                                        <Icon className="highlight icon" icon="bolt" size={"lg"} />Total Staked
+                                        {/* <Icon className="highlight icon" icon="bolt" size={"lg"} /> */}
+                                        Total Staked Amount
                                     </div>
-                                    <div className="value">{numberFormat(totalStakedAmount)} KAI</div>
+                                    <div className="value">{formatAmountwithPlus(totalStakedAmount)} KAI</div>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

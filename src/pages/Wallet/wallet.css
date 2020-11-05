@@ -18,7 +18,7 @@
     cursor: pointer;
 }
 .panel-container.create .rs-panel {
-    background: #4d71ff;
+    background: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
 }
 
 .panel-container.create .rs-panel-body {
@@ -26,7 +26,7 @@
 }
 
 .panel-container.access .rs-panel {
-    background: rgb(168 62 247);
+    background: linear-gradient(137.34deg,#2ce6c8 14.41%,#623555 116.67%);
 }
 
 .panel-container.access .rs-panel-body {

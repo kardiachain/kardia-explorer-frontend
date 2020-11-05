@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Button, Icon, Alert, ControlLabel, Modal } from 'rsuite'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, Alert, ControlLabel, Modal } from 'rsuite'
 import { ErrorMessage } from '../../../../common/constant/Message'
 import { onlyNumber, verifyAmount } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
@@ -9,6 +9,7 @@ import { getAccount, generateTx } from '../../../../service/wallet'
 import { getBalance } from '../../../../service/kai-explorer'
 import { weiToKAI } from '../../../../common/utils/amount'
 import { renderHashToRedirect } from '../../../../common/utils/string'
+import Button from '../../../../common/components/Button'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState(0)
@@ -102,7 +103,13 @@ const SendTransaction = () => {
 
     return (
         <div className="send-txs-container">
-            <Panel header={<h3>Send Transaction</h3>} shaded>
+            <div className="block-title" style={{ padding: '0px 5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="exchange" size={"lg"} />
+                    <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
+                </div>
+            </div>
+            <Panel shaded>
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
@@ -150,7 +157,9 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button appearance="primary" onClick={submitSend}>Send KAI <Icon icon="space-shuttle" /></Button>
+                                {/* <Button onClick={submitSend}><Icon icon="space-shuttle" /></Button> */}
+
+                                <Button size="big" onClick={submitSend} >Send KAII</Button>
                             </FlexboxGrid.Item>
                             {
                                 txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4,showTooltip: false, callback: () => {window.open(`/tx/${txHash}`) } })}</div> : <></>
@@ -169,11 +178,11 @@ const SendTransaction = () => {
                     <div style={{textAlign:'center', fontWeight: 'bold', color: '#36638A'}}>{toAddress}</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {setShowConfirmModal(false)}} appearance="subtle">
-                        Cancel
-                    </Button>
-                    <Button loading={sendBntLoading} onClick={confirmSend} appearance="primary">
+                    <Button loading={sendBntLoading} onClick={confirmSend}>
                         Confirm
+                    </Button>
+                    <Button className="primary-button" onClick={() => {setShowConfirmModal(false)}}>
+                        Cancel
                     </Button>
                 </Modal.Footer>
             </Modal>

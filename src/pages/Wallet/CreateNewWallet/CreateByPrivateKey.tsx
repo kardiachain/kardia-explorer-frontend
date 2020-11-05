@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Alert, Button, Col, FlexboxGrid, Icon, Input, InputGroup, Panel } from 'rsuite';
+import { Alert, Col, FlexboxGrid, Icon, Input, InputGroup, Panel } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
 import { copyToClipboard } from '../../../common/utils/string';
 import { useWalletStorage } from '../../../service/wallet';
+import Button from '../../../common/components/Button';
 
 const CreateByPrivateKey = () => {
 
@@ -56,13 +57,13 @@ const CreateByPrivateKey = () => {
                                         <div> A unique private key will be generate for you </div>
                                         <div> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span> ! If you <span className="note">lose</span>  your private key, you will <span className="note">not</span>  able to <span className="note">recover</span>  your wallet</div>
                                     </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={24} style={{marginTop: '20px'}}>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button appearance="ghost">Back</Button>
+                                                <Button size="big" className="primary-button">Back</Button>
                                             </Link>
                                             <Button
-                                                className="submit-buttom"
+                                                size="big"
                                                 onClick={handleGenerate}>
                                                 Create wallet
                                             </Button>
@@ -90,9 +91,9 @@ const CreateByPrivateKey = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button appearance="ghost">Back</Button>
+                                                    <Button size="big" className="primary-button">Back</Button>
                                                 </Link>
-                                                <Button className="submit-buttom" onClick={accessWalletNow}>Access Now</Button>
+                                                <Button size="big" className="submit-buttom" onClick={accessWalletNow}>Access Now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

@@ -24,7 +24,7 @@ const BlockSection = ({ blockList = [] }: {
                         hover={false}
                         wordWrap
                     >
-                        <Column flexGrow={1}>
+                        <Column flexGrow={2}>
                             <HeaderCell>Block Height</HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
@@ -40,7 +40,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="center" flexGrow={2}>
+                        <Column flexGrow={3}>
                             <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {
@@ -48,7 +48,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             {
                                                 renderHashToRedirect({
-                                                    headCount: isMobile ? 10 : 15,
+                                                    headCount: isMobile ? 5 : 12,
                                                     showTooltip: false,
                                                     hash: rowData.validator.hash,
                                                     callback: () => { history.push(`/address/${rowData.validator.hash}`) }

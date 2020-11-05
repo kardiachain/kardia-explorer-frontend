@@ -17,15 +17,15 @@
 }
 
 .create-wallet-container .panel-container.private-key .rs-panel {
-    background: #b77f00;
+    background: linear-gradient(137.34deg,#812ce6 14.41%,#623555 116.67%);
 }
 
 .create-wallet-container .panel-container.keystore-file .rs-panel {
-    background: #0f198e;
+    background: linear-gradient(137.34deg,#2c69e6 14.41%,#623555 116.67%);
 }
 
 .create-wallet-container .panel-container.mnemonic-phrase .rs-panel {
-    background: #630000;
+    background: linear-gradient(137.34deg,#e6982c 14.41%,#623555 116.67%);
 }
 
 .create-wallet-container .panel-container .rs-panel-body {
@@ -82,7 +82,7 @@
     font-weight: 700;
     margin-bottom: 40px;
     margin-top: 20px;
-    color: #0f198e;
+    /* color: #0f198e; */
 }
 
 /* Style dowload with keystore */
@@ -91,7 +91,7 @@
 }
 .download-keystore-file a {
     padding: 10px 20px;
-    background: #b77f00;
+    background: linear-gradient(137.34deg,#22a993 14.41%,#7c7c83 116.67%);
     color: white;
 }
 

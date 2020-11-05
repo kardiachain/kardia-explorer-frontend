@@ -1,12 +1,13 @@
 import React from 'react'
 import './style.css'
 
-const Button = ({onClick, children, size = "normal", className, style}: {
+const Button = ({onClick, children, size = "normal", className, style, loading=false}: {
     onClick?: () => void;
     children?: React.Component | string | number;
     size?: "normal" | "big";
     className?: string;
-    style?: React.CSSProperties
+    style?: React.CSSProperties;
+    loading?: boolean;
 }) => {
     let sizeClass = 'size-normal'
     if (size === "big") sizeClass = 'size-big'

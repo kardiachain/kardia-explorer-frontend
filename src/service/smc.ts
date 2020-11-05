@@ -29,7 +29,7 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
     const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
         from: account.publickey,
         amount: amountVal,
-        gas: 900000 + estimatedGas,
+        gas: 2000000 + estimatedGas,
         gasPrice: 2
     });
 

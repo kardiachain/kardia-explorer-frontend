@@ -4,6 +4,7 @@
     cursor: pointer;
     border-radius: 2px;
     font-weight: 600;
+    margin: 0 5px;
 }
 
 .size-normal {
@@ -12,4 +13,8 @@
 
 .size-big {
     padding: 13px 45px;
+}
+
+.primary-button {
+    background: linear-gradient(137.34deg,#7b7b82 14.41%,#a0a0a9 116.67%);
 }
