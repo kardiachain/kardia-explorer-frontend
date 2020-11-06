@@ -4,7 +4,7 @@ import './style.css'
 
 const Button = ({onClick, children, size = "normal", className, style, loading=false}: {
     onClick?: () => void;
-    children?: React.Component | string | number | Element;
+    children?: any;
     size?: "normal" | "big";
     className?: string;
     style?: React.CSSProperties;

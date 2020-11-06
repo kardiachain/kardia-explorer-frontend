@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, Divider, FlexboxGrid, List, Panel, Tag, Placeholder } from 'rsuite';
+import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
@@ -32,8 +32,12 @@ const TxDetail = () => {
 
     return (
         <div className="container tx-detail-container">
-            <h3>Transaction Details</h3>
-            <Divider />
+            <div className="block-title" style={{ padding: '0px 5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="th" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title">Transaction Details</p>
+                </div>
+            </div>
             <Panel shaded>
                 {
                     loading ? <Paragraph style={{ marginTop: 30 }} rows={20} /> :
@@ -56,7 +60,7 @@ const TxDetail = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="content">
                                             {renderHashToRedirect({
-                                                hash: txDetail?.blockNumber,
+                                                hash: numberFormat(Number(txDetail?.blockNumber)),
                                                 headCount: 30,
                                                 tailCount: 4,
                                                 showTooltip: true,

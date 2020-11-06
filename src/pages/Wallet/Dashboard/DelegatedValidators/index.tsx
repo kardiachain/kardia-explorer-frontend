@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, ButtonToolbar, Icon, Modal, Panel, Table } from 'rsuite';
+import { Alert, Icon, Modal, Panel, Table } from 'rsuite';
+import Button from '../../../../common/components/Button';
 import { weiToKAI } from '../../../../common/utils/amount';
+import { numberFormat } from '../../../../common/utils/number';
+import { renderHashToRedirect } from '../../../../common/utils/string';
+import { useViewport } from '../../../../context/ViewportContext';
 import { getValidatorsByDelegator, withdraw, withdrawReward } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 
 const { Column, HeaderCell, Cell } = Table;
 const Delegator = () => {
 
+
+    const { isMobile } = useViewport()
     const [yourValidators, setYourValidators] = useState([] as YourValidator[])
     const myAccount = getAccount() as Account
     const [showConfirmWithdrawRewardsModal, setShowConfirmWithdrawRewardsModal] = useState(false)
@@ -70,58 +76,65 @@ const Delegator = () => {
                     rowHeight={70}
                     data={yourValidators}
                     hover={false}
-                    wordWrap={true}
+                    wordWrap
                 >
-                    <Column width={400} verticalAlign="middle">
+                    <Column flexGrow={3} verticalAlign="middle">
                         <HeaderCell>Validator</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{rowData.validatorAddr}</div>
+                                    <div>
+                                        {
+                                            renderHashToRedirect({
+                                                hash: rowData.validatorAddr,
+                                                headCount: isMobile ? 20 : 30,
+                                                tailCount: 4,
+                                                showTooltip: true,
+                                                callback: () => { window.open(`/address/${rowData.validatorAddr}`) }
+                                            })
+                                        }
+                                    </div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column width={200} verticalAlign="middle">
+                    <Column flexGrow={2} verticalAlign="middle">
                         <HeaderCell>Stakes Amount</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{weiToKAI(rowData.yourStakeAmount)} KAI</div>
+                                    <div>{numberFormat(weiToKAI(rowData.yourStakeAmount))} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column width={200} verticalAlign="middle">
+                    <Column flexGrow={2} verticalAlign="middle">
                         <HeaderCell>Rewards Amount</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{weiToKAI(rowData.yourRewardAmount)} KAI</div>
+                                    <div>{numberFormat(weiToKAI(rowData.yourRewardAmount))} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column width={300} verticalAlign="middle">
+                    <Column width={500} verticalAlign="middle">
                         <HeaderCell>Action</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <ButtonToolbar>
-                                        <Button appearance="primary" style={{marginRight: '10px'}} onClick={() => {
+                                    <div style={{ display: "flex" }}>
+                                        <Button style={{ marginRight: '10px' }} onClick={() => {
                                             setShowConfirmWithdrawRewardsModal(true)
                                             setValidatorActive(rowData.validatorAddr)
+                                        }}>Claims Rewards </Button>
+                                        <Button onClick={() => {
+                                            setShowConfirmWithdrawModal(true)
+                                            setValidatorActive(rowData.validatorAddr)
                                         }}>
-                                            Rewards Amount
+                                            Withdraw Staked Amount
                                         </Button>
-                                        <Button appearance="primary"
-                                            onClick={() => {
-                                                setShowConfirmWithdrawModal(true)
-                                                setValidatorActive(rowData.validatorAddr)
-                                            }}>
-                                            Staked Amount
-                                        </Button>
-                                    </ButtonToolbar>
+                                    </div>
                                 )
                             }}
                         </Cell>
@@ -153,11 +166,11 @@ const Delegator = () => {
                     <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to withdraw all your rewarded token.</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} appearance="subtle">
-                        Cancel
-                    </Button>
-                    <Button loading={isLoading} onClick={withdrawRewards} appearance="primary">
+                    <Button loading={isLoading} onClick={withdrawRewards} >
                         Confirm
+                    </Button>
+                    <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} className="primary-button">
+                        Cancel
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -170,11 +183,11 @@ const Delegator = () => {
                     <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to withdraw all your staked token.</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { setShowConfirmWithdrawModal(false) }} appearance="subtle">
-                        Cancel
-                    </Button>
-                    <Button loading={isLoading} onClick={widthdraw} appearance="primary">
+                    <Button loading={isLoading} onClick={widthdraw}>
                         Confirm
+                    </Button>
+                    <Button className="primary-button" onClick={() => { setShowConfirmWithdrawModal(false) }}>
+                        Cancel
                     </Button>
                 </Modal.Footer>
             </Modal>

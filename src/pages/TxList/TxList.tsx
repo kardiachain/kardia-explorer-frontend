@@ -10,6 +10,7 @@ import { useViewport } from '../../context/ViewportContext';
 import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer';
 import './txList.css'
 import SearchSection from '../../common/components/Header/SearchSection';
+import { numberFormat } from '../../common/utils/number';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -103,7 +104,7 @@ const TxList = () => {
                                                 return (
                                                     <div>
                                                         {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{rowData.blockNumber}</Link>
+                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(Number(rowData.blockNumber))}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -165,7 +166,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {weiToKAI(rowData.value)} KAI
+                                                        {numberFormat(weiToKAI(rowData.value))} KAI
                                                     </div>
                                                 );
                                             }}

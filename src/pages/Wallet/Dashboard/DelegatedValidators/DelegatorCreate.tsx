@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { onlyNumber, verifyAmount } from '../../../../common/utils/number';
-import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
+import { numberFormat, onlyNumber, verifyAmount } from '../../../../common/utils/number';
+import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -22,6 +22,7 @@ const DelegatorCreate = () => {
     const [hashTransaction, setHashTransaction] = useState('')
     const { valAddr }: any = useParams();
     const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const history = useHistory()
 
     useEffect(() => {
         getDelegationsByValidator(valAddr).then(setDelegators);
@@ -95,7 +96,7 @@ const DelegatorCreate = () => {
                                     <span className="property-title">Total delegator: </span> {validator?.totalDels}
                                 </List.Item>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Voting power: </span> {validator?.votingPower}
+                                    <span className="property-title">Total staked amount: </span> {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
                                 </List.Item>
                             </List>
                             <div className="del-staking-container">
@@ -143,33 +144,42 @@ const DelegatorCreate = () => {
                                 autoHeight
                                 rowHeight={60}
                                 data={delegators}
+                                wordWrap
+                                hover={false}
                             >
-                                <Column width={isMobile ? 120 : 500} verticalAlign="middle">
+                                <Column flexGrow={3} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {renderHashString(rowData.address, isMobile ? 10 : 50)} </div>
+                                                <div>
+                                                    {renderHashToRedirect({
+                                                        hash: rowData.address,
+                                                        headCount: isMobile ? 10 : 30,
+                                                        showTooltip: false,
+                                                        callback: () => { history.push(`/tx/${rowData.address}`) }
+                                                    })}
+                                                </div>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                <Column flexGrow={2} verticalAlign="middle">
                                     <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {weiToKAI(rowData.stakeAmount)} KAI</div>
+                                                <div> {numberFormat(weiToKAI(rowData.stakeAmount))} KAI</div>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                <Column flexGrow={2} verticalAlign="middle">
                                     <HeaderCell>Rewards Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {weiToKAI(rowData.rewardsAmount)} KAI</div>
+                                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount))} KAI</div>
                                             );
                                         }}
                                     </Cell>

@@ -187,7 +187,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} verticalAlign="middle" align="center">
+                            <Column width={150} verticalAlign="middle" align="center">
                                 <HeaderCell>Action</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {

@@ -8,6 +8,7 @@ import { TABLE_CONFIG } from '../../../../config';
 import { Link, useHistory } from 'react-router-dom';
 import { getTxsByAddress } from '../../../../service/kai-explorer/transaction';
 import { getAccount } from '../../../../service/wallet';
+import { numberFormat } from '../../../../common/utils/number';
 const { Column, HeaderCell, Cell } = Table;
 
 const TransactionHistory = () => {
@@ -140,7 +141,7 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {weiToKAI(rowData.value)} KAI
+                                                        {numberFormat(weiToKAI(rowData.value))} KAI
                                                     </div>
                                                 );
                                             }}

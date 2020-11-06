@@ -73,7 +73,7 @@ const Blocks = () => {
                                                 return (
                                                     <div>
                                                         <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
-                                                        <Link to={`/block/${rowData.blockHeight}`} >{rowData.blockHeight}</Link>
+                                                        <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(Number(rowData.blockHeight))}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -131,12 +131,10 @@ const Blocks = () => {
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.transactions,
-                                                            headCount: 20,
-                                                            showTooltip: false,
-                                                            callback: () => { history.push(`/txs?block=${rowData.blockHeight}`) }
-                                                        })}
+                                                        {
+                                                            !rowData.transactions ? '0' :
+                                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(Number(rowData.transactions))}</Link>
+                                                        }
                                                     </div>
                                                 );
                                             }}

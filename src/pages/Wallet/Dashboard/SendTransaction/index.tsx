@@ -157,9 +157,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                {/* <Button onClick={submitSend}><Icon icon="space-shuttle" /></Button> */}
-
-                                <Button size="big" onClick={submitSend} >Send KAII</Button>
+                                <Button size="big" onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{marginLeft: '10px'}} /></Button>
                             </FlexboxGrid.Item>
                             {
                                 txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4,showTooltip: false, callback: () => {window.open(`/tx/${txHash}`) } })}</div> : <></>
