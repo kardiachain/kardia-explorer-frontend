@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Icon, Panel } from 'rsuite';
 import { numberFormat } from '../../common/utils/number';
-import { calculateTPS } from '../../service/kai-explorer';
+import { calculateTPS, getTotalHolder } from '../../service/kai-explorer';
 import './stat.css'
 
 const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {
     const [tps, setTps] = useState(0)
+    const [totalHolder, setTotalHolder] = useState(0)
 
     useEffect(() => {
         const tps = calculateTPS(blockList);
         setTps(tps);
+        getTotalHolder().then(setTotalHolder)
     }, [blockList]);
 
     return (
@@ -44,7 +46,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                             <Icon className="highlight" icon="peoples" size={"lg"} />
                         </div>
                         <div className="title">Addresses</div>
-                        <div className="value">{numberFormat(0)}</div>
+                        <div className="value">{numberFormat(totalHolder)}</div>
                     </div>
                 </Panel>
         </div>

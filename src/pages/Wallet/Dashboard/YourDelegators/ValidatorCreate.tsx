@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, ButtonToolbar, ControlLabel, Form, FormControl, FormGroup, Modal } from 'rsuite';
+import { Alert, ControlLabel, Form, FormControl, FormGroup, Modal } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
@@ -204,8 +204,8 @@ const ValidatorCreate = () => {
             setIsLoading(false)
             setShowConfirmModal(false)
         } catch (error) {
-            const errJson = JSON.parse(error?.message)
-            Alert.error(`Create validator failed: ${errJson?.error?.message || ''}`)
+            const errJson = typeof error.message !== 'string' ?  JSON.parse(error?.message) : error.message
+            Alert.error(`Create validator failed: ${typeof errJson !== 'string' ?  errJson?.error?.message : errJson || ''}`)
             setIsLoading(false)
             setShowConfirmModal(false)
         }

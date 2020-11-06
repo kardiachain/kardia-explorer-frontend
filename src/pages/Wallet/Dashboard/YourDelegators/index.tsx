@@ -91,8 +91,8 @@ const YourDelegators = () => {
             setIsLoading(false)
             setShowConfirmModal(false)
         } catch (error) {
-            const errJson = JSON.parse(error?.message)
-            Alert.error(`Create validator failed: ${errJson?.error?.message || ''}`)
+            const errJson = typeof error.message !== 'string' ?  JSON.parse(error?.message) : error.message
+            Alert.error(`Update validator failed: ${typeof errJson !== 'string' ?  errJson?.error?.message : errJson || ''}`)
             setIsLoading(false)
             setShowConfirmModal(false)
         }
