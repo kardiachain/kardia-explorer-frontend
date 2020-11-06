@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, FlexboxGrid, List, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
-import { renderHashString } from '../../../common/utils/string';
+import { renderHashToRedirect } from '../../../common/utils/string';
 import { useViewport } from '../../../context/ViewportContext';
 import { getDelegationsByValidator, getValidator } from '../../../service/smc';
 import { isLoggedIn } from '../../../service/wallet'
 import './validator.css'
 import { numberFormat } from '../../../common/utils/number';
+import Button from '../../../common/components/Button';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -26,36 +27,52 @@ const ValidatorDetail = () => {
     return (
         <div className="container val-detail-container">
             <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} style={{marginBottom: '30px'}}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} style={{ marginBottom: '30px' }}>
                     <div>
-                        <Panel header={<h4>Validator information</h4>} shaded>
+                        <div className="block-title" style={{ padding: '0px 5px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Icon className="highlight" icon="user-info" size={"2x"} />
+                                <p style={{ marginLeft: '12px' }} className="title">Validator information</p>
+                            </div>
+                        </div>
+                        <Panel shaded>
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Address: </span> {renderHashString(validator?.address || '', 50)}
+                                    <span className="property-title">Address: </span>
+                                    {
+                                        renderHashToRedirect({
+                                            hash: validator?.address,
+                                            headCount: isMobile ? 10 : 30,
+                                            tailCount: 4,
+                                            showTooltip: true,
+                                            callback: () => { window.open(`/address/${validator?.address}`) }
+                                        })
+                                    }
                                 </List.Item>
                                 <List.Item>
                                     <span className="property-title">Total Delegator: </span> {numberFormat(validator?.totalDels || 0)}
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total staked amount: </span> {weiToKAI(validator?.totalStakedAmount)}
-                                </List.Item>
-                                <List.Item>
-                                    <span className="property-title">Voting Power: </span> {numberFormat(validator?.votingPower || 0)}
+                                    <span className="property-title">Total staked amount: </span> {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
                                 </List.Item>
                             </List>
-                            <ButtonToolbar style={{marginTop: '30px'}}>
-                                <Button appearance="primary"
-                                    onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${valAddr}`) : history.push('/wallet') }}
-                                >
-                                    Delegate for this validator
-                                </Button>
-                            </ButtonToolbar>
+                            <Button size="big" style={{ marginTop: '30px' }}
+                                onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${valAddr}`) : history.push('/wallet') }}
+                            >
+                                Delegate for this validator
+                            </Button>
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={16}>
                     <div>
-                        <Panel header={<h4>Delegators</h4>} shaded>
+                        <div className="block-title" style={{ padding: '0px 5px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Icon className="highlight" icon="people-group" size={"2x"} />
+                                <p style={{ marginLeft: '12px' }} className="title">Delegators</p>
+                            </div>
+                        </div>
+                        <Panel shaded>
                             <Table
                                 hover={false}
                                 wordWrap
@@ -63,32 +80,42 @@ const ValidatorDetail = () => {
                                 rowHeight={60}
                                 data={delegators}
                             >
-                                <Column width={400} verticalAlign="middle">
+                                <Column flexGrow={3} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {renderHashString(rowData.address, 50)} </div>
+                                                <div>
+                                                    {
+                                                        renderHashToRedirect({
+                                                            hash: rowData.address,
+                                                            headCount: isMobile ? 10 : 30,
+                                                            tailCount: 4,
+                                                            showTooltip: true,
+                                                            callback: () => { window.open(`/address/${rowData.address}`) }
+                                                        })
+                                                    }
+                                                </div>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                <Column flexGrow={2} verticalAlign="middle">
                                     <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {weiToKAI(rowData.stakeAmount)} KAI</div>
+                                                <div> {numberFormat(weiToKAI(rowData.stakeAmount))} KAI</div>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column width={isMobile ? 120 : 300} verticalAlign="middle">
+                                <Column flexGrow={2} verticalAlign="middle">
                                     <HeaderCell>Rewards Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {weiToKAI(rowData.rewardsAmount)} KAI</div>
+                                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount))} KAI</div>
                                             );
                                         }}
                                     </Cell>

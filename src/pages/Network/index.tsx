@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {  GraphConfiguration } from 'react-d3-graph';
-import { Col, FlexboxGrid, Icon, Panel, Table, Tag } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';

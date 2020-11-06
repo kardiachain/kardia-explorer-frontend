@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom';
-import { Col, Divider, FlexboxGrid, List, Panel, Placeholder } from 'rsuite'
+import { Link, useParams } from 'react-router-dom';
+import { Col, FlexboxGrid, Icon, List, Panel, Placeholder } from 'rsuite'
 import { numberFormat } from '../../common/utils/number';
 import { dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { getBlockBy } from '../../service/kai-explorer/block';
@@ -9,7 +9,6 @@ import './blockDetail.css'
 const { Paragraph } = Placeholder;
 
 const BlockDetail = () => {
-    const history = useHistory()
     const [blockDetail, setBlockDetail] = useState<KAIBlockDetails>()
     const { block }: any = useParams();
     const [loading, setLoading] = useState(true)
@@ -31,8 +30,14 @@ const BlockDetail = () => {
 
     return (
         <div className="container block-detail-container">
-            <h3>Block Details</h3>
-            <Divider />
+            {/* <h3>Block Details</h3>
+            <Divider /> */}
+            <div className="block-title" style={{ padding: '0px 5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon className="highlight" icon="cube" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title">Block Details</p>
+                </div>
+            </div>
             <Panel shaded>
                 {
                     loading ? <Paragraph style={{ marginTop: 30 }} rows={20} active={true} /> :
@@ -43,7 +48,7 @@ const BlockDetail = () => {
                                         <div className="title">Height</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{blockDetail?.blockHeight}</div>
+                                        <div className="content">{numberFormat(Number(blockDetail?.blockHeight))}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -75,13 +80,8 @@ const BlockDetail = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="content">
                                             {!blockDetail?.transactions ? 0 :
-                                                renderHashToRedirect({
-                                                    hash: blockDetail?.transactions,
-                                                    headCount: 30,
-                                                    tailCount: 4,
-                                                    showTooltip: true,
-                                                    callback: () => { history.push(`/txs?block=${blockDetail?.blockHeight}`) }
-                                                })}
+                                                <Link to={`/txs?block=${blockDetail?.blockHeight}`}>{numberFormat(Number(blockDetail?.transactions))}</Link>
+                                            }
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -122,7 +122,15 @@ const BlockDetail = () => {
                                         <div className="title">Proposer</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashString(blockDetail?.validator || '', 64)}</div>
+                                        <div className="content">{
+                                            renderHashToRedirect({
+                                                hash: blockDetail?.validator,
+                                                headCount: 50,
+                                                tailCount: 4,
+                                                showTooltip: false,
+                                                callback: () => { window.open(`/address/${blockDetail?.validator}`) }
+                                            })
+                                        }</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

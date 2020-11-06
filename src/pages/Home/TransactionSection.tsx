@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
+import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
@@ -18,9 +19,9 @@ const TransactionSection = ({ transactionList = []}: {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
-                        // autoHeight
+                        autoHeight
                         rowHeight={70}
-                        height={400}
+                        minHeight={420}
                         hover={false}
                         data={transactionList}
                         wordWrap
@@ -83,7 +84,7 @@ const TransactionSection = ({ transactionList = []}: {
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            {weiToKAI(rowData.value)} KAI
+                                            {numberFormat(weiToKAI(rowData.value))} KAI
                                         </div>
                                     );
                                 }}

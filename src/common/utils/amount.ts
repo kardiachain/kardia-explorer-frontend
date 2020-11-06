@@ -11,9 +11,9 @@ const cellValue = (kaiValue: any) => {
   return cellString;
 };
 
-const weiToKAI = (value: any) => {
+const weiToKAI = (value: any): number => {
   if (!value || value === '0') {
-    return '0'
+    return 0
   }
   
   value = value.toLocaleString('en-US', { useGrouping: false });
@@ -21,7 +21,7 @@ const weiToKAI = (value: any) => {
 
   const kaiNumString = parseInt(cellString.slice(0, 18));
   const kaiDecimalString = cellString.slice(-18);
-  return`${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+  return Number(`${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`);
 };
 
 const removeTrailingZeros = (value: any) => {

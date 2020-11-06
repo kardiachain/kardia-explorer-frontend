@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, ButtonToolbar, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, Table } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, Table } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { onlyNumber, verifyAmount, numberFormat } from '../../../../common/utils/number';
-import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashToRedirect } from '../../../../common/utils/string';
 import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
+import Button from '../../../../common/components/Button';
+import { useViewport } from '../../../../context/ViewportContext';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const YourDelegators = () => {
 
+    const { isMobile } = useViewport()
     const [isLoading, setIsLoading] = useState(false)
     const [isVal, setIsVal] = useState(false);
     const [delegators, setDelegators] = useState([] as Delegator[]);
@@ -91,8 +94,8 @@ const YourDelegators = () => {
             setIsLoading(false)
             setShowConfirmModal(false)
         } catch (error) {
-            const errJson = typeof error.message !== 'string' ?  JSON.parse(error?.message) : error.message
-            Alert.error(`Update validator failed: ${typeof errJson !== 'string' ?  errJson?.error?.message : errJson || ''}`)
+            const errJson = typeof error.message !== 'string' ? JSON.parse(error?.message) : error.message
+            Alert.error(`Update validator failed: ${typeof errJson !== 'string' ? errJson?.error?.message : errJson || ''}`)
             setIsLoading(false)
             setShowConfirmModal(false)
         }
@@ -144,25 +147,42 @@ const YourDelegators = () => {
                     <FlexboxGrid>
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={10}>
                             <div className="val-info-container">
-                                <Panel header={<h4>Validator information</h4>} shaded>
+                                <div className="block-title" style={{ padding: '0px 5px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <Icon className="highlight" icon="user-info" size={"2x"} />
+                                        <p style={{ marginLeft: '12px' }} className="title">Validator information</p>
+                                    </div>
+                                </div>
+                                <Panel shaded>
                                     <List>
                                         <List.Item>
-                                            <span className="property-title">Validator address: </span> <span style={{wordBreak: 'break-all'}}>{renderHashString(validator?.address || '', 45)}</span>
+                                            <span className="property-title">Validator address: </span> <span style={{ wordBreak: 'break-all' }}>
+                                                {
+                                                    renderHashToRedirect({
+                                                        hash: validator?.address,
+                                                        headCount: isMobile ? 20 : 45,
+                                                        tailCount: 4,
+                                                        showTooltip: true,
+                                                        callback: () => { window.open(`/address/${validator?.address}`) }
+                                                    })
+                                                }
+                                            </span>
                                         </List.Item>
                                         <List.Item>
                                             <span className="property-title">Total delegator: </span> {numberFormat(validator?.totalDels || 0)}
                                         </List.Item>
                                         <List.Item>
-                                            <span className="property-title">Voting power: </span> {numberFormat(validator?.votingPower || 0)}
+                                            <span className="property-title">Total staked amount: </span> {numberFormat(weiToKAI(validator?.totalStakedAmount || 0))} KAI
                                         </List.Item>
                                     </List>
-                                    <ButtonToolbar style={{ marginTop: '30px', marginBottom: '20px' }}>
-                                        <Button appearance="ghost" style={{ borderRadius: 0, paddingLeft: '20px', paddingRight: '20px' }}
+                                    <div style={{ marginTop: '30px', marginBottom: '20px' }}>
+                                        <Button size="big"
                                             onClick={() => { setShowUpdateForm(!showUpdateForm) }}
+                                            className="primary-button"
                                         >
                                             Update Validator  <Icon icon={showUpdateForm ? "angle-up" : "angle-down"} />
                                         </Button>
-                                    </ButtonToolbar>
+                                    </div>
                                     {
                                         showUpdateForm ? (
                                             <Form fluid>
@@ -193,9 +213,7 @@ const YourDelegators = () => {
                                                     <ErrMessage message={maxMinSelfDelegationErr} />
                                                 </FormGroup>
                                                 <FormGroup>
-                                                    <ButtonToolbar>
-                                                        <Button appearance="primary" onClick={submitUpdateValidator}>Update</Button>
-                                                    </ButtonToolbar>
+                                                    <Button size="big" onClick={submitUpdateValidator}>Update</Button>
                                                 </FormGroup>
                                                 {
                                                     hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
@@ -209,7 +227,13 @@ const YourDelegators = () => {
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={14}>
                             <div className="del-list-container">
-                                <Panel header={<h4>Your Delegators</h4>} shaded>
+                                <div className="block-title" style={{ padding: '0px 5px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <Icon className="highlight" icon="people-group" size={"2x"} />
+                                        <p style={{ marginLeft: '12px' }} className="title">Your Delegators</p>
+                                    </div>
+                                </div>
+                                <Panel shaded>
                                     <Table
                                         hover={false}
                                         autoHeight
@@ -221,17 +245,27 @@ const YourDelegators = () => {
                                             <Cell>
                                                 {(rowData: Delegator) => {
                                                     return (
-                                                        <div> {renderHashString(rowData.address, 45)} </div>
+                                                        <div>
+                                                            {
+                                                                renderHashToRedirect({
+                                                                    hash: validator?.address,
+                                                                    headCount: isMobile ? 15 : 30,
+                                                                    tailCount: 4,
+                                                                    showTooltip: true,
+                                                                    callback: () => { window.open(`/address/${validator?.address}`) }
+                                                                })
+                                                            }
+                                                        </div>
                                                     );
                                                 }}
                                             </Cell>
                                         </Column>
                                         <Column width={150} verticalAlign="middle">
-                                            <HeaderCell>Share</HeaderCell>
+                                            <HeaderCell>Staked Amount</HeaderCell>
                                             <Cell>
                                                 {(rowData: Delegator) => {
                                                     return (
-                                                        <div> {weiToKAI(rowData.delegationsShares)} KAI</div>
+                                                        <div> {numberFormat(weiToKAI(rowData.stakeAmount))} KAI</div>
                                                     );
                                                 }}
                                             </Cell>
@@ -253,10 +287,10 @@ const YourDelegators = () => {
                             <div>New Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={() => { setShowConfirmModal(false) }} appearance="subtle">
+                            <Button onClick={() => { setShowConfirmModal(false) }} className="primary-button">
                                 Cancel
                             </Button>
-                            <Button loading={isLoading} onClick={update} appearance="primary">
+                            <Button loading={isLoading} onClick={update}>
                                 Confirm
                             </Button>
                         </Modal.Footer>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
@@ -17,9 +18,9 @@ const BlockSection = ({ blockList = [] }: {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
-                        // autoHeight
+                        autoHeight
                         rowHeight={70}
-                        height={400}
+                        minHeight={420}
                         data={blockList}
                         hover={false}
                         wordWrap
@@ -32,7 +33,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             <div>
                                                 <Icon icon="cubes" className="highlight" style={{ marginRight: '10px' }} />
-                                                <Link to={`/block/${rowData.blockHeight}`} >{rowData.blockHeight}</Link>
+                                                <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(Number(rowData.blockHeight))}</Link>
                                             </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
@@ -67,7 +68,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             {
                                                 !rowData.transactions ? '0' :
-                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{rowData.transactions}</Link>
+                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(Number(rowData.transactions))}</Link>
                                             }
                                         </div>
                                     );
