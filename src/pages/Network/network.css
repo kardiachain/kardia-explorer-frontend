@@ -1,0 +1,11 @@
+.dot-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.dot-status.online {
+    background: radial-gradient(#b1eca9, #068c03);
+}
+.dot-status.offline {
+    background: radial-gradient(#f7bebe, #ff0000);
+}

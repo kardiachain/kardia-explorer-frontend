@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, FlexboxGrid, Icon, Input, InputGroup, Modal, Panel, Tag } from 'rsuite'
+import { Col, FlexboxGrid, Icon, Input, InputGroup, Modal, Panel, Tag } from 'rsuite'
 import * as Bip39 from 'bip39';
 import { hdkey } from 'ethereumjs-wallet'
 import { Link, useHistory } from 'react-router-dom';
@@ -7,6 +7,7 @@ import './createWallet.css'
 import { ErrorMessage } from '../../../common/constant/Message';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
 import { useWalletStorage } from '../../../service/wallet';
+import Button from '../../../common/components/Button';
 
 const CreateByMnemonic = () => {
     const strength = 256;
@@ -116,9 +117,9 @@ const CreateByMnemonic = () => {
                                         </div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button appearance="ghost">Back</Button>
+                                                <Button size="big" className="primary-button">Back</Button>
                                             </Link>
-                                            <Button appearance="primary" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                            <Button size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -141,9 +142,9 @@ const CreateByMnemonic = () => {
                                         </div><div>Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button appearance="ghost">Back</Button>
+                                                <Button size="big" className="primary-button">Back</Button>
                                             </Link>
-                                            <Button appearance="primary" className="submit-buttom" onClick={createWallet}>Create wallet</Button>
+                                            <Button size="big" className="submit-buttom" onClick={createWallet}>Create wallet</Button>
                                         </div>
                                     </>
                                 )
@@ -210,7 +211,7 @@ const CreateByMnemonic = () => {
                     <ErrMessage message={mnVerifyErr} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={verifyMn} appearance="primary">
+                    <Button onClick={verifyMn} size="big">
                         Verify
                     </Button>
                 </Modal.Footer>

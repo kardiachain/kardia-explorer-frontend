@@ -5,6 +5,7 @@
     border-radius: 2px;
     font-weight: 600;
     margin: 0 5px;
+    position: relative;
 }
 
 .size-normal {
@@ -15,6 +16,17 @@
     padding: 13px 45px;
 }
 
+.kai-button.loading {
+    background: linear-gradient(137.34deg,#9c2020 14.41%,#623555 116.67%) !important;
+    color: transparent !important;
+}
+
 .primary-button {
     background: linear-gradient(137.34deg,#7b7b82 14.41%,#a0a0a9 116.67%);
+}
+.button-loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }

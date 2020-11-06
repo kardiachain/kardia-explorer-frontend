@@ -1,9 +1,10 @@
 import React from 'react'
+import { Loader } from 'rsuite'
 import './style.css'
 
 const Button = ({onClick, children, size = "normal", className, style, loading=false}: {
     onClick?: () => void;
-    children?: React.Component | string | number;
+    children?: React.Component | string | number | Element;
     size?: "normal" | "big";
     className?: string;
     style?: React.CSSProperties;
@@ -13,7 +14,11 @@ const Button = ({onClick, children, size = "normal", className, style, loading=f
     if (size === "big") sizeClass = 'size-big'
 
     return (
-        <button className={`kai-button ${sizeClass} ${className}`} style={style} onClick={onClick}>{children}</button>
+    <button className={`kai-button ${sizeClass} ${className} ${loading ? 'loading' : ''}`} style={style} onClick={onClick}>
+        {
+            loading ? <Loader className="button-loading" size="sm"></Loader> : <></>
+        }{children}
+    </button>
     )
 }
 

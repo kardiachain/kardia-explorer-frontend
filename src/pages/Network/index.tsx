@@ -6,6 +6,7 @@ import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';
 import SearchSection from '../../common/components/Header/SearchSection';
 import { useHistory } from 'react-router-dom';
+import './network.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -110,7 +111,18 @@ const Network = () => {
                                     hover={false}
                                     wordWrap
                                 >
-                                    <Column flexGrow={1} verticalAlign="middle">
+                                    <Column width={30} verticalAlign="middle" align="center">
+                                        <HeaderCell></HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAINode) => {
+                                                if (rowData.status === "online") {
+                                                    return <div className="dot-status online"></div>
+                                                }
+                                                return <div className="dot-status offline"></div>
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>Name</HeaderCell>
                                         <Cell>
                                             {(rowData: KAINode) => {
@@ -123,18 +135,7 @@ const Network = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} verticalAlign="middle" align="center">
-                                        <HeaderCell>Status</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAINode) => {
-                                                if (rowData.status === "online") {
-                                                    return <Tag style={{backgroundColor: '#e62c2c', color:'white'}}>Online</Tag>
-                                                }
-                                                return <Tag style={{backgroundColor: '#1d0416', color:'white'}}>Offline</Tag>
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} verticalAlign="middle" align="center">
+                                    <Column flexGrow={3} verticalAlign="middle" align="center">
                                         <HeaderCell>Address</HeaderCell>
                                         <Cell>
                                             {(rowData: KAINode) => {
@@ -152,7 +153,7 @@ const Network = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} verticalAlign="middle" align="center">
+                                    <Column flexGrow={2} verticalAlign="middle" align="center">
                                         <HeaderCell>Protocol</HeaderCell>
                                         <Cell dataKey="protocol" />
                                     </Column>
