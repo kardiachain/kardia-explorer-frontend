@@ -11,6 +11,9 @@ import DelegatorCreate from './DelegatedValidators/DelegatorCreate';
 import { useViewport } from '../../../context/ViewportContext';
 import DelegatedValidators from './DelegatedValidators';
 import AuthRouter from '../../../AuthRouter';
+import DeployWithSourceCode from './SmartContract/DeployWithSourceCode';
+import DeployWithByteCode from './SmartContract/DeployWithByteCode';
+import InteracteWithSmc from './SmartContract/InteracteWithSmc';
 
 const DashboardWallet = () => {
     const [activeKey, setActiveKey] = useState("send-transaction");
@@ -26,7 +29,7 @@ const DashboardWallet = () => {
             {
                 !isMobile ? (
                     <div className="left-container">
-                    <Sidenav defaultOpenKeys={['staking']}>
+                    <Sidenav defaultOpenKeys={['staking','smart-contract']}>
                         <Sidenav.Body>
                             <Nav onSelect={setActiveKey} activeKey={activeKey}>
                                 <Nav.Item eventKey="send-transaction" active={activeKey === "1"} href="/wallet/send-transaction" icon={<Icon icon="send" />}>
@@ -39,9 +42,14 @@ const DashboardWallet = () => {
                                     <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
                                     <Dropdown.Item  eventKey="delegated-validators" href="/wallet/staking/delegated-validators">Delegated Validators</Dropdown.Item>
                                 </Dropdown>
-                                <Nav.Item eventKey="smart-contract" active={activeKey === "3"} href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>
+                                {/* <Nav.Item eventKey="smart-contract" active={activeKey === "3"} href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>
                                     Smart Contract
-                                </Nav.Item>
+                                </Nav.Item> */}
+                                <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract" open={true}>
+                                    <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item>
+                                    <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy By Byte Code</Dropdown.Item>
+                                    <Dropdown.Item eventKey="interation" href="/wallet/smc/interation">Interate With Contract</Dropdown.Item>
+                                </Dropdown>
                             </Nav>
                         </Sidenav.Body>
                     </Sidenav>
@@ -61,6 +69,9 @@ const DashboardWallet = () => {
                     <Route path="/wallet/staking/:valAddr">
                         <DelegatorCreate />
                     </Route>
+                    <AuthRouter component={DeployWithSourceCode} path="/wallet/smc/source-code-deployment" />
+                    <AuthRouter component={DeployWithByteCode} path="/wallet/smc/byte-code-deployment" />
+                    <AuthRouter component={InteracteWithSmc} path="/wallet/smc/interation" />
                     <Route path="/wallet">
                         <Redirect to="/wallet/send-transaction" />
                     </Route>

@@ -8,7 +8,7 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyNumber, verifyAmount } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc';
+import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 const { Column, HeaderCell, Cell } = Table;
 

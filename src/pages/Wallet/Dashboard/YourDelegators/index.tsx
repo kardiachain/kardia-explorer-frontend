@@ -5,7 +5,7 @@ import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { onlyNumber, verifyAmount, numberFormat } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
-import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc';
+import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';

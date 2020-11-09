@@ -5,7 +5,7 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyNumber, verifyAmount } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
-import { createValidator } from '../../../../service/smc';
+import { createValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 

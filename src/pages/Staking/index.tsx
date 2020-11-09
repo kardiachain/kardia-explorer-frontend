@@ -4,13 +4,13 @@ import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
 import { formatAmount, formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
 import { randomRGBColor, renderHashToRedirect, truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
-import { getValidatorsFromSMC } from '../../service/smc';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
 import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
+import { getValidatorsFromSMC } from '../../service/smc/staking';
 
 
 const { Column, HeaderCell, Cell } = Table;

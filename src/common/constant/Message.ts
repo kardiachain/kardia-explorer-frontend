@@ -12,5 +12,6 @@ export const ErrorMessage = {
     CommissionRateMoreThanMaxRate: 'Commission rate cannot be more than the max rate',
     MaxRateMoreThanHundred: 'The commission max rate value cannot be more than 100%',
     MaxChangeRateMoreThanHundred: 'The commission max change rate value cannot be more than 100%',
-    MnemonicVerifyIncorrect: 'Mnemonic verify incorrect! Please write it down correctly!'
+    MnemonicVerifyIncorrect: 'Mnemonic verify incorrect! Please write it down correctly!',
+    AbiInvalid: 'The ABI format is invalid'
 }
