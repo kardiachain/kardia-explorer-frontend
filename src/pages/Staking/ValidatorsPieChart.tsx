@@ -51,7 +51,10 @@ const chartConfigDefault = {
         type: 'pie',
         name: 'VP',
         data: [] as DataChartConfig[],
-    }]
+    }],
+    credits: {
+        enabled: false
+    }
 }
 
 const ValidatorsPieChart = ({ dataForChart = [] }: { dataForChart: DataChartConfig[] }) => {
