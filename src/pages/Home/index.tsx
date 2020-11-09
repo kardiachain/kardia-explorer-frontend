@@ -84,7 +84,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Symbol:</p>
-                                        <p className="mt0 fw700">{tokenInfor.symbol}</p>
+                                        <p className="mt0 fw700">KAI</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -93,7 +93,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Price:</p>
-                                        <p className="mt0 fw700">$ {numberFormat(tokenInfor.price as number, 6)}</p>
+                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -102,7 +102,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Market Cap:</p>
-                                        <p className="mt0 fw700">$ {numberFormat(tokenInfor.market_cap as number, 3)}</p>
+                                        <p className="mt0 fw700">$ {tokenInfor.market_cap ? numberFormat(tokenInfor.market_cap as number, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -111,7 +111,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Volume 24h:</p>
-                                        <p className="mt0 fw700">$ {numberFormat(tokenInfor.volume_24h as number, 3)}</p>
+                                        <p className="mt0 fw700">$ {tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -120,7 +120,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Circulating Supply:</p>
-                                        <p className="mt0 fw700">{ numberFormat(tokenInfor.circulating_supply as number) }</p>
+                                        <p className="mt0 fw700">{ tokenInfor.circulating_supply ? numberFormat(tokenInfor.circulating_supply as number) : '' }</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -129,7 +129,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Total Supply:</p>
-                                        <p className="mt0 fw700">{ numberFormat(tokenInfor.total_supply as number) }</p>
+                                        <p className="mt0 fw700">{ tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : '' }</p>
                                     </div>
                                 </div>
                             
