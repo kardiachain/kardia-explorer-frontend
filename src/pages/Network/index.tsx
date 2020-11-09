@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  GraphConfiguration } from 'react-d3-graph';
+import {  Graph, GraphConfiguration } from 'react-d3-graph';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -20,8 +20,8 @@ const Network = () => {
     const { isMobile } = useViewport()
 
     useEffect(() => {
-        const graphWidth = width / 3
-        const graphHeight = height * 70 / 100
+        const graphWidth = width
+        const graphHeight = 500
 
         setGraphConfig({
             nodeHighlightBehavior: true,
@@ -36,7 +36,7 @@ const Network = () => {
             height: graphHeight,
             width: graphWidth,
             panAndZoom: true,
-            focusZoom: 10,
+            focusZoom: 50,
             minZoom: 1,
             maxZoom: 20,
             d3: {
@@ -53,23 +53,45 @@ const Network = () => {
         (async () => {
             const result = await getNodes()
             console.log(result);
+
+            // const links = result.map(i => {
+            //     // result.map(j => {
+            //     //     return {
+            //     //         source: i.id,
+            //     //         target: j.id
+            //     //     }
+            //     // });
+            //     result.for
+            // })
+            let linkArr = [] as any[];
+            result.forEach((r1, i1) => {
+                result.forEach((r2, i2) => {
+                    if(i1 !== i2) {
+                        linkArr.push({ source: r1.id, target: r2.id })
+                    }
+                })
+            })
+
+
+            console.log(linkArr)
             
             setGraphData({
                 nodes: result,
-                links: [
-                    { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-2' },
-                    { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-3' },
-                    { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-1' },
-                    { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-2' },
-                    { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-3' },
-                    { source: 'KAI-Bootnode-2', target: 'KAI-Bootnode-3' },
-                    { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-1' },
-                    { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-2' },
-                    { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-3' },
-                    { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-1' },
-                    { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-2' },
-                    { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-3' },
-                ],
+                // links: [
+                //     { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-2' },
+                //     { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-3' },
+                //     { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-1' },
+                //     { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-2' },
+                //     { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-3' },
+                //     { source: 'KAI-Bootnode-2', target: 'KAI-Bootnode-3' },
+                //     { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-1' },
+                //     { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-2' },
+                //     { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-3' },
+                //     { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-1' },
+                //     { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-2' },
+                //     { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-3' },
+                // ],
+                links: linkArr,
                 focusedNodeId: result[0] ? result[0].id : ""
             })
         })()
@@ -86,20 +108,20 @@ const Network = () => {
             </div>
             <FlexboxGrid>
                 {/* {
-                !isMobile && 
-                <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={10}>
-                    <Panel bordered header="Kardia Network">
-                        {
-                            graphConfig.width && graphData.nodes.length > 0 &&
-                            <Graph
-                                id='kai_network_graph'
-                                data={graphData}
-                                config={graphConfig}
-                            />
-                        }
-                    </Panel>
-                </FlexboxGrid.Item>
-            } */}
+                    !isMobile &&
+                    <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={24} style={{ marginBottom: '25px' }}>
+                        <Panel shaded>
+                            {
+                                graphConfig.width && graphData.nodes.length > 0 &&
+                                <Graph
+                                    id='kai_network_graph'
+                                    data={graphData}
+                                    config={graphConfig}
+                                />
+                            }
+                        </Panel>
+                    </FlexboxGrid.Item>
+                } */}
                 <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={24}>
                     <Panel shaded>
                         <FlexboxGrid justify="space-between">
