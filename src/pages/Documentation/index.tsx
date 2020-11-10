@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Icon, Panel, Button, PanelGroup, Grid, Row, Col, Divider } from 'rsuite'
+import { Icon, Panel, Button, PanelGroup, Grid, Row, Col } from 'rsuite'
 import ReactPlayer from "react-player";
 import './document.css'
 import rs1 from '../../resources/rs1.png';
@@ -102,7 +102,7 @@ const Documentation = () => {
                         <Button className="bg-highlight get-started" onClick={() => { window.open('https://medium.com/@KardiaChain/mainnet-the-value-of-staking-a88bc4676a08', '_blank')}}>Learn More</Button>
                     </Col>
                     <Col md={12} xs={24} className="col-step">
-                    <img src={rs1} style={{width:'100%'}}/>
+                    <img src={rs1} style={{width:'100%'}} alt="research_paper1" />
                     </Col>
                     
                 </Row>
@@ -114,7 +114,7 @@ const Documentation = () => {
                         <Button className="bg-highlight get-started" onClick={() => { window.open('https://medium.com/@KardiaChain/mainnet-part-2-estimation-of-kai-staking-apr-2bb53774be16', '_blank')}}>Learn More</Button>
                     </Col>
                     <Col md={12} xs={24} className="col-step">
-                    <img src={rs2} style={{width:'100%'}}/>
+                    <img src={rs2} style={{width:'100%'}} alt="research_paper2"/>
                     </Col>
                 </Row>
             </Grid>
