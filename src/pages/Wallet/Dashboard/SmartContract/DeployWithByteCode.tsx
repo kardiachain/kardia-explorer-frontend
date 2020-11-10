@@ -17,9 +17,9 @@ const tooltip = (
 const DeployWithByteCode = () => {
 
     const gasPriceOption = [
-        {label: 'Nomal (1 Gwei)', value: 1},
-        {label: 'Regular (2 Gwei)', value: 2},
-        {label: 'Fast (3 Gwei)', value: 3},
+        { label: 'Nomal (1 Gwei)', value: 1 },
+        { label: 'Regular (2 Gwei)', value: 2 },
+        { label: 'Fast (3 Gwei)', value: 3 },
     ] as any[]
 
     const [gasLimit, setGasLimit] = useState(21000);
@@ -31,8 +31,8 @@ const DeployWithByteCode = () => {
     const myAccount = getAccount() as Account
     const [loading, setLoading] = useState(false)
     const [gasPrice, setGasPrice] = useState(1)
-    const [constructor, setConstructor] = useState([] as any[])
-    const [constructorPlaceholder, setConstructorPlaceholder] = useState('')
+    const [construc, setConstruc] = useState('')
+    const [construcPlaceholder, setConstrucPlaceholder] = useState('')
 
     const validateByteCode = (byteCode: string) => {
         if (!byteCode) {
@@ -49,7 +49,9 @@ const DeployWithByteCode = () => {
             setAbiErr(ErrorMessage.Require);
             return false;
         }
+
         if (!jsonValid(abiString)) {
+
             setAbiErr(ErrorMessage.AbiInvalid);
             return false;
         }
@@ -66,21 +68,26 @@ const DeployWithByteCode = () => {
     }
 
     const deploy = async () => {
-        if (!validateByteCode(byteCode) || !validateAbi(abi)) {
-            return false;
+        try {
+            if (!validateByteCode(byteCode) || !validateAbi(abi)) {
+                return false;
+            }
+            setLoading(true)
+            const txObject = {
+                account: myAccount,
+                abi: abi,
+                bytecode: byteCode,
+                gasLimit: gasLimit,
+                gasPrice: gasPrice,
+                params: construc.split(",").map(item => item.trim())
+            } as SMCDeployObject
+            console.log(txObject);
+            const deploy = await deploySmartContract(txObject);
+            setLoading(false)
+            console.log(deploy);
+        } catch (error) {
+            console.log(error);
         }
-        setLoading(true)
-        const txObject = {
-            account: myAccount,
-            abi: abi,
-            bytecode: byteCode,
-            gasLimit: gasLimit,
-            gasPrice: gasPrice,
-            params: constructor
-        } as SMCDeployObject
-        const deploy = await deploySmartContract(txObject);
-        setLoading(false)
-        console.log(deploy);
     }
 
     const formatAbiJson = () => {
@@ -94,7 +101,18 @@ const DeployWithByteCode = () => {
 
     const hanldeOnchangeAbi = (value: any) => {
         setAbi(value);
-        validateAbi(value)
+        if (validateAbi(value)) {
+            const abiJson = JSON.parse(value)
+            if (abiJson && abiJson.length > 0) {
+                const construc = abiJson.filter((value: any) => value.type === 'constructor')
+                const placeHoler = construc[0].inputs && construc[0].inputs.map((item: any) => {
+                    return `${item.type} ${item.name}`
+                });
+                setConstrucPlaceholder(placeHoler.join(', '))
+            }
+
+        }
+
     }
 
     return (
@@ -158,36 +176,34 @@ const DeployWithByteCode = () => {
                                         placeholder="ABI"
                                         value={abi}
                                         onChange={(value) => {
-                                            setAbi(value);
-                                            validateAbi(value)
+                                            hanldeOnchangeAbi(value)
                                         }}
                                     />
                                     <InputGroup.Addon style={{ left: 0, bottom: 0, top: 'unset' }}>
                                         <Whisper placement="top" trigger="hover" speaker={tooltip}>
-                                            <Icon onClick={formatAbiJson} style={{ cursor: 'pointer' }} className="highlight" icon="align-justify" />
+                                            <Icon onClick={formatAbiJson} style={{ cursor: 'pointer' }} className="highlight" icon="sort" />
                                         </Whisper>
                                     </InputGroup.Addon>
                                 </InputGroup>
                                 <ErrMessage message={abiErr} />
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={12}>
                                 <ControlLabel>Constructor:</ControlLabel>
-                                <FormControl  
-                                    name="constructor"
-                                    placeholder={constructorPlaceholder}
-                                    value={constructor}
+                                <FormControl
+                                    name="construc"
+                                    placeholder={construcPlaceholder}
+                                    value={construc}
                                     onChange={(value) => {
-                                        hanldeOnchangeAbi(value);
+                                        setConstruc(value);
                                     }}
                                 />
-                                {/* <ErrMessage message={gasLimitErr} /> */}
+                                <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
-
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
                                 <Button size="big" loading={loading} onClick={deploy} style={{ width: '230px' }}>DEPLOY CONTRACT</Button>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
-                    </FormGroup> 
+                    </FormGroup>
                 </Form>
             </Panel>
         </div>

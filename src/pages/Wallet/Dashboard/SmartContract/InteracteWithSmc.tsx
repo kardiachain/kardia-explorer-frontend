@@ -28,7 +28,7 @@ const InteracteWithSmc = () => {
                                     onChange={setSmcAddr}
                                 /> 
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={16}>
+                            {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={16}>
                                 <ControlLabel>{'Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
                                 <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>
                                     <FormControl name="smcAddr"
@@ -36,9 +36,9 @@ const InteracteWithSmc = () => {
                                         placeholder="Upload Your <contract.json> file:"
                                     />
                                 </Uploader>
-                            </FlexboxGrid.Item>
+                            </FlexboxGrid.Item> */}
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <ControlLabel>Or Abi Json:<span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel>Abi Json:<span className="required-mask">*</span></ControlLabel>
                                 <FormControl rows={10}
                                     name="abi"
                                     componentClass="textarea"
