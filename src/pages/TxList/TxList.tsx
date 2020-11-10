@@ -59,7 +59,7 @@ const TxList = () => {
             <SearchSection />
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"lg"} />
+                    <Icon className="highlight" icon="exchange" size={"2x"} />
                     <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
                 </div>
             </div>
@@ -97,7 +97,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} verticalAlign="middle">
+                                    <Column flexGrow={2} verticalAlign="middle">
                                         <HeaderCell>Block</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -160,7 +160,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} align="center" verticalAlign="middle">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

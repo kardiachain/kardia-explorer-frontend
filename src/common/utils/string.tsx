@@ -15,7 +15,7 @@ const copyToClipboard = (text: string, onSuccess?: () => void, onFail?: () => vo
     });
 }
 
-export const renderCopyButton = ({str, size, callback}: {
+const renderCopyButton = ({str, size, callback}: {
     str: string,
     size: ButtonProps["size"],
     callback: () => void
@@ -58,7 +58,7 @@ const renderHashStringAndTooltip = (hash: string, headCount?: number, tailCount?
 }
 
 const renderHashToRedirect = ({
-    hash, headCount = 6, tailCount = 4, showTooltip = true, callback, showCopy = true
+    hash, headCount = 6, tailCount = 4, showTooltip = true, callback, showCopy = false
 }: {
     hash: any, headCount?: number, tailCount?: number, showTooltip?: boolean, callback?: () => void, showCopy?: boolean
 }) => {
@@ -115,4 +115,4 @@ const randomRGBColor = (): string => {
     const bbb =  Math.floor(Math.random() * 255);
     return `rgb(${rrr},${ggg},${bbb})`
 } 
-export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime, renderHashStringAndTooltip, randomRGBColor}
+export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime, renderHashStringAndTooltip, randomRGBColor, renderCopyButton}

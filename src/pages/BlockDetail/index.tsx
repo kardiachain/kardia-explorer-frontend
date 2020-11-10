@@ -30,8 +30,6 @@ const BlockDetail = () => {
 
     return (
         <div className="container block-detail-container">
-            {/* <h3>Block Details</h3>
-            <Divider /> */}
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon className="highlight" icon="cube" size={"2x"} />
@@ -128,7 +126,8 @@ const BlockDetail = () => {
                                                 headCount: 50,
                                                 tailCount: 4,
                                                 showTooltip: false,
-                                                callback: () => { window.open(`/address/${blockDetail?.validator}`) }
+                                                callback: () => { window.open(`/address/${blockDetail?.validator}`) },
+                                                showCopy: true
                                             })
                                         }</div>
                                     </FlexboxGrid.Item>
