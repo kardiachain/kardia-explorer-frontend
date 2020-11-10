@@ -18,9 +18,8 @@ const BlockSection = ({ blockList = [] }: {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
-                        autoHeight
                         rowHeight={70}
-                        minHeight={420}
+                        height={400}
                         data={blockList}
                         hover={false}
                         wordWrap

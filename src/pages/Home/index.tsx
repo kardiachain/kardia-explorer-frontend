@@ -72,7 +72,7 @@ const Home = () => {
 
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ background: 'white' }}>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ background: 'white', height: 356, paddingTop: 30 }}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
 
@@ -132,8 +132,6 @@ const Home = () => {
                                         <p className="mt0 fw700">{ numberFormat(tokenInfor.total_supply as number) }</p>
                                     </div>
                                 </div>
-                            
-
                             </Panel>
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
