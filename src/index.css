@@ -7,6 +7,7 @@ body {
 
 .hex {
   font-family: 'Inconsolata', monospace;
+  font-weight: 900;
 }
 
 a:active,
@@ -118,4 +119,9 @@ code {
 .custom-tooltip .rs-tooltip-arrow {
   border-bottom-color: #5f7689 !important;
   border-top-color: #5f7689 !important;
+}
+
+.rs-list {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }
