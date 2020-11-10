@@ -6,7 +6,7 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyNumber, verifyAmount } from '../../../../common/utils/number';
-import { renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
@@ -83,12 +83,15 @@ const DelegatorCreate = () => {
                     <div className="val-info-container">
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="group" />
+                                <Icon className="highlight" icon="gear-circle" />
                                 <p style={{ marginLeft: '12px' }} className="title">Delegate</p>
                             </div>
                         </div>
-                        <Panel header={<div style={{wordBreak: 'break-all'}}>Validator: <span style={{fontWeight: 'bold'}}>{valAddr}</span></div>} shaded>
+                        <Panel shaded>
                             <List bordered={false}>
+                                <List.Item bordered={false}>
+                                    <span className="property-title">Validator: </span> {renderHashString(valAddr, 45)}
+                                </List.Item>
                                 <List.Item bordered={false}>
                                     <span className="property-title">Commission: </span> {validator?.commission || 0} %
                                 </List.Item>
@@ -136,7 +139,7 @@ const DelegatorCreate = () => {
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <Icon className="highlight" icon="group" />
-                                <p style={{ marginLeft: '12px' }} className="title">Delegators</p>
+                                <p style={{ marginLeft: '12px' }} className="title">Other Delegators</p>
                             </div>
                         </div>
                         <Panel shaded>
@@ -147,7 +150,7 @@ const DelegatorCreate = () => {
                                 wordWrap
                                 hover={false}
                             >
-                                <Column flexGrow={3} verticalAlign="middle">
+                                <Column flexGrow={1} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -155,16 +158,16 @@ const DelegatorCreate = () => {
                                                 <div>
                                                     {renderHashToRedirect({
                                                         hash: rowData.address,
-                                                        headCount: isMobile ? 10 : 30,
-                                                        showTooltip: false,
-                                                        callback: () => { history.push(`/tx/${rowData.address}`) }
+                                                        headCount: isMobile ? 10 : 20,
+                                                        showTooltip: true,
+                                                        callback: () => { history.push(`/address/${rowData.address}`) }
                                                     })}
                                                 </div>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} verticalAlign="middle">
+                                <Column flexGrow={1} verticalAlign="middle">
                                     <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -174,7 +177,7 @@ const DelegatorCreate = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} verticalAlign="middle">
+                                <Column flexGrow={1} verticalAlign="middle">
                                     <HeaderCell>Rewards Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {

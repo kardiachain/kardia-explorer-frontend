@@ -59,7 +59,7 @@ const Validators = () => {
             <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{ marginBottom: isMobile ? '15px' : '0' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon className="highlight" icon="list-ul" size={"lg"} />
+                        <Icon className="highlight" icon="group" size={"2x"} />
                         <p style={{ marginLeft: '12px', fontWeight: 600 }}>Validators</p>
                     </div>
                 </FlexboxGrid.Item>
@@ -137,7 +137,7 @@ const Validators = () => {
                                             <div>
                                                 {renderHashToRedirect({
                                                     hash: rowData?.address,
-                                                    headCount: isMobile ? 20 : 50,
+                                                    headCount: isMobile ? 10 : 20,
                                                     tailCount: 4,
                                                     showTooltip: true,
                                                     callback: () => { history.push(`/validator/${rowData?.address}`) }
@@ -147,7 +147,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} verticalAlign="middle" align="center">
+                            <Column flexGrow={2} verticalAlign="middle" align="center">
                                 <HeaderCell>Total Staked Amount</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
