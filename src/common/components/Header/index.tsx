@@ -111,7 +111,8 @@ const Header = () => {
                                 >
                                     <Dropdown.Item eventKey="send-transaction" href="/wallet/send-transaction">Send transaction</Dropdown.Item>
                                     <Dropdown.Item eventKey="transaction-history" href="/wallet/transaction-history">Transactions history</Dropdown.Item>
-                                    <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Staking</Dropdown.Item>
+                                    <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators" >Your Delegators</Dropdown.Item>
+                                    <Dropdown.Item eventKey="delegated-validators" href="/wallet/staking/delegated-validators" >Delegated Validators</Dropdown.Item>
                                     <Dropdown.Item eventKey="smart-contract" href="/wallet/smart-contract">Smart contract</Dropdown.Item>
                                     <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                                 </Dropdown>
