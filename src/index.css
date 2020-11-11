@@ -92,6 +92,22 @@ code {
   padding:40px 0px;
 }
 
+/* end mobile screen */
+.rs-table-scrollbar-vertical {
+  width: 3px !important;
+}
+
+.rs-table-scrollbar-vertical .rs-table-scrollbar-handle {
+  width: 3px !important;
+}
+
+.rs-table-scrollbar-horizontal {
+  height: 3px !important;
+}
+.rs-table-scrollbar-horizontal .rs-table-scrollbar-handle {
+  height: 3px !important;
+}
+
 @media screen and (max-width: 740px) {
   .rs-header{
     display: flex;

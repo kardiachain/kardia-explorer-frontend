@@ -150,7 +150,7 @@ const DelegatorCreate = () => {
                                 wordWrap
                                 hover={false}
                             >
-                                <Column flexGrow={1} verticalAlign="middle">
+                                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -167,7 +167,7 @@ const DelegatorCreate = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={1} verticalAlign="middle">
+                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -177,8 +177,8 @@ const DelegatorCreate = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={1} verticalAlign="middle">
-                                    <HeaderCell>Claimable Rewards Amount</HeaderCell>
+                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                                    <HeaderCell>Claimable Rewards</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (

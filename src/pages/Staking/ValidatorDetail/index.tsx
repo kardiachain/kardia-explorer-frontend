@@ -80,7 +80,7 @@ const ValidatorDetail = () => {
                                 rowHeight={60}
                                 data={delegators}
                             >
-                                <Column flexGrow={3} verticalAlign="middle">
+                                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -89,7 +89,7 @@ const ValidatorDetail = () => {
                                                     {
                                                         renderHashToRedirect({
                                                             hash: rowData.address,
-                                                            headCount: isMobile ? 10 : 30,
+                                                            headCount: isMobile ? 5 : 20,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { window.open(`/address/${rowData.address}`) }
@@ -100,7 +100,7 @@ const ValidatorDetail = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} verticalAlign="middle">
+                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -110,8 +110,8 @@ const ValidatorDetail = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} verticalAlign="middle">
-                                    <HeaderCell>Claimable Rewards Amount</HeaderCell>
+                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                                    <HeaderCell >Claimable Rewards</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (

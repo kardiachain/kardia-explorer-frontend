@@ -66,7 +66,7 @@ const Blocks = () => {
                                     data={blocks}
                                     loading={loading}
                                 >
-                                    <Column flexGrow={1} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Block</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -79,7 +79,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -89,7 +89,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Block Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -107,7 +107,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -140,7 +140,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Gas Used</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -152,7 +152,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Gas Limit</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {

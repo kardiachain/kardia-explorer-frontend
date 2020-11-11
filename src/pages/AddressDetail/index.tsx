@@ -102,7 +102,7 @@ const AddressDetail = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -121,7 +121,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
                                         <HeaderCell>Block Height</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -134,7 +134,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -147,7 +147,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -167,7 +167,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -188,7 +188,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

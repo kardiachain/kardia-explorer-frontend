@@ -24,7 +24,7 @@ const BlockSection = ({ blockList = [] }: {
                         hover={false}
                         wordWrap
                     >
-                        <Column flexGrow={2}>
+                        <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                             <HeaderCell>Block Height</HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
@@ -40,7 +40,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={3}>
+                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
                             <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {

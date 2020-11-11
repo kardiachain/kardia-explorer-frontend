@@ -25,7 +25,7 @@ const TransactionSection = ({ transactionList = []}: {
                         data={transactionList}
                         wordWrap
                     >
-                        <Column flexGrow={2}>
+                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
                             <HeaderCell>Tx Hash</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -46,7 +46,7 @@ const TransactionSection = ({ transactionList = []}: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={2}>
+                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
                             <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -77,7 +77,7 @@ const TransactionSection = ({ transactionList = []}: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="right" flexGrow={1}>
+                        <Column align="right" minWidth={isMobile ? 100 : 0} flexGrow={1}>
                             <HeaderCell>Value</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
