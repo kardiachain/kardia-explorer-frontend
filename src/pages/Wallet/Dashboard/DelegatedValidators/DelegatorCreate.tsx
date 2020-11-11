@@ -178,7 +178,7 @@ const DelegatorCreate = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} verticalAlign="middle">
-                                    <HeaderCell>Rewards Amount</HeaderCell>
+                                    <HeaderCell>Claimable Rewards Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (

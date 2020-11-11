@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlexboxGrid, Panel, Col, Form, FormGroup, FormControl, Button, Uploader, Alert } from 'rsuite';
+import { FlexboxGrid, Panel, Col, Form, FormGroup, FormControl, Uploader, Alert } from 'rsuite';
 import { Link, useHistory } from 'react-router-dom';
 import { useWalletStorage } from '../../../service/wallet';
 import Wallet from 'ethereumjs-wallet'
@@ -7,6 +7,7 @@ import './accessWallet.css'
 import { FileType } from 'rsuite/lib/Uploader';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../common/constant/Message';
+import Button from '../../../common/components/Button';
 
 const AccessByKeyStore = () => {
 
@@ -113,9 +114,9 @@ const AccessByKeyStore = () => {
                                 </Form>
                                 <div className="button-container">
                                     <Link to="/access-wallet">
-                                        <Button appearance="ghost" color="violet">Back</Button>
+                                        <Button size="big" className="primary-button">Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} appearance="primary" color="violet" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                    <Button loading={loadingBtnSubmit} size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

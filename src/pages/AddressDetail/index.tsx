@@ -194,7 +194,7 @@ const AddressDetail = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {weiToKAI(rowData.value)} KAI
+                                                        {numberFormat(weiToKAI(rowData.value))} KAI
                                                     </div>
                                                 );
                                             }}

@@ -9,21 +9,20 @@
     font-family: 600;
 }
 
-.staking-stats .stats-container {
+.validators-container .staking-stats .stats-container {
+    display: flex;
+}
+.validators-container .staking-stats .stats-container .icon {
+    flex: 1;
+    margin: auto;
     text-align: center;
-}
-
-.staking-stats .title {
-    margin-bottom: 15px;
-}
-
-.staking-stats .value {
-    font-size: 40px;
     font-weight: 600;
 }
+.validators-container .staking-stats .stats-container .content {
+    flex: 5;
+}
 
-.staking-stats .icon {
-    margin-right: 10px;
-    font-size: 30px;
+.validators-container .staking-stats .stats-container .value {
+    font-size: 35px;
     font-weight: 600;
 }

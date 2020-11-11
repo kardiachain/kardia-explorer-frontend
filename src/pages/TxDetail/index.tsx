@@ -89,12 +89,11 @@ const TxDetail = () => {
                                         <div className="title">Status</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        {/* {
-                                        txDetail?.status ?
-                                            <div className="content"><Tag color="green">SUCCESS</Tag></div> :
-                                            <div className="content"><Tag color="yellow">PENDING</Tag></div>
-                                    } */}
-                                        <div className="content"><Tag color="green">SUCCESS</Tag></div>
+                                        {
+                                            txDetail?.status ?
+                                                <div className="content"><Tag color="green">SUCCESS</Tag></div> :
+                                                <div className="content"><Tag color="yellow">PENDING</Tag></div>
+                                        }
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -149,7 +148,7 @@ const TxDetail = () => {
                                         <div className="title">Value</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{weiToKAI(txDetail?.value)} KAI</div>
+                                        <div className="content">{numberFormat(weiToKAI(txDetail?.value))} KAI</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

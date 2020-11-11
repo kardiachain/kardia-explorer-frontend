@@ -52,7 +52,7 @@ const Faucet = () => {
         <div className="container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="eyedropper" size={"lg"} />
+                    <Icon className="highlight" icon="eyedropper" size={"2x"} />
                     <p style={{ marginLeft: '12px' }} className="title">Received free KAIs with KardiaChain Faucet</p>
                 </div>
             </div>

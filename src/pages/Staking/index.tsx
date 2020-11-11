@@ -85,20 +85,28 @@ const Validators = () => {
                         <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }} className="staking-stats">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
-                                    <div className="title">
-                                        {/* <Icon className="highlight icon" icon="braille" size={"lg"} /> */}
-                                        Total Validators
+                                    <div className="icon">
+                                        <Icon className="highlight icon" icon="group" size={"2x"} />
                                     </div>
-                                    <div className="value">{validators.length}</div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Validators
+                                        </div>
+                                        <div className="value">{validators.length}</div>
+                                    </div>
                                 </div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
-                                    <div className="title">
-                                        {/* <Icon className="highlight icon" icon="bolt" size={"lg"} /> */}
-                                        Total Staked Amount
+                                    <div className="icon">
+                                        <Icon className="highlight icon" icon="rate" size={"2x"} />
                                     </div>
-                                    <div className="value">{formatAmountwithPlus(totalStakedAmount)} KAI</div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Staked Amount
+                                        </div>
+                                        <div className="value">{formatAmountwithPlus(totalStakedAmount)} KAI</div>
+                                    </div>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

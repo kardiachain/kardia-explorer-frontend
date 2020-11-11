@@ -111,7 +111,7 @@ const ValidatorDetail = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={2} verticalAlign="middle">
-                                    <HeaderCell>Rewards Amount</HeaderCell>
+                                    <HeaderCell>Claimable Rewards Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
