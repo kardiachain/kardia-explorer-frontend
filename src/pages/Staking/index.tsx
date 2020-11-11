@@ -85,20 +85,28 @@ const Validators = () => {
                         <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }} className="staking-stats">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
-                                    <div className="title">
-                                        {/* <Icon className="highlight icon" icon="braille" size={"lg"} /> */}
-                                        Total Validators
+                                    <div className="icon">
+                                        <Icon className="highlight icon" icon="group" size={"2x"} />
                                     </div>
-                                    <div className="value">{validators.length}</div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Validators
+                                        </div>
+                                        <div className="value">{validators.length}</div>
+                                    </div>
                                 </div>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
-                                    <div className="title">
-                                        {/* <Icon className="highlight icon" icon="bolt" size={"lg"} /> */}
-                                        Total Staked Amount
+                                    <div className="icon">
+                                        <Icon className="highlight icon" icon="rate" size={"2x"} />
                                     </div>
-                                    <div className="value">{formatAmountwithPlus(totalStakedAmount)} KAI</div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Staked Amount
+                                        </div>
+                                        <div className="value">{formatAmountwithPlus(totalStakedAmount)} KAI</div>
+                                    </div>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
@@ -129,7 +137,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={2} verticalAlign="middle">
+                            <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                 <HeaderCell>Validator</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -137,7 +145,7 @@ const Validators = () => {
                                             <div>
                                                 {renderHashToRedirect({
                                                     hash: rowData?.address,
-                                                    headCount: isMobile ? 10 : 20,
+                                                    headCount: isMobile ? 5 : 20,
                                                     tailCount: 4,
                                                     showTooltip: true,
                                                     callback: () => { history.push(`/validator/${rowData?.address}`) }
@@ -147,7 +155,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={2} verticalAlign="middle" align="center">
+                            <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Total Staked Amount</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -157,7 +165,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} verticalAlign="middle" align="center">
+                            <Column flexGrow={1} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Voting power</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -167,7 +175,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} verticalAlign="middle" align="center">
+                            <Column flexGrow={1} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Total Delegators</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -177,7 +185,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} verticalAlign="middle" align="center">
+                            <Column flexGrow={1} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Commission</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {

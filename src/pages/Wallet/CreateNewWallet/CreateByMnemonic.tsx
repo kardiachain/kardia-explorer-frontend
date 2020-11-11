@@ -126,7 +126,8 @@ const CreateByMnemonic = () => {
                                 </>
                             ) : (
                                     <>
-                                        <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div><div className="mnemonic-container">
+                                        <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
+                                        <div className="mnemonic-container">
                                             {mnemonicArr.map((value: string, index: number) => {
                                                 return (
                                                     <div style={{ textAlign: 'center' }} key={index}>

@@ -8,7 +8,7 @@ function truncate(str: string, n: number, e: number) {
 };
 
 const copyToClipboard = (text: string, onSuccess?: () => void, onFail?: () => void) => {
-    navigator.clipboard.writeText(text).then(function () {
+    navigator?.clipboard?.writeText(text).then(function () {
         onSuccess && onSuccess()
     }, function (err) {
         onFail && onFail()

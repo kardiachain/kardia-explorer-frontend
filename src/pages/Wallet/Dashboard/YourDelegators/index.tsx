@@ -160,7 +160,7 @@ const YourDelegators = () => {
                                                 {
                                                     renderHashToRedirect({
                                                         hash: validator?.address,
-                                                        headCount: isMobile ? 20 : 45,
+                                                        headCount: isMobile ? 20 : 30,
                                                         tailCount: 4,
                                                         showTooltip: true,
                                                         callback: () => { window.open(`/address/${validator?.address}`) }
@@ -240,7 +240,7 @@ const YourDelegators = () => {
                                         rowHeight={60}
                                         data={delegators}
                                     >
-                                        <Column width={400} verticalAlign="middle">
+                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Delegator address</HeaderCell>
                                             <Cell>
                                                 {(rowData: Delegator) => {
@@ -260,7 +260,7 @@ const YourDelegators = () => {
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column width={150} verticalAlign="middle">
+                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Staked Amount</HeaderCell>
                                             <Cell>
                                                 {(rowData: Delegator) => {

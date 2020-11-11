@@ -88,7 +88,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         time:tx.time,
         blockNumber:tx.blockNumber,
         blockHash: tx.blockHash,
-        status:tx.status,
+        status:tx.status === 1,
         nonce:tx.nonce,
         age: (nowTime - createdTime),
         transactionIndex:tx.transactionIndex,
