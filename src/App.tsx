@@ -30,6 +30,7 @@ import AddressDetail from './pages/AddressDetail';
 import CreateByMnemonic from './pages/Wallet/CreateNewWallet/CreateByMnemonic';
 import SearchNotFound from './pages/searchNotFound';
 import Documentation from './pages/Documentation';
+import AccessByMnemonicPhrase from './pages/Wallet/AccessMyWallet/AccessByMnemonic';
 
 class App extends Component {
   render() {
@@ -89,6 +90,9 @@ class App extends Component {
                 </Route>
                 <Route path="/access-keystore">
                   <AccessByKeyStore />
+                </Route>
+                <Route path="/access-mnemonic-pharse">
+                  <AccessByMnemonicPhrase />
                 </Route>
                 <Route path="/wallet">
                   <DashboardWallet />

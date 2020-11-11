@@ -75,3 +75,8 @@
         padding: 8px;
     }
 }
+@media screen and (max-width: 740px) {
+    .rs-panel-body{
+      padding:20px !important;
+    }
+}
