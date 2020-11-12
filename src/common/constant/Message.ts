@@ -14,5 +14,6 @@ export const ErrorMessage = {
     MaxChangeRateMoreThanHundred: 'The commission max change rate value cannot be more than 100%',
     MnemonicVerifyIncorrect: 'Mnemonic verify incorrect! Please write it down correctly!',
     MnemonicPhraseInvalid: 'The Mnemonic Phrase is incorrect. Please try again.',
-    AbiInvalid: 'The ABI format is invalid'
+    AbiInvalid: 'The ABI format is invalid',
+    CannotSendKAIToYourSelf: 'Cannot send KAI to yourself.'
 }

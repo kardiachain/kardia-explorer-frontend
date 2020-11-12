@@ -5,9 +5,10 @@ import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat, onlyNumber, verifyAmount } from '../../../../common/utils/number';
+import { numberFormat, onlyNumber } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
+import { getBalance } from '../../../../service/kai-explorer';
 import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 const { Column, HeaderCell, Cell } = Table;
@@ -23,24 +24,35 @@ const DelegatorCreate = () => {
     const { valAddr }: any = useParams();
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const history = useHistory()
+    const [delegateErrMsg, setDelegateErrMsg] = useState('')
+    const [balance, setBalance] = useState(0)
+    const myAccount = getAccount() as Account
+
 
     useEffect(() => {
-        getDelegationsByValidator(valAddr).then(setDelegators);
-        getValidator(valAddr).then(setValidator)
-
-    }, [valAddr]);
+        (async() => {
+            const data = await Promise.all([
+                getDelegationsByValidator(valAddr),
+                getValidator(valAddr),
+                getBalance(myAccount.publickey)
+            ]);
+            setDelegators(data[0])
+            setValidator(data[1])
+            setBalance(Number(weiToKAI(data[2])))
+        })()
+    }, [valAddr, myAccount.publickey]);
 
     const validateDelAmount = (value: any): boolean => {
-        if (!verifyAmount(value)) {
-            setErrorMessage(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setErrorMessage(ErrorMessage.Require)
             return false
         }
         if (Number(value) === 0) {
             setErrorMessage(ErrorMessage.ValueInvalid)
+            return false
+        }
+        if (Number(balance) === 0 || Number(balance) < value) {
+            setErrorMessage(ErrorMessage.BalanceNotEnough)
             return false
         }
         setErrorMessage('')
@@ -59,21 +71,23 @@ const DelegatorCreate = () => {
             setIsLoading(true)
             let account = getAccount() as Account
             const delegate = await delegateAction(valAddr, account, Number(delAmount))
-
             if (delegate && delegate.status === 1) {
                 Alert.success('Delegate success.')
                 setHashTransaction(delegate.transactionHash)
             } else {
                 Alert.error('Delegate failed.')
+                setDelegateErrMsg('Delegate failed.');
             }
-            setIsLoading(false)
-            setShowConfirmModal(false)
         } catch (error) {
-            const errJson = JSON.parse(error?.message)
-            Alert.error(`Delegate failed: ${errJson?.error?.message || ''}`)
-            setIsLoading(false)
-            setShowConfirmModal(false)
+            try {
+                const errJson = JSON.parse(error?.message);
+                setDelegateErrMsg(`Delegate failed: ${errJson?.error?.message}`)
+            } catch (error) {
+                setDelegateErrMsg('Delegate failed.');
+            }
         }
+        setIsLoading(false)
+        setShowConfirmModal(false)
     }
 
     return (
@@ -121,6 +135,7 @@ const DelegatorCreate = () => {
                                         <Button size="big" onClick={submitDelegate}>Delegate</Button>
                                     </FormGroup>
                                 </Form>
+                                <ErrMessage message={delegateErrMsg} />
                                 {
                                     hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
                                         hash: hashTransaction,

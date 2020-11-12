@@ -11,7 +11,7 @@ import DelegatorCreate from './DelegatedValidators/DelegatorCreate';
 import { useViewport } from '../../../context/ViewportContext';
 import DelegatedValidators from './DelegatedValidators';
 import AuthRouter from '../../../AuthRouter';
-import DeployWithSourceCode from './SmartContract/DeployWithSourceCode';
+// import DeployWithSourceCode from './SmartContract/DeployWithSourceCode';
 import DeployWithByteCode from './SmartContract/DeployWithByteCode';
 import InteracteWithSmc from './SmartContract/InteracteWithSmc';
 
@@ -46,8 +46,8 @@ const DashboardWallet = () => {
                                     Smart Contract
                                 </Nav.Item> */}
                                 <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract" open={true}>
-                                    <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item>
-                                    <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy By ByteCode</Dropdown.Item>
+                                    {/* <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item> */}
+                                    <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>
                                     <Dropdown.Item eventKey="interaction" href="/wallet/smc/interaction">Interact With Contract</Dropdown.Item>
                                 </Dropdown>
                             </Nav>
@@ -69,7 +69,7 @@ const DashboardWallet = () => {
                     <Route path="/wallet/staking/:valAddr">
                         <DelegatorCreate />
                     </Route>
-                    <AuthRouter component={DeployWithSourceCode} path="/wallet/smc/source-code-deployment" />
+                    {/* <AuthRouter component={DeployWithSourceCode} path="/wallet/smc/source-code-deployment" /> */}
                     <AuthRouter component={DeployWithByteCode} path="/wallet/smc/byte-code-deployment" />
                     <AuthRouter component={InteracteWithSmc} path="/wallet/smc/interaction" />
                     <Route path="/wallet">

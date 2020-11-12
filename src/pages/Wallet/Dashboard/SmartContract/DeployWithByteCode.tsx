@@ -3,6 +3,7 @@ import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Inp
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
+import { onlyInteger } from '../../../../common/utils/number';
 import { jsonValid } from '../../../../common/utils/validate';
 import { deploySmartContract } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -33,13 +34,13 @@ const DeployWithByteCode = () => {
     const [gasPrice, setGasPrice] = useState(1)
     const [construc, setConstruc] = useState('')
     const [construcPlaceholder, setConstrucPlaceholder] = useState('')
+    // const [gasPriceErr, setGasPriceErr] = useState('')
 
     const validateByteCode = (byteCode: string) => {
         if (!byteCode) {
             setByteCodeErr(ErrorMessage.Require)
             return false;
         }
-
         setByteCodeErr('')
         return true;
     }
@@ -49,7 +50,6 @@ const DeployWithByteCode = () => {
             setAbiErr(ErrorMessage.Require);
             return false;
         }
-
         if (!jsonValid(abiString)) {
 
             setAbiErr(ErrorMessage.AbiInvalid);
@@ -79,12 +79,12 @@ const DeployWithByteCode = () => {
                 bytecode: byteCode,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: construc.split(",").map(item => item.trim())
+                // params: construc.split(",").map(item => item.trim())
+                params: [],
             } as SMCDeployObject
-            console.log(txObject);
             const deploy = await deploySmartContract(txObject);
             setLoading(false)
-            console.log(deploy);
+            console.log("Deploy", deploy);
         } catch (error) {
             console.log(error);
         }
@@ -105,16 +105,14 @@ const DeployWithByteCode = () => {
             const abiJson = JSON.parse(value)
             if (abiJson && abiJson.length > 0) {
                 const construc = abiJson.filter((value: any) => value.type === 'constructor')
-                const placeHoler = construc[0].inputs && construc[0].inputs.map((item: any) => {
+                const placeHoler = construc[0] && construc[0].inputs && construc[0].inputs.map((item: any) => {
                     return `${item.type} ${item.name}`
                 });
-                setConstrucPlaceholder(placeHoler.join(', '))
+                setConstrucPlaceholder(placeHoler && placeHoler.length > 0 && placeHoler.join(', '))
             }
 
         }
-
     }
-
     return (
         <div className="deploy-bytecode-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
@@ -133,8 +131,10 @@ const DeployWithByteCode = () => {
                                     placeholder="Gas Limit"
                                     value={gasLimit}
                                     onChange={(value) => {
-                                        setGasLimit(value);
-                                        validateGasLimit(value)
+                                        if (onlyInteger(value)) {
+                                            setGasLimit(value);
+                                            validateGasLimit(value)
+                                        }
                                     }}
                                     width={50}
                                 />
@@ -149,7 +149,7 @@ const DeployWithByteCode = () => {
                                     onChange={setGasPrice}
                                     style={{ width: 250 }}
                                 />
-                                <ErrMessage message={gasLimitErr} />
+                                {/* <ErrMessage message={gasPriceErr} /> */}
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         <FlexboxGrid>
@@ -197,7 +197,7 @@ const DeployWithByteCode = () => {
                                         setConstruc(value);
                                     }}
                                 />
-                                <ErrMessage message={gasLimitErr} />
+                                {/* <ErrMessage message={gasLimitErr} /> */}
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
                                 <Button size="big" loading={loading} onClick={deploy} style={{ width: '230px' }}>DEPLOY CONTRACT</Button>

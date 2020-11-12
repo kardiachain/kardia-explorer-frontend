@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel, Uploader } from 'rsuite';
-import SmartContract from '.';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel } from 'rsuite';
 import Button from '../../../../common/components/Button';
 
 const InteracteWithSmc = () => {
     
     const [smcAddr, setSmcAddr] = useState('')
     const [abi, setAbi] = useState('')
+
+    const interact = async () => {
+        
+    }
 
     return (
         <div>
@@ -48,7 +51,7 @@ const InteracteWithSmc = () => {
                                 />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{marginTop: '25px', paddingLeft: 0}}>
-                                <Button size="big" style={{width: '250px'}}>INTERACT CONTRACT</Button>
+                                <Button size="big" style={{width: '250px'}} onClick={interact}>INTERACT CONTRACT</Button>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </FormGroup>

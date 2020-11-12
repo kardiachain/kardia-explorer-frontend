@@ -7,7 +7,6 @@ const deploySmartContract = async (object: SMCDeployObject) => {
         // const estimatedGas = await deployment.estimateGas({
         //     from: object.account.publickey
         // });
-        console.log("Object: ", object);
         const deployResult = await deployment.send(object.account.privatekey, {
             gas: 10000000,
             gasPrice: object.gasPrice + 1,
@@ -21,7 +20,6 @@ const deploySmartContract = async (object: SMCDeployObject) => {
 
 const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
     try {
-        console.log(object);
         const contract = kardiaContract(kardiaProvider, object.bytecode, object.abi);
         const invoke = contract.invoke({
           params: object.params || [],
@@ -41,11 +39,9 @@ const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
               gas: 10000000,
               gasPrice: 2
             });
-            console.log(invokeResult);
             return invokeResult;
           } else {
             invokeResult = await invoke.call(object.contractAddress);
-            console.log("invokeResult Call", invokeResult);
             return invokeResult;
           }
     } catch (error) {
@@ -55,5 +51,6 @@ const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
 }
 
 export {
-    deploySmartContract
+    deploySmartContract,
+    invokeFunctionFromContractAbi
 }

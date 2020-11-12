@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, ControlLabel, Form, FormControl, FormGroup, Modal } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
-import { onlyNumber, verifyAmount } from '../../../../common/utils/number';
+import { weiToKAI } from '../../../../common/utils/amount';
+import { onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
+import { getBalance } from '../../../../service/kai-explorer';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
@@ -26,12 +28,18 @@ const ValidatorCreate = () => {
 
     const [hashTransaction, setHashTransaction] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [createValErrMsg, setCreateValErrMsg] = useState('')
+    const [balance, setBalance] = useState(0)
+    const myAccount = getAccount() as Account
+
+    useEffect(() => {
+        (async () => {
+            const bal = await getBalance(myAccount.publickey)
+            setBalance(Number(weiToKAI(bal)))
+        })()
+    }, [myAccount.publickey])
 
     const validateCommissionRate = (value: any) => {
-        if (!verifyAmount(value)) {
-            setCommissionRateErr(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setCommissionRateErr(ErrorMessage.Require)
             return false
@@ -57,10 +65,6 @@ const ValidatorCreate = () => {
     }
 
     const validateMaxRate = (value: any) => {
-        if (!verifyAmount(value)) {
-            setMaxRateErr(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setMaxRateErr(ErrorMessage.Require)
             return false
@@ -97,10 +101,6 @@ const ValidatorCreate = () => {
     }
 
     const validateMaxChangeRate = (value: any) => {
-        if (!verifyAmount(value)) {
-            setMaxChangeRateErr(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setMaxChangeRateErr(ErrorMessage.Require)
             return false
@@ -127,10 +127,6 @@ const ValidatorCreate = () => {
     }
 
     const validateMinSelfDelegation = (value: any) => {
-        if (!verifyAmount(value)) {
-            setMaxMinSelfDelegationErr(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setMaxMinSelfDelegationErr(ErrorMessage.Require)
             return false
@@ -152,16 +148,17 @@ const ValidatorCreate = () => {
     }
 
     const validateAmountDel = (value: any) => {
-        if (!verifyAmount(value)) {
-            setAmountDelErr(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setAmountDelErr(ErrorMessage.Require)
             return false
         }
         if (Number(value) === 0) {
             setAmountDelErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+  
+        if (Number(balance) === 0 || Number(balance) < value) {
+            setAmountDelErr(ErrorMessage.BalanceNotEnough)
             return false
         }
 
@@ -190,25 +187,29 @@ const ValidatorCreate = () => {
     }
 
     const registerValidator = async () => {
+        setHashTransaction('');
         try {
             setIsLoading(true)
             let account = await getAccount() as Account;
             let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
+            
             if (validator && validator.status === 1) {
                 Alert.success('Create validator success.')
                 setHashTransaction(validator.transactionHash)
             } else {
-                Alert.error('Create validator failed')
+                setCreateValErrMsg('Create validator failed.');
             }
-            resetForm();
-            setIsLoading(false)
-            setShowConfirmModal(false)
         } catch (error) {
-            const errJson = typeof error.message !== 'string' ?  JSON.parse(error?.message) : error.message
-            Alert.error(`Create validator failed: ${typeof errJson !== 'string' ?  errJson?.error?.message : errJson || ''}`)
-            setIsLoading(false)
-            setShowConfirmModal(false)
+            try {
+                const errJson = JSON.parse(error?.message);
+                setCreateValErrMsg(`Create validator failed: ${errJson?.error?.message}`)
+            } catch (error) {
+                setCreateValErrMsg('Create validator failed.');
+            }
         }
+        resetForm();
+        setIsLoading(false)
+        setShowConfirmModal(false)
     }
 
     return (
@@ -283,6 +284,7 @@ const ValidatorCreate = () => {
                     <Button size="big" onClick={submitValidator}>Register</Button>
                 </FormGroup>
             </Form>
+            <ErrMessage message={createValErrMsg} />
             {
                 hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
             }
