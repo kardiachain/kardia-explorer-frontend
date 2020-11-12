@@ -137,7 +137,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                            <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                 <HeaderCell>Validator</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -155,8 +155,8 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
-                                <HeaderCell>Total Staked Amount</HeaderCell>
+                            <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
+                                <HeaderCell>Staked Amount</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
@@ -165,7 +165,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
+                            <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Voting power</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -175,7 +175,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
+                            <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Total Delegators</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
@@ -185,7 +185,7 @@ const Validators = () => {
                                     }}
                                 </Cell>
                             </Column>
-                            <Column flexGrow={1} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
+                            <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Commission</HeaderCell>
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
