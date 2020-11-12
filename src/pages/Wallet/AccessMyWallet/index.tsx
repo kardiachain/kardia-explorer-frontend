@@ -12,13 +12,13 @@ const AccessMyWallet = () => {
                         <Panel header={<div className="header">Access Wallet</div>} shaded>
                             <div className="panel-body">
                                 <Button className="access-button" size="lg" block onClick={() => { history.push('/access-private-key') }}>
-                                    <Icon icon="unlock-alt" /> By Private Key
+                                    <Icon icon="unlock-alt" className="highlight" /> By Private Key
                                 </Button>
                                 <Button className="access-button" size="lg" block onClick={() => { history.push('/access-keystore') }}>
-                                    <Icon icon="file-code-o" /> By Keystore File
+                                    <Icon icon="file-code-o" className="highlight" /> By Keystore File
                                 </Button>
                                 <Button className="access-button" size="lg" block onClick={() => { history.push('./access-mnemonic-pharse')}}>
-                                    <Icon icon="list" /> By Mnemonic Phrase
+                                    <Icon icon="list" className="highlight" /> By Mnemonic Phrase
                                 </Button>
                             </div>
                         </Panel>
