@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { kardiaApi, kardiaCommon } from '../plugin/kardia-tool';
 import { cellValue } from '../common/utils/amount';
-import { Alert } from 'rsuite';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 
 const initialValue: WalletStore = {
@@ -86,21 +85,17 @@ export const getAccount = (): Account => {
 }
 
 export const generateTx = async (fromAccount: Account, toAddr: string, amount: number, gasLimit: number) => {
-    try {
-        const cellAmount = cellValue(amount);
-        let nonce = await kardiaApi.accountNonce(fromAccount.publickey);
-        const tx = await kardiaCommon.txGenerator(
-            toAddr,
-            cellAmount,
-            nonce,
-            1,
-            gasLimit,
-        );
-        const signedTx = await kardiaCommon.sign(tx, fromAccount.privatekey);
-        const txHash = await kardiaApi.sendSignedTransaction(signedTx.rawTransaction);
-        return txHash
-    }
-    catch (err) {
-        Alert.error(`Create Transaction Failed: ${err.message}`)
-    }
+    const cellAmount = cellValue(amount);
+    let nonce = await kardiaApi.accountNonce(fromAccount.publickey);
+    const tx = await kardiaCommon.txGenerator(
+        toAddr,
+        cellAmount,
+        nonce,
+        1,
+        gasLimit,
+    );
+    
+    const signedTx = await kardiaCommon.sign(tx, fromAccount.privatekey);
+    const txHash = await kardiaApi.sendSignedTransaction(signedTx.rawTransaction);
+    return txHash
 };

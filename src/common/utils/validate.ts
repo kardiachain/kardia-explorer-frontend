@@ -21,8 +21,18 @@ const hashValid = (txHash: string) : boolean => {
     return false;
 }
 
+const jsonValid = (value: any): boolean => {
+    try {
+        JSON.parse(value);
+    } catch (error) {
+        return false
+    }
+    return true;
+}
+
 export {
     privateKeyValid,
     addressValid,
-    hashValid
+    hashValid,
+    jsonValid
 }

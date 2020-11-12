@@ -123,6 +123,10 @@ code {
   height: 3px !important;
 }
 
+.rs-input{
+  padding:12px 11px !important;
+}
+
 @media screen and (max-width: 740px) {
   .rs-header{
     display: flex;
@@ -136,7 +140,7 @@ code {
   }
 
   .rs-panel-body{
-    padding:0 !important;
+    padding:10 !important;
   }
 
   .chartjs-size-monitor{

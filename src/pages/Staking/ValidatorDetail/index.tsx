@@ -4,11 +4,11 @@ import { Col, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { renderHashToRedirect } from '../../../common/utils/string';
 import { useViewport } from '../../../context/ViewportContext';
-import { getDelegationsByValidator, getValidator } from '../../../service/smc';
 import { isLoggedIn } from '../../../service/wallet'
 import './validator.css'
 import { numberFormat } from '../../../common/utils/number';
 import Button from '../../../common/components/Button';
+import { getDelegationsByValidator, getValidator } from '../../../service/smc/staking';
 
 const { Column, HeaderCell, Cell } = Table;
 
