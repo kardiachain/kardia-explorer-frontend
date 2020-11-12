@@ -19,27 +19,18 @@ font-weight:600;
     margin-top:0;
 }
 
-.title-right{
-    background:linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
-
-    padding: 5px 31px;
-    color: white;
-    cursor: pointer;
-    border-radius:2px;
-}
-
 .token-infor{
     flex:1;
-    padding: 5px 10%;
     display: flex;
     align-items: center;
-    color: #575757;
+
+    padding: 5px 10%;
+    
     font-weight: 500;
 }
 
 ._wrap > .rs-panel-body{
     height: 356px;
-    /* height: 100%; */
 
     display: grid;
     grid-template-columns: repeat(2,1fr);
