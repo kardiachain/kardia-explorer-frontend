@@ -67,13 +67,13 @@ const renderHashToRedirect = ({
     }
     return showTooltip ? (
         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
-            <span className="hex" style={{ cursor: 'pointer', color:'#9E3144' }}>
+            <span className="hex" style={{ cursor: 'pointer' }}>
                 <span onClick={() => {callback && callback()}}>{truncate(String(hash), headCount, tailCount)}{' '}</span>
                 {showCopy && renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
             </span>
         </Whisper>
     ) : (
-        <span className="hex" style={{ cursor: 'pointer', color:'#9E3144' }}>
+        <span className="hex" style={{ cursor: 'pointer' }}>
             <span onClick={() => {callback && callback()}} >{truncate(String(hash), headCount, tailCount)}{' '}</span>
             {showCopy && renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
         </span>
