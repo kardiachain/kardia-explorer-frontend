@@ -1,6 +1,6 @@
 .kai-button {
-    background: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
-    color: white;
+    background: var(--highlight);
+    color: var(--white-color);
     cursor: pointer;
     border-radius: 2px;
     font-weight: 600;
