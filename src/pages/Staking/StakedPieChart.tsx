@@ -32,7 +32,10 @@ const chartConfigDefault = {
         name: 'Value',
         colorByPoint: true,
         data: [] as any[]
-    }]
+    }],
+    credits: {
+        enabled: false
+    }
 }
 
 const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataForChart: StakedPieChartConfig }) => {
