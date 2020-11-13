@@ -8,7 +8,7 @@ const deploySmartContract = async (object: SMCDeployObject) => {
         //     from: object.account.publickey
         // });
         const deployResult = await deployment.send(object.account.privatekey, {
-            gas: 10000000,
+            gas: object.gasLimit,
             gasPrice: object.gasPrice + 1,
         });
         return deployResult;
@@ -19,11 +19,12 @@ const deploySmartContract = async (object: SMCDeployObject) => {
 
 const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
     try {
-        const contract = kardiaContract(kardiaProvider, object.bytecode, object.abi);
+        const contract = kardiaContract(kardiaProvider, "", JSON.parse(object.abi));
         const invoke = contract.invoke({
-          params: object.params || [],
-          name: object.functionName,
+          params: object.params,
+          name: object.functionName
         });
+
         let invokeResult = null;
         if (!object.isPure) {
             // const estimatedGas = await invoke.estimateGas({
@@ -34,13 +35,15 @@ const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
             // });
             //console.log(estimatedGas);
             invokeResult = await invoke.send(object.account.privatekey, object.contractAddress, {
-              amount: object.amount,
-              gas: 10000000,
-              gasPrice: 2
+            //   amount: object.amount,
+              gas: object.gasLimit || 10000000,
+              gasPrice: object.gasPrice || 1
             });
+            
             return invokeResult;
           } else {
-            invokeResult = await invoke.call(object.contractAddress);
+            invokeResult = await invoke.call(object.contractAddress,{},"latest");
+            console.log(invokeResult);
             return invokeResult;
           }
     } catch (error) {

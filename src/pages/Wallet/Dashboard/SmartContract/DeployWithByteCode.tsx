@@ -18,7 +18,7 @@ const onSuccess = () => {
 const DeployWithByteCode = () => {
 
     const gasPriceOption = [
-        { label: 'Nomal (1 Gwei)', value: 1 },
+        { label: 'Normal (1 Gwei)', value: 1 },
         { label: 'Regular (2 Gwei)', value: 2 },
         { label: 'Fast (3 Gwei)', value: 3 },
     ] as any[]
@@ -116,7 +116,7 @@ const DeployWithByteCode = () => {
                 bytecode: byteCode,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: construc.split(",").map(item => item.trim())
+                params: construc ? construc.split(",").map(item => item.trim()) : []
             } as SMCDeployObject
             const deployTx = await deploySmartContract(txObject);
             if(deployTx) {
@@ -167,7 +167,6 @@ const DeployWithByteCode = () => {
     }
 
     const downloadContractJsonFile = (object: ContractJsonFile) => {
-        console.log("Come download");
         const _json = JSON.stringify(object);
         const blob = new Blob([_json], { type: 'text/plain' });
         const e = document.createEvent('MouseEvents'), a = document.createElement('a');
@@ -208,6 +207,7 @@ const DeployWithByteCode = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
                                 <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
                                 <SelectPicker
+                                    className="dropdown-custom"
                                     data={gasPriceOption}
                                     searchable={false}
                                     value={gasPrice}
@@ -246,10 +246,10 @@ const DeployWithByteCode = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} className="form-addon-container">
                                         <ControlLabel>Abi Json:<span className="required-mask">*</span></ControlLabel>
                                     </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} className="form-addon-container button-addon">
                                         <div>
                                             <Button className="ghost-button"
                                                 onClick={() => {
@@ -275,7 +275,7 @@ const DeployWithByteCode = () => {
                                 />
                                 <ErrMessage message={abiErr} />
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={12}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                 <ControlLabel>Constructor:</ControlLabel>
                                 <FormControl
                                     disabled={disableConstrucInput}
