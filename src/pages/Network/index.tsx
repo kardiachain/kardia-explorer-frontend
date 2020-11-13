@@ -7,13 +7,17 @@ import { getNodes } from '../../service/kai-explorer/network';
 import SearchSection from '../../common/components/Header/SearchSection';
 import { useHistory } from 'react-router-dom';
 import './network.css'
+// import ForceGraph2D from 'react-force-graph-2d';
+import { ForceGraph2D, ForceGraph3D, ForceGraphVR, ForceGraphAR } from 'react-force-graph';
+// import ForceGraphVR from 'react-force-graph-vr';
+// import ForceGraphAR from 'react-force-graph-ar';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const Network = () => {
     const history = useHistory()
-    const [graphConfig, setGraphConfig] = useState({} as Partial<GraphConfiguration<KAINode, { source: string, target: string }>>)
-    const [graphData, setGraphData] = useState<any>({ nodes: [], links: [], focusedNodeId: "" })
+    const [graphConfig, setGraphConfig] = useState({} as any)
+    const [graphData, setGraphData] = useState({} as any)
 
     const { width, height } = useViewport()
 
@@ -21,48 +25,24 @@ const Network = () => {
 
     useEffect(() => {
         const graphWidth = width
-        const graphHeight = 500
-
-        setGraphConfig({
-            nodeHighlightBehavior: true,
-            node: {
-                color: 'lightgreen',
-                size: 120,
-                highlightStrokeColor: 'blue'
-            },
-            link: {
-                highlightColor: 'lightblue'
-            },
-            height: graphHeight,
-            width: graphWidth,
-            panAndZoom: true,
-            focusZoom: 50,
-            minZoom: 1,
-            maxZoom: 20,
-            d3: {
-                alphaTarget: 0.05,
-                gravity: -100,
-                linkLength: 100,
-                linkStrength: 1,
-                disableLinkForce: false
-            }
-        })
+        const graphHeight = 300
     }, [width, height])
+
+    function genRandomTree(N = 300, reverse = false) {
+        return {
+          nodes: [...Array(N).keys()].map(i => ({ id: i })),
+        links: [...Array(N).keys()]
+          .filter(id => id)
+          .map(id => ({
+            [reverse ? 'target' : 'source']: id,
+            [reverse ? 'source' : 'target']: Math.round(Math.random() * (id-1))
+          }))
+        };
+      }
 
     useEffect(() => {
         (async () => {
             const result = await getNodes()
-            console.log(result);
-
-            // const links = result.map(i => {
-            //     // result.map(j => {
-            //     //     return {
-            //     //         source: i.id,
-            //     //         target: j.id
-            //     //     }
-            //     // });
-            //     result.for
-            // })
             let linkArr = [] as any[];
             result.forEach((r1, i1) => {
                 result.forEach((r2, i2) => {
@@ -72,28 +52,73 @@ const Network = () => {
                 })
             })
 
-
-            console.log(linkArr)
+            // console.log(genRandomTree(10));
             
-            setGraphData({
-                nodes: result,
-                // links: [
-                //     { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-2' },
-                //     { source: 'KAI-Bootnode-1', target: 'KAI-Bootnode-3' },
-                //     { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-1' },
-                //     { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-2' },
-                //     { source: 'KAI-Bootnode-1', target: 'KAI-Genesis-Validator-3' },
-                //     { source: 'KAI-Bootnode-2', target: 'KAI-Bootnode-3' },
-                //     { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-1' },
-                //     { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-2' },
-                //     { source: 'KAI-Bootnode-2', target: 'KAI-Genesis-Validator-3' },
-                //     { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-1' },
-                //     { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-2' },
-                //     { source: 'KAI-Bootnode-3', target: 'KAI-Genesis-Validator-3' },
-                // ],
-                links: linkArr,
-                focusedNodeId: result[0] ? result[0].id : ""
-            })
+
+
+            console.log(result)
+
+            const graphData = {
+                nodes: result.map(item => {
+                    return {
+                        id: item.id
+                    }
+                }),
+                links: result.forEach((r1, i1) => {
+                    result.forEach((r2, i2) => {
+                        if(i1 !== i2) {
+                            linkArr.push({ source: r1.id, target: r2.id })
+                        }
+                    })
+                })
+            }
+
+            console.log(graphData);
+            
+            
+            // setGraphData({
+            //     nodes: result.map(item => {
+            //         return {
+            //             id: item.id
+            //         }
+            //     }),
+            //     links: result.forEach((r1, i1) => {
+            //         result.forEach((r2, i2) => {
+            //             if(i1 !== i2) {
+            //                 linkArr.push({ source: r1.id, target: r2.id })
+            //             }
+            //         })
+            //     }),
+            //     // links: linkArr,
+            // })
+
+            // setGraphData({
+            //     nodes: [ 
+            //         { 
+            //             id: "id1"
+            //         },
+            //         { 
+            //             id: "id2",
+            //         },
+            //         { 
+            //             id: "id3",
+            //         }
+            //     ],
+            //     links: [
+            //         {
+            //             source: "id1",
+            //             target: "id2"
+            //         },
+            //         {
+            //             source: "id1",
+            //             target: "id3"
+            //         },
+            //         {
+            //             source: "id3",
+            //             target: "id2"
+            //         },
+            //     ]
+            // })
         })()
     }, [])
 
@@ -107,21 +132,28 @@ const Network = () => {
                 </div>
             </div>
             <FlexboxGrid>
-                {/* {
+                {
                     !isMobile &&
                     <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={24} style={{ marginBottom: '25px' }}>
                         <Panel shaded>
                             {
-                                graphConfig.width && graphData.nodes.length > 0 &&
-                                <Graph
-                                    id='kai_network_graph'
-                                    data={graphData}
-                                    config={graphConfig}
-                                />
+                                // graphConfig.width && graphData.nodes.length > 0 &&
+                                // <Graph
+                                //     id='kai_network_graph'
+                                //     data={graphData}
+                                //     config={graphConfig}
+                                // />
+                                // <ForceGraph3D graphData={graphData}/>
                             }
+                            <ForceGraph3D
+                                height={500}
+                                nodeRelSize={5}
+                                graphData={genRandomTree()}
+                                nodeColor={() => 'rgb(158, 49, 68)'}
+                            />
                         </Panel>
                     </FlexboxGrid.Item>
-                } */}
+                }
                 <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={24}>
                     <Panel shaded>
                         <FlexboxGrid justify="space-between">
