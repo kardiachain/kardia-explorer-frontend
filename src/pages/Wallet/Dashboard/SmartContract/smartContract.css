@@ -8,3 +8,12 @@
 .deploy-bytecode-container .rs-flex-box-grid-item {
     margin-bottom: 15px;
 }
+
+.interact-smc-container .form-addon-container,
+.deploy-bytecode-container .form-addon-container {
+    margin-bottom: 5px;
+}
+.interact-smc-container .form-addon-container.button-addon,
+.deploy-bytecode-container .form-addon-container.button-addon {
+    text-align: right;
+}
