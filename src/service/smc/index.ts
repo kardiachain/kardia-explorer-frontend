@@ -12,9 +12,8 @@ const deploySmartContract = async (object: SMCDeployObject) => {
             gasPrice: object.gasPrice + 1,
         });
         return deployResult;
-    } catch (error) {
-        console.log(error);
-        return error;
+    } catch (err) {
+        throw err
     }
 }
 
