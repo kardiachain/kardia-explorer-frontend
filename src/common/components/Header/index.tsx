@@ -69,7 +69,7 @@ const Header = () => {
                                                     <Dropdown.Item href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>Transactions history</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/staking/your-delegators" icon={<Icon icon="people-group" />} >Your Delegators</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/staking/delegated-validators" icon={<Icon icon="group" />}>Delegated Validators</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>Smart contract</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/smc/byte-code-deployment" icon={<Icon icon="file-code-o" />}>Smart contract</Dropdown.Item>
                                                 </Dropdown>
                                             )
                                     }
@@ -113,7 +113,7 @@ const Header = () => {
                                     <Dropdown.Item eventKey="transaction-history" href="/wallet/transaction-history">Transactions history</Dropdown.Item>
                                     <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators" >Your Delegators</Dropdown.Item>
                                     <Dropdown.Item eventKey="delegated-validators" href="/wallet/staking/delegated-validators" >Delegated Validators</Dropdown.Item>
-                                    <Dropdown.Item eventKey="smart-contract" href="/wallet/smart-contract">Smart contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="smart-contract" href="/wallet/smc/byte-code-deployment">Smart contract</Dropdown.Item>
                                     <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                                 </Dropdown>
                             ) : (
