@@ -12,7 +12,7 @@ const invokeCallData = async (methodName: string, params: any[]) => {
         name: methodName
     })
     
-    return await invoke.call(STAKING_SMC_ADDRESS)
+    return await invoke.call(STAKING_SMC_ADDRESS, {}, "latest")
 }
 
 const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0) => {

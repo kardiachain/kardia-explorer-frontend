@@ -123,8 +123,13 @@ code {
   height: 3px !important;
 }
 
-.rs-input{
+.rs-input,
+.dropdown-custom .rs-btn{
   padding:12px 11px !important;
+}
+.dropdown-custom .rs-picker-toggle.rs-btn .rs-picker-toggle-clean,
+.dropdown-custom .rs-picker-toggle.rs-btn .rs-picker-toggle-caret {
+  top: 12px !important;
 }
 
 @media screen and (max-width: 740px) {
