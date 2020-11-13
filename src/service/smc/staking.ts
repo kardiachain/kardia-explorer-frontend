@@ -1,8 +1,8 @@
-import { cellValue, weiToKAI } from '../common/utils/amount';
-import { STAKING_SMC_ADDRESS } from '../config/api';
-import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
-import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
-import STAKING_BYTE_CODE from '../resources/smc-compile/staking-bin.json'
+import { cellValue, weiToKAI } from '../../common/utils/amount';
+import { STAKING_SMC_ADDRESS } from '../../config/api';
+import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
+import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
+import STAKING_BYTE_CODE from '../../resources/smc-compile/staking-bin.json'
 
 const stakingContract = kardiaContract(kardiaProvider, STAKING_BYTE_CODE, STAKING_ABI);
 

@@ -18,14 +18,13 @@ const BlockSection = ({ blockList = [] }: {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
-                        autoHeight
                         rowHeight={70}
-                        minHeight={420}
+                        height={400}
                         data={blockList}
                         hover={false}
                         wordWrap
                     >
-                        <Column flexGrow={2}>
+                        <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                             <HeaderCell>Block Height</HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
@@ -41,7 +40,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={3}>
+                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
                             <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {

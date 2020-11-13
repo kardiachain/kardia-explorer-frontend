@@ -144,7 +144,7 @@ const Network = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 130 : 0} verticalAlign="middle">
                                         <HeaderCell>Name</HeaderCell>
                                         <Cell>
                                             {(rowData: KAINode) => {
@@ -157,7 +157,7 @@ const Network = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} verticalAlign="middle" align="center">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle" align="center">
                                         <HeaderCell>Address</HeaderCell>
                                         <Cell>
                                             {(rowData: KAINode) => {
@@ -165,7 +165,7 @@ const Network = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.address,
-                                                            headCount: isMobile ? 10 : 30,
+                                                            headCount: isMobile ? 5 : 20,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.address}`) }

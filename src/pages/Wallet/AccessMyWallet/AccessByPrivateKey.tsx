@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Col, FlexboxGrid, Form, FormControl, FormGroup, Panel, Alert } from 'rsuite';
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel, Alert } from 'rsuite';
 import { useWalletStorage } from '../../../service/wallet';
 import Wallet from 'ethereumjs-wallet'
 import * as EthUtil from 'ethereumjs-util'
@@ -8,6 +8,7 @@ import './accessWallet.css'
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../common/constant/Message';
 import { privateKeyValid } from '../../../common/utils/validate';
+import Button from '../../../common/components/Button';
 
 const AccessByPrivateKey = () => {
     let history = useHistory();
@@ -77,9 +78,9 @@ const AccessByPrivateKey = () => {
                                 </Form>
                                 <div className="button-container">
                                     <Link to="/access-wallet">
-                                        <Button appearance="ghost" color="violet">Back</Button>
+                                        <Button size="big" className="primary-button" >Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} appearance="primary" color="violet" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                    <Button loading={loadingBtnSubmit} size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

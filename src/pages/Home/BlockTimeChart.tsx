@@ -87,7 +87,7 @@ const options = {
                     labelString: 'Time (s)'
                 },
                 ticks: {
-                    min: 1
+                    min: 4
                 }
             }
         ]

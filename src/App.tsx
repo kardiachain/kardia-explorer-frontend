@@ -29,6 +29,8 @@ import Validators from './pages/Staking';
 import AddressDetail from './pages/AddressDetail';
 import CreateByMnemonic from './pages/Wallet/CreateNewWallet/CreateByMnemonic';
 import SearchNotFound from './pages/searchNotFound';
+import Documentation from './pages/Documentation';
+import AccessByMnemonicPhrase from './pages/Wallet/AccessMyWallet/AccessByMnemonic';
 
 class App extends Component {
   render() {
@@ -89,6 +91,9 @@ class App extends Component {
                 <Route path="/access-keystore">
                   <AccessByKeyStore />
                 </Route>
+                <Route path="/access-mnemonic-pharse">
+                  <AccessByMnemonicPhrase />
+                </Route>
                 <Route path="/wallet">
                   <DashboardWallet />
                 </Route>
@@ -97,6 +102,9 @@ class App extends Component {
                 </Route>
                 <Route path="/search-not-found">
                   <SearchNotFound />
+                </Route>
+                <Route path="/documentation">
+                  <Documentation />
                 </Route>
                 <Route path="/">
                   <Home />

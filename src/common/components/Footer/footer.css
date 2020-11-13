@@ -1,6 +1,6 @@
 .kai-footer {
-    background-color: #2a343d;
-    color: #FFFFFF;
+    background-color: var(--nav-color);
+    color: var(--white-color);
     height: 80px;
     display: flex;
     align-items: center;
@@ -8,7 +8,7 @@
 }
 
 .footer-icon{
-    color:white;
+    color:var(--white-color);
     margin-right: 22px;
 }
 

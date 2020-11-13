@@ -3,9 +3,9 @@ import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Ic
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { onlyNumber, verifyAmount, numberFormat } from '../../../../common/utils/number';
+import { onlyNumber, numberFormat } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
-import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc';
+import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
@@ -31,12 +31,10 @@ const YourDelegators = () => {
     const [showUpdateForm, setShowUpdateForm] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [hashTransaction, setHashTransaction] = useState('')
+    const [statePending, setStatePending] = useState(true)
+    const [updateValErrMsg, setUpdateValErrMsg] = useState('')
 
     const validateCommissionRate = (value: any) => {
-        if (!verifyAmount(value)) {
-            setCommissionRateErr(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setCommissionRateErr(ErrorMessage.Require)
             return false
@@ -56,10 +54,6 @@ const YourDelegators = () => {
     }
 
     const validateMinSelfDelegation = (value: any) => {
-        if (!verifyAmount(value)) {
-            setMaxMinSelfDelegationErr(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setMaxMinSelfDelegationErr(ErrorMessage.Require)
             return false
@@ -81,6 +75,7 @@ const YourDelegators = () => {
     }
 
     const update = async () => {
+        setHashTransaction('')
         try {
             setIsLoading(true)
             let validator = await updateValidator(Number(commissionRate), Number(minSelfDelegation), myAccount);
@@ -88,17 +83,19 @@ const YourDelegators = () => {
                 Alert.success('Update validator success.')
                 setHashTransaction(validator.transactionHash)
             } else {
-                Alert.error('Create validator failed')
+                setUpdateValErrMsg('Update validator failed.');
             }
-            resetForm();
-            setIsLoading(false)
-            setShowConfirmModal(false)
         } catch (error) {
-            const errJson = typeof error.message !== 'string' ? JSON.parse(error?.message) : error.message
-            Alert.error(`Update validator failed: ${typeof errJson !== 'string' ? errJson?.error?.message : errJson || ''}`)
-            setIsLoading(false)
-            setShowConfirmModal(false)
+            try {
+                const errJson = JSON.parse(error?.message);
+                setUpdateValErrMsg(`Update validator failed: ${errJson?.error?.message}`)
+            } catch (error) {
+                setUpdateValErrMsg('Update validator failed.');
+            }
         }
+        resetForm();
+        setIsLoading(false)
+        setShowConfirmModal(false)
     }
 
     const resetForm = () => {
@@ -110,6 +107,7 @@ const YourDelegators = () => {
         (async () => {
             const isVal = await isValidator(myAccount.publickey);
             setIsVal(isVal)
+            setStatePending(false)
             if (isVal) {
                 const delegators = await getDelegationsByValidator(myAccount.publickey);
                 const validator = await getValidator(myAccount.publickey)
@@ -119,7 +117,7 @@ const YourDelegators = () => {
         })();
     }, [myAccount.publickey]);
 
-    return (
+    return !statePending ? (
         !isVal ? (
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
@@ -160,7 +158,7 @@ const YourDelegators = () => {
                                                 {
                                                     renderHashToRedirect({
                                                         hash: validator?.address,
-                                                        headCount: isMobile ? 20 : 45,
+                                                        headCount: isMobile ? 20 : 30,
                                                         tailCount: 4,
                                                         showTooltip: true,
                                                         callback: () => { window.open(`/address/${validator?.address}`) }
@@ -215,6 +213,7 @@ const YourDelegators = () => {
                                                 <FormGroup>
                                                     <Button size="big" onClick={submitUpdateValidator}>Update</Button>
                                                 </FormGroup>
+                                                <ErrMessage message={updateValErrMsg} />
                                                 {
                                                     hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
                                                 }
@@ -240,7 +239,7 @@ const YourDelegators = () => {
                                         rowHeight={60}
                                         data={delegators}
                                     >
-                                        <Column width={400} verticalAlign="middle">
+                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Delegator address</HeaderCell>
                                             <Cell>
                                                 {(rowData: Delegator) => {
@@ -260,7 +259,7 @@ const YourDelegators = () => {
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column width={150} verticalAlign="middle">
+                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Staked Amount</HeaderCell>
                                             <Cell>
                                                 {(rowData: Delegator) => {
@@ -297,7 +296,7 @@ const YourDelegators = () => {
                     </Modal>
                 </>
             )
-    )
+    ) : (<></>)
 }
 
 export default YourDelegators;

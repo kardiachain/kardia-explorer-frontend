@@ -19,14 +19,13 @@ const TransactionSection = ({ transactionList = []}: {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
-                        autoHeight
                         rowHeight={70}
-                        minHeight={420}
+                        height={400}
                         hover={false}
                         data={transactionList}
                         wordWrap
                     >
-                        <Column flexGrow={2}>
+                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
                             <HeaderCell>Tx Hash</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -47,7 +46,7 @@ const TransactionSection = ({ transactionList = []}: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={2}>
+                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
                             <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -78,7 +77,7 @@ const TransactionSection = ({ transactionList = []}: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="right" flexGrow={1}>
+                        <Column align="right" minWidth={isMobile ? 100 : 0} flexGrow={1}>
                             <HeaderCell>Value</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {

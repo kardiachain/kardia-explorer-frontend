@@ -59,7 +59,7 @@ const TxList = () => {
             <SearchSection />
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"lg"} />
+                    <Icon className="highlight" icon="exchange" size={"2x"} />
                     <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
                 </div>
             </div>
@@ -78,7 +78,7 @@ const TxList = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -97,7 +97,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 70 : 0} verticalAlign="middle">
                                         <HeaderCell>Block</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -110,7 +110,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -123,7 +123,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -141,7 +141,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -160,7 +160,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

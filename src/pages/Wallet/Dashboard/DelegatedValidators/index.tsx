@@ -5,7 +5,7 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { getValidatorsByDelegator, withdraw, withdrawReward } from '../../../../service/smc';
+import { getValidatorsByDelegator, withdraw, withdrawReward } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -78,7 +78,7 @@ const Delegator = () => {
                     hover={false}
                     wordWrap
                 >
-                    <Column flexGrow={3} verticalAlign="middle">
+                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                         <HeaderCell>Validator</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -87,7 +87,7 @@ const Delegator = () => {
                                         {
                                             renderHashToRedirect({
                                                 hash: rowData.validatorAddr,
-                                                headCount: isMobile ? 20 : 30,
+                                                headCount: isMobile ? 5 : 15,
                                                 tailCount: 4,
                                                 showTooltip: true,
                                                 callback: () => { window.open(`/address/${rowData.validatorAddr}`) }
@@ -98,8 +98,8 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={2} verticalAlign="middle">
-                        <HeaderCell>Stakes Amount</HeaderCell>
+                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                        <HeaderCell>Staked Amount</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
@@ -108,8 +108,8 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={2} verticalAlign="middle">
-                        <HeaderCell>Rewards Amount</HeaderCell>
+                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                        <HeaderCell>Claimable Rewards</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (

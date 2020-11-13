@@ -56,18 +56,20 @@ const Header = () => {
                                         <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
                                         <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">View Network</Nav.Item>
-                                    <Nav.Item eventKey="network" icon={<Icon icon="peoples" />} href="/staking" >Staking</Nav.Item>
+                                    <Nav.Item eventKey="network" icon={<Icon icon="connectdevelop" />} href="/network">Network</Nav.Item>
+                                    <Nav.Item eventKey="documentation" icon={<Icon icon="book" />} href="/documentation">Documentation</Nav.Item>
+                                    <Nav.Item eventKey="staking" icon={<Icon icon="peoples" />} href="/staking" >Staking</Nav.Item>
                                     <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
                                             <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
                                         ) : (
                                                 <Dropdown eventKey="wallet" icon={<Icon icon="money" />} title="Wallet">
-                                                    <Dropdown.Item href="/wallet/send-transaction">Send transaction</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/transaction-history">Transactions history</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/staking">Staking</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/smart-contract">Smart contract</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/send-transaction" icon={<Icon icon="send" />}>Send transaction</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>Transactions history</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/staking/your-delegators" icon={<Icon icon="people-group" />} >Your Delegators</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/staking/delegated-validators" icon={<Icon icon="group" />}>Delegated Validators</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/smc/byte-code-deployment" icon={<Icon icon="file-code-o" />}>Smart contract</Dropdown.Item>
                                                 </Dropdown>
                                             )
                                     }
@@ -98,7 +100,8 @@ const Header = () => {
                             <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
                             <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
                         </Dropdown>
-                        <Nav.Item eventKey="network" href="/network" >View Network</Nav.Item>
+                        <Nav.Item eventKey="network" href="/network" >Network</Nav.Item>
+                        <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item>
                         <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
                         {
                             isLoggedIn() ? (
@@ -108,8 +111,9 @@ const Header = () => {
                                 >
                                     <Dropdown.Item eventKey="send-transaction" href="/wallet/send-transaction">Send transaction</Dropdown.Item>
                                     <Dropdown.Item eventKey="transaction-history" href="/wallet/transaction-history">Transactions history</Dropdown.Item>
-                                    <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Staking</Dropdown.Item>
-                                    <Dropdown.Item eventKey="smart-contract" href="/wallet/smart-contract">Smart contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators" >Your Delegators</Dropdown.Item>
+                                    <Dropdown.Item eventKey="delegated-validators" href="/wallet/staking/delegated-validators" >Delegated Validators</Dropdown.Item>
+                                    <Dropdown.Item eventKey="smart-contract" href="/wallet/smc/byte-code-deployment">Smart contract</Dropdown.Item>
                                     <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                                 </Dropdown>
                             ) : (

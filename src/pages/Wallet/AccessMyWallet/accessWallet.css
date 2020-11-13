@@ -1,6 +1,7 @@
 .access-wallet-container,
 .access-privatekey-container,
-.access-keystore-container {
+.access-keystore-container,
+.access-mnemonic-container {
     margin-top: 50px;
     width: 100%;
 }
@@ -36,18 +37,16 @@
 .access-wallet-container .rs-panel-heading {
     color: #ffffff;
     font-size: 20px;
-    background: rgb(168 62 247);
+    background-color: #7a848b;
 }
 
 .access-wallet-container .panel-body .rs-btn {
     text-align: left;
     font-size: 20px;
     padding: 20px 20px;
-    border: 1px solid rgb(168 62 247);
+    box-shadow: 1px 1px 3px 0px #c6c6cb;
     background: white;
     color: #1d1b1b;
-    line-height: -6;
-    vertical-align: middle;
     position: relative;
     padding-left: 70px;
     margin-bottom: 20px;
@@ -63,10 +62,11 @@
 }
 
 .access-privatekey-container .title,
-.access-keystore-container .title {
+.access-keystore-container .title,
+.access-mnemonic-container .title {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 40px;
     margin-top: 20px;
-    color: rgb(168 62 247);
+    /* color: rgb(168 62 247); */
 }

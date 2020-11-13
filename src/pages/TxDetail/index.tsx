@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -59,13 +59,7 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="content">
-                                            {renderHashToRedirect({
-                                                hash: numberFormat(Number(txDetail?.blockNumber)),
-                                                headCount: 30,
-                                                tailCount: 4,
-                                                showTooltip: true,
-                                                callback: () => { history.push(`/block/${txDetail?.blockNumber}`) }
-                                            })}
+                                            <Link to={`/block/${txDetail?.blockNumber}`} >{numberFormat(Number(txDetail?.blockNumber))}</Link>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -82,7 +76,8 @@ const TxDetail = () => {
                                                 headCount: 70,
                                                 tailCount: 4,
                                                 showTooltip: true,
-                                                callback: () => { history.push(`/block/${txDetail?.blockHash}`) }
+                                                callback: () => { history.push(`/block/${txDetail?.blockHash}`) },
+                                                showCopy: true
                                             })}
                                         </div>
                                     </FlexboxGrid.Item>
@@ -94,12 +89,11 @@ const TxDetail = () => {
                                         <div className="title">Status</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        {/* {
-                                        txDetail?.status ?
-                                            <div className="content"><Tag color="green">SUCCESS</Tag></div> :
-                                            <div className="content"><Tag color="yellow">PENDING</Tag></div>
-                                    } */}
-                                        <div className="content"><Tag color="green">SUCCESS</Tag></div>
+                                        {
+                                            txDetail?.status ?
+                                                <div className="content"><Tag color="green">SUCCESS</Tag></div> :
+                                                <div className="content"><Tag color="yellow">PENDING</Tag></div>
+                                        }
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -125,7 +119,8 @@ const TxDetail = () => {
                                                 headCount: 50,
                                                 tailCount: 4,
                                                 showTooltip: true,
-                                                callback: () => { history.push(`/address/${txDetail?.from}`) }
+                                                callback: () => { history.push(`/address/${txDetail?.from}`) },
+                                                showCopy: true
                                             })}
                                         </div>
                                     </FlexboxGrid.Item>
@@ -141,7 +136,8 @@ const TxDetail = () => {
                                             hash: txDetail?.to,
                                             headCount: 50,
                                             tailCount: 4,
-                                            callback: () => { history.push(`/address/${txDetail?.to}`) }
+                                            callback: () => { history.push(`/address/${txDetail?.to}`) },
+                                            showCopy: true
                                         })}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -152,7 +148,7 @@ const TxDetail = () => {
                                         <div className="title">Value</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{weiToKAI(txDetail?.value)} KAI</div>
+                                        <div className="content">{numberFormat(weiToKAI(txDetail?.value))} KAI</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -196,16 +192,20 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Input Data</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{txDetail?.input}</div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
+                            {
+                                !txDetail?.input || txDetail?.input === '0x' ? <></> : (
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                <div className="title">Input Data</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                <div className="content">{txDetail?.input}</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                )
+                            }
                         </List>
                 }
             </Panel>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './sendTxs.css'
 import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, Alert, ControlLabel, Modal } from 'rsuite'
 import { ErrorMessage } from '../../../../common/constant/Message'
-import { onlyNumber, verifyAmount } from '../../../../common/utils/number'
+import { onlyInteger, onlyNumber } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx } from '../../../../service/wallet'
@@ -12,7 +12,7 @@ import { renderHashToRedirect } from '../../../../common/utils/string'
 import Button from '../../../../common/components/Button'
 
 const SendTransaction = () => {
-    const [amount, setAmount] = useState(0)
+    const [amount, setAmount] = useState('')
     const [toAddress, setToAddress] = useState('')
     const [gasLimit, setGasLimit] = useState(21000)
     const [amountErr, setAmountErr] = useState('')
@@ -23,6 +23,7 @@ const SendTransaction = () => {
     const [sendBntLoading, setSendBntLoading] = useState(false)
     const [txHash, setTxHash] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [sendTxErrMs, setSendTxErrMsg] = useState('')
     useEffect(() => {
         (async () => {
             const balance = await getBalance(myAccount.publickey)
@@ -30,12 +31,7 @@ const SendTransaction = () => {
         })()
     }, [myAccount.publickey])
 
-    const validateAmount = (amount: number): boolean => {
-        if (!verifyAmount(amount)) {
-            setAmountErr(ErrorMessage.NumberInvalid)
-            return false
-        }
-
+    const validateAmount = (amount: any): boolean => {
         if (Number(amount) === 0) {
             setAmountErr(ErrorMessage.AmountNotZero)
             return false
@@ -61,11 +57,15 @@ const SendTransaction = () => {
             setToAddressErr(ErrorMessage.AddressInvalid)
             return false
         }
+        if(addr.toLocaleLowerCase() === myAccount.publickey.toLocaleLowerCase()) {
+            setToAddressErr(ErrorMessage.CannotSendKAIToYourSelf)
+            return false;
+        }
         setToAddressErr('')
         return true
     }
 
-    const validateGasLimit = (number: number): boolean => {
+    const validateGasLimit = (number: number): boolean => {        
         if (!number) {
             serGasLimitErr(ErrorMessage.Require)
             return false
@@ -75,7 +75,7 @@ const SendTransaction = () => {
     }
 
     const resetFrom = () => {
-        setAmount(0);
+        setAmount('');
         setToAddress('');
         setGasLimit(21000)
     }
@@ -89,13 +89,23 @@ const SendTransaction = () => {
 
     const confirmSend = async () => {
         setSendBntLoading(true)
-        const txHash = await generateTx(myAccount, toAddress, amount, gasLimit)
-        if (txHash) {
-            setTxHash(txHash);
-            Alert.success('Send transaction success.')
-        } else {
-            Alert.error('Send transaction failed.')
+        try {
+            const txHash = await generateTx(myAccount, toAddress, Number(amount), gasLimit)
+            if (txHash) {
+                setTxHash(txHash);
+                Alert.success('Send transaction success.')
+            } else {
+                setSendTxErrMsg('Send transaction failed.')
+            }
+        } catch (error) {
+            try {
+                const errJson = JSON.parse(error?.message);
+                setSendTxErrMsg(`Send transaction failed: ${errJson?.error?.message}`)
+            } catch (error) {
+                setSendTxErrMsg('Send transaction failed.')
+            }
         }
+
         resetFrom()
         setShowConfirmModal(false)
         setSendBntLoading(false)
@@ -148,7 +158,7 @@ const SendTransaction = () => {
                                     name="gasLimit"
                                     value={gasLimit}
                                     onChange={(value) => {
-                                        if (onlyNumber(value)) {
+                                        if (onlyInteger(value)) {
                                             setGasLimit(value)
                                             validateGasLimit(value)
                                         }
@@ -159,6 +169,7 @@ const SendTransaction = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Button size="big" onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{marginLeft: '10px'}} /></Button>
                             </FlexboxGrid.Item>
+                            <ErrMessage message={sendTxErrMs} />
                             {
                                 txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4,showTooltip: false, callback: () => {window.open(`/tx/${txHash}`) } })}</div> : <></>
                             }

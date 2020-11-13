@@ -1,7 +1,3 @@
-.wallet-container {
-    margin-top: 80px;
-}
-
 .panel-container {
     margin: 10px;
 }
@@ -73,5 +69,10 @@
 
     .panel-container.access .rs-panel {
         padding: 8px;
+    }
+}
+@media screen and (max-width: 740px) {
+    .rs-panel-body{
+      padding:20px !important;
     }
 }

@@ -5,10 +5,11 @@ import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat, onlyNumber, verifyAmount } from '../../../../common/utils/number';
-import { renderHashToRedirect } from '../../../../common/utils/string';
+import { numberFormat, onlyNumber } from '../../../../common/utils/number';
+import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc';
+import { getBalance } from '../../../../service/kai-explorer';
+import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 const { Column, HeaderCell, Cell } = Table;
 
@@ -23,24 +24,35 @@ const DelegatorCreate = () => {
     const { valAddr }: any = useParams();
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const history = useHistory()
+    const [delegateErrMsg, setDelegateErrMsg] = useState('')
+    const [balance, setBalance] = useState(0)
+    const myAccount = getAccount() as Account
+
 
     useEffect(() => {
-        getDelegationsByValidator(valAddr).then(setDelegators);
-        getValidator(valAddr).then(setValidator)
-
-    }, [valAddr]);
+        (async() => {
+            const data = await Promise.all([
+                getDelegationsByValidator(valAddr),
+                getValidator(valAddr),
+                getBalance(myAccount.publickey)
+            ]);
+            setDelegators(data[0])
+            setValidator(data[1])
+            setBalance(Number(weiToKAI(data[2])))
+        })()
+    }, [valAddr, myAccount.publickey]);
 
     const validateDelAmount = (value: any): boolean => {
-        if (!verifyAmount(value)) {
-            setErrorMessage(ErrorMessage.NumberInvalid)
-            return false
-        }
         if (!value) {
             setErrorMessage(ErrorMessage.Require)
             return false
         }
         if (Number(value) === 0) {
             setErrorMessage(ErrorMessage.ValueInvalid)
+            return false
+        }
+        if (Number(balance) === 0 || Number(balance) < value) {
+            setErrorMessage(ErrorMessage.BalanceNotEnough)
             return false
         }
         setErrorMessage('')
@@ -59,21 +71,23 @@ const DelegatorCreate = () => {
             setIsLoading(true)
             let account = getAccount() as Account
             const delegate = await delegateAction(valAddr, account, Number(delAmount))
-
             if (delegate && delegate.status === 1) {
                 Alert.success('Delegate success.')
                 setHashTransaction(delegate.transactionHash)
             } else {
                 Alert.error('Delegate failed.')
+                setDelegateErrMsg('Delegate failed.');
             }
-            setIsLoading(false)
-            setShowConfirmModal(false)
         } catch (error) {
-            const errJson = JSON.parse(error?.message)
-            Alert.error(`Delegate failed: ${errJson?.error?.message || ''}`)
-            setIsLoading(false)
-            setShowConfirmModal(false)
+            try {
+                const errJson = JSON.parse(error?.message);
+                setDelegateErrMsg(`Delegate failed: ${errJson?.error?.message}`)
+            } catch (error) {
+                setDelegateErrMsg('Delegate failed.');
+            }
         }
+        setIsLoading(false)
+        setShowConfirmModal(false)
     }
 
     return (
@@ -83,12 +97,15 @@ const DelegatorCreate = () => {
                     <div className="val-info-container">
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="group" />
+                                <Icon className="highlight" icon="gear-circle" />
                                 <p style={{ marginLeft: '12px' }} className="title">Delegate</p>
                             </div>
                         </div>
-                        <Panel header={<div style={{wordBreak: 'break-all'}}>Validator: <span style={{fontWeight: 'bold'}}>{valAddr}</span></div>} shaded>
+                        <Panel shaded>
                             <List bordered={false}>
+                                <List.Item bordered={false}>
+                                    <span className="property-title">Validator: </span> {renderHashString(valAddr, 45)}
+                                </List.Item>
                                 <List.Item bordered={false}>
                                     <span className="property-title">Commission: </span> {validator?.commission || 0} %
                                 </List.Item>
@@ -118,6 +135,7 @@ const DelegatorCreate = () => {
                                         <Button size="big" onClick={submitDelegate}>Delegate</Button>
                                     </FormGroup>
                                 </Form>
+                                <ErrMessage message={delegateErrMsg} />
                                 {
                                     hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
                                         hash: hashTransaction,
@@ -136,7 +154,7 @@ const DelegatorCreate = () => {
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <Icon className="highlight" icon="group" />
-                                <p style={{ marginLeft: '12px' }} className="title">Delegators</p>
+                                <p style={{ marginLeft: '12px' }} className="title">Other Delegators</p>
                             </div>
                         </div>
                         <Panel shaded>
@@ -147,7 +165,7 @@ const DelegatorCreate = () => {
                                 wordWrap
                                 hover={false}
                             >
-                                <Column flexGrow={3} verticalAlign="middle">
+                                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -155,16 +173,16 @@ const DelegatorCreate = () => {
                                                 <div>
                                                     {renderHashToRedirect({
                                                         hash: rowData.address,
-                                                        headCount: isMobile ? 10 : 30,
-                                                        showTooltip: false,
-                                                        callback: () => { history.push(`/tx/${rowData.address}`) }
+                                                        headCount: isMobile ? 10 : 20,
+                                                        showTooltip: true,
+                                                        callback: () => { history.push(`/address/${rowData.address}`) }
                                                     })}
                                                 </div>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} verticalAlign="middle">
+                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Staked Amount</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
@@ -174,8 +192,8 @@ const DelegatorCreate = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} verticalAlign="middle">
-                                    <HeaderCell>Rewards Amount</HeaderCell>
+                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                                    <HeaderCell>Claimable Rewards</HeaderCell>
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
