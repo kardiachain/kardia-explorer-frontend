@@ -10,7 +10,7 @@ const Wallet = () => {
     const {isMobile} = useViewport()
 
     return (
-        <div className="wallet-container">
+        <div className="wallet-container" style={{marginTop: isMobile ? 40 : 80}}>
             <div className="show-grid">
                 <FlexboxGrid justify="center">
                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={9} sm={24}>
