@@ -120,7 +120,7 @@
     flex-wrap: wrap;
     /* background: #f1f1f1a6; */
     justify-content: center;
-    padding: 20px;
+    padding: 20px 0;
 }
 
 /* Style modal veryfication mnemonic phrase */

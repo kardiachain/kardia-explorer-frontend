@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Button } from 'rsuite';
 
 const AccessMyWallet = () => {
@@ -20,6 +20,9 @@ const AccessMyWallet = () => {
                                 <Button className="access-button" size="lg" block onClick={() => { history.push('./access-mnemonic-pharse')}}>
                                     <Icon icon="list" className="highlight" /> By Mnemonic Phrase
                                 </Button>
+                            </div>
+                            <div>
+                                Do not have a wallet? <Link to="/create-wallet" style={{color: 'rgb(158, 49, 68)', fontWeight: 600}}> Create A New Wallet</Link>
                             </div>
                         </Panel>
                     </FlexboxGrid.Item>
