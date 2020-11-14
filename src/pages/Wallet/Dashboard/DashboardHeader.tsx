@@ -6,7 +6,6 @@ import { getBalance } from '../../../service/kai-explorer';
 import { getAccount } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
-import { numberFormat } from '../../../common/utils/number';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()

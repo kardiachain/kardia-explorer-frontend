@@ -10,3 +10,8 @@
 .deploy-bytecode-container .form-addon-container.button-addon {
     text-align: right;
 }
+
+.deploy-bytecode-container .label,
+.interact-smc-container .label {
+    font-weight: bold;
+}
