@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ControlLabel, Form, FormControl, FormGroup, Modal } from 'rsuite';
+import { Alert, ControlLabel, Form, FormControl, FormGroup, Modal, HelpBlock } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
@@ -10,6 +10,8 @@ import { getBalance } from '../../../../service/kai-explorer';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
+import Helper from '../../../../common/components/Helper';
+import { HelperMessage } from '../../../../common/constant/HelperMessage';
 
 const ValidatorCreate = () => {
 
@@ -156,7 +158,7 @@ const ValidatorCreate = () => {
             setAmountDelErr(ErrorMessage.ValueInvalid)
             return false
         }
-  
+
         if (Number(balance) === 0 || Number(balance) < value) {
             setAmountDelErr(ErrorMessage.BalanceNotEnough)
             return false
@@ -192,7 +194,7 @@ const ValidatorCreate = () => {
             setIsLoading(true)
             let account = await getAccount() as Account;
             let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
-            
+
             if (validator && validator.status === 1) {
                 Alert.success('Create validator success.')
                 setHashTransaction(validator.transactionHash)
@@ -215,8 +217,11 @@ const ValidatorCreate = () => {
     return (
         <>
             <Form fluid>
-                <FormGroup>
-                    <ControlLabel>Commission Rate (%) <span className="required-mask">*</span></ControlLabel>
+                <FormGroup style={{marginBottom: 15}}>
+                    <ControlLabel>
+                        <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                        Commission Rate (%) <span className="required-mask">*</span>
+                    </ControlLabel>
                     <FormControl placeholder="Commission Rate"
                         name="commissionRate"
                         value={commissionRate}
@@ -228,8 +233,11 @@ const ValidatorCreate = () => {
                         }} />
                     <ErrMessage message={commissionRateErr} />
                 </FormGroup>
-                <FormGroup>
-                    <ControlLabel>Max Rate (%) <span className="required-mask">*</span></ControlLabel>
+                <FormGroup style={{marginBottom: 15}}>
+                    <ControlLabel>
+                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                        Max Rate (%) <span className="required-mask">*</span>
+                    </ControlLabel>
                     <FormControl placeholder="Max Rate"
                         name="maxRate"
                         value={maxRate}
@@ -241,8 +249,11 @@ const ValidatorCreate = () => {
                         }} />
                     <ErrMessage message={maxRateErr} />
                 </FormGroup>
-                <FormGroup>
-                    <ControlLabel>Max Change Rate (%) <span className="required-mask">*</span></ControlLabel>
+                <FormGroup style={{marginBottom: 15}}>
+                    <ControlLabel>
+                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                        Max Change Rate (%) <span className="required-mask">*</span>
+                    </ControlLabel>
                     <FormControl placeholder="Max Change Rate"
                         name="maxChangeRate"
                         value={maxChangeRate}
@@ -254,8 +265,11 @@ const ValidatorCreate = () => {
                         }} />
                     <ErrMessage message={maxChangeRateErr} />
                 </FormGroup>
-                <FormGroup>
-                    <ControlLabel>Min Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
+                <FormGroup style={{marginBottom: 15}}>
+                    <ControlLabel>
+                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
+                    Min Self Delegation (KAI) <span className="required-mask">*</span>
+                    </ControlLabel>
                     <FormControl placeholder="Min Self Delegation"
                         name="minSelfDelegation"
                         value={minSelfDelegation}
@@ -267,8 +281,11 @@ const ValidatorCreate = () => {
                         }} />
                     <ErrMessage message={maxMinSelfDelegationErr} />
                 </FormGroup>
-                <FormGroup>
-                    <ControlLabel>Amount Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
+                <FormGroup style={{marginBottom: 15}}>
+                    <ControlLabel>
+                        <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
+                        Amount Self Delegation (KAI) <span className="required-mask">*</span>
+                    </ControlLabel>
                     <FormControl placeholder="Amount Self Delegation"
                         name="amountDel"
                         value={amountDel}
