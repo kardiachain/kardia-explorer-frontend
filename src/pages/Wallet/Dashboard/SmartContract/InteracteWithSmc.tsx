@@ -355,7 +355,7 @@ const InteracteWithSmc = () => {
                                             />
                                             <ErrMessage message={abiErr} />
                                         </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
                                             <Button size="big" style={{ width: '250px' }} onClick={compilerABIStep}>Go To Contract</Button>
                                             <Button size="big" className="ghost-button" onClick={resetAll}>Reset</Button>
                                         </FlexboxGrid.Item>
