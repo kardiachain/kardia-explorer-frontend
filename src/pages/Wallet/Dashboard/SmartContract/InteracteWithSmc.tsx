@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ReactJson from 'react-json-view';
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel, SelectPicker, Steps } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel, SelectPicker, Steps, Uploader } from 'rsuite';
+import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
@@ -41,6 +42,9 @@ const InteracteWithSmc = () => {
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [interactErr, setInteractErr] = useState('')
     const [txResult, setTxResult] = useState('')
+    const [showResult, setShowResult] = useState(false)
+    const [fileList, setListFile] = useState([] as FileType[]);
+    const [fileUploadErr, setFileUploadErr] = useState('');
 
     const validateGasLimit = (gas: any): boolean => {
         if (!Number(gas)) {
@@ -115,6 +119,7 @@ const InteracteWithSmc = () => {
 
     const executeFunction = async () => {
         setLoadingExecute(true)
+        setShowResult(false)
         try {
             const txObject = {
                 contractAddress: smcAddr,
@@ -129,6 +134,7 @@ const InteracteWithSmc = () => {
             } as SMCInvokeObject
             const invokeTx = await invokeFunctionFromContractAbi(txObject);
             setTxResult(invokeTx);
+            setShowResult(true)
             console.log("InvokeTx", invokeTx)
         } catch (error) {
             try {
@@ -143,6 +149,7 @@ const InteracteWithSmc = () => {
 
     const selectFunction = (value: any) => {
         try {
+            setParamsInput('')
             setparamsPlaceholder('')
             if (value.stateMutability !== 'pure' && value.stateMutability !== 'view') {
                 const placeHoler = value.inputs && value.inputs.length > 0 && value.inputs.map((item: any) => {
@@ -152,38 +159,47 @@ const InteracteWithSmc = () => {
                     setparamsPlaceholder(placeHoler.join(', '))
                 }
             }
+            console.log("Value: ", value);
+
             setSmcFuncActive(value)
         } catch (error) {
             console.log(error);
         }
     }
 
-    // const uploadFileSuccess = (response: Object, file: FileType) => {
-    //     Alert.success('Uploaded successfully.');
-    // }
+    const uploadFileFailed = (response: Object, file: FileType) => {
+        setListFile([]);
+        Alert.error('Uploaded failed.');
+    }
 
-    // const uploadFileFailed = (response: Object, file: FileType) => {
-    //     // setListFile([]);
-    //     Alert.error('Uploaded failed.');
-    // }
+    const handleRemoveFile = (file: FileType) => {
+        setListFile([]);
+        setAbi('')
+        setSmcAddr('')
+    }
 
-    // const handleRemoveFile = (file: FileType) => {
-    //     // setListFile([]);
-    // }
-
-    // const handleUpload = (fileList: any) => {
-    //     console.log(fileList);
-
-    //     const reader = new FileReader();
-    //     reader.readAsText(fileList[0].blobFile);
-
-    //     console.log(reader);
-        
-    //     reader.onload = async () => {
-    //         const anything = await JSON.parse(JSON.stringify(reader.result));
-    //         console.log(anything.contractAddress);
-    //     }
-    // }
+    const handleUpload = (fileList: any) => {
+        setFileUploadErr('')
+        if (fileList.length > 0) {
+            setListFile([fileList[fileList.length - 1]]);
+            const reader = new FileReader();
+            reader.readAsText(fileList[fileList.length - 1].blobFile)
+            reader.onload = () => {
+                const { contractAddress, abi } = JSON.parse(reader.result as any)
+                if(!validateToAddress(contractAddress) || !validateAbi(abi)) {
+                    setFileUploadErr(ErrorMessage.FileUploadInvalid)
+                    setAbi('')
+                    setSmcAddr('')
+                    setListFile([]);
+                    return
+                }
+                setListFile([fileList[fileList.length - 1]]);
+                setAbi(abi)
+                setSmcAddr(contractAddress)
+                Alert.success('Uploaded successfully.');
+            }
+        }
+    }
 
     return (
         <div className="interact-smc-container">
@@ -252,19 +268,22 @@ const InteracteWithSmc = () => {
                                             />
                                             <ErrMessage message={smcAddrErr} />
                                         </FlexboxGrid.Item>
-                                        {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                             <ControlLabel>{'Or Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
                                             <Uploader
                                                 action="//jsonplaceholder.typicode.com/posts/"
                                                 draggable
+                                                fileList={fileList}
                                                 onChange={handleUpload}
-                                                onSuccess={uploadFileSuccess}>
+                                                onError={uploadFileFailed}
+                                                onRemove={handleRemoveFile}>
                                                 <FormControl name="smcAddr"
                                                     style={{ padding: '11px 12px' }}
                                                     placeholder="Upload Your <contract.json> file:"
                                                 />
                                             </Uploader>
-                                        </FlexboxGrid.Item> */}
+                                            <ErrMessage message={fileUploadErr} />
+                                        </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                             <FlexboxGrid justify="space-between">
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container">
@@ -337,7 +356,7 @@ const InteracteWithSmc = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             {
-                                                txResult ? <>
+                                                showResult ? <>
                                                     <ControlLabel >Result: </ControlLabel>
                                                     <ReactJson src={{ txResult }} />
                                                 </> : <></>

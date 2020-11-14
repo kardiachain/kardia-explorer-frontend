@@ -119,7 +119,7 @@ const DeployWithByteCode = () => {
                 params: construc ? construc.split(",").map(item => item.trim()) : []
             } as SMCDeployObject
             const deployTx = await deploySmartContract(txObject);
-            if(deployTx) {
+            if (deployTx) {
                 setDeployedContract(deployTx.contractAddress)
                 setContractJsonFileDownload({
                     contractAddress: deployTx.contractAddress,
@@ -292,7 +292,7 @@ const DeployWithByteCode = () => {
                                 <Button size="big" className="ghost-button" onClick={resetAll}>Reset</Button>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ paddingLeft: 0 }}>
-                                <ErrMessage message={deploySmcErr} />   
+                                <ErrMessage message={deploySmcErr} />
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
@@ -311,10 +311,10 @@ const DeployWithByteCode = () => {
                                                         setDeployedContract(value);
                                                     }}
                                                 />
-                                                <InputGroup.Button>
-                                                    <Icon icon="copy" onClick={() => {
-                                                        copyToClipboard(deployedContract, onSuccess)
-                                                    }} />
+                                                <InputGroup.Button onClick={() => {
+                                                    copyToClipboard(deployedContract, onSuccess)
+                                                }}>
+                                                    <Icon icon="copy" />
                                                 </InputGroup.Button>
                                             </InputGroup>
                                         </FlexboxGrid.Item>
