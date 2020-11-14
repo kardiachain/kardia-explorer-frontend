@@ -65,11 +65,12 @@ const Header = () => {
                                             <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
                                         ) : (
                                                 <Dropdown eventKey="wallet" icon={<Icon icon="money" />} title="Wallet">
-                                                    <Dropdown.Item href="/wallet/send-transaction" icon={<Icon icon="send" />}>Send transaction</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>Transactions history</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/staking/your-delegators" icon={<Icon icon="people-group" />} >Your Delegators</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/staking/delegated-validators" icon={<Icon icon="group" />}>Delegated Validators</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/smc/byte-code-deployment" icon={<Icon icon="file-code-o" />}>Smart contract</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/send-transaction">Send transaction</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/transaction-history">Transactions history</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/staking/delegated-validators">Delegated Validators</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>
+                                                    <Dropdown.Item href="/wallet/smc/interaction" >Interact With Contract</Dropdown.Item>
                                                 </Dropdown>
                                             )
                                     }
@@ -113,7 +114,8 @@ const Header = () => {
                                     <Dropdown.Item eventKey="transaction-history" href="/wallet/transaction-history">Transactions history</Dropdown.Item>
                                     <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators" >Your Delegators</Dropdown.Item>
                                     <Dropdown.Item eventKey="delegated-validators" href="/wallet/staking/delegated-validators" >Delegated Validators</Dropdown.Item>
-                                    <Dropdown.Item eventKey="smart-contract" href="/wallet/smc/byte-code-deployment">Smart contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>
+                                    <Dropdown.Item eventKey="interaction" href="/wallet/smc/interaction" >Interact With Contract</Dropdown.Item>
                                     <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                                 </Dropdown>
                             ) : (

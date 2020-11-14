@@ -62,7 +62,7 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card balance">
                         <div className="card-body">
                             <div className="title"><Icon className="icon highlight" icon="money" />Balance</div>
-                            <div className="content"><span style={{ fontWeight: 'bold' }}>{numberFormat(weiToKAI(balance))}</span> KAI</div>
+                            <div className="content"><span style={{ fontWeight: 'bold' }}>{weiToKAI(balance)}</span> KAI</div>
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance

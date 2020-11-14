@@ -323,6 +323,11 @@ const InteracteWithSmc = () => {
                                 </>
                             ) : (
                                     <FlexboxGrid>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                            <Button className="primary-button" style={{ marginBottom: '25px' }} onClick={() => { setCurrentStep(0) }}>
+                                                <Icon icon="angle-double-left" /><Icon icon="angle-double-left" /> Back
+                                            </Button>
+                                        </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                             <ControlLabel>Interact With Contract</ControlLabel>
                                             <SelectPicker
