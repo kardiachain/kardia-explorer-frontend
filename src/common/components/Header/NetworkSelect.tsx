@@ -3,7 +3,7 @@ import { Dropdown } from 'rsuite';
 
 const networkList = [
     {
-        label: 'Archi Fengari 3.0',
+        label: 'Fengari Testnet 3.0',
         value: 'testnet-3.0',
         disabled: false
     },
