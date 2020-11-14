@@ -4,7 +4,7 @@ import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyInteger } from '../../../../common/utils/number';
-import { copyToClipboard } from '../../../../common/utils/string';
+import { copyToClipboard, renderHashToRedirect } from '../../../../common/utils/string';
 import { jsonValid } from '../../../../common/utils/validate';
 import { deploySmartContract } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -42,6 +42,7 @@ const DeployWithByteCode = () => {
     const [showTxDetailModal, setShowTxDetailModal] = useState(false)
     const [contractJsonFileDownload, setContractJsonFileDownload] = useState<ContractJsonFile>({ contractAddress: "", byteCode: "", abi: "{}" })
     const [deploySmcErr, setDeploySmcErr] = useState('')
+    const [txHash, setTxHash] = useState('')
 
 
 
@@ -100,6 +101,7 @@ const DeployWithByteCode = () => {
         setDeployedContract('')
         setTxDetail('')
         setDeploySmcErr('')
+        setTxHash('')
     }
 
     const deploy = async () => {
@@ -109,7 +111,7 @@ const DeployWithByteCode = () => {
             }
             setLoading(true)
             setDeploySmcErr('')
-
+            setTxHash('')
             const txObject = {
                 account: myAccount,
                 abi: abi,
@@ -119,7 +121,7 @@ const DeployWithByteCode = () => {
                 params: construc ? construc.split(",").map(item => item.trim()) : []
             } as SMCDeployObject
             const deployTx = await deploySmartContract(txObject);
-            if (deployTx) {
+            if (deployTx.status === 1) {
                 setDeployedContract(deployTx.contractAddress)
                 setContractJsonFileDownload({
                     contractAddress: deployTx.contractAddress,
@@ -128,6 +130,10 @@ const DeployWithByteCode = () => {
                 })
                 setTxDetail(deployTx)
                 setDeployDone(true)
+                setTxHash(deployTx.transactionHash)
+                Alert.success("Deploy smart contract success.")
+            } else {
+                setDeploySmcErr('Deploy smart contract failed.')
             }
         } catch (error) {
             try {
@@ -190,7 +196,7 @@ const DeployWithByteCode = () => {
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel className="label">Gas Limit:<span className="required-mask">*</span></ControlLabel>
                                 <FormControl name="gaslimit"
                                     placeholder="Gas Limit"
                                     value={gasLimit}
@@ -205,7 +211,7 @@ const DeployWithByteCode = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel className="label">Gas Price:<span className="required-mask">*</span></ControlLabel>
                                 <SelectPicker
                                     className="dropdown-custom"
                                     data={gasPriceOption}
@@ -224,7 +230,7 @@ const DeployWithByteCode = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container">
-                                        <ControlLabel>Byte Code:<span className="required-mask">*</span></ControlLabel>
+                                        <ControlLabel className="label">Byte Code:<span className="required-mask">*</span></ControlLabel>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
                                         <div>
@@ -247,7 +253,7 @@ const DeployWithByteCode = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} className="form-addon-container">
-                                        <ControlLabel>Abi Json:<span className="required-mask">*</span></ControlLabel>
+                                        <ControlLabel className="label">Abi Json:<span className="required-mask">*</span></ControlLabel>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} className="form-addon-container button-addon">
                                         <div>
@@ -276,7 +282,7 @@ const DeployWithByteCode = () => {
                                 <ErrMessage message={abiErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel>Constructor:</ControlLabel>
+                                <ControlLabel className="label">Constructor:</ControlLabel>
                                 <FormControl
                                     disabled={disableConstrucInput}
                                     name="construc"
@@ -293,6 +299,11 @@ const DeployWithByteCode = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ paddingLeft: 0 }}>
                                 <ErrMessage message={deploySmcErr} />
+                                {
+                                    txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>
+                                        Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}
+                                    </div> : <></>
+                                }
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
@@ -301,7 +312,7 @@ const DeployWithByteCode = () => {
                                     <Divider />
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel>Your deployed contract:</ControlLabel>
+                                            <ControlLabel className="label">Your deployed contract:</ControlLabel>
                                             <InputGroup style={{ width: '100%' }}>
                                                 <FormControl
                                                     readOnly

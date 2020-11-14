@@ -15,7 +15,7 @@ const invokeCallData = async (methodName: string, params: any[]) => {
     return await invoke.call(STAKING_SMC_ADDRESS, {}, "latest")
 }
 
-const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0) => {
+const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0, gasLimit=2000000, gasPrice=2) => {
     const invoke = await stakingContract.invoke({
         params: params,
         name: methodName,
@@ -29,8 +29,8 @@ const invokeSendAction = async (methodName: string, params: any[], account: Acco
     const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
         from: account.publickey,
         amount: amountVal,
-        gas: 2000000,
-        gasPrice: 2
+        gas: gasLimit,
+        gasPrice: gasPrice
     });
 
     return invokeResult;
