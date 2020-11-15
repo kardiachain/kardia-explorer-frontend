@@ -32,10 +32,7 @@ const DeployWithByteCode = () => {
     const myAccount = getAccount() as Account
     const [loading, setLoading] = useState(false)
     const [gasPrice, setGasPrice] = useState(1)
-    const [construc, setConstruc] = useState('')
-    const [construcPlaceholder, setConstrucPlaceholder] = useState('')
     const [gasPriceErr, setGasPriceErr] = useState('')
-    const [disableConstrucInput, setDisableConstrucInput] = useState(true)
     const [deployedContract, setDeployedContract] = useState('')
     const [deployDone, setDeployDone] = useState(false)
     const [txDetail, setTxDetail] = useState('')
@@ -43,7 +40,7 @@ const DeployWithByteCode = () => {
     const [contractJsonFileDownload, setContractJsonFileDownload] = useState<ContractJsonFile>({ contractAddress: "", byteCode: "", abi: "{}" })
     const [deploySmcErr, setDeploySmcErr] = useState('')
     const [txHash, setTxHash] = useState('')
-
+    const [construcFields, setConstrucFields] = useState([] as any[]);
 
 
     const validateByteCode = (byteCode: string) => {
@@ -93,15 +90,13 @@ const DeployWithByteCode = () => {
         setAbiErr('')
         setGasLimitErr('')
         setGasPrice(1)
-        setConstruc('')
-        setConstrucPlaceholder('')
         setGasPriceErr('')
-        setDisableConstrucInput(true)
         setDeployDone(false)
         setDeployedContract('')
         setTxDetail('')
         setDeploySmcErr('')
         setTxHash('')
+        setConstrucFields([])
     }
 
     const deploy = async () => {
@@ -118,7 +113,7 @@ const DeployWithByteCode = () => {
                 bytecode: byteCode,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: construc ? construc.split(",").map(item => item.trim()) : []
+                params: construcFields.length > 0 && construcFields.map(item => item.value)
             } as SMCDeployObject
             const deployTx = await deploySmartContract(txObject);
             if (deployTx.status === 1) {
@@ -161,13 +156,13 @@ const DeployWithByteCode = () => {
             const abiJson = JSON.parse(value)
             if (abiJson && abiJson.length > 0) {
                 const construc = abiJson.filter((value: any) => value.type === 'constructor')
-                const placeHoler = construc[0] && construc[0].inputs && construc[0].inputs.map((item: any) => {
-                    return `${item.type} ${item.name}`
-                });
-                if (placeHoler && placeHoler.length > 0) {
-                    setConstrucPlaceholder(placeHoler.join(', '))
-                    setDisableConstrucInput(false)
-                }
+                setConstrucFields(construc[0] && construc[0].inputs && construc[0].inputs.map((item: any) => {
+                    return {
+                        name: item.name,
+                        type: item.type,
+                        value: ''
+                    }
+                }));
             }
         }
     }
@@ -181,6 +176,12 @@ const DeployWithByteCode = () => {
         a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
         e.initEvent('click', true, false);
         a.dispatchEvent(e);
+    }
+
+    const handelContrucFieldOnchange = (value: any, idx: any) => {
+        const values = [...construcFields];
+        values[idx].value = value;
+        setConstrucFields(values)
     }
 
     return (
@@ -281,21 +282,33 @@ const DeployWithByteCode = () => {
                                 />
                                 <ErrMessage message={abiErr} />
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel className="label">Constructor:</ControlLabel>
-                                <FormControl
-                                    disabled={disableConstrucInput}
-                                    name="construc"
-                                    placeholder={construcPlaceholder}
-                                    value={construc}
-                                    onChange={(value) => {
-                                        setConstruc(value);
-                                    }}
-                                />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
-                                <Button size="big" loading={loading} onClick={deploy} style={{ width: '230px' }}>Deploy Contract</Button>
-                                <Button size="big" className="ghost-button" onClick={resetAll}>Reset</Button>
+                            {
+                                construcFields && construcFields.length > 0 ? (
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} sm={24}>
+                                        <ControlLabel className="label">Constructor:</ControlLabel>
+                                        {
+                                            construcFields.map((field: any, idx: any) => {
+                                                return (
+                                                    <FormControl
+                                                        style={{
+                                                            marginBottom: 10,
+                                                        }}
+                                                        type="text"
+                                                        name={field.name}
+                                                        placeholder={`${field.type} ${field.name}`}
+                                                        value={field.value}
+                                                        onChange={(value) => {
+                                                            handelContrucFieldOnchange(value, idx)
+                                                        }} />
+                                                )
+                                            })
+                                        }
+                                    </FlexboxGrid.Item>
+                                ) : <></>
+                            }
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 20, paddingLeft: 0 }}>
+                                <Button size="big" loading={loading} onClick={deploy} style={{ width: 230 }}>Deploy Contract</Button>
+                                <Button size="big" className="ghost-button" onClick={resetAll} style={{ width: 100 }}>Reset</Button>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ paddingLeft: 0 }}>
                                 <ErrMessage message={deploySmcErr} />
