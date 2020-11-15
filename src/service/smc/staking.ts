@@ -45,6 +45,7 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
     let totalValidatorStakedAmount = 0;
     const promiseArr = invoke[0].map(async (item: any, i: number) => {
         const valAddr = item
+        const validatorDetail = await getValidator(valAddr);
         const totalDelsOfVal = await getNumberDelOfValidator(valAddr);
         const votingPower = await getValidatorPower(valAddr);
         const validatorStaked = await getDelegatorStake(valAddr, valAddr)
@@ -59,8 +60,10 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
             totalStakedAmount: invoke[1][i],
             delegationsShares: invoke[2][i],
             totalDels: totalDelsOfVal,
-            votingPower: votingPower || 0
+            votingPower: votingPower || 0,
+            commission: validatorDetail.commission || 0
         } as ValidatorFromSMC
+        
     })
 
     let validators: ValidatorFromSMC[] = await Promise.all(promiseArr);
@@ -156,9 +159,9 @@ const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
             delegationsShares: invoke[1],
             jailed: invoke[2],
             votingPower: votingPower,
-            totalDels: totalDels
+            totalDels: totalDels,
+            commission: invoke[3]
         }
-        
         return validator
         
     } catch (error) {
