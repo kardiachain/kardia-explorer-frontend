@@ -6,11 +6,6 @@ const networkList = [
         label: 'Fengari Testnet 3.0',
         value: 'testnet-3.0',
         disabled: false
-    },
-    {
-        label: 'Mainnet',
-        value: 'mainnet',
-        disabled: true
     }
 ]
 
@@ -29,6 +24,7 @@ const NetworkSelect = () => {
                         return <Dropdown.Item key={networkItem.value} eventKey={networkItem.value} onSelect={(key) => setNetwork(key)} disabled={networkItem.disabled}>{networkItem.label}</Dropdown.Item>
                     })
                 }
+                <Dropdown.Item eventKey="faucet" href="/faucet">Fengari Faucet</Dropdown.Item>
             </Dropdown>
         </div>
     )

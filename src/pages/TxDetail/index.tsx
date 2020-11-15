@@ -146,12 +146,12 @@ const TxDetail = () => {
                                                     showCopy: true
                                                 })}</div>
                                             ) : (
-                                                <div className="content">[ Contract {renderHashToRedirect({
+                                                <div className="content"><Icon className="highlight" icon="file-text-o" style={{marginRight: 5}} /> {renderHashToRedirect({
                                                     hash: txDetail?.contractAddress,
                                                     headCount: 50,
                                                     tailCount: 4,
                                                     callback: () => { history.push(`/address/${txDetail?.contractAddress}`) },
-                                                })} Created ] <IconButton
+                                                })} Contract created <IconButton
                                                 size="xs"
                                                 onClick={() => copyToClipboard(txDetail?.contractAddress || '', onSuccess)}
                                                 icon={<Icon icon="copy" />}
