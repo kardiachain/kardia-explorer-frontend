@@ -28,7 +28,7 @@ const CreateNewWallet = () => {
                             <div className="icon">
                                 <Icon icon="file-download" size="lg" />
                             </div>
-                            <div>You much be DOWNLOAD and SAVE the following Keystore File. You will need it and your password to access your wallet.</div>
+                            <div>You must be DOWNLOAD and SAVE the following Keystore File. You will need it and your password to access your wallet.</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
                     </div>

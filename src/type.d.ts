@@ -16,6 +16,7 @@ interface KAITransaction {
     gasLimit: number;
     input: string;
     logs: string;
+    gasUsed: number;
 }
 
 interface KAIBlock {
@@ -49,6 +50,7 @@ interface KAIBlockDetails {
     evidenceHash: string;
     time: Date;
     age: number;
+    rewards: number;
 }
 
 interface StakingContractResponse {

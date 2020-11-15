@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon } from 'rsuite';
+import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, IconButton, Alert } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { copyToClipboard, dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { getTxByHash } from '../../service/kai-explorer';
 import './txDetail.css'
+
+const onSuccess = () => {
+    Alert.success('Copied to clipboard.')
+}
 
 const { Paragraph } = Placeholder;
 
@@ -92,7 +96,7 @@ const TxDetail = () => {
                                         {
                                             txDetail?.status ?
                                                 <div className="content"><Tag color="green">SUCCESS</Tag></div> :
-                                                <div className="content"><Tag color="yellow">PENDING</Tag></div>
+                                                <div className="content"><Tag color="red">FAILED</Tag></div>
                                         }
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -132,13 +136,28 @@ const TxDetail = () => {
                                         <div className="title">To</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashToRedirect({
-                                            hash: txDetail?.to,
-                                            headCount: 50,
-                                            tailCount: 4,
-                                            callback: () => { history.push(`/address/${txDetail?.to}`) },
-                                            showCopy: true
-                                        })}</div>
+                                        {
+                                            txDetail?.contractAddress === "" ? (
+                                                <div className="content">{renderHashToRedirect({
+                                                    hash: txDetail?.to,
+                                                    headCount: 50,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/address/${txDetail?.to}`) },
+                                                    showCopy: true
+                                                })}</div>
+                                            ) : (
+                                                <div className="content">[ Contract {renderHashToRedirect({
+                                                    hash: txDetail?.contractAddress,
+                                                    headCount: 50,
+                                                    tailCount: 4,
+                                                    callback: () => { history.push(`/address/${txDetail?.contractAddress}`) },
+                                                })} Created ] <IconButton
+                                                size="xs"
+                                                onClick={() => copyToClipboard(txDetail?.contractAddress || '', onSuccess)}
+                                                icon={<Icon icon="copy" />}
+                                            /></div>
+                                            )
+                                        }
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -169,6 +188,16 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="content">{numberFormat(txDetail?.gas || 0)}</div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                        <div className="title">Gas Used</div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                        <div className="content">{numberFormat(txDetail?.gasUsed || 0)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

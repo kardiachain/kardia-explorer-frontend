@@ -42,9 +42,6 @@ const DashboardWallet = () => {
                                     <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
                                     <Dropdown.Item  eventKey="delegated-validators" href="/wallet/staking/delegated-validators">Delegated Validators</Dropdown.Item>
                                 </Dropdown>
-                                {/* <Nav.Item eventKey="smart-contract" active={activeKey === "3"} href="/wallet/smart-contract" icon={<Icon icon="file-code-o" />}>
-                                    Smart Contract
-                                </Nav.Item> */}
                                 <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract" open={true}>
                                     {/* <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item> */}
                                     <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>

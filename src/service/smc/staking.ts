@@ -12,25 +12,25 @@ const invokeCallData = async (methodName: string, params: any[]) => {
         name: methodName
     })
     
-    return await invoke.call(STAKING_SMC_ADDRESS)
+    return await invoke.call(STAKING_SMC_ADDRESS, {}, "latest")
 }
 
-const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0) => {
+const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0, gasLimit=2000000, gasPrice=2) => {
     const invoke = await stakingContract.invoke({
         params: params,
         name: methodName,
     });
 
-    const estimatedGas = await invoke.estimateGas({
-        from: account.publickey,
-        amount: amountVal,
-    });
+    // const estimatedGas = await invoke.estimateGas({
+    //     from: account.publickey,
+    //     amount: amountVal,
+    // });
 
     const invokeResult = await invoke.send(account.privatekey, STAKING_SMC_ADDRESS, {
         from: account.publickey,
         amount: amountVal,
-        gas: 2000000 + estimatedGas,
-        gasPrice: 2
+        gas: gasLimit,
+        gasPrice: gasPrice
     });
 
     return invokeResult;

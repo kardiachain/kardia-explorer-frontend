@@ -1,62 +1,455 @@
 import React, { useState } from 'react'
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel } from 'rsuite';
+import ReactJson from 'react-json-view';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Modal, Panel, SelectPicker, Steps, Uploader } from 'rsuite';
+import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../../../common/components/Button';
+import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
+import { ErrorMessage } from '../../../../common/constant/Message';
+import { onlyInteger } from '../../../../common/utils/number';
+import { copyToClipboard, renderHashToRedirect } from '../../../../common/utils/string';
+import { addressValid, jsonValid } from '../../../../common/utils/validate';
+import { invokeFunctionFromContractAbi } from '../../../../service/smc';
+import { getAccount } from '../../../../service/wallet';
+import './smartContract.css'
+
+
+const onSuccess = () => {
+    Alert.success('Copied to clipboard.')
+}
 
 const InteracteWithSmc = () => {
-    
-    const [smcAddr, setSmcAddr] = useState('')
-    const [abi, setAbi] = useState('')
 
-    const interact = async () => {
-        
+    const gasPriceOption = [
+        { label: 'Normal (1 Gwei)', value: 1 },
+        { label: 'Regular (2 Gwei)', value: 2 },
+        { label: 'Fast (3 Gwei)', value: 3 },
+    ] as any[]
+
+    const [smcAddr, setSmcAddr] = useState('')
+    const [smcAddrErr, setSmcAddrErr] = useState('')
+    const [abi, setAbi] = useState('')
+    const [abiErr, setAbiErr] = useState('')
+    const [smcFuncList, setSmcFuncList] = useState([] as any[])
+    const [paramsPlaceholder, setparamsPlaceholder] = useState('');
+    const [paramsInput, setParamsInput] = useState('')
+    const [smcFuncActive, setSmcFuncActive] = useState({} as any)
+    const myAccount = getAccount() as Account
+    const [currentStep, setCurrentStep] = useState(0)
+    const [loadingExecute, setLoadingExecute] = useState(false)
+    const [gasLimit, setGasLimit] = useState(1000000)
+    const [gasLimitErr, setGasLimitErr] = useState('')
+    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPriceErr, setGasPriceErr] = useState('')
+    const [interactErr, setInteractErr] = useState('')
+    const [txResult, setTxResult] = useState('')
+    const [showResult, setShowResult] = useState(false)
+    const [fileList, setListFile] = useState([] as FileType[]);
+    const [fileUploadErr, setFileUploadErr] = useState('');
+    const [interactType, setInteractType] = useState('') // interact with smc had 2 type: call or send
+    const [txHash, setTxHash] = useState('')
+    const [showTxDetailModal, setShowTxDetailModal] = useState(false)
+
+    const validateGasLimit = (gas: any): boolean => {
+        if (!Number(gas)) {
+            setGasLimitErr(ErrorMessage.Require);
+            return false;
+        }
+        setGasLimitErr('')
+        return true
+    }
+
+    const validateGasPrice = (gasPrice: any): boolean => {
+        if (!Number(gasPrice)) {
+            setGasPriceErr(ErrorMessage.Require)
+            return false
+        }
+        setGasPriceErr('')
+        return true
+    }
+
+    const validateAbi = (abiString: string): boolean => {
+        if (!abiString) {
+            setAbiErr(ErrorMessage.Require);
+            return false;
+        }
+        if (!jsonValid(abiString)) {
+            setAbiErr(ErrorMessage.AbiInvalid);
+            return false;
+        }
+        setAbiErr('')
+        return true;
+    }
+
+    const validateToAddress = (addr: string): boolean => {
+        if (!addr) {
+            setSmcAddrErr(ErrorMessage.Require)
+            return false
+        }
+        if (!addressValid(addr)) {
+            setSmcAddrErr(ErrorMessage.AddressInvalid)
+            return false
+        }
+        setSmcAddrErr('')
+        return true
+    }
+
+    const formatAbiJson = () => {
+        try {
+            const abiFormated = JSON.stringify(JSON.parse(abi), undefined, 4);
+            setAbi(abiFormated)
+        } catch (error) {
+            return
+        }
+    }
+
+    const compilerABIStep = () => {
+        if (!validateToAddress(smcAddr) || !validateAbi(abi)) {
+            return
+        }
+        // TODO interact with smart contract
+        const abiJson = JSON.parse(abi)
+        const smcFuncList = abiJson.length > 0 ? abiJson.map((item: any) => {
+            if (item.type === "function") {
+                return {
+                    label: item.name,
+                    value: item
+                }
+            }
+        }).filter((item: any) => item) : [];
+        setSmcFuncList(smcFuncList);
+        setCurrentStep(1)
+    }
+
+    const executeFunction = async () => {
+        setLoadingExecute(true)
+        setShowResult(false)
+        setInteractErr('')
+        try {
+            const txObject = {
+                contractAddress: smcAddr,
+                account: myAccount,
+                abi: abi,
+                gasLimit: gasLimit,
+                gasPrice: gasPrice,
+                params: paramsInput ? paramsInput.split(",").map(item => item.trim()) : [],
+                isPure: smcFuncActive.stateMutability === 'view' || smcFuncActive.stateMutability === 'pure' ? true : false,
+                functionName: smcFuncActive.name,
+                amount: 0
+            } as SMCInvokeObject
+            setInteractType(txObject.isPure ? "call" : "send")
+            const invokeTx = await invokeFunctionFromContractAbi(txObject);
+            if (txObject.isPure) {
+                setTxResult(invokeTx);
+                setShowResult(true)
+            } else {
+                if (invokeTx?.status === 1) {
+                    setTxResult(invokeTx);
+                    setShowResult(true)
+                    setTxHash(invokeTx.transactionHash)
+                    Alert.success("Interact with smart contract success.")
+                } else {
+                    setInteractErr('Invoke to smart contract failed.')
+                }
+            }
+            console.log("InvokeTx", invokeTx)
+        } catch (error) {
+            try {
+                const errJson = JSON.parse(error?.message);
+                setInteractErr(`Invoke to smart contract failed: ${errJson?.error?.message}`)
+            } catch (error) {
+                setInteractErr('Invoke to smart contract failed.')
+            }
+        }
+        setLoadingExecute(false)
+    }
+
+    const selectFunction = (value: any) => {
+        try {
+            setParamsInput('')
+            setparamsPlaceholder('')
+            if (value.stateMutability !== 'pure' && value.stateMutability !== 'view') {
+                const placeHoler = value.inputs && value.inputs.length > 0 && value.inputs.map((item: any) => {
+                    return `${item.type} ${item.name}`
+                });
+                if (placeHoler && placeHoler.length > 0) {
+                    setparamsPlaceholder(placeHoler.join(', '))
+                }
+            }
+            console.log("Value: ", value);
+
+            setSmcFuncActive(value)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const uploadFileFailed = (response: Object, file: FileType) => {
+        setListFile([]);
+        Alert.error('Uploaded failed.');
+    }
+
+    const handleRemoveFile = (file: FileType) => {
+        setListFile([]);
+        setAbi('')
+        setSmcAddr('')
+    }
+
+    const handleUpload = (fileList: any) => {
+        setFileUploadErr('')
+        if (fileList.length > 0) {
+            setListFile([fileList[fileList.length - 1]]);
+            const reader = new FileReader();
+            reader.readAsText(fileList[fileList.length - 1].blobFile)
+            reader.onload = () => {
+                const { contractAddress, abi } = JSON.parse(reader.result as any)
+                if (!validateToAddress(contractAddress) || !validateAbi(abi)) {
+                    setFileUploadErr(ErrorMessage.FileUploadInvalid)
+                    setAbi('')
+                    setSmcAddr('')
+                    setListFile([]);
+                    return
+                }
+                setListFile([fileList[fileList.length - 1]]);
+                setAbi(abi)
+                setSmcAddr(contractAddress)
+                Alert.success('Uploaded successfully.');
+            }
+        }
+    }
+
+    const resetAll = () => {
+        setSmcAddr('')
+        setSmcAddrErr('')
+        setAbi('')
+        setAbiErr('')
+        setSmcFuncList([] as any)
+        setparamsPlaceholder('')
+        setParamsInput('')
+        setSmcFuncActive({} as any)
+        setCurrentStep(0)
+        setGasLimit(1000000)
+        setGasLimitErr('')
+        setGasPrice(1)
+        setGasPriceErr('')
+        setInteractErr('')
+        setTxResult('')
+        setShowResult(false)
+        setListFile([] as FileType[])
+        setFileUploadErr('')
+        setInteractType('')
+        setTxHash('')
     }
 
     return (
-        <div>
+        <div className="interact-smc-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon className="highlight" icon="related-map" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Deploy Smart Contract By Source Code</p>
+                    <p style={{ marginLeft: '12px' }} className="title">Interact With Smart Contract</p>
                 </div>
             </div>
             <Panel shaded>
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={16}>
-                                <ControlLabel>Contract Address:<span className="required-mask">*</span></ControlLabel>
-                                <FormControl name="smcAddr"
-                                    placeholder="Input Contract Address"
-                                    value={smcAddr}
-                                    onChange={setSmcAddr}
-                                /> 
-                            </FlexboxGrid.Item>
-                            {/* <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={16}>
-                                <ControlLabel>{'Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
-                                <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable>
-                                    <FormControl name="smcAddr"
-                                        style={{padding: '11px 12px'}}
-                                        placeholder="Upload Your <contract.json> file:"
-                                    />
-                                </Uploader>
-                            </FlexboxGrid.Item> */}
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <ControlLabel>Abi Json:<span className="required-mask">*</span></ControlLabel>
-                                <FormControl rows={10}
-                                    name="abi"
-                                    componentClass="textarea"
-                                    placeholder="ABI"
-                                    value={abi}
-                                    onChange={setAbi}
-                                />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{marginTop: '25px', paddingLeft: 0}}>
-                                <Button size="big" style={{width: '250px'}} onClick={interact}>INTERACT CONTRACT</Button>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 20 }}>
+                                <Steps current={currentStep}>
+                                    <Steps.Item title="Select Your Contract" />
+                                    <Steps.Item title="Invoke Contract" />
+                                </Steps>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
+                        {
+                            currentStep === 0 ? (
+                                <>
+                                    <FlexboxGrid style={{ marginBottom: 20 }}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
+                                            <ControlLabel className="label">Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                            <FormControl name="gaslimit"
+                                                placeholder="Gas Limit"
+                                                value={gasLimit}
+                                                onChange={(value) => {
+                                                    if (onlyInteger(value)) {
+                                                        setGasLimit(value);
+                                                        validateGasLimit(value)
+                                                    }
+                                                }}
+                                                width={50}
+                                            />
+                                            <ErrMessage message={gasLimitErr} />
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
+                                            <ControlLabel className="label">Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                            <SelectPicker
+                                                className="dropdown-custom"
+                                                data={gasPriceOption}
+                                                searchable={false}
+                                                value={gasPrice}
+                                                onChange={(value) => {
+                                                    setGasPrice(value)
+                                                    validateGasPrice(value)
+                                                }}
+                                                style={{ width: 250 }}
+                                            />
+                                            <ErrMessage message={gasPriceErr} />
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                    <FlexboxGrid>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginBottom: 20 }}>
+                                            <ControlLabel className="label">Contract Address:<span className="required-mask">*</span></ControlLabel>
+                                            <FormControl name="smcAddr"
+                                                placeholder="Input Contract Address"
+                                                value={smcAddr}
+                                                onChange={(value) => {
+                                                    setSmcAddr(value)
+                                                    validateToAddress(value)
+                                                }}
+                                            />
+                                            <ErrMessage message={smcAddrErr} />
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                            <ControlLabel className="label">{'Or Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
+                                            <Uploader
+                                                action="//jsonplaceholder.typicode.com/posts/"
+                                                draggable
+                                                fileList={fileList}
+                                                onChange={handleUpload}
+                                                onError={uploadFileFailed}
+                                                onRemove={handleRemoveFile}>
+                                                <FormControl name="smcAddr"
+                                                    style={{ padding: '11px 12px' }}
+                                                    placeholder="Upload Your <contract.json> file:"
+                                                />
+                                            </Uploader>
+                                            <ErrMessage message={fileUploadErr} />
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                            <FlexboxGrid justify="space-between">
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container">
+                                                    <ControlLabel className="label">Abi Json:<span className="required-mask">*</span></ControlLabel>
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
+                                                    <div>
+                                                        <Button className="ghost-button"
+                                                            onClick={() => {
+                                                                setAbi('')
+                                                                setAbiErr('')
+                                                            }}>Clear</Button>
+                                                        <Button className="ghost-button"
+                                                            onClick={() => {
+                                                                copyToClipboard(abi, onSuccess)
+                                                            }}>Copy</Button>
+                                                        <Button className="ghost-button" onClick={formatAbiJson}>Format</Button>
+                                                    </div>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                            <FormControl rows={10}
+                                                name="abi"
+                                                componentClass="textarea"
+                                                placeholder="ABI"
+                                                value={abi}
+                                                onChange={(value) => {
+                                                    setAbi(value)
+                                                    validateAbi(value)
+                                                }}
+                                            />
+                                            <ErrMessage message={abiErr} />
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
+                                            <Button size="big" style={{ width: '250px' }} onClick={compilerABIStep}>Go To Contract</Button>
+                                            <Button size="big" className="ghost-button" onClick={resetAll}>Reset</Button>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </>
+                            ) : (
+                                    <FlexboxGrid>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                            <Button className="primary-button"
+                                                style={{ marginBottom: '25px' }}
+                                                onClick={() => {
+                                                    setCurrentStep(0)
+                                                    resetAll()
+                                                }}
+                                            >
+                                                <Icon icon="angle-double-left" /><Icon icon="angle-double-left" /> Back
+                                            </Button>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                            <ControlLabel className="label">Interact With Contract</ControlLabel>
+                                            <SelectPicker
+                                                placeholder="Select a function"
+                                                data={smcFuncList}
+                                                searchable={false}
+                                                className="dropdown-custom"
+                                                style={{ width: "100%" }}
+                                                onChange={(value) => {
+                                                    selectFunction(value)
+                                                }}
+                                            />
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                            <ControlLabel className="label">Params: </ControlLabel>
+                                            <FormControl rows={10}
+                                                disabled={paramsPlaceholder === ''}
+                                                name="params"
+                                                placeholder={paramsPlaceholder}
+                                                value={paramsInput}
+                                                onChange={(value) => {
+                                                    setParamsInput(value)
+                                                }}
+                                            />
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
+                                            <Button size="big" style={{ width: '250px' }} loading={loadingExecute} onClick={executeFunction}>Execute</Button>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
+                                            <ErrMessage message={interactErr} />
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
+                                            {
+                                                showResult ? <>
+                                                    {
+                                                        interactType === "call" ?
+                                                            <ControlLabel className="label">Result: {txResult}</ControlLabel> :
+                                                            (
+                                                                interactType === "send" ? (
+                                                                    <>
+                                                                        {
+                                                                            txHash ? <div style={{ marginBottom: '20px', wordBreak: 'break-all' }}>
+                                                                                Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}
+                                                                            </div> : <></>
+                                                                        }
+                                                                        <Button className="ghost-button" onClick={() => { setShowTxDetailModal(true) }}>
+                                                                            <Icon icon="file-text-o" style={{ marginRight: 10 }} />View Transaction Details
+                                                                        </Button>
+                                                                    </>
+                                                                ) : <></>
+                                                            )
+                                                    }
+                                                </> : <></>
+                                            }
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                )
+                        }
+
                     </FormGroup>
                 </Form>
             </Panel>
+            {/* Modal show transaction details  */}
+            <Modal size="lg" show={showTxDetailModal} onHide={() => { setShowTxDetailModal(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Transaction Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ReactJson src={{ txResult }} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => { setShowTxDetailModal(false) }} className="ghost-button">
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

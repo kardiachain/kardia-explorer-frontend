@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, List, Panel, Placeholder } from 'rsuite'
+import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { getBlockBy } from '../../service/kai-explorer/block';
@@ -73,13 +74,25 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Number Transactions</div>
+                                        <div className="title">Number of Transactions</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="content">
                                             {!blockDetail?.transactions ? 0 :
                                                 <Link to={`/txs?block=${blockDetail?.blockHeight}`}>{numberFormat(Number(blockDetail?.transactions))}</Link>
                                             }
+                                        </div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                        <div className="title">Block Rewards</div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                        <div className="content">
+                                            {numberFormat(weiToKAI(blockDetail?.rewards))} KAI
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>

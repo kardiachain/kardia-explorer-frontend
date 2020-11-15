@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -9,7 +9,7 @@ import './home.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const TransactionSection = ({ transactionList = []}: {
+const TransactionSection = ({ transactionList = [] }: {
     transactionList: KAITransaction[]
 }) => {
     const { isMobile } = useViewport();
@@ -20,7 +20,7 @@ const TransactionSection = ({ transactionList = []}: {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
                         rowHeight={70}
-                        height={400}
+                        height={420}
                         hover={false}
                         data={transactionList}
                         wordWrap
@@ -63,14 +63,25 @@ const TransactionSection = ({ transactionList = []}: {
                                             })}
                                             </div>
                                             <div>
-                                                <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }}/>To:
-                                                {renderHashToRedirect({
-                                                hash: rowData.to,
-                                                headCount: isMobile ? 4 : 8,
-                                                tailCount: 4,
-                                                showTooltip: false,
-                                                callback: () => { history.push(`/address/${rowData.to}`) }
-                                            })}
+                                                {
+                                                    rowData.to !== "0x" ? (
+                                                        <>
+                                                            <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />To:
+                                                            {renderHashToRedirect({
+                                                                hash: rowData.to,
+                                                                headCount: isMobile ? 4 : 8,
+                                                                tailCount: 4,
+                                                                showTooltip: false,
+                                                                callback: () => { history.push(`/address/${rowData.to}`) }
+                                                            })}
+                                                        </>
+                                                    ) : (
+                                                            <>
+                                                                <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />To:
+                                                                <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.contractAddress || "0x"}`}>Contract Creation</Link>
+                                                            </>
+                                                        )
+                                                }
                                             </div>
                                         </div>
                                     );
