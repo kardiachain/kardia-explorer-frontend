@@ -195,7 +195,7 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 const delegateAction = async (valAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
     if(!valAddr || !account || !amountDel) return
     const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel, gasLimit, gasLimit);
+    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel, gasLimit, gasPrice);
 }
 
 const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
