@@ -122,7 +122,7 @@ const Header = () => {
                                     <Nav.Item eventKey="wallet" href="/wallet-login">Wallet</Nav.Item>
                                 )
                         }
-                        <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item>
+                        {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
                     </Nav>
                     <Nav className="kardia-nav" pullRight>
                     <NetworkSelect />

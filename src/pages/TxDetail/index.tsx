@@ -137,7 +137,7 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         {
-                                            txDetail?.contractAddress === "" ? (
+                                            !txDetail?.toSmcAddr ? (
                                                 <div className="content">{renderHashToRedirect({
                                                     hash: txDetail?.to,
                                                     headCount: 50,
@@ -146,14 +146,14 @@ const TxDetail = () => {
                                                     showCopy: true
                                                 })}</div>
                                             ) : (
-                                                <div className="content">[ Contract {renderHashToRedirect({
-                                                    hash: txDetail?.contractAddress,
+                                                <div className="content"><Icon className="highlight" icon="file-text-o" style={{marginRight: 5}} /> {renderHashToRedirect({
+                                                    hash: txDetail?.toSmcAddr,
                                                     headCount: 50,
                                                     tailCount: 4,
-                                                    callback: () => { history.push(`/address/${txDetail?.contractAddress}`) },
-                                                })} Created ] <IconButton
+                                                    callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
+                                                })} {txDetail.toSmcName} <IconButton
                                                 size="xs"
-                                                onClick={() => copyToClipboard(txDetail?.contractAddress || '', onSuccess)}
+                                                onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
                                                 icon={<Icon icon="copy" />}
                                             /></div>
                                             )

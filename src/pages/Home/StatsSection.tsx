@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Icon, Panel } from 'rsuite';
 import { numberFormat } from '../../common/utils/number';
-import { calculateTPS, getTotalHolder } from '../../service/kai-explorer';
+import { calculateTPS, getTotalStats } from '../../service/kai-explorer';
 import './stat.css'
 
 const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {
     const [tps, setTps] = useState(0)
-    const [totalHolder, setTotalHolder] = useState(0)
+    const [totalStats, setTotalStats] = useState({} as TotalStats)
 
     useEffect(() => {
         const tps = calculateTPS(blockList);
         setTps(tps);
-        getTotalHolder().then(setTotalHolder)
+        (async () => {
+            const totalStats = await getTotalStats();
+            setTotalStats(totalStats)
+        })()
     }, [blockList]);
 
     return (
@@ -46,7 +49,14 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                             <Icon className="highlight" icon="peoples" size={"lg"} />
                         </div>
                         <div className="title">Addresses</div>
-                        <div className="value">{numberFormat(totalHolder)}</div>
+                        <div className="value">{numberFormat(totalStats.totalHolders)}</div>
+                    </div>
+                    <div className="stat">
+                        <div className="icon">
+                            <Icon className="highlight" icon="file-text-o" size={"lg"} />
+                        </div>
+                        <div className="title">Contracts</div>
+                        <div className="value">{numberFormat(totalStats.totalContracts)}</div>
                     </div>
                 </Panel>
         </div>

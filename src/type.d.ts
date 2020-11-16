@@ -17,6 +17,8 @@ interface KAITransaction {
     input: string;
     logs: string;
     gasUsed: number;
+    toSmcName: string;
+    toSmcAddr: string;
 }
 
 interface KAIBlock {
@@ -119,4 +121,14 @@ interface KaiToken {
     symbol?: string;
     total_supply?: number;
     volume_24h?: number;
+}
+
+interface TotalStats {
+    totalHolders: number;
+    totalContracts: number;
+}
+
+interface ToSmcAddress {
+    toSmcAddr: string;
+    toSmcName: string;
 }

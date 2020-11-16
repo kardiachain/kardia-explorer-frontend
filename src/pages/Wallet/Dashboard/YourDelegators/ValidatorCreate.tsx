@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ControlLabel, Form, FormControl, FormGroup, Modal, HelpBlock } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, Modal, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
+import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { onlyNumber } from '../../../../common/utils/number';
+import { onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { getBalance } from '../../../../service/kai-explorer';
 import { createValidator } from '../../../../service/smc/staking';
@@ -33,6 +34,11 @@ const ValidatorCreate = () => {
     const [createValErrMsg, setCreateValErrMsg] = useState('')
     const [balance, setBalance] = useState(0)
     const myAccount = getAccount() as Account
+
+    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPriceErr, setGasPriceErr] = useState('')
+    const [gasLimit, setGasLimit] = useState(gasLimitDefault)
+    const [gasLimitErr, setGasLimitErr] = useState('')
 
     useEffect(() => {
         (async () => {
@@ -173,6 +179,25 @@ const ValidatorCreate = () => {
         return true
     }
 
+
+    const validateGasPrice = (gasPrice: any): boolean => {
+        if (!Number(gasPrice)) {
+            setGasPriceErr(ErrorMessage.Require)
+            return false
+        }
+        setGasPriceErr('')
+        return true
+    }
+
+    const validateGasLimit = (gas: any): boolean => {
+        if (!Number(gas)) {
+            setGasLimitErr(ErrorMessage.Require);
+            return false;
+        }
+        setGasLimitErr('')
+        return true
+    }
+
     const resetForm = () => {
         setCommissionRate('')
         setMaxRate('')
@@ -182,7 +207,7 @@ const ValidatorCreate = () => {
     }
 
     const submitValidator = () => {
-        if (!validateCommissionRate(commissionRate) || !validateMaxRate(maxRate) || !validateMaxChangeRate(maxChangeRate) || !validateMinSelfDelegation(minSelfDelegation) || !validateAmountDel(amountDel)) {
+        if (!validateGasPrice(gasPrice) || !validateGasLimit(gasLimit) || !validateCommissionRate(commissionRate) || !validateMaxRate(maxRate) || !validateMaxChangeRate(maxChangeRate) || !validateMinSelfDelegation(minSelfDelegation) || !validateAmountDel(amountDel)) {
             return
         }
         setShowConfirmModal(true)
@@ -193,7 +218,7 @@ const ValidatorCreate = () => {
         try {
             setIsLoading(true)
             let account = await getAccount() as Account;
-            let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel));
+            let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel), gasLimit, gasPrice);
 
             if (validator && validator.status === 1) {
                 Alert.success('Create validator success.')
@@ -217,89 +242,121 @@ const ValidatorCreate = () => {
     return (
         <>
             <Form fluid>
-                <FormGroup style={{marginBottom: 15}}>
-                    <ControlLabel>
-                        <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                        Commission Rate (%) <span className="required-mask">*</span>
-                    </ControlLabel>
-                    <FormControl placeholder="Commission Rate"
-                        name="commissionRate"
-                        value={commissionRate}
-                        onChange={(value) => {
-                            if (onlyNumber(value)) {
-                                setCommissionRate(value)
-                                validateCommissionRate(value)
-                            }
-                        }} />
-                    <ErrMessage message={commissionRateErr} />
-                </FormGroup>
-                <FormGroup style={{marginBottom: 15}}>
-                    <ControlLabel>
-                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                        Max Rate (%) <span className="required-mask">*</span>
-                    </ControlLabel>
-                    <FormControl placeholder="Max Rate"
-                        name="maxRate"
-                        value={maxRate}
-                        onChange={(value) => {
-                            if (onlyNumber(value)) {
-                                setMaxRate(value)
-                                validateMaxRate(value)
-                            }
-                        }} />
-                    <ErrMessage message={maxRateErr} />
-                </FormGroup>
-                <FormGroup style={{marginBottom: 15}}>
-                    <ControlLabel>
-                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
-                        Max Change Rate (%) <span className="required-mask">*</span>
-                    </ControlLabel>
-                    <FormControl placeholder="Max Change Rate"
-                        name="maxChangeRate"
-                        value={maxChangeRate}
-                        onChange={(value) => {
-                            if (onlyNumber(value)) {
-                                setMaxChangeRate(value)
-                                validateMaxChangeRate(value)
-                            }
-                        }} />
-                    <ErrMessage message={maxChangeRateErr} />
-                </FormGroup>
-                <FormGroup style={{marginBottom: 15}}>
-                    <ControlLabel>
-                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
-                    Min Self Delegation (KAI) <span className="required-mask">*</span>
-                    </ControlLabel>
-                    <FormControl placeholder="Min Self Delegation"
-                        name="minSelfDelegation"
-                        value={minSelfDelegation}
-                        onChange={(value) => {
-                            if (onlyNumber(value)) {
-                                setMinSelfDelegation(value)
-                                validateMinSelfDelegation(value)
-                            }
-                        }} />
-                    <ErrMessage message={maxMinSelfDelegationErr} />
-                </FormGroup>
-                <FormGroup style={{marginBottom: 15}}>
-                    <ControlLabel>
-                        <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
-                        Amount Self Delegation (KAI) <span className="required-mask">*</span>
-                    </ControlLabel>
-                    <FormControl placeholder="Amount Self Delegation"
-                        name="amountDel"
-                        value={amountDel}
-                        onChange={(value) => {
-                            if (onlyNumber(value)) {
-                                setAmountDel(value)
-                                validateAmountDel(value)
-                            }
-                        }} />
-                    <ErrMessage message={amountDelErr} />
-                </FormGroup>
-                <FormGroup>
-                    <Button size="big" onClick={submitValidator}>Register</Button>
-                </FormGroup>
+                <FlexboxGrid>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
+                        <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                        <FormControl name="gaslimit"
+                            placeholder="Gas Limit"
+                            value={gasLimit}
+                            onChange={(value) => {
+                                if (onlyInteger(value)) {
+                                    setGasLimit(value);
+                                    validateGasLimit(value)
+                                }
+                            }}
+                            style={{ width: '100%' }}
+                        />
+                        <ErrMessage message={gasLimitErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
+                        <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                        <SelectPicker
+                            className="dropdown-custom"
+                            data={gasPriceOption}
+                            searchable={false}
+                            value={gasPrice}
+                            onChange={(value) => {
+                                setGasPrice(value)
+                                validateGasPrice(value)
+                            }}
+                            style={{ width: '100%' }}
+                        />
+                        <ErrMessage message={gasPriceErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                            Commission Rate (%) <span className="required-mask">*</span>
+                        </ControlLabel>
+                        <FormControl placeholder="Commission Rate"
+                            name="commissionRate"
+                            value={commissionRate}
+                            onChange={(value) => {
+                                if (onlyNumber(value)) {
+                                    setCommissionRate(value)
+                                    validateCommissionRate(value)
+                                }
+                            }} />
+                        <ErrMessage message={commissionRateErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                            Max Rate (%) <span className="required-mask">*</span>
+                        </ControlLabel>
+                        <FormControl placeholder="Max Rate"
+                            name="maxRate"
+                            value={maxRate}
+                            onChange={(value) => {
+                                if (onlyNumber(value)) {
+                                    setMaxRate(value)
+                                    validateMaxRate(value)
+                                }
+                            }} />
+                        <ErrMessage message={maxRateErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                            Max Change Rate (%) <span className="required-mask">*</span>
+                        </ControlLabel>
+                        <FormControl placeholder="Max Change Rate"
+                            name="maxChangeRate"
+                            value={maxChangeRate}
+                            onChange={(value) => {
+                                if (onlyNumber(value)) {
+                                    setMaxChangeRate(value)
+                                    validateMaxChangeRate(value)
+                                }
+                            }} />
+                        <ErrMessage message={maxChangeRateErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
+                            Min Self Delegation (KAI) <span className="required-mask">*</span>
+                        </ControlLabel>
+                        <FormControl placeholder="Min Self Delegation"
+                            name="minSelfDelegation"
+                            value={minSelfDelegation}
+                            onChange={(value) => {
+                                if (onlyNumber(value)) {
+                                    setMinSelfDelegation(value)
+                                    validateMinSelfDelegation(value)
+                                }
+                            }} />
+                        <ErrMessage message={maxMinSelfDelegationErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
+                            Amount Self Delegation (KAI) <span className="required-mask">*</span>
+                        </ControlLabel>
+                        <FormControl placeholder="Amount Self Delegation"
+                            name="amountDel"
+                            value={amountDel}
+                            onChange={(value) => {
+                                if (onlyNumber(value)) {
+                                    setAmountDel(value)
+                                    validateAmountDel(value)
+                                }
+                            }} />
+                        <ErrMessage message={amountDelErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                        <Button size="big" onClick={submitValidator}>Register</Button>
+                    </FlexboxGrid.Item>
+                </FlexboxGrid>
             </Form>
             <ErrMessage message={createValErrMsg} />
             {
