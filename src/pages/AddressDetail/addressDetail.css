@@ -1,0 +1,11 @@
+.address-detail-container .content {
+    word-break: break-all;
+}
+.address-detail-container .title {
+    font-weight: bold;
+}
+
+.address-detail-container .overview .rs-panel-heading {
+    background: linear-gradient(137.34deg,#7b7b82 14.41%,#a0a0a9 116.67%);
+    font-weight: bold;
+}

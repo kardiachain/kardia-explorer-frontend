@@ -1,0 +1,76 @@
+.wallet-info-card .rs-panel-body {
+    padding: 0;
+}
+
+.wallet-header-container {
+    margin-bottom: 20px;
+}
+
+.wallet-info-card .card-body,
+.wallet-info-card .card-footer {
+    padding: 20px
+}
+
+.wallet-info-card .card-footer .icon {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.wallet-info-card .card-footer {
+    background: linear-gradient(137.34deg,#7b7b82 14.41%,#a0a0a9 116.67%);
+    color: var(--white-color);
+    border-radius: 0px;
+}
+
+.wallet-info-card .title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.wallet-info-card .title .icon{
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+
+/* Style for left menu */
+
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.left-container {
+    width: 300px;
+    background-color: #f7f7fa;
+    padding-top: 35px;
+    min-height: calc(100vh - 115px);
+}
+
+.right-container {
+    width: calc(100% - 300px);
+    padding: 20px;
+}
+
+
+
+@media only screen and (max-width: 992px) {
+    .wallet-info-card {
+        margin-right: 0px;
+        margin-bottom: 10px;
+    }
+    
+    .wallet-info-card .action {
+        bottom: 25px;
+    }
+}
+
+
+.dashboard-container .rs-dropdown-item-active .rs-dropdown-item-content,
+.dashboard-container .rs-nav-item-active .rs-nav-item-content,
+.dashboard-container .rs-dropdown-menu-active ~ .rs-btn-subtle,
+.dashboard-container .rs-dropdown-menu-active ~ .rs-btn-subtle > .rs-icon {
+    color: #a90824 !important;
+    font-weight: 600;
+}

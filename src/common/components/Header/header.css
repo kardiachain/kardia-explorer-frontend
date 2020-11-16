@@ -1,14 +1,29 @@
 .kai-header-container {
-    padding: 0 40px;
+    /* padding: 0 90px; */
+    width: 70%;
+    margin: 0 auto;
 }
+
+.rs-navbar{
+    display: flex;
+}
+
+.rs-navbar-header{
+    flex:1;
+    padding: 10px 0px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+}
+
+.kai-header-container .rs-dropdown-menu {
+    border-radius: 0;
+}
+
 
 .kai-header-container-mobile {
     background-color: #2A343D;
     display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 0;
 }
 
 .kai-header-mobile-menu-container {
@@ -30,18 +45,38 @@
 
 .kai-logo-container {
     max-width: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
 }
 
 .kai-logo-container>img {
     width: 100%;
 }
 
-@media only screen and (min-width: 1024px) {
-    .kai-logo-container {
-        margin-right: 15px;
+
+
+/* ------------------- Search section style --------------*/
+.search-wrapper {
+    width: 65%;
+    margin: 0 auto;
+    margin-bottom:40px;
+}
+
+.search-wrapper .rs-input{
+    padding:12px 11px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-search{
+    background: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
+    color:white;
+    border-radius:4px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+@media only screen and (max-width: 740px) {
+    .search-wrapper{
+        width: 100%;
+        margin-bottom:30px;
     }
 }

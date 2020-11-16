@@ -1,32 +1,51 @@
-import  React, { useState } from 'react';
-import { Col, FlexboxGrid, Nav, Panel } from 'rsuite';
-import CreateByKeystore from './CreateByKeystore';
-import CreateByPrivateKey from './CreateByPrivateKey';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { Col, FlexboxGrid, Icon, Panel } from 'rsuite';
 import './createWallet.css'
 
 const CreateNewWallet = () => {
-
-    const [activeKey, setActiveKey] = useState("private-key");
-
+    let history = useHistory();
     return (
         <div className="create-wallet-container">
-            <div className="show-grid">
-                <FlexboxGrid justify="center">
-                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={14}>
-                        <Panel shaded>
-                            <Nav appearance="tabs" justified onSelect={setActiveKey}  >
-                                <Nav.Item eventKey="private-key" active={ activeKey === "private-key" }>Create by private key</Nav.Item>
-                                <Nav.Item eventKey="keystore" active={ activeKey === "keystore" }>Create by keystore file</Nav.Item>
-                            </Nav>
-                            <div className="child-tab">
-                                {
-                                    activeKey === "private-key" ? <CreateByPrivateKey /> : <CreateByKeystore />
-                                }
+            <FlexboxGrid justify="center">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={6}>
+                    <div className="panel-container private-key">
+                        <Panel shaded onClick={() => { history.push('/create-private-key') }}>
+                            <div className="title">CREATE WITH PRIVATE KEY</div>
+                            <div className="icon">
+                                <Icon icon="key" size="lg" />
                             </div>
+                            <div> A unique private key will be generate for you </div>
+                            <div>Remember to save your private key! If you lose your private key, you will not able to recover your wallet</div>
+                            <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
-            </div>
+                    </div>
+                </FlexboxGrid.Item>
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={6}>
+                    <div className="panel-container keystore-file">
+                        <Panel shaded onClick={() => { history.push('/create-keystore-file') }}>
+                            <div className="title">CREATE WITH KEYSTORED FILE</div>
+                            <div className="icon">
+                                <Icon icon="file-download" size="lg" />
+                            </div>
+                            <div>You must be DOWNLOAD and SAVE the following Keystore File. You will need it and your password to access your wallet.</div>
+                            <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
+                        </Panel>
+                    </div>
+                </FlexboxGrid.Item>
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={6}>
+                    <div className="panel-container mnemonic-phrase">
+                        <Panel shaded onClick={() => { history.push('/create-mnemonic-phrase') }}>
+                            <div className="title">CREATE WITH MNEMONIC PHRASE</div>
+                            <div className="icon">
+                                <Icon icon="paragraph" size="lg" />
+                            </div>
+                            <div>REMEMBER to save your mnemonic phrase. You will need this to access your wallet</div>
+                            <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
+                        </Panel>
+                    </div>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
         </div>
     );
 }

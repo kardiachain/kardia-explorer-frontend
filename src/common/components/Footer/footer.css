@@ -1,8 +1,26 @@
 .kai-footer {
-    background-color: #2a343d;
-    color: #FFFFFF;
-    height: 60px;
+    background-color: var(--nav-color);
+    color: var(--white-color);
+    height: 80px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
+
+.footer-icon{
+    color:var(--white-color);
+    margin-right: 22px;
+}
+
+.footer-icon:last-child{
+    margin-right:0;
+}
+
+/* mobile screen */
+@media screen and (max-width: 740px) {
+    .kai-footer{
+        flex-direction: column-reverse;
+        padding: 15px;
+    }
+}
+/* end mobile screen */

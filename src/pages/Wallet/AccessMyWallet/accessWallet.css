@@ -1,0 +1,72 @@
+.access-wallet-container,
+.access-privatekey-container,
+.access-keystore-container,
+.access-mnemonic-container {
+    margin-top: 50px;
+    width: 100%;
+}
+
+/* Style for crate wallet with private key */
+.access-container {
+    margin-top: 50px;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-container .submit-buttom {
+    margin: 30px 20px;
+}
+
+.access-container .rs-panel-body {
+    width: 700px;
+}
+
+.access-container .title {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+/* Style for access wallet container */
+.access-wallet-container .panel-body {
+    padding: 50px 20px;
+}
+
+.access-wallet-container .rs-panel-heading {
+    color: #ffffff;
+    font-size: 20px;
+    background-color: #7a848b;
+}
+
+.access-wallet-container .panel-body .rs-btn {
+    text-align: left;
+    font-size: 20px;
+    padding: 20px 20px;
+    box-shadow: 1px 1px 3px 0px #c6c6cb;
+    background: white;
+    color: #1d1b1b;
+    position: relative;
+    padding-left: 70px;
+    margin-bottom: 20px;
+}
+
+.access-wallet-container .panel-body .rs-btn .rs-icon {
+    font-size: 30px;
+    margin-right: 10px;
+    left: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.access-privatekey-container .title,
+.access-keystore-container .title,
+.access-mnemonic-container .title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    /* color: rgb(168 62 247); */
+}

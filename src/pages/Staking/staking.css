@@ -1,0 +1,33 @@
+.rank-tab {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 35px;
+    border-radius: 50%;
+    color: var(--white-color);
+    font-family: 600;
+}
+
+.validators-container .staking-stats .stats-container {
+    display: flex;
+    align-items: center;
+}
+.validators-container .staking-stats .stats-container .icon {
+    flex: 1;
+    margin: auto;
+    text-align: center;
+    font-weight: 600;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+.validators-container .staking-stats .stats-container .content {
+    flex: 5;
+}
+
+.validators-container .staking-stats .stats-container .value {
+    font-size: 25px;
+    font-weight: 600;
+}

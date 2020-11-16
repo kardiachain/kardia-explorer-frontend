@@ -1,69 +1,68 @@
-.stat-group {
-    padding: 10px 40px;
-}
-
-.stat-container {
-    margin-top: 10px;
-    background-color: #FFFFFF;
-    border-left: 5px solid #54e859;
-    font-size: 40px;
-}
-
-.stat-container>.rs-panel-body {
-    text-align: right;
-}
-
-.home-container {
-    padding: 50px;
-    margin-top: 60px;
-}
-
 .home-container>h3 {
     margin-top: 45px;
 }
 
-.search-section {
-    background-color: #2a343d;
-    min-height: 300px;
-    padding: 0 130px;
-    position: relative;
-}
 
-.search-input-wrapper {
-    padding: 40px;
-    background-color: #FFFFFF;
-    position: absolute;
-    border-radius: 5px;
-    bottom: -59px;
-    left: 15%;
-    right: 15%;
-    -webkit-box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
-    -moz-box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
-    box-shadow: 0px 19px 111px -14px rgba(196,196,196,0.71);
+.block-title{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    margin-bottom:10px;
 }
 
-.search-input-wrapper>input {
-    width: 80%;
+.title{
+font-weight:600;
 }
 
-.search-input-wrapper>button {
-    width: 15%;
+.mt0{
+    margin-top:0;
 }
 
-@media screen and (max-width: 620px) {
-    .stat-group {
-        padding: 10px;
+.token-infor{
+    flex:1;
+    display: flex;
+    align-items: center;
+
+    padding: 5px 10%;
+    
+    font-weight: 500;
+}
+
+._wrap > .rs-panel-body{
+    height: 356px;
+
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+
+    padding:0 !important;
+
+    font-weight:500;
+}
+
+.left{
+    width: 65px;
+}
+
+.fw700{
+    font-weight: 700;
+}
+
+@media screen and (min-width: 1300px){
+    .section-left, .section-right {
+        width: calc(50% - 5px);
     }
-    .stat-container>.rs-panel-body{
-        font-size: 20px;
-        font-weight: bold;
+
+    .section-left {
+        margin-right: 5px;
     }
-    .home-container {
-        margin-top: 0;
-        padding: 20px;
+
+    .section-right {
+        margin-left: 5px;
     }
+}
+
+@media screen and (max-width: 992px) {
     .search-section {
         background-color: transparent;
         min-height: unset;
@@ -83,5 +82,21 @@
 
     .search-input-wrapper>input {
         width: unset;
+    }
+}
+
+/* mobile screen */
+@media screen and (max-width: 740px){
+    .left{
+        width: 38px;
+    }
+
+    .wrap-token{
+        padding:0;
+        margin-top:30px;
+    }
+
+    .token-infor{
+        padding: 5px 5%;
     }
 }

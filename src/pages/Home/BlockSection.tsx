@@ -1,99 +1,84 @@
-import React, { useEffect, useState } from 'react'
-import { Line } from 'react-chartjs-2';
-import { Col, FlexboxGrid, Table } from 'rsuite';
-import { renderHashString } from '../../common/utils/string';
+import React from 'react'
+import { Link, useHistory } from 'react-router-dom';
+import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { numberFormat } from '../../common/utils/number';
+import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
-import { getBlocks } from '../../service/kai-explorer';
+import './home.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const BlockSection = () => {
-    const [blockList, setBlockList] = useState([] as KAIBlock[])
+const BlockSection = ({ blockList = [] }: {
+    blockList: KAIBlock[]
+}) => {
     const { isMobile } = useViewport()
-    useEffect(() => {
-        const blocks = getBlocks(1, 5);
-        setBlockList(blocks)
-    }, [])
+    const history = useHistory();
     return (
-        <FlexboxGrid justify="space-between">
-            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
-                <Line 
-                    options={{ 
-                        maintainAspectRatio: false,
-                        scales : {
-                            xAxes : [ {
-                                gridLines : {
-                                    display : false
-                                }
-                            } ],
-                            yAxes : [ {
-                                gridLines : {
-                                    display : false
-                                }
-                            } ]
-                        }
-                    }}
-                    height={isMobile ? 200 : 400}
-                    data={{
-                        labels: ['1', '2', '3', '4', '5', '6', '7'],
-                        datasets: [{
-                            label: 'Block time',
-                            borderColor: 'rgb(167,129,227)',
-                            data: [27, 3, 10, 6, 30, 14, 16]
-                        }]
-                    }} 
-                />
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16}>
-                <h3>Latest blocks</h3>
-                <Table
-                    bordered
-                    autoHeight
-                    rowHeight={70}
-                    data={blockList}
-                    onRowClick={data => {
-                        console.log(data);
-                    }}
-                >
-                    <Column width={100}>
-                        <HeaderCell>Block height</HeaderCell>
-                        <Cell dataKey="blockHeight" />
-                    </Column>
-                    <Column width={isMobile ? 120 : 300}>
-                        <HeaderCell>Block Hash</HeaderCell>
-                        <Cell>
-                            {(rowData: KAIBlock) => {
-                                return (
-                                    <div>
-                                        <div> {renderHashString(rowData.blockHash, isMobile ? 10 : 30)} </div>
-                                        <div>{rowData.time.toLocaleDateString()} </div>
-                                    </div>
-                                );
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column width={isMobile ? 120 : 300}>
-                        <HeaderCell>Block validator</HeaderCell>
-                        <Cell>
-                            {(rowData: KAIBlock) => {
-                                return (
-                                    <div>
-                                        <div> {renderHashString(rowData.validator.hash, isMobile ? 10 : 30)} </div>
+        <Panel shaded>
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <Table
+                        rowHeight={70}
+                        height={420}
+                        data={blockList}
+                        hover={false}
+                        wordWrap
+                        autoHeight={isMobile ? true : false}
+                    >
+                        <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
+                            <HeaderCell>Block Height</HeaderCell>
+                            <Cell dataKey="blockHeight" >
+                                {(rowData: KAIBlock) => {
+                                    return (
                                         <div>
-                                            <a target="_blank" rel="noopener noreferrer" href={`/validator/${rowData.validator.hash}`}>{rowData.validator.label}</a>
+                                            <div>
+                                                <Icon icon="cubes" className="highlight" style={{ marginRight: '10px' }} />
+                                                <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(Number(rowData.blockHeight))}</Link>
+                                            </div>
+                                            <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
-                                    </div>
-                                );
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column width={100}>
-                        <HeaderCell>Transactions count</HeaderCell>
-                        <Cell dataKey="transactions" />
-                    </Column>
-                </Table>
-            </FlexboxGrid.Item>
-        </FlexboxGrid>
+                                    );
+                                }}
+                            </Cell>
+                        </Column>
+                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
+                            <HeaderCell>Proposer</HeaderCell>
+                            <Cell>
+                                {(rowData: KAIBlock) => {
+                                    return (
+                                        <div>
+                                            {
+                                                renderHashToRedirect({
+                                                    headCount: isMobile ? 5 : 12,
+                                                    showTooltip: false,
+                                                    hash: rowData.validator.hash,
+                                                    callback: () => { history.push(`/address/${rowData.validator.hash}`) }
+                                                })
+                                            }
+                                        </div>
+                                    );
+                                }}
+                            </Cell>
+                        </Column>
+                        <Column flexGrow={1} align="right">
+                            <HeaderCell>Txn</HeaderCell>
+                            <Cell dataKey="transactions">
+                                {(rowData: KAIBlock) => {
+                                    return (
+                                        <div>
+                                            {
+                                                !rowData.transactions ? '0' :
+                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(Number(rowData.transactions))}</Link>
+                                            }
+                                        </div>
+                                    );
+                                }}
+                            </Cell>
+                        </Column>
+                    </Table>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
+        </Panel>
     )
 }
 

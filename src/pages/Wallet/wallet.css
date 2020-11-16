@@ -1,16 +1,78 @@
-.wallet-container {
-    /* padding: 50px; */
-    margin-top: 60px;
-}
-
-.wallet-container .create {
+.panel-container {
     margin: 10px;
 }
-
-.wallet-container .access {
-    margin: 10px;
+.wallet-container .rs-flex-box-grid-item {
+    max-width: 700px;
 }
 
 .wallet-container .grid-container {
     margin-bottom: 10px;
+}
+
+.panel-container .rs-panel {
+    color: white;
+    cursor: pointer;
+}
+.panel-container.create .rs-panel {
+    background: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
+}
+
+.panel-container.create .rs-panel-body {
+    background-color: unset;
+}
+
+.panel-container.access .rs-panel {
+    background: linear-gradient(137.34deg,#2ce6c8 14.41%,#623555 116.67%);
+}
+
+.panel-container.access .rs-panel-body {
+    background-color: unset;
+}
+
+.wallet-container .panel-container:hover {
+    margin-top: 0px !important;
+    transition: 0.2s;
+}
+
+.wallet-container .text-container {
+    height: 200px;
+    padding-left: 120px;
+}
+
+.wallet-container .icon-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 50px;
+    position: absolute;
+    left: 10px;
+}
+.wallet-container .move {
+    position: absolute;
+    font-size: 18px;
+    right: 0;
+    top: 180px;
+}
+
+
+@media only screen and (max-width: 992px) {
+    .wallet-container .icon-container {
+        display: none;
+    }
+    .wallet-container .text-container {
+        padding-left: 0;
+    }
+
+    .panel-container.create .rs-panel {
+        padding: 8px;
+    }
+
+    .panel-container.access .rs-panel {
+        padding: 8px;
+    }
+}
+@media screen and (max-width: 740px) {
+    .rs-panel-body{
+      padding:20px !important;
+    }
 }
