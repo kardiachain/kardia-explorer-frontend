@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, Table } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
+import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat, onlyNumber } from '../../../../common/utils/number';
+import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getBalance } from '../../../../service/kai-explorer';
@@ -28,9 +29,14 @@ const DelegatorCreate = () => {
     const [balance, setBalance] = useState(0)
     const myAccount = getAccount() as Account
 
+    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPriceErr, setGasPriceErr] = useState('')
+    const [gasLimit, setGasLimit] = useState(gasLimitDefault)
+    const [gasLimitErr, setGasLimitErr] = useState('')
+
 
     useEffect(() => {
-        (async() => {
+        (async () => {
             const data = await Promise.all([
                 getDelegationsByValidator(valAddr),
                 getValidator(valAddr),
@@ -60,17 +66,35 @@ const DelegatorCreate = () => {
     }
 
     const submitDelegate = async () => {
-        if (!validateDelAmount(delAmount)) {
+        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateDelAmount(delAmount)) {
             return;
         }
         setShowConfirmModal(true)
+    }
+
+    const validateGasPrice = (gasPrice: any): boolean => {
+        if (!Number(gasPrice)) {
+            setGasPriceErr(ErrorMessage.Require)
+            return false
+        }
+        setGasPriceErr('')
+        return true
+    }
+
+    const validateGasLimit = (gas: any): boolean => {
+        if (!Number(gas)) {
+            setGasLimitErr(ErrorMessage.Require);
+            return false;
+        }
+        setGasLimitErr('')
+        return true
     }
 
     const confirmDelegate = async () => {
         try {
             setIsLoading(true)
             let account = getAccount() as Account
-            const delegate = await delegateAction(valAddr, account, Number(delAmount))
+            const delegate = await delegateAction(valAddr, account, Number(delAmount), gasLimit, gasPrice)
             if (delegate && delegate.status === 1) {
                 Alert.success('Delegate success.')
                 setHashTransaction(delegate.transactionHash)
@@ -119,17 +143,51 @@ const DelegatorCreate = () => {
                             <div className="del-staking-container">
                                 <Form fluid>
                                     <FormGroup>
-                                        <ControlLabel>Delegation amount <span className="required-mask">*</span></ControlLabel>
-                                        <FormControl
-                                            placeholder="Delegation amount*"
-                                            value={delAmount} name="delAmount"
-                                            onChange={(value) => {
-                                                if (onlyNumber(value)) {
-                                                    setDelAmount(value)
-                                                    validateDelAmount(value)
-                                                }
-                                            }} />
-                                        <ErrMessage message={errorMessage} />
+                                        <FlexboxGrid>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
+                                                <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                                <FormControl name="gaslimit"
+                                                    placeholder="Gas Limit"
+                                                    value={gasLimit}
+                                                    onChange={(value) => {
+                                                        if (onlyInteger(value)) {
+                                                            setGasLimit(value);
+                                                            validateGasLimit(value)
+                                                        }
+                                                    }}
+                                                    style={{ width: '100%' }}
+                                                />
+                                                <ErrMessage message={gasLimitErr} />
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
+                                                <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                                <SelectPicker
+                                                    className="dropdown-custom"
+                                                    data={gasPriceOption}
+                                                    searchable={false}
+                                                    value={gasPrice}
+                                                    onChange={(value) => {
+                                                        setGasPrice(value)
+                                                        validateGasPrice(value)
+                                                    }}
+                                                    style={{ width: '100%' }}
+                                                />
+                                                <ErrMessage message={gasPriceErr} />
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                                <ControlLabel>Delegation amount <span className="required-mask">*</span></ControlLabel>
+                                                <FormControl
+                                                    placeholder="Delegation amount*"
+                                                    value={delAmount} name="delAmount"
+                                                    onChange={(value) => {
+                                                        if (onlyNumber(value)) {
+                                                            setDelAmount(value)
+                                                            validateDelAmount(value)
+                                                        }
+                                                    }} />
+                                                <ErrMessage message={errorMessage} />
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
                                     </FormGroup>
                                     <FormGroup>
                                         <Button size="big" onClick={submitDelegate}>Delegate</Button>

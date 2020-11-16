@@ -4,6 +4,7 @@ import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Ic
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
+import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyInteger } from '../../../../common/utils/number';
 import { copyToClipboard, renderHashToRedirect } from '../../../../common/utils/string';
@@ -12,31 +13,22 @@ import { invokeFunctionFromContractAbi } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 import './smartContract.css'
 
-
 const onSuccess = () => {
-    Alert.success('Copied to clipboard.')
+    Alert.success('Copied to clipboard.');
 }
 
 const InteracteWithSmc = () => {
-
-    const gasPriceOption = [
-        { label: 'Normal (1 Gwei)', value: 1 },
-        { label: 'Regular (2 Gwei)', value: 2 },
-        { label: 'Fast (3 Gwei)', value: 3 },
-    ] as any[]
 
     const [smcAddr, setSmcAddr] = useState('')
     const [smcAddrErr, setSmcAddrErr] = useState('')
     const [abi, setAbi] = useState('')
     const [abiErr, setAbiErr] = useState('')
     const [smcFuncList, setSmcFuncList] = useState([] as any[])
-    const [paramsPlaceholder, setparamsPlaceholder] = useState('');
-    const [paramsInput, setParamsInput] = useState('')
     const [smcFuncActive, setSmcFuncActive] = useState({} as any)
     const myAccount = getAccount() as Account
     const [currentStep, setCurrentStep] = useState(0)
     const [loadingExecute, setLoadingExecute] = useState(false)
-    const [gasLimit, setGasLimit] = useState(1000000)
+    const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
@@ -48,6 +40,10 @@ const InteracteWithSmc = () => {
     const [interactType, setInteractType] = useState('') // interact with smc had 2 type: call or send
     const [txHash, setTxHash] = useState('')
     const [showTxDetailModal, setShowTxDetailModal] = useState(false)
+    const [payableAmount, setPayableAmount] = useState(0)
+    const [payableFunction, setPayableFunction] = useState(false)
+
+    const [paramsFields, setParamsFields] = useState([] as any[]);
 
     const validateGasLimit = (gas: any): boolean => {
         if (!Number(gas)) {
@@ -131,11 +127,12 @@ const InteracteWithSmc = () => {
                 abi: abi,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: paramsInput ? paramsInput.split(",").map(item => item.trim()) : [],
+                params: paramsFields.length > 0 && paramsFields.map(item => item.value),
                 isPure: smcFuncActive.stateMutability === 'view' || smcFuncActive.stateMutability === 'pure' ? true : false,
                 functionName: smcFuncActive.name,
-                amount: 0
+                amount: payableAmount
             } as SMCInvokeObject
+
             setInteractType(txObject.isPure ? "call" : "send")
             const invokeTx = await invokeFunctionFromContractAbi(txObject);
             if (txObject.isPure) {
@@ -151,7 +148,6 @@ const InteracteWithSmc = () => {
                     setInteractErr('Invoke to smart contract failed.')
                 }
             }
-            console.log("InvokeTx", invokeTx)
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -164,19 +160,24 @@ const InteracteWithSmc = () => {
     }
 
     const selectFunction = (value: any) => {
+        setShowResult(false)
+        setPayableFunction(false)
         try {
-            setParamsInput('')
-            setparamsPlaceholder('')
+            setParamsFields([])
             if (value.stateMutability !== 'pure' && value.stateMutability !== 'view') {
-                const placeHoler = value.inputs && value.inputs.length > 0 && value.inputs.map((item: any) => {
-                    return `${item.type} ${item.name}`
-                });
-                if (placeHoler && placeHoler.length > 0) {
-                    setparamsPlaceholder(placeHoler.join(', '))
-                }
+                setParamsFields(
+                    value.inputs && value.inputs.length > 0 && value.inputs.map((item: any) => {
+                        return {
+                            name: item.name,
+                            type: item.type,
+                            value: ''
+                        }
+                    })
+                )
             }
-            console.log("Value: ", value);
-
+            if(value.stateMutability === 'payable') {
+                setPayableFunction(true)
+            }
             setSmcFuncActive(value)
         } catch (error) {
             console.log(error);
@@ -223,11 +224,9 @@ const InteracteWithSmc = () => {
         setAbi('')
         setAbiErr('')
         setSmcFuncList([] as any)
-        setparamsPlaceholder('')
-        setParamsInput('')
         setSmcFuncActive({} as any)
         setCurrentStep(0)
-        setGasLimit(1000000)
+        setGasLimit(gasLimitDefault);
         setGasLimitErr('')
         setGasPrice(1)
         setGasPriceErr('')
@@ -238,6 +237,12 @@ const InteracteWithSmc = () => {
         setFileUploadErr('')
         setInteractType('')
         setTxHash('')
+    }
+
+    const handelInputFieldOnchange = (value: any, idx: any) => {
+        const values = [...paramsFields];
+        values[idx].value = value;
+        setParamsFields(values)
     }
 
     return (
@@ -387,18 +392,47 @@ const InteracteWithSmc = () => {
                                                 }}
                                             />
                                         </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label">Params: </ControlLabel>
-                                            <FormControl rows={10}
-                                                disabled={paramsPlaceholder === ''}
-                                                name="params"
-                                                placeholder={paramsPlaceholder}
-                                                value={paramsInput}
-                                                onChange={(value) => {
-                                                    setParamsInput(value)
-                                                }}
-                                            />
-                                        </FlexboxGrid.Item>
+                                        {
+                                            paramsFields && paramsFields.length > 0 ? (
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                                    <ControlLabel className="label">Params: </ControlLabel>
+                                                    {
+                                                        paramsFields.map((field: any, idx: any) => {
+                                                            return (
+                                                                <FormControl
+                                                                    style={{
+                                                                        marginBottom: 10,
+                                                                    }}
+                                                                    type="text"
+                                                                    name={field.name}
+                                                                    placeholder={`${field.type} ${field.name}`}
+                                                                    value={field.value}
+                                                                    onChange={(value) => {
+                                                                        handelInputFieldOnchange(value, idx)
+                                                                    }} />
+                                                            )
+                                                        })
+                                                    }
+                                                </FlexboxGrid.Item>
+                                            ) : <></>
+                                        }
+                                        {
+                                            payableFunction ? 
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                                <ControlLabel className="label">Payable Amount: </ControlLabel>
+                                                <FormControl
+                                                    name="payableAmount"
+                                                    placeholder="Payable Amount"
+                                                    value={payableAmount}
+                                                    onChange={(value) => {
+                                                        if (onlyInteger(value)) {
+                                                            setPayableAmount(value)
+                                                        }
+                                                    }
+                                                } />
+                                            </FlexboxGrid.Item> : <></>
+                                        }
+
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             <Button size="big" style={{ width: '250px' }} loading={loadingExecute} onClick={executeFunction}>Execute</Button>
                                         </FlexboxGrid.Item>

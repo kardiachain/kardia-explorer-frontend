@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -24,6 +24,7 @@ const TransactionSection = ({ transactionList = [] }: {
                         hover={false}
                         data={transactionList}
                         wordWrap
+                        autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
                             <HeaderCell>Tx Hash</HeaderCell>
@@ -64,9 +65,9 @@ const TransactionSection = ({ transactionList = [] }: {
                                             </div>
                                             <div>
                                                 {
-                                                    rowData.to !== "0x" ? (
+                                                    !rowData.toSmcAddr ? (
                                                         <>
-                                                            <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />To:
+                                                            <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} /><span style={{marginRight: 5}}> To:</span>
                                                             {renderHashToRedirect({
                                                                 hash: rowData.to,
                                                                 headCount: isMobile ? 4 : 8,
@@ -78,7 +79,9 @@ const TransactionSection = ({ transactionList = [] }: {
                                                     ) : (
                                                             <>
                                                                 <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />To:
-                                                                <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.contractAddress || "0x"}`}>Contract Creation</Link>
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
+                                                                    <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                </Whisper>
                                                             </>
                                                         )
                                                 }

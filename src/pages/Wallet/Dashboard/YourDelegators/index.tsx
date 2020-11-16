@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, Table } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { onlyNumber, numberFormat } from '../../../../common/utils/number';
+import { onlyNumber, numberFormat, onlyInteger } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
@@ -11,6 +11,7 @@ import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
 import Button from '../../../../common/components/Button';
 import { useViewport } from '../../../../context/ViewportContext';
+import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -33,6 +34,12 @@ const YourDelegators = () => {
     const [hashTransaction, setHashTransaction] = useState('')
     const [statePending, setStatePending] = useState(true)
     const [updateValErrMsg, setUpdateValErrMsg] = useState('')
+
+
+    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPriceErr, setGasPriceErr] = useState('')
+    const [gasLimit, setGasLimit] = useState(gasLimitDefault)
+    const [gasLimitErr, setGasLimitErr] = useState('')
 
     const validateCommissionRate = (value: any) => {
         if (!value) {
@@ -67,8 +74,26 @@ const YourDelegators = () => {
         return true
     }
 
+    const validateGasPrice = (gasPrice: any): boolean => {
+        if (!Number(gasPrice)) {
+            setGasPriceErr(ErrorMessage.Require)
+            return false
+        }
+        setGasPriceErr('')
+        return true
+    }
+
+    const validateGasLimit = (gas: any): boolean => {
+        if (!Number(gas)) {
+            setGasLimitErr(ErrorMessage.Require);
+            return false;
+        }
+        setGasLimitErr('')
+        return true
+    }
+
     const submitUpdateValidator = () => {
-        if (!validateCommissionRate(commissionRate) || !validateMinSelfDelegation(minSelfDelegation)) {
+        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateCommissionRate(commissionRate) || !validateMinSelfDelegation(minSelfDelegation)) {
             return
         }
         setShowConfirmModal(true)
@@ -185,30 +210,64 @@ const YourDelegators = () => {
                                         showUpdateForm ? (
                                             <Form fluid>
                                                 <FormGroup>
-                                                    <ControlLabel>New Commission Rate (%) <span className="required-mask">*</span></ControlLabel>
-                                                    <FormControl placeholder="Commission Rate"
-                                                        name="commissionRate"
-                                                        value={commissionRate}
-                                                        onChange={(value) => {
-                                                            if (onlyNumber(value)) {
-                                                                setCommissionRate(value)
-                                                                validateCommissionRate(value)
-                                                            }
-                                                        }} />
-                                                    <ErrMessage message={commissionRateErr} />
-                                                </FormGroup>
-                                                <FormGroup>
-                                                    <ControlLabel>New Min Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
-                                                    <FormControl placeholder="Min Self Delegation"
-                                                        name="minSelfDelegation"
-                                                        value={minSelfDelegation}
-                                                        onChange={(value) => {
-                                                            if (onlyNumber(value)) {
-                                                                setMinSelfDelegation(value)
-                                                                validateMinSelfDelegation(value)
-                                                            }
-                                                        }} />
-                                                    <ErrMessage message={maxMinSelfDelegationErr} />
+                                                    <FlexboxGrid>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
+                                                            <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                                            <FormControl name="gaslimit"
+                                                                placeholder="Gas Limit"
+                                                                value={gasLimit}
+                                                                onChange={(value) => {
+                                                                    if (onlyInteger(value)) {
+                                                                        setGasLimit(value);
+                                                                        validateGasLimit(value)
+                                                                    }
+                                                                }}
+                                                                style={{ width: '100%' }}
+                                                            />
+                                                            <ErrMessage message={gasLimitErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
+                                                            <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                                            <SelectPicker
+                                                                className="dropdown-custom"
+                                                                data={gasPriceOption}
+                                                                searchable={false}
+                                                                value={gasPrice}
+                                                                onChange={(value) => {
+                                                                    setGasPrice(value)
+                                                                    validateGasPrice(value)
+                                                                }}
+                                                                style={{ width: '100%' }}
+                                                            />
+                                                            <ErrMessage message={gasPriceErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                                            <ControlLabel>New Commission Rate (%) <span className="required-mask">*</span></ControlLabel>
+                                                            <FormControl placeholder="Commission Rate"
+                                                                name="commissionRate"
+                                                                value={commissionRate}
+                                                                onChange={(value) => {
+                                                                    if (onlyNumber(value)) {
+                                                                        setCommissionRate(value)
+                                                                        validateCommissionRate(value)
+                                                                    }
+                                                                }} />
+                                                            <ErrMessage message={commissionRateErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                                            <ControlLabel>New Min Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
+                                                            <FormControl placeholder="Min Self Delegation"
+                                                                name="minSelfDelegation"
+                                                                value={minSelfDelegation}
+                                                                onChange={(value) => {
+                                                                    if (onlyNumber(value)) {
+                                                                        setMinSelfDelegation(value)
+                                                                        validateMinSelfDelegation(value)
+                                                                    }
+                                                                }} />
+                                                            <ErrMessage message={maxMinSelfDelegationErr} />
+                                                        </FlexboxGrid.Item>
+                                                    </FlexboxGrid>
                                                 </FormGroup>
                                                 <FormGroup>
                                                     <Button size="big" onClick={submitUpdateValidator}>Update</Button>
@@ -220,7 +279,6 @@ const YourDelegators = () => {
                                             </Form>
                                         ) : <></>
                                     }
-
                                 </Panel>
                             </div>
                         </FlexboxGrid.Item>

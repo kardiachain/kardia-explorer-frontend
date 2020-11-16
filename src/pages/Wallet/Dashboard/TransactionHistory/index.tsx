@@ -123,7 +123,7 @@ const TransactionHistory = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            rowData.to !== "0x" ? (
+                                                            !rowData.toSmcAddr? (
                                                                 <>
                                                                     {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                     {renderHashToRedirect({
@@ -137,8 +137,8 @@ const TransactionHistory = () => {
                                                             ) : (
                                                                     <>
                                                                         {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
-                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.contractAddress || '0x'}</Tooltip>}>
-                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.contractAddress || "0x"}`}>Contract Creation</Link>
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
+                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
                                                                     </>
 

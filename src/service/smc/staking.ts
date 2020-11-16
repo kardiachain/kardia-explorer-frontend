@@ -1,3 +1,4 @@
+import { gasLimitDefault } from '../../common/constant';
 import { cellValue, weiToKAI } from '../../common/utils/amount';
 import { STAKING_SMC_ADDRESS } from '../../config/api';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
@@ -15,7 +16,7 @@ const invokeCallData = async (methodName: string, params: any[]) => {
     return await invoke.call(STAKING_SMC_ADDRESS, {}, "latest")
 }
 
-const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0, gasLimit=2000000, gasPrice=2) => {
+const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0, gasLimit=gasLimitDefault, gasPrice=2) => {
     const invoke = await stakingContract.invoke({
         params: params,
         name: methodName,
@@ -45,6 +46,7 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
     let totalValidatorStakedAmount = 0;
     const promiseArr = invoke[0].map(async (item: any, i: number) => {
         const valAddr = item
+        const validatorDetail = await getValidator(valAddr);
         const totalDelsOfVal = await getNumberDelOfValidator(valAddr);
         const votingPower = await getValidatorPower(valAddr);
         const validatorStaked = await getDelegatorStake(valAddr, valAddr)
@@ -59,8 +61,10 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
             totalStakedAmount: invoke[1][i],
             delegationsShares: invoke[2][i],
             totalDels: totalDelsOfVal,
-            votingPower: votingPower || 0
+            votingPower: votingPower || 0,
+            commission: validatorDetail.commission || 0
         } as ValidatorFromSMC
+        
     })
 
     let validators: ValidatorFromSMC[] = await Promise.all(promiseArr);
@@ -156,9 +160,9 @@ const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
             delegationsShares: invoke[1],
             jailed: invoke[2],
             votingPower: votingPower,
-            totalDels: totalDels
+            totalDels: totalDels,
+            commission: invoke[3]
         }
-        
         return validator
         
     } catch (error) {
@@ -188,13 +192,13 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 }
 
 
-const delegateAction = async (valAddr: string, account: Account, amountDel: number) => {
+const delegateAction = async (valAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
     if(!valAddr || !account || !amountDel) return
     const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel);
+    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel, gasLimit, gasLimit);
 }
 
-const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number) => {
+const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
     if(!commissionRate || !maxRate || !maxRateChange || !minSeftDelegation || !account || !amountDel) return;
 
     // convert value number type to decimal type
@@ -205,7 +209,7 @@ const createValidator = async (commissionRate: number, maxRate: number, maxRateC
     const commissionRateDec = cellValue(commissionRate / 100);
     const maxRateDec = cellValue(maxRate / 100);
     const maxRateChangeDec = cellValue(maxRateChange / 100)
-    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegationDec], account, cellAmountDel);
+    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegationDec], account, cellAmountDel, gasLimit, gasPrice);
 }
 
 // @Function: update validator
