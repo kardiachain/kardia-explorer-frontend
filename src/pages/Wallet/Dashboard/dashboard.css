@@ -18,7 +18,7 @@
 
 .wallet-info-card .card-footer {
     background: linear-gradient(137.34deg,#7b7b82 14.41%,#a0a0a9 116.67%);
-    color: white;
+    color: var(--white-color);
     border-radius: 0px;
 }
 

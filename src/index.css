@@ -6,11 +6,10 @@
   --white-color: #FFFFFF;
   --box-shadow-color: rgba(0,0,0,.05);
   --border-color: #e7eaf3;
-  --hyperlink-color: #4572de;
+  --hyperlink-color: #9E3144;
 
   --box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
   --border: 1px solid #e7eaf3;
-
 }
 
 body {
@@ -23,19 +22,14 @@ body {
 }
 
 .hex {
-  font-family: 'Inconsolata', monospace;
-  font-weight: 900;
+  font-weight: 600;
+  color: var(--hyperlink-color);
 }
 
 a:active,
 a:focus,
 a:hover {
   text-decoration: none !important;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 .kai-explorer-app {
@@ -48,7 +42,7 @@ code {
 
 .highlight {
   background: var(--highlight);
-  -webkit-background-clip: text; 
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -63,7 +57,7 @@ code {
 .rs-content{
   display:flex;
   justify-content: center;
-  background: #f8f9fa;
+  background: var(--bg-color);
 }
 
 .rs-panel-body{
