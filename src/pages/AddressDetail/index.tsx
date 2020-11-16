@@ -51,10 +51,10 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="title">Address: </div>
+                                        <div className="property-title">Address: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="content">
+                                        <div className="property-content">
                                             {renderHashString(address, 45)}
                                         </div>
                                     </FlexboxGrid.Item>
@@ -63,14 +63,14 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="title">Kai value: </div>
+                                        <div className="property-title">Balance: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="content">{numberFormat(Number(weiToKAI(balance)))} KAI</div>
+                                        <div className="property-content">{numberFormat(Number(weiToKAI(balance)))} KAI</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
-                            <List.Item>
+                            {/* <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
                                         <div className="title">Token: </div>
@@ -79,7 +79,7 @@ const AddressDetail = () => {
                                         <div className="content"></div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
-                            </List.Item>
+                            </List.Item> */}
                         </List>
                     </Panel>
                 </FlexboxGrid.Item>

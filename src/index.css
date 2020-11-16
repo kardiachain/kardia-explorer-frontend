@@ -126,6 +126,16 @@ a:hover {
   top: 12px !important;
 }
 
+.property-title {
+  word-break: break-all;
+  font-weight: bold;
+  color: #a8a8a8
+}
+.property-content {
+  font-weight: bold;
+  word-break: break-all;
+}
+
 @media screen and (max-width: 740px) {
   .rs-header{
     display: flex;

@@ -27,7 +27,7 @@ const YourDelegators = () => {
     const [commissionRate, setCommissionRate] = useState('')
     const [minSelfDelegation, setMinSelfDelegation] = useState('')
     const [commissionRateErr, setCommissionRateErr] = useState('')
-    const [maxMinSelfDelegationErr, setMaxMinSelfDelegationErr] = useState('')
+    const [minSelfDelegationErr, setMinSelfDelegationErr] = useState('')
 
     const [showUpdateForm, setShowUpdateForm] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
@@ -62,15 +62,20 @@ const YourDelegators = () => {
 
     const validateMinSelfDelegation = (value: any) => {
         if (!value) {
-            setMaxMinSelfDelegationErr(ErrorMessage.Require)
+            setMinSelfDelegationErr(ErrorMessage.Require)
             return false
         }
         if (Number(value) === 0) {
-            setMaxMinSelfDelegationErr(ErrorMessage.ValueInvalid)
+            setMinSelfDelegationErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+        
+        if (Number(value) < 10000000) {
+            setMinSelfDelegationErr(ErrorMessage.MinSelfDelegationBelowMinimum)
             return false
         }
 
-        setMaxMinSelfDelegationErr('')
+        setMinSelfDelegationErr('')
         return true
     }
 
@@ -179,7 +184,8 @@ const YourDelegators = () => {
                                 <Panel shaded>
                                     <List>
                                         <List.Item>
-                                            <span className="property-title">Validator address: </span> <span style={{ wordBreak: 'break-all' }}>
+                                            <span className="property-title">Validator address: </span>
+                                            <span className="property-content">
                                                 {
                                                     renderHashToRedirect({
                                                         hash: validator?.address,
@@ -192,10 +198,16 @@ const YourDelegators = () => {
                                             </span>
                                         </List.Item>
                                         <List.Item>
-                                            <span className="property-title">Total delegator: </span> {numberFormat(validator?.totalDels || 0)}
+                                            <span className="property-title">Total delegator: </span>
+                                            <span className="property-content">
+                                                {numberFormat(validator?.totalDels || 0)}
+                                            </span>
                                         </List.Item>
                                         <List.Item>
-                                            <span className="property-title">Total staked amount: </span> {numberFormat(weiToKAI(validator?.totalStakedAmount || 0))} KAI
+                                            <span className="property-title">Total staked amount: </span>
+                                            <span className="property-content">
+                                                {numberFormat(weiToKAI(validator?.totalStakedAmount || 0))} KAI
+                                            </span>
                                         </List.Item>
                                     </List>
                                     <div style={{ marginTop: '30px', marginBottom: '20px' }}>
@@ -265,7 +277,7 @@ const YourDelegators = () => {
                                                                         validateMinSelfDelegation(value)
                                                                     }
                                                                 }} />
-                                                            <ErrMessage message={maxMinSelfDelegationErr} />
+                                                            <ErrMessage message={minSelfDelegationErr} />
                                                         </FlexboxGrid.Item>
                                                     </FlexboxGrid>
                                                 </FormGroup>

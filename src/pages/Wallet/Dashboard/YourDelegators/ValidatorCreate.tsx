@@ -11,6 +11,8 @@ import { getBalance } from '../../../../service/kai-explorer';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
+import Helper from '../../../../common/components/Helper';
+import { HelperMessage } from '../../../../common/constant/HelperMessage';
 
 const ValidatorCreate = () => {
 
@@ -24,7 +26,7 @@ const ValidatorCreate = () => {
     const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
     const [maxChangeRateErr, setMaxChangeRateErr] = useState('')
-    const [maxMinSelfDelegationErr, setMaxMinSelfDelegationErr] = useState('')
+    const [minSelfDelegationErr, setMinSelfDelegationErr] = useState('')
     const [amountDelErr, setAmountDelErr] = useState('')
 
     const [hashTransaction, setHashTransaction] = useState('')
@@ -134,11 +136,16 @@ const ValidatorCreate = () => {
 
     const validateMinSelfDelegation = (value: any) => {
         if (!value) {
-            setMaxMinSelfDelegationErr(ErrorMessage.Require)
+            setMinSelfDelegationErr(ErrorMessage.Require)
             return false
         }
         if (Number(value) === 0) {
-            setMaxMinSelfDelegationErr(ErrorMessage.ValueInvalid)
+            setMinSelfDelegationErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+
+        if (Number(value) < 10000000) {
+            setMinSelfDelegationErr(ErrorMessage.MinSelfDelegationBelowMinimum)
             return false
         }
 
@@ -149,7 +156,7 @@ const ValidatorCreate = () => {
         } else {
             setAmountDelErr('')
         }
-        setMaxMinSelfDelegationErr('')
+        setMinSelfDelegationErr('')
         return true
     }
 
@@ -162,7 +169,7 @@ const ValidatorCreate = () => {
             setAmountDelErr(ErrorMessage.ValueInvalid)
             return false
         }
-  
+
         if (Number(balance) === 0 || Number(balance) < value) {
             setAmountDelErr(ErrorMessage.BalanceNotEnough)
             return false
@@ -272,7 +279,10 @@ const ValidatorCreate = () => {
                         <ErrMessage message={gasPriceErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
-                        <ControlLabel>Commission Rate (%) <span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                            Commission Rate (%) <span className="required-mask">*</span>
+                        </ControlLabel>
                         <FormControl placeholder="Commission Rate"
                             name="commissionRate"
                             value={commissionRate}
@@ -285,7 +295,10 @@ const ValidatorCreate = () => {
                         <ErrMessage message={commissionRateErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
-                        <ControlLabel>Max Rate (%) <span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                            Max Rate (%) <span className="required-mask">*</span>
+                        </ControlLabel>
                         <FormControl placeholder="Max Rate"
                             name="maxRate"
                             value={maxRate}
@@ -298,7 +311,10 @@ const ValidatorCreate = () => {
                         <ErrMessage message={maxRateErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
-                        <ControlLabel>Max Change Rate (%) <span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                            Max Change Rate (%) <span className="required-mask">*</span>
+                        </ControlLabel>
                         <FormControl placeholder="Max Change Rate"
                             name="maxChangeRate"
                             value={maxChangeRate}
@@ -311,8 +327,11 @@ const ValidatorCreate = () => {
                         <ErrMessage message={maxChangeRateErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
-                        <ControlLabel>Min Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
-                        <FormControl placeholder="Min Self Delegation"
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
+                            Minimum Expected Delegate Amount (KAI) <span className="required-mask">*</span>
+                        </ControlLabel>
+                        <FormControl placeholder="Minimum Expected Delegate Amount"
                             name="minSelfDelegation"
                             value={minSelfDelegation}
                             onChange={(value) => {
@@ -321,10 +340,13 @@ const ValidatorCreate = () => {
                                     validateMinSelfDelegation(value)
                                 }
                             }} />
-                        <ErrMessage message={maxMinSelfDelegationErr} />
+                        <ErrMessage message={minSelfDelegationErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
-                        <ControlLabel>Amount Self Delegation (KAI) <span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
+                            Amount Self Delegation (KAI) <span className="required-mask">*</span>
+                        </ControlLabel>
                         <FormControl placeholder="Amount Self Delegation"
                             name="amountDel"
                             value={amountDel}
