@@ -44,40 +44,40 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Height</div>
+                                        <div className="property-title">Height</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{numberFormat(Number(blockDetail?.blockHeight))}</div>
+                                        <div className="property-content">{numberFormat(Number(blockDetail?.blockHeight))}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Block Hash</div>
+                                        <div className="property-title">Block Hash</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashString(blockDetail?.blockHash || '', 64)}</div>
+                                        <div className="property-content">{renderHashString(blockDetail?.blockHash || '', 64)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">TimeStamp</div>
+                                        <div className="property-title">TimeStamp</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{blockDetail?.time ? dateToLocalTime(blockDetail?.time) : ''}</div>
+                                        <div className="property-content">{blockDetail?.time ? dateToLocalTime(blockDetail?.time) : ''}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Number of Transactions</div>
+                                        <div className="property-title">Number of Transactions</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">
+                                        <div className="property-content">
                                             {!blockDetail?.transactions ? 0 :
                                                 <Link to={`/txs?block=${blockDetail?.blockHeight}`}>{numberFormat(Number(blockDetail?.transactions))}</Link>
                                             }
@@ -88,10 +88,10 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Block Rewards</div>
+                                        <div className="property-title">Block Rewards</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">
+                                        <div className="property-content">
                                             {numberFormat(weiToKAI(blockDetail?.rewards))} KAI
                                         </div>
                                     </FlexboxGrid.Item>
@@ -100,40 +100,40 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Gas Limit</div>
+                                        <div className="property-title">Gas Limit</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{numberFormat(blockDetail?.gasLimit || 0)}</div>
+                                        <div className="property-content">{numberFormat(blockDetail?.gasLimit || 0)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Gas Used</div>
+                                        <div className="property-title">Gas Used</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{numberFormat(blockDetail?.gasUsed || 0)}</div>
+                                        <div className="property-content">{numberFormat(blockDetail?.gasUsed || 0)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Commit Hash</div>
+                                        <div className="property-title">Commit Hash</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashString(blockDetail?.commitHash || '', 64)}</div>
+                                        <div className="property-content">{renderHashString(blockDetail?.commitHash || '', 64)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Proposer</div>
+                                        <div className="property-title">Proposer</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{
+                                        <div className="property-content">{
                                             renderHashToRedirect({
                                                 hash: blockDetail?.validator,
                                                 headCount: 50,
@@ -149,40 +149,40 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Validators Hash</div>
+                                        <div className="property-title">Validators Hash</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashString(blockDetail?.validatorHash || '', 64)}</div>
+                                        <div className="property-content">{renderHashString(blockDetail?.validatorHash || '', 64)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Next Validators Hash</div>
+                                        <div className="property-title">Next Validators Hash</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashString(blockDetail?.nextValidatorHash || '', 64)}</div>
+                                        <div className="property-content">{renderHashString(blockDetail?.nextValidatorHash || '', 64)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Data Hash</div>
+                                        <div className="property-title">Data Hash</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashString(blockDetail?.dataHash || '', 64)}</div>
+                                        <div className="property-content">{renderHashString(blockDetail?.dataHash || '', 64)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             {/* <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="title">Consensus Hash</div>
+                                        <div className="property-title">Consensus Hash</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="content">{renderHashString(blockDetail?.consensusHash || '', 64)}</div>
+                                        <div className="property-content">{renderHashString(blockDetail?.consensusHash || '', 64)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item> */}
