@@ -128,16 +128,28 @@ const DelegatorCreate = () => {
                         <Panel shaded>
                             <List bordered={false}>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Validator: </span> {renderHashString(valAddr, 45)}
+                                    <span className="property-title">Validator: </span>
+                                    <span className="property-content"> 
+                                        {renderHashString(valAddr, 45)}
+                                    </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Commission: </span> {validator?.commission || 0} %
+                                    <span className="property-title">Commission: </span>
+                                    <span className="property-content">  
+                                        {validator?.commission || 0} %
+                                    </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Total delegator: </span> {validator?.totalDels}
+                                    <span className="property-title">Total delegator: </span>
+                                    <span className="property-content">
+                                        {validator?.totalDels}
+                                    </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
-                                    <span className="property-title">Total staked amount: </span> {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
+                                    <span className="property-title">Total staked amount: </span>
+                                    <span className="property-content">
+                                        {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
+                                    </span>
                                 </List.Item>
                             </List>
                             <div className="del-staking-container">

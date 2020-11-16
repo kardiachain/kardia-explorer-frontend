@@ -26,7 +26,7 @@ const ValidatorCreate = () => {
     const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
     const [maxChangeRateErr, setMaxChangeRateErr] = useState('')
-    const [maxMinSelfDelegationErr, setMaxMinSelfDelegationErr] = useState('')
+    const [minSelfDelegationErr, setMinSelfDelegationErr] = useState('')
     const [amountDelErr, setAmountDelErr] = useState('')
 
     const [hashTransaction, setHashTransaction] = useState('')
@@ -136,11 +136,16 @@ const ValidatorCreate = () => {
 
     const validateMinSelfDelegation = (value: any) => {
         if (!value) {
-            setMaxMinSelfDelegationErr(ErrorMessage.Require)
+            setMinSelfDelegationErr(ErrorMessage.Require)
             return false
         }
         if (Number(value) === 0) {
-            setMaxMinSelfDelegationErr(ErrorMessage.ValueInvalid)
+            setMinSelfDelegationErr(ErrorMessage.ValueInvalid)
+            return false
+        }
+
+        if (Number(value) < 10000000) {
+            setMinSelfDelegationErr(ErrorMessage.MinSelfDelegationBelowMinimum)
             return false
         }
 
@@ -151,7 +156,7 @@ const ValidatorCreate = () => {
         } else {
             setAmountDelErr('')
         }
-        setMaxMinSelfDelegationErr('')
+        setMinSelfDelegationErr('')
         return true
     }
 
@@ -324,9 +329,9 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
-                            Min Self Delegation (KAI) <span className="required-mask">*</span>
+                            Minimum Expected Delegate Amount (KAI) <span className="required-mask">*</span>
                         </ControlLabel>
-                        <FormControl placeholder="Min Self Delegation"
+                        <FormControl placeholder="Minimum Expected Delegate Amount"
                             name="minSelfDelegation"
                             value={minSelfDelegation}
                             onChange={(value) => {
@@ -335,7 +340,7 @@ const ValidatorCreate = () => {
                                     validateMinSelfDelegation(value)
                                 }
                             }} />
-                        <ErrMessage message={maxMinSelfDelegationErr} />
+                        <ErrMessage message={minSelfDelegationErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>

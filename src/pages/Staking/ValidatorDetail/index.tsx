@@ -39,21 +39,29 @@ const ValidatorDetail = () => {
                             <List>
                                 <List.Item>
                                     <span className="property-title">Address: </span>
-                                    {
-                                        renderHashToRedirect({
-                                            hash: validator?.address,
-                                            headCount: isMobile ? 10 : 30,
-                                            tailCount: 4,
-                                            showTooltip: true,
-                                            callback: () => { window.open(`/address/${validator?.address}`) }
-                                        })
-                                    }
+                                    <span className="property-content">
+                                        {
+                                            renderHashToRedirect({
+                                                hash: validator?.address,
+                                                headCount: isMobile ? 10 : 30,
+                                                tailCount: 4,
+                                                showTooltip: true,
+                                                callback: () => { window.open(`/address/${validator?.address}`) }
+                                            })
+                                        }
+                                    </span>
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total Delegator: </span> {numberFormat(validator?.totalDels || 0)}
+                                    <span className="property-title">Total Delegator: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.totalDels || 0)}
+                                    </span>
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total staked amount: </span> {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
+                                    <span className="property-title">Total staked amount: </span>
+                                    <span className="property-content">
+                                        {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
+                                    </span>
                                 </List.Item>
                             </List>
                             <Button size="big" style={{ marginTop: '30px' }}

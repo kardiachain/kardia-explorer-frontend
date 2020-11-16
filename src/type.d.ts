@@ -66,6 +66,7 @@ interface StakingContractResponse {
 }
 
 interface ValidatorFromSMC {
+    name?: string;
     rank?: number;
     address: string;
     delegationsShares?: number;

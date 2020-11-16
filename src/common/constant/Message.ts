@@ -16,5 +16,6 @@ export const ErrorMessage = {
     MnemonicPhraseInvalid: 'The Mnemonic Phrase is incorrect. Please try again.',
     AbiInvalid: 'The ABI format is invalid',
     CannotSendKAIToYourSelf: 'Cannot send KAI to yourself.',
-    FileUploadInvalid: 'The upload file format is invalid.'
+    FileUploadInvalid: 'The upload file format is invalid.',
+    MinSelfDelegationBelowMinimum: 'The minimum self delegation amount is 10M',
 }
