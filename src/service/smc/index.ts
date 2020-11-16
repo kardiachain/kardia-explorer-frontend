@@ -2,51 +2,39 @@ import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 
 const deploySmartContract = async (object: SMCDeployObject) => {
     try {
-        const contract = kardiaContract(kardiaProvider, object.bytecode, object.abi);
+        const contract = kardiaContract(kardiaProvider, object.bytecode, JSON.parse(object.abi));
         const deployment = contract.deploy(object.params);
-        // const estimatedGas = await deployment.estimateGas({
-        //     from: object.account.publickey
-        // });
         const deployResult = await deployment.send(object.account.privatekey, {
-            gas: 10000000,
-            gasPrice: object.gasPrice + 1,
+            gas: object.gasLimit,
+            gasPrice: object.gasPrice,
         });
         return deployResult;
-    } catch (error) {
-        console.log(error);
-        return error;
+    } catch (err) {
+        throw err
     }
 }
 
 const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
     try {
-        const contract = kardiaContract(kardiaProvider, object.bytecode, object.abi);
+        const contract = kardiaContract(kardiaProvider, "", JSON.parse(object.abi));
         const invoke = contract.invoke({
-          params: object.params || [],
-          name: object.functionName,
+          params: object.params,
+          name: object.functionName
         });
-        let invokeResult = null;
+        let invokeResult = null; 
         if (!object.isPure) {
-            // const estimatedGas = await invoke.estimateGas({
-            //   from: object.account.publickey,
-            //   amount: object.amount,
-            //   gas: object.gas,
-            //   gasPrice: object.gasPrice + 1,
-            // });
-            //console.log(estimatedGas);
             invokeResult = await invoke.send(object.account.privatekey, object.contractAddress, {
               amount: object.amount,
-              gas: 10000000,
-              gasPrice: 2
+              gas: object.gasLimit,
+              gasPrice: object.gasPrice
             });
             return invokeResult;
           } else {
-            invokeResult = await invoke.call(object.contractAddress);
+            invokeResult = await invoke.call(object.contractAddress, {}, "latest");
             return invokeResult;
           }
-    } catch (error) {
-        console.log(error)
-        return error
+    } catch (err) {
+        throw err
     }
 }
 

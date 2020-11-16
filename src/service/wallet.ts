@@ -84,14 +84,14 @@ export const getAccount = (): Account => {
     }
 }
 
-export const generateTx = async (fromAccount: Account, toAddr: string, amount: number, gasLimit: number) => {
+export const generateTx = async (fromAccount: Account, toAddr: string, amount: number, gasLimit: number, gasPrice: number) => {
     const cellAmount = cellValue(amount);
     let nonce = await kardiaApi.accountNonce(fromAccount.publickey);
     const tx = await kardiaCommon.txGenerator(
         toAddr,
         cellAmount,
         nonce,
-        1,
+        gasPrice || 1,
         gasLimit,
     );
     

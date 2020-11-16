@@ -50,7 +50,8 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
         appHash: blockDetail.appHash,
         evidenceHash: blockDetail.evidenceHash,
         time: blockDetail.time,
-        age: (nowTime - createdTime)
+        age: (nowTime - createdTime),
+        rewards: blockDetail.rewards
     } as KAIBlockDetails
 }
 

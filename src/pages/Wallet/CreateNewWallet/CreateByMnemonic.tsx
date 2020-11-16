@@ -63,7 +63,7 @@ const CreateByMnemonic = () => {
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                             <div style={{ textAlign: 'center' }}>
-                                                <Icon style={{ fontSize: '60px', verticalAlign: 'middle', color: '#46f0f1' }} icon='check-circle' /> Create wallet success, you can access wallet now.
+                                                <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle'}} icon='check-circle' /> Create wallet success, you can access wallet now.
                                         </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">

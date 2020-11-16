@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlexboxGrid, Col, Panel, Table, Icon } from 'rsuite';
+import { FlexboxGrid, Col, Panel, Table, Icon, Whisper, Tooltip } from 'rsuite';
 import { useViewport } from '../../../../context/ViewportContext';
 import { renderHashToRedirect, millisecondToHMS } from '../../../../common/utils/string';
 import { weiToKAI } from '../../../../common/utils/amount';
@@ -122,14 +122,28 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }}/>}
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.to,
-                                                            headCount: isMobile ? 5 : 12,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/address/${rowData.to}`) }
-                                                        })}
+                                                        {
+                                                            !rowData.toSmcAddr? (
+                                                                <>
+                                                                    {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
+                                                                    {renderHashToRedirect({
+                                                                        hash: rowData.to,
+                                                                        headCount: isMobile ? 5 : 12,
+                                                                        tailCount: 4,
+                                                                        showTooltip: true,
+                                                                        callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                    })}
+                                                                </>
+                                                            ) : (
+                                                                    <>
+                                                                        {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
+                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                        </Whisper>
+                                                                    </>
+
+                                                                )
+                                                        }
                                                     </div>
                                                 );
                                             }}

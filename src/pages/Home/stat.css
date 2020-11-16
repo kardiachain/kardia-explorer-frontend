@@ -20,7 +20,6 @@
     text-align: center;
     font-size: 18px;
     font-weight: 600;
-    color: #302b3c;
     line-height: 30px;
 }
 
@@ -38,7 +37,15 @@
     }
 
     .icon > .rs-icon{
-        font-size:35px;
+        font-size:20px;
+    }
+
+    .stats-section .title{
+        font-size: 12px;
+    }
+
+    .stats-section .value{
+        font-size: 16px;
     }
 
     .stat-container>.rs-panel-body{

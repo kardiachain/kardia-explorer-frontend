@@ -1,6 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { Link, useHistory } from 'react-router-dom';
+import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -9,7 +9,7 @@ import './home.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const TransactionSection = ({ transactionList = []}: {
+const TransactionSection = ({ transactionList = [] }: {
     transactionList: KAITransaction[]
 }) => {
     const { isMobile } = useViewport();
@@ -20,10 +20,11 @@ const TransactionSection = ({ transactionList = []}: {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
                         rowHeight={70}
-                        height={400}
+                        height={420}
                         hover={false}
                         data={transactionList}
                         wordWrap
+                        autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
                             <HeaderCell>Tx Hash</HeaderCell>
@@ -63,14 +64,27 @@ const TransactionSection = ({ transactionList = []}: {
                                             })}
                                             </div>
                                             <div>
-                                                <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }}/>To:
-                                                {renderHashToRedirect({
-                                                hash: rowData.to,
-                                                headCount: isMobile ? 4 : 8,
-                                                tailCount: 4,
-                                                showTooltip: false,
-                                                callback: () => { history.push(`/address/${rowData.to}`) }
-                                            })}
+                                                {
+                                                    !rowData.toSmcAddr ? (
+                                                        <>
+                                                            <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} /><span style={{marginRight: 5}}> To:</span>
+                                                            {renderHashToRedirect({
+                                                                hash: rowData.to,
+                                                                headCount: isMobile ? 4 : 8,
+                                                                tailCount: 4,
+                                                                showTooltip: false,
+                                                                callback: () => { history.push(`/address/${rowData.to}`) }
+                                                            })}
+                                                        </>
+                                                    ) : (
+                                                            <>
+                                                                <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />To:
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
+                                                                    <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                </Whisper>
+                                                            </>
+                                                        )
+                                                }
                                             </div>
                                         </div>
                                     );

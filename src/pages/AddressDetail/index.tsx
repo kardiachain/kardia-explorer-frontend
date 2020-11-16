@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -51,10 +51,10 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="title">Address: </div>
+                                        <div className="property-title">Address: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="content">
+                                        <div className="property-content">
                                             {renderHashString(address, 45)}
                                         </div>
                                     </FlexboxGrid.Item>
@@ -63,14 +63,14 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="title">Kai value: </div>
+                                        <div className="property-title">Balance: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="content">{numberFormat(Number(weiToKAI(balance)))} KAI</div>
+                                        <div className="property-content">{numberFormat(Number(weiToKAI(balance)))} KAI</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
-                            <List.Item>
+                            {/* <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
                                         <div className="title">Token: </div>
@@ -79,7 +79,7 @@ const AddressDetail = () => {
                                         <div className="content"></div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
-                            </List.Item>
+                            </List.Item> */}
                         </List>
                     </Panel>
                 </FlexboxGrid.Item>
@@ -173,15 +173,28 @@ const AddressDetail = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                         {
-                                                            address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
-                                                                hash: rowData.to,
-                                                                headCount: isMobile ? 5 : 12,
-                                                                tailCount: 4,
-                                                                showTooltip: true,
-                                                                callback: () => { history.push(`/address/${rowData.to}`) }
-                                                            })
+                                                            !rowData.toSmcAddr ? (
+                                                                <>
+                                                                    {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
+                                                                    {
+                                                                    address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
+                                                                        hash: rowData.to,
+                                                                        headCount: isMobile ? 5 : 12,
+                                                                        tailCount: 4,
+                                                                        showTooltip: true,
+                                                                        callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                    })}
+                                                                </>
+                                                            ) : (
+                                                                    <>
+                                                                        {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr || '0x'}</Tooltip>}>
+                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                        </Whisper>
+                                                                    </>
+
+                                                                )
                                                         }
                                                     </div>
                                                 );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
+import { Link, useHistory } from 'react-router-dom';
+import { Col, FlexboxGrid, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import { formatAmount, formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
 import { randomRGBColor, renderHashToRedirect, truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -11,6 +11,7 @@ import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
 import { getValidatorsFromSMC } from '../../service/smc/staking';
+import { getNodes } from '../../service/kai-explorer/network';
 
 
 const { Column, HeaderCell, Cell } = Table;
@@ -26,8 +27,21 @@ const Validators = () => {
     useEffect(() => {
         (async () => {
             setTableLoading(true)
-            const stakingData = await getValidatorsFromSMC();
+
+            // get data validator and nodes
+            const data = await Promise.all([
+                getValidatorsFromSMC(),
+                getNodes()
+            ])
+            const stakingData = data[0];
+            const nodes = data[1]
+
             const valDetails = stakingData.validators;
+            valDetails.map((v: any) => {
+                const node = nodes.filter(n =>  n.address == v.address)[0];
+                v.name = node.id || "";
+            })
+
             setValidators(valDetails);
             setTableLoading(false)
 
@@ -36,12 +50,13 @@ const Validators = () => {
             valDetails.forEach((value: ValidatorFromSMC, index: number) => {
                 dataForValidatorsChart.push({
                     custom: value.address,
-                    name: truncate(value.address, 5, 3),
+                    name: value.name || truncate(value.address, 5, 3),
                     y: value.votingPower,
                     color: randomRGBColor(),
                     sliced: true
                 });
             });
+
             setDataForValidatorsChart(dataForValidatorsChart)
             setDataForStakedPieChart({
                 totalVals: stakingData?.totalVals,
@@ -143,13 +158,19 @@ const Validators = () => {
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
                                             <div>
-                                                {renderHashToRedirect({
-                                                    hash: rowData?.address,
-                                                    headCount: isMobile ? 5 : 20,
-                                                    tailCount: 4,
-                                                    showTooltip: true,
-                                                    callback: () => { history.push(`/validator/${rowData?.address}`) }
-                                                })}
+                                                {
+                                                    rowData?.name ? (
+                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.address}</Tooltip>}>
+                                                            <Link style={{marginLeft: 5, fontWeight: 'bold'}} to={`/validator/${rowData?.address}`}>{rowData?.name}</Link>
+                                                        </Whisper>
+                                                    ) : renderHashToRedirect({
+                                                        hash: rowData?.address,
+                                                        headCount: isMobile ? 5 : 20,
+                                                        tailCount: 4,
+                                                        showTooltip: true,
+                                                        callback: () => { history.push(`/validator/${rowData?.address}`) }
+                                                    })
+                                                }
                                             </div>
                                         );
                                     }}

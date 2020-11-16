@@ -1,3 +1,4 @@
+import { STAKING_SMC_ADDRESS } from "../../../config/api";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 interface TransactionsResponse {
@@ -14,6 +15,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
+            const toSmcAddress = defineToSmcAddress(o.to, o.contractAddress)
             return {
                 txHash: o.hash,
                 from:  o.from,
@@ -26,12 +28,14 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
-                contractAddress:  o.contract_address,
+                contractAddress:  o.contractAddress,
                 gasPrice: o.gasPrice,
                 gas: o.gas,
                 gasLimit: o.gasLimit,
                 input:  o.input,
                 logs:  o.logs,
+                toSmcName: toSmcAddress.toSmcName,
+                toSmcAddr: toSmcAddress.toSmcAddr,
             }
         })
     }
@@ -47,6 +51,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
+            const toSmcAddress = defineToSmcAddress(o.to, o.contractAddress)
             return {
                 txHash: o.hash,
                 from:  o.from,
@@ -59,12 +64,14 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
-                contractAddress:  o.contract_address,
+                contractAddress:  o.contractAddress,
                 gasPrice: o.gasPrice,
                 gas: o.gas,
                 gasLimit: o.gasLimit,
                 input:  o.input,
                 logs:  o.logs,
+                toSmcName: toSmcAddress.toSmcName,
+                toSmcAddr: toSmcAddress.toSmcAddr,
             }
         })
     }
@@ -80,6 +87,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     }
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(tx.time)).getTime()
+    const toSmcAddress = defineToSmcAddress(tx.to, tx.contractAddress)
     return {
         txHash:tx.hash,
         from: tx.from,
@@ -92,12 +100,15 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         nonce:tx.nonce,
         age: (nowTime - createdTime),
         transactionIndex:tx.transactionIndex,
-        contractAddress: tx.contract_address,
+        contractAddress: tx.contractAddress,
         gasPrice:tx.gasPrice,
         gas:tx.gas,
+        gasUsed: tx.gasUsed,
         gasLimit:tx.gasLimit,
         input: tx.input,
         logs: tx.logs,
+        toSmcName: toSmcAddress.toSmcName,
+        toSmcAddr: toSmcAddress.toSmcAddr
     }
 }
 
@@ -111,6 +122,7 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
+            const toSmcAddress = defineToSmcAddress(o.to, o.contractAddress)
             return {
                 txHash: o.hash,
                 from:  o.from,
@@ -123,13 +135,34 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
-                contractAddress:  o.contract_address,
+                contractAddress:  o.contractAddress,
                 gasPrice: o.gasPrice,
                 gas: o.gas,
                 gasLimit: o.gasLimit,
                 input:  o.input,
                 logs:  o.logs,
+                toSmcName: toSmcAddress.toSmcName,
+                toSmcAddr: toSmcAddress.toSmcAddr
             }
         })
+    }
+}
+
+const defineToSmcAddress = (toAddress: string, smcAddr: string): ToSmcAddress => {
+    if (toAddress?.toLocaleLowerCase() === STAKING_SMC_ADDRESS?.toLocaleLowerCase()) {
+        return {
+            toSmcAddr: toAddress,
+            toSmcName: "Staking Contract"
+        }
+    }
+    if(toAddress?.toLocaleLowerCase() === "0x") {
+        return {
+            toSmcAddr: smcAddr,
+            toSmcName: "Contract Creation"
+        }
+    }
+    return {
+        toSmcAddr: "",
+        toSmcName: ""
     }
 }

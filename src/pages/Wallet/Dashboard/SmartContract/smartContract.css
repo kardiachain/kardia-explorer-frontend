@@ -1,10 +1,3 @@
-.deploy-bytecode-container .rs-btn {
-    padding:12px 21px !important;
-}
-.deploy-bytecode-container .rs-picker-default .rs-picker-toggle.rs-btn .rs-picker-toggle-caret,
-.deploy-bytecode-container .rs-picker-default .rs-picker-toggle.rs-btn .rs-picker-toggle-clean {
-    top: 12px
-}
 .deploy-bytecode-container .rs-flex-box-grid-item {
     margin-bottom: 15px;
 }
@@ -16,4 +9,9 @@
 .interact-smc-container .form-addon-container.button-addon,
 .deploy-bytecode-container .form-addon-container.button-addon {
     text-align: right;
+}
+
+.deploy-bytecode-container .label,
+.interact-smc-container .label {
+    font-weight: bold;
 }
