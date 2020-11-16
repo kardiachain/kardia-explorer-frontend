@@ -26,8 +26,7 @@ const weiToKAI = (value: any): any => {
 
 const formatFullAmount = (amount: string) => {
   try {
-    const amountFormat = amount && amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-    return amountFormat || amount
+    return amount && amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   } catch (error) {
     return amount
   }
