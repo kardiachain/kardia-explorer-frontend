@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, Alert, ControlLabel, Modal } from 'rsuite'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, Alert, ControlLabel, Modal, SelectPicker } from 'rsuite'
 import { ErrorMessage } from '../../../../common/constant/Message'
 import { onlyInteger, onlyNumber } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
@@ -10,6 +10,7 @@ import { getBalance } from '../../../../service/kai-explorer'
 import { weiToKAI } from '../../../../common/utils/amount'
 import { renderHashToRedirect } from '../../../../common/utils/string'
 import Button from '../../../../common/components/Button'
+import { gasPriceOption } from '../../../../common/constant'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -24,6 +25,10 @@ const SendTransaction = () => {
     const [txHash, setTxHash] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [sendTxErrMs, setSendTxErrMsg] = useState('')
+
+    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPriceErr, setGasPriceErr] = useState('')
+
     useEffect(() => {
         (async () => {
             const balance = await getBalance(myAccount.publickey)
@@ -57,7 +62,7 @@ const SendTransaction = () => {
             setToAddressErr(ErrorMessage.AddressInvalid)
             return false
         }
-        if(addr.toLocaleLowerCase() === myAccount.publickey.toLocaleLowerCase()) {
+        if (addr.toLocaleLowerCase() === myAccount.publickey.toLocaleLowerCase()) {
             setToAddressErr(ErrorMessage.CannotSendKAIToYourSelf)
             return false;
         }
@@ -65,7 +70,7 @@ const SendTransaction = () => {
         return true
     }
 
-    const validateGasLimit = (number: number): boolean => {        
+    const validateGasLimit = (number: number): boolean => {
         if (!number) {
             serGasLimitErr(ErrorMessage.Require)
             return false
@@ -74,14 +79,24 @@ const SendTransaction = () => {
         return true
     }
 
+    const validateGasPrice = (gasPrice: any): boolean => {
+        if (!Number(gasPrice)) {
+            setGasPriceErr(ErrorMessage.Require)
+            return false
+        }
+        setGasPriceErr('')
+        return true
+    }
+
     const resetFrom = () => {
         setAmount('');
         setToAddress('');
         setGasLimit(21000)
+        setGasPrice(1)
     }
 
     const submitSend = () => {
-        if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit)) {
+        if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit) || validateGasPrice(gasPrice)) {
             return
         }
         setShowConfirmModal(true)
@@ -90,7 +105,7 @@ const SendTransaction = () => {
     const confirmSend = async () => {
         setSendBntLoading(true)
         try {
-            const txHash = await generateTx(myAccount, toAddress, Number(amount), gasLimit)
+            const txHash = await generateTx(myAccount, toAddress, Number(amount), gasLimit, gasPrice)
             if (txHash) {
                 setTxHash(txHash);
                 Alert.success('Send transaction success.')
@@ -123,7 +138,7 @@ const SendTransaction = () => {
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                 <ControlLabel>Amount <span className="required-mask">*</span></ControlLabel>
                                 <FormControl
                                     placeholder="Amount"
@@ -138,7 +153,7 @@ const SendTransaction = () => {
                                 />
                                 <ErrMessage message={amountErr} />
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <ControlLabel>To Address <span className="required-mask">*</span></ControlLabel>
                                 <FormControl
                                     placeholder="Please enter the address"
@@ -151,7 +166,7 @@ const SendTransaction = () => {
                                 />
                                 <ErrMessage message={toAddressErr} />
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
                                 <ControlLabel>Gas Limit <span className="required-mask">*</span></ControlLabel>
                                 <FormControl
                                     placeholder="Gas limit"
@@ -166,31 +181,46 @@ const SendTransaction = () => {
                                 />
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
+                                <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                <SelectPicker
+                                    className="dropdown-custom"
+                                    data={gasPriceOption}
+                                    searchable={false}
+                                    value={gasPrice}
+                                    onChange={(value) => {
+                                        setGasPrice(value)
+                                        validateGasPrice(value)
+                                    }}
+                                    style={{ width: '100%' }}
+                                />
+                                <ErrMessage message={gasPriceErr} />
+                            </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button size="big" onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{marginLeft: '10px'}} /></Button>
+                                <Button size="big" style={{margin: 0}} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                             </FlexboxGrid.Item>
                             <ErrMessage message={sendTxErrMs} />
                             {
-                                txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4,showTooltip: false, callback: () => {window.open(`/tx/${txHash}`) } })}</div> : <></>
+                                txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}</div> : <></>
                             }
                         </FlexboxGrid>
                     </FormGroup>
                 </Form>
             </Panel>
-            <Modal backdrop="static" size="xs" enforceFocus={true} show={showConfirmModal} onHide={() => {setShowConfirmModal(false)}}>
+            <Modal backdrop="static" size="xs" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
                     <Modal.Title>Confirm send transaction</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{textAlign:'center'}}>Are you sure you want to transfer <span style={{fontWeight: 'bold', color: '#36638A'}}>{amount} KAI</span></div>
-                    <div style={{textAlign:'center'}}>TO</div>
-                    <div style={{textAlign:'center', fontWeight: 'bold', color: '#36638A'}}>{toAddress}</div>
+                    <div style={{ textAlign: 'center' }}>Are you sure you want to transfer <span style={{ fontWeight: 'bold', color: '#36638A' }}>{amount} KAI</span></div>
+                    <div style={{ textAlign: 'center' }}>TO</div>
+                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A' }}>{toAddress}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={sendBntLoading} onClick={confirmSend}>
                         Confirm
                     </Button>
-                    <Button className="primary-button" onClick={() => {setShowConfirmModal(false)}}>
+                    <Button className="primary-button" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
                     </Button>
                 </Modal.Footer>

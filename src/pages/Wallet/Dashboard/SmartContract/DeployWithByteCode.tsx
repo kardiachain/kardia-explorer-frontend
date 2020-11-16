@@ -10,6 +10,7 @@ import { deploySmartContract } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 import ReactJson from 'react-json-view'
 import './smartContract.css'
+import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -17,13 +18,7 @@ const onSuccess = () => {
 
 const DeployWithByteCode = () => {
 
-    const gasPriceOption = [
-        { label: 'Normal (1 Gwei)', value: 1 },
-        { label: 'Regular (2 Gwei)', value: 2 },
-        { label: 'Fast (3 Gwei)', value: 3 },
-    ] as any[]
-
-    const [gasLimit, setGasLimit] = useState(1000000);
+    const [gasLimit, setGasLimit] = useState(gasLimitDefault);
     const [byteCode, setByteCode] = useState('')
     const [abi, setAbi] = useState('')
     const [byteCodeErr, setByteCodeErr] = useState('')

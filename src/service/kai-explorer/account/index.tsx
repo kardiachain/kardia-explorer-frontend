@@ -6,7 +6,7 @@ export const getBalance = async (address: string): Promise<number> => {
     return responseJSON.data || 0
 }
 
-export const getTotalHolder = async (): Promise<number> => {
+export const getTotalStats = async (): Promise<TotalStats> => {
     const response = await fetch(`${END_POINT}dashboard/holders/total`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     return responseJSON.data || 0

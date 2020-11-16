@@ -23,6 +23,7 @@ const BlockSection = ({ blockList = [] }: {
                         data={blockList}
                         hover={false}
                         wordWrap
+                        autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                             <HeaderCell>Block Height</HeaderCell>
