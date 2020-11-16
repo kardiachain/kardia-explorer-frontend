@@ -65,7 +65,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                             </div>
                                             <div>
                                                 {
-                                                    rowData.to !== "0x" ? (
+                                                    !rowData.toSmcAddr ? (
                                                         <>
                                                             <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} /><span style={{marginRight: 5}}> To:</span>
                                                             {renderHashToRedirect({
@@ -79,8 +79,8 @@ const TransactionSection = ({ transactionList = [] }: {
                                                     ) : (
                                                             <>
                                                                 <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />To:
-                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.contractAddress}</Tooltip>}>
-                                                                    <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.contractAddress || "0x"}`}>Contract Creation</Link>
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
+                                                                    <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                 </Whisper>
                                                             </>
                                                         )
