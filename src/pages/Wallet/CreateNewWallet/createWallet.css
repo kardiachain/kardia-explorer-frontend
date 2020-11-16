@@ -128,3 +128,7 @@
     border: 1px solid #c8c8d81f;
     margin-bottom: 10px;
 }
+
+.icon-check{
+    color: var(--success-color);
+}
