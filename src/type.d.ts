@@ -120,3 +120,8 @@ interface KaiToken {
     total_supply?: number;
     volume_24h?: number;
 }
+
+interface TotalStats {
+    totalHolders: number;
+    totalContracts: number;
+}

@@ -4,6 +4,7 @@ import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Ic
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
+import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { onlyInteger } from '../../../../common/utils/number';
 import { copyToClipboard, renderHashToRedirect } from '../../../../common/utils/string';
@@ -12,18 +13,11 @@ import { invokeFunctionFromContractAbi } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 import './smartContract.css'
 
-
 const onSuccess = () => {
-    Alert.success('Copied to clipboard.')
+    Alert.success('Copied to clipboard.');
 }
 
 const InteracteWithSmc = () => {
-
-    const gasPriceOption = [
-        { label: 'Normal (1 Gwei)', value: 1 },
-        { label: 'Regular (2 Gwei)', value: 2 },
-        { label: 'Fast (3 Gwei)', value: 3 },
-    ] as any[]
 
     const [smcAddr, setSmcAddr] = useState('')
     const [smcAddrErr, setSmcAddrErr] = useState('')
@@ -34,7 +28,7 @@ const InteracteWithSmc = () => {
     const myAccount = getAccount() as Account
     const [currentStep, setCurrentStep] = useState(0)
     const [loadingExecute, setLoadingExecute] = useState(false)
-    const [gasLimit, setGasLimit] = useState(1000000)
+    const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
@@ -232,7 +226,7 @@ const InteracteWithSmc = () => {
         setSmcFuncList([] as any)
         setSmcFuncActive({} as any)
         setCurrentStep(0)
-        setGasLimit(1000000)
+        setGasLimit(gasLimitDefault);
         setGasLimitErr('')
         setGasPrice(1)
         setGasPriceErr('')
