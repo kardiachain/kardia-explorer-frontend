@@ -45,7 +45,7 @@ const Faucet = () => {
             return
         }
         setHashTransaction(responseJSON.txHash)
-        Alert.success('Congratulations! You had received 1000 KAI free.', 5000);
+        Alert.success(`Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`, 5000);
     }
 
     return (
