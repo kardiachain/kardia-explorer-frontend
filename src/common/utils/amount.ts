@@ -24,6 +24,15 @@ const weiToKAI = (value: any): any => {
   return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
 };
 
+const formatFullAmount = (amount: string) => {
+  try {
+    const amountFormat = amount && amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    return amountFormat || amount
+  } catch (error) {
+    return amount
+  }
+}
+
 const removeTrailingZeros = (value: any) => {
   const regEx1 = /^[0]+/;
   const regEx2 = /[0]+$/;
@@ -80,4 +89,4 @@ const formatAmountwithPlus = (value: number) => {
 
 
 
-export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus }
+export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus, formatFullAmount}
