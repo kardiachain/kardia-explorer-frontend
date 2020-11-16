@@ -118,7 +118,7 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column width={500} verticalAlign="middle">
+                    <Column width={300} verticalAlign="middle">
                         <HeaderCell>Action</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -128,12 +128,12 @@ const Delegator = () => {
                                             setShowConfirmWithdrawRewardsModal(true)
                                             setValidatorActive(rowData.validatorAddr)
                                         }}>Claims Rewards </Button>
-                                        <Button onClick={() => {
+                                        {/* <Button onClick={() => {
                                             setShowConfirmWithdrawModal(true)
                                             setValidatorActive(rowData.validatorAddr)
                                         }}>
                                             Withdraw Staked Amount
-                                        </Button>
+                                        </Button> */}
                                     </div>
                                 )
                             }}

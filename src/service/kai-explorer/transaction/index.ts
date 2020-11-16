@@ -149,13 +149,13 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
 }
 
 const defineToSmcAddress = (toAddress: string, smcAddr: string): ToSmcAddress => {
-    if (toAddress.toLocaleLowerCase() === STAKING_SMC_ADDRESS.toLocaleLowerCase()) {
+    if (toAddress?.toLocaleLowerCase() === STAKING_SMC_ADDRESS?.toLocaleLowerCase()) {
         return {
             toSmcAddr: toAddress,
             toSmcName: "Staking Contract"
         }
     }
-    if(toAddress.toLocaleLowerCase() === "0x") {
+    if(toAddress?.toLocaleLowerCase() === "0x") {
         return {
             toSmcAddr: smcAddr,
             toSmcName: "Contract Creation"

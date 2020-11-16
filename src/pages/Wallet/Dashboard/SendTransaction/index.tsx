@@ -96,7 +96,7 @@ const SendTransaction = () => {
     }
 
     const submitSend = () => {
-        if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit) || validateGasPrice(gasPrice)) {
+        if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
         setShowConfirmModal(true)
