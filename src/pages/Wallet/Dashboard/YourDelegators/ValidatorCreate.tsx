@@ -385,7 +385,7 @@ const ValidatorCreate = () => {
                     <Button loading={isLoading} onClick={registerValidator}>
                         Confirm
                     </Button>
-                    <Button className="primary-button" onClick={() => { setShowConfirmModal(false) }}>
+                    <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
                     </Button>
                 </Modal.Footer>

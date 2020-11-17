@@ -60,7 +60,7 @@ const CreateByPrivateKey = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={24} style={{marginTop: '20px'}}>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="primary-button">Back</Button>
+                                                <Button size="big" className="kai-button-gray">Back</Button>
                                             </Link>
                                             <Button
                                                 size="big"
@@ -91,7 +91,7 @@ const CreateByPrivateKey = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="primary-button">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
                                                 <Button size="big" className="submit-buttom" onClick={accessWalletNow}>Access Now</Button>
                                             </div>

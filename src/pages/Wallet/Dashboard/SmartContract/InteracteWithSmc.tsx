@@ -369,7 +369,7 @@ const InteracteWithSmc = () => {
                             ) : (
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                            <Button className="primary-button"
+                                            <Button className="kai-button-gray"
                                                 style={{ marginBottom: '25px' }}
                                                 onClick={() => {
                                                     setCurrentStep(0)

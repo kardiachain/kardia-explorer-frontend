@@ -80,7 +80,7 @@ const CreateByKeystore = () => {
                                         </div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="primary-button">Back</Button>
+                                                <Button size="big" className="kai-button-gray">Back</Button>
                                             </Link>
                                             <Button size="big" className="submit-buttom" loading={isLoading} onClick={createWallet}>Create wallet</Button>
                                         </div>
@@ -98,7 +98,7 @@ const CreateByKeystore = () => {
                                             </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="primary-button">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
                                                 <Button size="big" className="submit-buttom" onClick={accessWallet}>Access now</Button>
                                             </div>

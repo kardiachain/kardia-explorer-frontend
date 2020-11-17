@@ -2,12 +2,15 @@
     background: var(--highlight);
     color: var(--white-color);
     cursor: pointer;
-    border-radius: 2px;
-    font-weight: 600;
-    margin: 0 5px;
-    position: relative;
+    border-radius: 3px;
+    margin:0px 5px;
     word-break: initial;
-    border-radius: 5px;
+}
+
+.kai-button:hover{
+    background: var(--highlight-shade1) !important;
+    color: var(--white-color) !important;
+    transition-property: none;
 }
 
 .size-normal {
@@ -23,9 +26,14 @@
     color: transparent !important;
 }
 
-.primary-button {
-    background: linear-gradient(137.34deg,#7b7b82 14.41%,#a0a0a9 116.67%);
+.kai-button-gray {
+    background:  var(--gray);
 }
+
+.kai-button-gray:hover{
+    background: var(--gray-shade1) !important;
+}
+
 .button-loading {
     position: absolute;
     left: 50%;
