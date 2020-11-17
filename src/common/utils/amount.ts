@@ -58,7 +58,7 @@ const formatAmount = (value: number) => {
     return `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value / 1000)}K`;
   }
 
-  return new Intl.NumberFormat('en', { maximumFractionDigits: 18 }).format(value);
+  return new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value);
 }
 
 const formatAmountwithPlus = (value: number) => {

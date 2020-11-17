@@ -8,7 +8,7 @@ export const getNodes = async (): Promise<KAINode[]> => {
                 id: item.moniker,
                 color: '#4287f5',
                 address: `0x${item.id}`,
-                peerCount: 21,
+                peerCount: 3,
                 protocol: 'KAI',
                 votingPower: 100,
                 status: "online",

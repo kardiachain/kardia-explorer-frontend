@@ -21,10 +21,10 @@ const Network = () => {
             const result = await getNodes()
             setNetworks(result)
             let linkArr = [] as any[];
+            
             result.forEach((r) => {
                 // Random links number for each node
-                const nodeLinks = Math.floor(Math.random() * 4) + 1;
-                for (let i = 0; i < nodeLinks; i++) {
+                for (let i = 0; i < r.peerCount; i++) {
                     const nodeRandom = Math.floor(Math.random() * result?.length);
                     linkArr.push({ source: r.id, target: result[nodeRandom].id })
                 }
@@ -57,8 +57,7 @@ const Network = () => {
                         graphData={graphData}
                         nodeResolution={30}
                         nodeLabel="id"
-                        numDimensions={3}
-                        linkWidth={2}
+                        numDimensions={2}
                     /> : <></>
             }
             <div className="container">
