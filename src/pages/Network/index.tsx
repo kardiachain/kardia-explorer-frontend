@@ -53,11 +53,11 @@ const Network = () => {
                     <ForceGraph3D
                         showNavInfo={false}
                         height={500}
-                        nodeRelSize={10}
+                        nodeRelSize={8}
                         graphData={graphData}
                         nodeResolution={30}
                         nodeLabel="id"
-                        numDimensions={2}
+                        numDimensions={3}
                     /> : <></>
             }
             <div className="container">
