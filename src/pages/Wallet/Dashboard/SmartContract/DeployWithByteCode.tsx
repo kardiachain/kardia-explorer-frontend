@@ -108,7 +108,7 @@ const DeployWithByteCode = () => {
                 bytecode: byteCode,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: construcFields.length > 0 && construcFields.map(item => item.value)
+                params: construcFields ? (construcFields.length > 0 && construcFields.map(item => item.value)) : []
             } as SMCDeployObject
             const deployTx = await deploySmartContract(txObject);
             if (deployTx.status === 1) {
