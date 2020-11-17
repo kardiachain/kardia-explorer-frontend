@@ -47,7 +47,7 @@ const BlockDetail = () => {
                                         <div className="property-title">Height</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(Number(blockDetail?.blockHeight))}</div>
+                                        <div className="property-content">{numberFormat(blockDetail?.blockHeight)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -79,7 +79,7 @@ const BlockDetail = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
                                             {!blockDetail?.transactions ? 0 :
-                                                <Link to={`/txs?block=${blockDetail?.blockHeight}`}>{numberFormat(Number(blockDetail?.transactions))}</Link>
+                                                <Link to={`/txs?block=${blockDetail?.blockHeight}`}>{numberFormat(blockDetail?.transactions)}</Link>
                                             }
                                         </div>
                                     </FlexboxGrid.Item>

@@ -104,7 +104,7 @@ const TxList = () => {
                                                 return (
                                                     <div>
                                                         {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(Number(rowData.blockNumber))}</Link>
+                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}

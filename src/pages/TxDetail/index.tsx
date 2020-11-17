@@ -63,7 +63,7 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
-                                            <Link to={`/block/${txDetail?.blockNumber}`} >{numberFormat(Number(txDetail?.blockNumber))}</Link>
+                                            <Link to={`/block/${txDetail?.blockNumber}`} >{numberFormat(txDetail?.blockNumber)}</Link>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>

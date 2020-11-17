@@ -73,7 +73,7 @@ const Blocks = () => {
                                                 return (
                                                     <div>
                                                         <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
-                                                        <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(Number(rowData.blockHeight))}</Link>
+                                                        <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -133,7 +133,7 @@ const Blocks = () => {
                                                     <div>
                                                         {
                                                             !rowData.transactions ? '0' :
-                                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(Number(rowData.transactions))}</Link>
+                                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
                                                         }
                                                     </div>
                                                 );
