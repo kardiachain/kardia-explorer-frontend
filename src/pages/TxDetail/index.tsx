@@ -177,7 +177,7 @@ const TxDetail = () => {
                                         <div className="property-title">Gas Price</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(txDetail?.gasPrice || 0)} GWEI</div>
+                                        <div className="property-content">{numberFormat(txDetail?.gasPrice || 0)} OXY</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, ButtonGroup, Col, Icon, IconButton, Modal, Panel, Row } from 'rsuite';
-import { weiToKAI } from '../../../common/utils/amount';
+import { weiToKAI, formatFullAmount } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getBalance } from '../../../service/kai-explorer';
 import { getAccount } from '../../../service/wallet';
@@ -61,7 +61,7 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card balance">
                         <div className="card-body">
                             <div className="title"><Icon className="icon highlight" icon="money" />Balance</div>
-                            <div className="content"><span style={{ fontWeight: 'bold' }}>{weiToKAI(balance)}</span> KAI</div>
+                            <div className="content"><span style={{ fontWeight: 'bold' }}>{formatFullAmount(weiToKAI(balance))}</span> KAI</div>
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance

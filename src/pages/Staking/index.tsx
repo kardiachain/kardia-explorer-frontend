@@ -38,7 +38,7 @@ const Validators = () => {
 
             const valDetails = stakingData.validators;
             valDetails.map((v: any) => {
-                const node = nodes.filter(n =>  n.address == v.address)[0];
+                const node = nodes && nodes.filter(n =>  n.address === v.address)[0];
                 v.name = node.id || "";
             })
 
