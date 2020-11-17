@@ -61,7 +61,7 @@ const BlockSection = ({ blockList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={1} align="right">
-                            <HeaderCell>Txn</HeaderCell>
+                            <HeaderCell>Txs</HeaderCell>
                             <Cell dataKey="transactions">
                                 {(rowData: KAIBlock) => {
                                     return (

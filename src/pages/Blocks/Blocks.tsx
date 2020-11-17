@@ -126,7 +126,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={1} verticalAlign="middle">
-                                        <HeaderCell>Txn</HeaderCell>
+                                        <HeaderCell>Txs</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
