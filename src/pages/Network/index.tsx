@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
-import { renderHashToRedirect } from '../../common/utils/string';
+import { randomRGBColor, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';
 import { useHistory } from 'react-router-dom';
@@ -32,11 +32,11 @@ const Network = () => {
             const graphData = {
                 nodes: result.map(item => {
                     // Random color for each node
-                    // const colorRandom = randomRGBColor()
+                    const colorRandom = randomRGBColor()
                     return {
                         id: item.id,
-                        color: "#e62c2c"
-                        // color: colorRandom
+                        // color: "#e62c2c"
+                        color: colorRandom
                     }
                 }),
                 links: linkArr
