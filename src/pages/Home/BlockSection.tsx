@@ -33,7 +33,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             <div>
                                                 <Icon icon="cubes" className="highlight" style={{ marginRight: '10px' }} />
-                                                <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(Number(rowData.blockHeight))}</Link>
+                                                <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
                                             </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>
@@ -68,7 +68,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             {
                                                 !rowData.transactions ? '0' :
-                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(Number(rowData.transactions))}</Link>
+                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
                                             }
                                         </div>
                                     );

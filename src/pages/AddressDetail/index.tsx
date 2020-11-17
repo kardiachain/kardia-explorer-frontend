@@ -66,7 +66,7 @@ const AddressDetail = () => {
                                         <div className="property-title">Balance: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="property-content">{numberFormat(Number(weiToKAI(balance)))} KAI</div>
+                                        <div className="property-content">{numberFormat(weiToKAI(balance))} KAI</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -128,7 +128,7 @@ const AddressDetail = () => {
                                                 return (
                                                     <div>
                                                         { isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(Number(rowData.blockNumber))}</Link>
+                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}

@@ -14,8 +14,15 @@ const onlyInteger = (amount: any) => {
     return false
 }
 
-const numberFormat = (value: number, fractionDigits = 18) => {
-    return new Intl.NumberFormat('en', { maximumFractionDigits: fractionDigits }).format(value);
+const numberFormat = (amount: any, fractionDigits = 0) => {
+    try {
+        if (fractionDigits !== 0) {
+            return amount && amount.toFixed(fractionDigits).toString().replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1,');
+        }
+        return amount && amount.toString().replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1,');
+      } catch (error) {
+        return amount
+      }
 }
 
 export {onlyNumber, numberFormat, onlyInteger}
