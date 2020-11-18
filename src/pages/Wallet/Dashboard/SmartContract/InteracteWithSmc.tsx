@@ -125,9 +125,9 @@ const InteracteWithSmc = () => {
                 abi: abi,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: paramsFields.length > 0 && paramsFields.map(item => item.value),
-                isPure: smcFuncActive.stateMutability === 'view' || smcFuncActive.stateMutability === 'pure' ? true : false,
-                functionName: smcFuncActive.name,
+                params: paramsFields && paramsFields.length > 0 ? paramsFields.map(item => item.value) : [],
+                isPure: smcFuncActive ? (smcFuncActive.stateMutability === 'view' || smcFuncActive.stateMutability === 'pure' ? true : false) : [],
+                functionName: smcFuncActive ? smcFuncActive.name : '',
                 amount: payableAmount
             } as SMCInvokeObject
 
@@ -138,13 +138,14 @@ const InteracteWithSmc = () => {
                 setShowResult(true)
             } else {
                 if (invokeTx?.status === 1) {
-                    setTxResult(invokeTx);
-                    setShowResult(true)
-                    setTxHash(invokeTx.transactionHash)
                     Alert.success("Interact with smart contract success.")
                 } else {
-                    setInteractErr('Invoke to smart contract failed.')
+                    const errMsg = invokeTx && invokeTx.gasUsed === Number(gasLimit) ? 'Invoke to smart contract fail with error: Out of gas' : 'Invoke to smart contract failed.'
+                    setInteractErr(errMsg)
                 }
+                setTxResult(invokeTx);
+                setShowResult(true)
+                setTxHash(invokeTx.transactionHash)
             }
         } catch (error) {
             try {
@@ -158,6 +159,7 @@ const InteracteWithSmc = () => {
     }
 
     const selectFunction = (value: any) => {
+        setInteractErr('')
         setShowResult(false)
         setPayableFunction(false)
         try {
@@ -398,6 +400,7 @@ const InteracteWithSmc = () => {
                                                         paramsFields.map((field: any, idx: any) => {
                                                             return (
                                                                 <FormControl
+                                                                    key={idx}
                                                                     style={{
                                                                         marginBottom: 10,
                                                                     }}
@@ -433,8 +436,6 @@ const InteracteWithSmc = () => {
 
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             <Button size="big" style={{ width: '250px' }} loading={loadingExecute} onClick={executeFunction}>Execute</Button>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             <ErrMessage message={interactErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
