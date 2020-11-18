@@ -49,11 +49,11 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
             y: dataForChart.totalValidatorStakedAmount,
             sliced: true,
             selected: true,
-            color: '#e62c2c'
+            color: '#ae0001'
         }, {
             name: "Delegators' Staked",
             y: dataForChart.totalDelegatorStakedAmount,
-            color: '#2a343d'
+            color: '#680000'
         }]
         setChartOptionsConfig(newConfig)
     }, [dataForChart])

@@ -104,14 +104,12 @@ const InteracteWithSmc = () => {
         }
         // TODO interact with smart contract
         const abiJson = JSON.parse(abi)
-        const smcFuncList = abiJson.length > 0 ? abiJson.map((item: any) => {
-            if (item.type === "function") {
+        const smcFuncList = abiJson.length > 0 ? abiJson.filter((item: any) => item.type === "function").map((item: any) => {
                 return {
                     label: item.name,
                     value: item
                 }
-            }
-        }).filter((item: any) => item) : [];
+        }) : [];
         setSmcFuncList(smcFuncList);
         setCurrentStep(1)
     }
@@ -127,9 +125,9 @@ const InteracteWithSmc = () => {
                 abi: abi,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: paramsFields.length > 0 && paramsFields.map(item => item.value),
-                isPure: smcFuncActive.stateMutability === 'view' || smcFuncActive.stateMutability === 'pure' ? true : false,
-                functionName: smcFuncActive.name,
+                params: paramsFields && paramsFields.length > 0 ? paramsFields.map(item => item.value) : [],
+                isPure: smcFuncActive ? (smcFuncActive.stateMutability === 'view' || smcFuncActive.stateMutability === 'pure' ? true : false) : [],
+                functionName: smcFuncActive ? smcFuncActive.name : '',
                 amount: payableAmount
             } as SMCInvokeObject
 
@@ -140,13 +138,14 @@ const InteracteWithSmc = () => {
                 setShowResult(true)
             } else {
                 if (invokeTx?.status === 1) {
-                    setTxResult(invokeTx);
-                    setShowResult(true)
-                    setTxHash(invokeTx.transactionHash)
                     Alert.success("Interact with smart contract success.")
                 } else {
-                    setInteractErr('Invoke to smart contract failed.')
+                    const errMsg = invokeTx && invokeTx.gasUsed === Number(gasLimit) ? 'Invoke to smart contract fail with error: Out of gas' : 'Invoke to smart contract failed.'
+                    setInteractErr(errMsg)
                 }
+                setTxResult(invokeTx);
+                setShowResult(true)
+                setTxHash(invokeTx.transactionHash)
             }
         } catch (error) {
             try {
@@ -160,6 +159,7 @@ const InteracteWithSmc = () => {
     }
 
     const selectFunction = (value: any) => {
+        setInteractErr('')
         setShowResult(false)
         setPayableFunction(false)
         try {
@@ -335,16 +335,16 @@ const InteracteWithSmc = () => {
                                                 </FlexboxGrid.Item>
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
                                                     <div>
-                                                        <Button className="ghost-button"
+                                                        <Button className="kai-button-gray"
                                                             onClick={() => {
                                                                 setAbi('')
                                                                 setAbiErr('')
                                                             }}>Clear</Button>
-                                                        <Button className="ghost-button"
+                                                        <Button className="kai-button-gray"
                                                             onClick={() => {
                                                                 copyToClipboard(abi, onSuccess)
                                                             }}>Copy</Button>
-                                                        <Button className="ghost-button" onClick={formatAbiJson}>Format</Button>
+                                                        <Button className="kai-button-gray" onClick={formatAbiJson}>Format</Button>
                                                     </div>
                                                 </FlexboxGrid.Item>
                                             </FlexboxGrid>
@@ -362,14 +362,14 @@ const InteracteWithSmc = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
                                             <Button size="big" style={{ width: '250px' }} onClick={compilerABIStep}>Go To Contract</Button>
-                                            <Button size="big" className="ghost-button" onClick={resetAll}>Reset</Button>
+                                            <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </>
                             ) : (
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                            <Button className="primary-button"
+                                            <Button className="kai-button-gray"
                                                 style={{ marginBottom: '25px' }}
                                                 onClick={() => {
                                                     setCurrentStep(0)
@@ -400,6 +400,7 @@ const InteracteWithSmc = () => {
                                                         paramsFields.map((field: any, idx: any) => {
                                                             return (
                                                                 <FormControl
+                                                                    key={idx}
                                                                     style={{
                                                                         marginBottom: 10,
                                                                     }}
@@ -435,8 +436,6 @@ const InteracteWithSmc = () => {
 
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             <Button size="big" style={{ width: '250px' }} loading={loadingExecute} onClick={executeFunction}>Execute</Button>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             <ErrMessage message={interactErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
@@ -453,7 +452,7 @@ const InteracteWithSmc = () => {
                                                                                 Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}
                                                                             </div> : <></>
                                                                         }
-                                                                        <Button className="ghost-button" onClick={() => { setShowTxDetailModal(true) }}>
+                                                                        <Button className="kai-button-gray" onClick={() => { setShowTxDetailModal(true) }}>
                                                                             <Icon icon="file-text-o" style={{ marginRight: 10 }} />View Transaction Details
                                                                         </Button>
                                                                     </>
@@ -479,7 +478,7 @@ const InteracteWithSmc = () => {
                     <ReactJson src={{ txResult }} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { setShowTxDetailModal(false) }} className="ghost-button">
+                    <Button onClick={() => { setShowTxDetailModal(false) }} className="kai-button-gray">
                         Cancel
                     </Button>
                 </Modal.Footer>

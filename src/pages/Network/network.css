@@ -9,3 +9,21 @@
 .dot-status.offline {
     background: radial-gradient(#f7bebe, #ff0000);
 }
+.network-container {
+    width: 100%;
+}
+.network-container .container {
+    margin: auto;
+}
+
+.network-container canvas {
+    width: 100% !important;
+}
+
+@media screen and (max-width: 740px) {
+
+    .network-container .container {
+      padding: 30px 10px;
+      width: 100%;
+    }
+}

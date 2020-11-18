@@ -1,5 +1,6 @@
 :root{
   --highlight: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
+  --gray: #5c5c5c;
   --nav-color:#2a343d;
   --black-color: #302b3c;
   --bg-color: #f8f9fa;
@@ -11,6 +12,8 @@
   --box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
   --border: 1px solid #e7eaf3;
   --success-color: #068c03;
+  --highlight-shade1: #8a1a1a;
+  --gray-shade1: #494949;
 }
 
 body {
@@ -135,6 +138,11 @@ a:hover {
 .property-content {
   font-weight: bold;
   word-break: break-all;
+}
+
+.tab-in-out {
+  width: 45px;
+  text-align: center;
 }
 
 @media screen and (max-width: 740px) {

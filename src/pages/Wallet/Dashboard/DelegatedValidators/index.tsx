@@ -169,7 +169,7 @@ const Delegator = () => {
                     <Button loading={isLoading} onClick={withdrawRewards} >
                         Confirm
                     </Button>
-                    <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} className="primary-button">
+                    <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} className="kai-button-gray">
                         Cancel
                     </Button>
                 </Modal.Footer>
@@ -186,7 +186,7 @@ const Delegator = () => {
                     <Button loading={isLoading} onClick={widthdraw}>
                         Confirm
                     </Button>
-                    <Button className="primary-button" onClick={() => { setShowConfirmWithdrawModal(false) }}>
+                    <Button className="kai-button-gray" onClick={() => { setShowConfirmWithdrawModal(false) }}>
                         Cancel
                     </Button>
                 </Modal.Footer>

@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, Modal, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage } from '../../../../common/constant/Message';
-import { weiToKAI } from '../../../../common/utils/amount';
 import { onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
-import { getBalance } from '../../../../service/kai-explorer';
 import { createValidator } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { getAccount, getStoredBalance } from '../../../../service/wallet';
 import './validators.css'
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
@@ -32,20 +30,11 @@ const ValidatorCreate = () => {
     const [hashTransaction, setHashTransaction] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [createValErrMsg, setCreateValErrMsg] = useState('')
-    const [balance, setBalance] = useState(0)
-    const myAccount = getAccount() as Account
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
-
-    useEffect(() => {
-        (async () => {
-            const bal = await getBalance(myAccount.publickey)
-            setBalance(Number(weiToKAI(bal)))
-        })()
-    }, [myAccount.publickey])
 
     const validateCommissionRate = (value: any) => {
         if (!value) {
@@ -170,7 +159,8 @@ const ValidatorCreate = () => {
             return false
         }
 
-        if (Number(balance) === 0 || Number(balance) < value) {
+        const balance = getStoredBalance();
+        if (balance === 0 || balance < Number(value)) {
             setAmountDelErr(ErrorMessage.BalanceNotEnough)
             return false
         }
@@ -385,7 +375,7 @@ const ValidatorCreate = () => {
                     <Button loading={isLoading} onClick={registerValidator}>
                         Confirm
                     </Button>
-                    <Button className="primary-button" onClick={() => { setShowConfirmModal(false) }}>
+                    <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
                     </Button>
                 </Modal.Footer>

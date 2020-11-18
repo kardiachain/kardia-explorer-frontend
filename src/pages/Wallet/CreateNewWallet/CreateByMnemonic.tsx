@@ -67,7 +67,7 @@ const CreateByMnemonic = () => {
                                         </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="primary-button">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
                                                 <Button size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
                                             </div>
@@ -91,7 +91,7 @@ const CreateByMnemonic = () => {
                                                     }}
                                                 />
                                                 <div style={{ textAlign: 'right', marginTop: 10 }}>
-                                                    <Button className="ghost-button"
+                                                    <Button className="kai-button-gray"
                                                         onClick={() => {
                                                             const onSuccess = () => {
                                                                 Alert.success('Copied to clipboard.')
@@ -99,7 +99,7 @@ const CreateByMnemonic = () => {
                                                             copyToClipboard(mnemonic, onSuccess)
                                                         }}>Copy <Icon icon="copy-o" />
                                                     </Button>
-                                                    <Button className="ghost-button" onClick={randomPhrase}>
+                                                    <Button className="kai-button-gray" onClick={randomPhrase}>
                                                         Change phrase <Icon icon="refresh" />
                                                     </Button>
                                                 </div>
@@ -109,7 +109,7 @@ const CreateByMnemonic = () => {
                                     <div>Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                     <div className="button-container">
                                         <Link to="/create-wallet">
-                                            <Button size="big" className="primary-button">Back</Button>
+                                            <Button size="big" className="kai-button-gray">Back</Button>
                                         </Link>
                                         <Button size="big" className="submit-buttom" onClick={createWallet}>Create wallet</Button>
                                     </div>

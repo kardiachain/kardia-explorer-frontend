@@ -114,7 +114,7 @@ const AccessByKeyStore = () => {
                                 </Form>
                                 <div className="button-container">
                                     <Link to="/access-wallet">
-                                        <Button size="big" className="primary-button">Back</Button>
+                                        <Button size="big" className="kai-button-gray">Back</Button>
                                     </Link>
                                     <Button loading={loadingBtnSubmit} size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
                                 </div>

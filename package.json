@@ -33,6 +33,7 @@
     "react-d3-graph": "^2.5.0",
     "react-dom": "^16.13.1",
     "react-json-view": "^1.19.1",
+    "react-force-graph": "^1.37.1",
     "react-number-format": "^4.4.1",
     "react-player": "^2.6.2",
     "react-qr-reader": "^2.2.1",
