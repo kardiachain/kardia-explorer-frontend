@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, IconButton, Alert } from 'rsuite';
+import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, IconButton, Alert, Nav, Input } from 'rsuite';
+import Button from '../../common/components/Button';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
@@ -19,6 +20,7 @@ const TxDetail = () => {
     const { txHash }: any = useParams();
     const [txDetail, setTxDetail] = useState<KAITransaction>()
     const [loading, setLoading] = useState(false)
+    const [inputDataActiveKey, setInputDataActiveKey] = useState("origin")
 
 
     useEffect(() => {
@@ -34,6 +36,11 @@ const TxDetail = () => {
         }, TIME_INTERVAL_MILISECONDS)
         return () => clearInterval(fetchTxDetail);
     }, [txHash])
+
+    const onSelectInputData = (e: any) => {
+        setInputDataActiveKey(e)
+        
+    }
 
     return (
         <div className="container tx-detail-container">
@@ -230,7 +237,27 @@ const TxDetail = () => {
                                                 <div className="property-title">Input Data</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                                <div className="property-content">{txDetail?.input}</div>
+                                                {/* <Nav appearance="tabs" activeKey={inputDataActiveKey} onSelect={(e) => { onSelectInputData(e) }}>
+                                                    <Nav.Item eventKey="origin">
+                                                        Original Data
+                                                    </Nav.Item>
+                                                    <Nav.Item eventKey="decode">Decode Data</Nav.Item>
+                                                </Nav> */}
+                                                {
+                                                    inputDataActiveKey === "origin" ?
+                                                        <div style={{marginTop: 10}}>
+                                                                <Input
+                                                                    componentClass="textarea"
+                                                                    rows={5}
+                                                                    // style={{ width:  }}
+                                                                    placeholder="resize: 'auto'"
+                                                                    value={txDetail?.input}
+                                                                />
+                                                                {/* <Button className="primary-button">Origin Data</Button> */}
+                                                                <Button className="primary-button" onClick={() => (setInputDataActiveKey('decode'))} style={{margin: 0, marginTop: 20}}>Decode Data</Button>
+                                                        </div>
+                                                        : <div>Decode Data</div>
+                                                }
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </List.Item>
