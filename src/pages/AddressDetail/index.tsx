@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper, Tag } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -147,7 +147,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -167,7 +167,21 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={1}>
+                                    <HeaderCell></HeaderCell>
+                                    <Cell style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                        {(rowData: KAITransaction) => {
+                                            return (
+                                                <div>
+                                                    {
+                                                        address === rowData.from ?  <Tag color="yellow">OUT</Tag> :  <Tag color="green">IN</Tag>
+                                                    }
+                                                </div>
+                                            )
+                                        }}
+                                    </Cell>
+                                    </Column>
+                                    <Column flexGrow={2} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
