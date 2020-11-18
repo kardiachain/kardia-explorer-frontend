@@ -33,11 +33,9 @@ const Network = () => {
             const graphData = {
                 nodes: result.map((item, index) => {
                     // Random color for each node
-                    const colorRandom = colors[index]
                     return {
                         id: item.id,
-                        // color: "#e62c2c"
-                        color: colorRandom
+                        color: colors[index]
                     }
                 }),
                 links: linkArr
