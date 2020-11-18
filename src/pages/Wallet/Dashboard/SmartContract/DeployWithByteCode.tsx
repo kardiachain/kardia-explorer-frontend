@@ -96,6 +96,9 @@ const DeployWithByteCode = () => {
 
     const deploy = async () => {
         try {
+            setDeployDone(false)
+            setTxHash('')
+            setDeploySmcErr('')
             if (!validateGasLimit(gasLimit) || !validateByteCode(byteCode) || !validateAbi(abi)) {
                 return false;
             }
@@ -112,23 +115,24 @@ const DeployWithByteCode = () => {
             } as SMCDeployObject
             const deployTx = await deploySmartContract(txObject);
             if (deployTx.status === 1) {
-                setDeployedContract(deployTx.contractAddress)
-                setContractJsonFileDownload({
-                    contractAddress: deployTx.contractAddress,
-                    byteCode: byteCode,
-                    abi: abi
-                })
-                setTxDetail(deployTx)
-                setDeployDone(true)
-                setTxHash(deployTx.transactionHash)
                 Alert.success("Deploy smart contract success.")
             } else {
-                setDeploySmcErr('Deploy smart contract failed.')
+                const errMsg = deployTx.gasUsed === Number(gasLimit) ? 'Deploy smart contract fail with error: Out of gas' : 'Deploy smart contract failed.'
+                setDeploySmcErr(errMsg)
             }
+            setDeployedContract(deployTx.contractAddress)
+            setContractJsonFileDownload({
+                contractAddress: deployTx.contractAddress,
+                byteCode: byteCode,
+                abi: abi
+            })
+            setTxDetail(deployTx)
+            setDeployDone(true)
+            setTxHash(deployTx.transactionHash)
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setDeploySmcErr(`Deploy smart contract failed: ${errJson?.error?.message}`)
+                setDeploySmcErr(`Deploy smart contract failed with error: ${errJson?.error?.message}`)
             } catch (error) {
                 setDeploySmcErr('Deploy smart contract failed.')
             }
@@ -285,6 +289,7 @@ const DeployWithByteCode = () => {
                                             construcFields.map((field: any, idx: any) => {
                                                 return (
                                                     <FormControl
+                                                        key={idx}
                                                         style={{
                                                             marginBottom: 10,
                                                         }}
