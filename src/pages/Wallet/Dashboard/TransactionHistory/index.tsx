@@ -79,7 +79,7 @@ const TransactionHistory = () => {
                                                 return (
                                                     <div>
                                                         {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }}/>}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{rowData.blockNumber}</Link>
+                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}

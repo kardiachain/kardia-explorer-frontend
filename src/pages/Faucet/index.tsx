@@ -3,6 +3,7 @@ import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Message, P
 import Button from '../../common/components/Button';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
+import { numberFormat } from '../../common/utils/number';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { addressValid } from '../../common/utils/validate';
 import { FAUCET_ENDPOINT } from '../../config/api';
@@ -45,7 +46,7 @@ const Faucet = () => {
             return
         }
         setHashTransaction(responseJSON.txHash)
-        Alert.success(`Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`, 5000);
+        Alert.success(`Congratulations! You had received ${numberFormat(process.env.REACT_APP_FAUCET_AMOUNT)} KAI free.`, 5000);
     }
 
     return (

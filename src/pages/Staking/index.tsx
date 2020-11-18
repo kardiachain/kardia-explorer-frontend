@@ -40,6 +40,7 @@ const Validators = () => {
             valDetails.map((v: any) => {
                 const node = nodes && nodes.filter(n =>  n.address === v.address)[0];
                 v.name = node.id || "";
+                return v
             })
 
             setValidators(valDetails);
