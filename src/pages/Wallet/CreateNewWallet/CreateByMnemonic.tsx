@@ -91,7 +91,7 @@ const CreateByMnemonic = () => {
                                                     }}
                                                 />
                                                 <div style={{ textAlign: 'right', marginTop: 10 }}>
-                                                    <Button className="ghost-button"
+                                                    <Button className="kai-button-gray"
                                                         onClick={() => {
                                                             const onSuccess = () => {
                                                                 Alert.success('Copied to clipboard.')
@@ -99,7 +99,7 @@ const CreateByMnemonic = () => {
                                                             copyToClipboard(mnemonic, onSuccess)
                                                         }}>Copy <Icon icon="copy-o" />
                                                     </Button>
-                                                    <Button className="ghost-button" onClick={randomPhrase}>
+                                                    <Button className="kai-button-gray" onClick={randomPhrase}>
                                                         Change phrase <Icon icon="refresh" />
                                                     </Button>
                                                 </div>

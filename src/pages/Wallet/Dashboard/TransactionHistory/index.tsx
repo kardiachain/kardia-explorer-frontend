@@ -123,7 +123,7 @@ const TransactionHistory = () => {
                                             return (
                                                 <div>
                                                     {
-                                                        myAccount.publickey === rowData.from ?  <Tag color="yellow">OUT</Tag> :  <Tag color="green">IN</Tag>
+                                                        myAccount.publickey === rowData.from ?  <Tag color="yellow" className="tab-in-out">OUT</Tag> :  <Tag color="green" className="tab-in-out">IN</Tag>
                                                     }
                                                 </div>
                                             )

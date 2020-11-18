@@ -335,16 +335,16 @@ const InteracteWithSmc = () => {
                                                 </FlexboxGrid.Item>
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
                                                     <div>
-                                                        <Button className="ghost-button"
+                                                        <Button className="kai-button-gray"
                                                             onClick={() => {
                                                                 setAbi('')
                                                                 setAbiErr('')
                                                             }}>Clear</Button>
-                                                        <Button className="ghost-button"
+                                                        <Button className="kai-button-gray"
                                                             onClick={() => {
                                                                 copyToClipboard(abi, onSuccess)
                                                             }}>Copy</Button>
-                                                        <Button className="ghost-button" onClick={formatAbiJson}>Format</Button>
+                                                        <Button className="kai-button-gray" onClick={formatAbiJson}>Format</Button>
                                                     </div>
                                                 </FlexboxGrid.Item>
                                             </FlexboxGrid>
@@ -362,7 +362,7 @@ const InteracteWithSmc = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
                                             <Button size="big" style={{ width: '250px' }} onClick={compilerABIStep}>Go To Contract</Button>
-                                            <Button size="big" className="ghost-button" onClick={resetAll}>Reset</Button>
+                                            <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </>
@@ -452,7 +452,7 @@ const InteracteWithSmc = () => {
                                                                                 Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}
                                                                             </div> : <></>
                                                                         }
-                                                                        <Button className="ghost-button" onClick={() => { setShowTxDetailModal(true) }}>
+                                                                        <Button className="kai-button-gray" onClick={() => { setShowTxDetailModal(true) }}>
                                                                             <Icon icon="file-text-o" style={{ marginRight: 10 }} />View Transaction Details
                                                                         </Button>
                                                                     </>
@@ -478,7 +478,7 @@ const InteracteWithSmc = () => {
                     <ReactJson src={{ txResult }} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { setShowTxDetailModal(false) }} className="ghost-button">
+                    <Button onClick={() => { setShowTxDetailModal(false) }} className="kai-button-gray">
                         Cancel
                     </Button>
                 </Modal.Footer>

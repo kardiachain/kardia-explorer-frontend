@@ -5,6 +5,7 @@
     border-radius: 3px;
     margin:0px 5px;
     word-break: initial;
+    position: relative;
 }
 
 .kai-button:hover{

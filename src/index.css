@@ -140,6 +140,11 @@ a:hover {
   word-break: break-all;
 }
 
+.tab-in-out {
+  width: 45px;
+  text-align: center;
+}
+
 @media screen and (max-width: 740px) {
   .rs-header{
     display: flex;

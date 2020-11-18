@@ -174,7 +174,7 @@ const AddressDetail = () => {
                                             return (
                                                 <div>
                                                     {
-                                                        address === rowData.from ?  <Tag color="yellow">OUT</Tag> :  <Tag color="green">IN</Tag>
+                                                        address === rowData.from ?  <Tag color="yellow" className="tab-in-out">OUT</Tag> :  <Tag color="green" className="tab-in-out">IN</Tag>
                                                     }
                                                 </div>
                                             )
