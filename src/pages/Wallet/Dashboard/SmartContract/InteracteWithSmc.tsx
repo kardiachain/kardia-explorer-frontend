@@ -104,14 +104,12 @@ const InteracteWithSmc = () => {
         }
         // TODO interact with smart contract
         const abiJson = JSON.parse(abi)
-        const smcFuncList = abiJson.length > 0 ? abiJson.map((item: any) => {
-            if (item.type === "function") {
+        const smcFuncList = abiJson.length > 0 ? abiJson.filter((item: any) => item.type === "function").map((item: any) => {
                 return {
                     label: item.name,
                     value: item
                 }
-            }
-        }).filter((item: any) => item) : [];
+        }) : [];
         setSmcFuncList(smcFuncList);
         setCurrentStep(1)
     }

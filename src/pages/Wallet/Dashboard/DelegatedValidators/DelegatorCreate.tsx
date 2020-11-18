@@ -9,9 +9,8 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { getBalance } from '../../../../service/kai-explorer';
 import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { getAccount, getStoredBalance } from '../../../../service/wallet';
 const { Column, HeaderCell, Cell } = Table;
 
 const DelegatorCreate = () => {
@@ -26,7 +25,6 @@ const DelegatorCreate = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const history = useHistory()
     const [delegateErrMsg, setDelegateErrMsg] = useState('')
-    const [balance, setBalance] = useState(0)
     const myAccount = getAccount() as Account
 
     const [gasPrice, setGasPrice] = useState(1)
@@ -40,11 +38,9 @@ const DelegatorCreate = () => {
             const data = await Promise.all([
                 getDelegationsByValidator(valAddr),
                 getValidator(valAddr),
-                getBalance(myAccount.publickey)
             ]);
             setDelegators(data[0])
             setValidator(data[1])
-            setBalance(Number(weiToKAI(data[2])))
         })()
     }, [valAddr, myAccount.publickey]);
 
@@ -57,7 +53,8 @@ const DelegatorCreate = () => {
             setErrorMessage(ErrorMessage.ValueInvalid)
             return false
         }
-        if (Number(balance) === 0 || Number(balance) < value) {
+        const balance = getStoredBalance();
+        if (balance === 0 || balance < Number(value)) {
             setErrorMessage(ErrorMessage.BalanceNotEnough)
             return false
         }
