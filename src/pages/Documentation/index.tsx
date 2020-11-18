@@ -63,13 +63,13 @@ const Documentation = () => {
                             What are staking rewards?
                 </p>
                         <p className="document-content">
-                            Staking is a process of holding KAI tokens in the wallet to support the operations and security of KardiaChain network. As a return, holders will be rewarded with KAI tokens as an incentive. The staking reward is approximately 15% APR for KAI.
+                            Staking is a process of holding KAI tokens in the wallet to support the operations and security of KardiaChain network. As a return, holders will be rewarded with KAI tokens as an incentive.
                 </p>
                     </Col>
 
                     <Col md={12} xs={24}>
                         <p className="document-title">What is Delegated Proof of Stake?</p>
-                   <p className="document-content">Delegated Proof of Stake (DPoS) is a similar consensus to PoS that it secures blockchain through an internal investment. The main difference is that DPoS requires stakeholders to outsource their work to a few chosen delegates that will secure the network. DPoS algorithm creates a voting system that reflects delegates’ reputation. There are 21 chosen validators for KardiaChain network. 
+                   <p className="document-content">Delegated Proof of Stake (DPoS) is a similar consensus to PoS that it secures blockchain through an internal investment. The main difference is that DPoS requires stakeholders to outsource their work to a few chosen delegates that will secure the network. DPoS algorithm creates a voting system that reflects delegates’ reputation. There are very first 21 choosen genesis validators for KardiaChain network. 
                    </p>
                     </Col>
                 </Row>
