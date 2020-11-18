@@ -213,7 +213,7 @@ const YourDelegators = () => {
                                     <div style={{ marginTop: '30px', marginBottom: '20px' }}>
                                         <Button size="big"
                                             onClick={() => { setShowUpdateForm(!showUpdateForm) }}
-                                            className="primary-button"
+                                            className="kai-button-gray"
                                         >
                                             Update Validator  <Icon icon={showUpdateForm ? "angle-up" : "angle-down"} />
                                         </Button>
@@ -356,7 +356,7 @@ const YourDelegators = () => {
                             <div>New Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={() => { setShowConfirmModal(false) }} className="primary-button">
+                            <Button onClick={() => { setShowConfirmModal(false) }} className="kai-button-gray">
                                 Cancel
                             </Button>
                             <Button loading={isLoading} onClick={update}>

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import { formatAmount, formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
-import { randomRGBColor, renderHashToRedirect, truncate } from '../../common/utils/string';
+import { renderHashToRedirect, truncate } from '../../common/utils/string';
+import { colors } from '../../common/constant';
 import { useViewport } from '../../context/ViewportContext';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
@@ -38,7 +39,7 @@ const Validators = () => {
 
             const valDetails = stakingData.validators;
             valDetails.map((v: any) => {
-                const node = nodes && nodes.filter(n =>  n.address === v.address)[0];
+                const node = nodes && nodes.filter(n => n.address === v.address)[0];
                 v.name = node.id || "";
                 return v
             })
@@ -53,7 +54,7 @@ const Validators = () => {
                     custom: value.address,
                     name: value.name || truncate(value.address, 5, 3),
                     y: value.votingPower,
-                    color: randomRGBColor(),
+                    color: colors[index],
                     sliced: true
                 });
             });
@@ -162,7 +163,7 @@ const Validators = () => {
                                                 {
                                                     rowData?.name ? (
                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.address}</Tooltip>}>
-                                                            <Link style={{marginLeft: 5, fontWeight: 'bold'}} to={`/validator/${rowData?.address}`}>{rowData?.name}</Link>
+                                                            <Link style={{ marginLeft: 5, fontWeight: 'bold' }} to={`/validator/${rowData?.address}`}>{rowData?.name}</Link>
                                                         </Whisper>
                                                     ) : renderHashToRedirect({
                                                         hash: rowData?.address,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlexboxGrid, Col, Panel, Table, Icon, Whisper, Tooltip } from 'rsuite';
+import { FlexboxGrid, Col, Panel, Table, Icon, Whisper, Tooltip, Tag } from 'rsuite';
 import { useViewport } from '../../../../context/ViewportContext';
 import { renderHashToRedirect, millisecondToHMS } from '../../../../common/utils/string';
 import { weiToKAI } from '../../../../common/utils/amount';
@@ -98,7 +98,7 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3}>
+                                    <Column flexGrow={2}>
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -116,7 +116,21 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3}>
+                                    <Column flexGrow={1}>
+                                    <HeaderCell></HeaderCell>
+                                    <Cell style={{display:'flex', justifyContent:'center'}}>
+                                        {(rowData: KAITransaction) => {
+                                            return (
+                                                <div>
+                                                    {
+                                                        myAccount.publickey === rowData.from ?  <Tag color="yellow" className="tab-in-out">OUT</Tag> :  <Tag color="green" className="tab-in-out">IN</Tag>
+                                                    }
+                                                </div>
+                                            )
+                                        }}
+                                    </Cell>
+                                    </Column>
+                                    <Column flexGrow={2}>
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -149,7 +163,7 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} align="center">
+                                    <Column flexGrow={2} align="center">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
