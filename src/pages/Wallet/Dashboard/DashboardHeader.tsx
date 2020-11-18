@@ -1,29 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, ButtonGroup, Col, Icon, IconButton, Modal, Panel, Row } from 'rsuite';
-import { weiToKAI, formatFullAmount } from '../../../common/utils/amount';
+import { weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getBalance } from '../../../service/kai-explorer';
-import { getAccount } from '../../../service/wallet';
+import { getAccount, useBalanceStorage } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
+import { numberFormat } from '../../../common/utils/number';
+import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
-    const [balance, setBalance] = useState(0)
     const [showAddress, setShowAddress] = useState(false)
     const [showPrivateKey, setShowPrivateKey] = useState(false)
     const [hidePrivKey, setHidePrivKey] = useState(true)
-
+    const [balance, setBalance] = useBalanceStorage()
     useEffect(() => {
-        getBalance(account.publickey).then(setBalance);
-    }, [account])
+        (async() => {
+            const balance = await getBalance(account.publickey);
+            setBalance(Number(weiToKAI(balance)))
+        })();
 
+        const fetchBalance = setInterval(async () => {
+            const balance = await getBalance(account.publickey);
+            setBalance(Number(weiToKAI(balance)))
+        }, TIME_INTERVAL_MILISECONDS)
+
+        return () => clearInterval(fetchBalance);
+    }, [account.publickey, setBalance])
+    
     const onSuccess = () => {
         Alert.success('Copied to clipboard.')
     }
 
-    const reloadBalance = () => {
-        getBalance(account.publickey).then(setBalance);
+    const reloadBalance = async () => {
+        const balance = await getBalance(account.publickey);
+        setBalance(Number(weiToKAI(balance)));
     }
 
     const renderCredential = () => {
@@ -61,7 +73,7 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card balance">
                         <div className="card-body">
                             <div className="title"><Icon className="icon highlight" icon="money" />Balance</div>
-                            <div className="content"><span style={{ fontWeight: 'bold' }}>{formatFullAmount(weiToKAI(balance))}</span> KAI</div>
+                            <div className="content"><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance

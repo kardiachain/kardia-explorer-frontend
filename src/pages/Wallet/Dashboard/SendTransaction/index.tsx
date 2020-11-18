@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './sendTxs.css'
 import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, Alert, ControlLabel, Modal, SelectPicker } from 'rsuite'
 import { ErrorMessage } from '../../../../common/constant/Message'
-import { onlyInteger, onlyNumber } from '../../../../common/utils/number'
+import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
-import { getAccount, generateTx } from '../../../../service/wallet'
-import { getBalance } from '../../../../service/kai-explorer'
-import { weiToKAI } from '../../../../common/utils/amount'
+import { getAccount, generateTx, getStoredBalance } from '../../../../service/wallet'
 import { renderHashToRedirect } from '../../../../common/utils/string'
 import Button from '../../../../common/components/Button'
 import { gasPriceOption } from '../../../../common/constant'
@@ -19,7 +17,6 @@ const SendTransaction = () => {
     const [amountErr, setAmountErr] = useState('')
     const [toAddressErr, setToAddressErr] = useState('')
     const [gasLimitErr, serGasLimitErr] = useState('')
-    const [balance, setBalance] = useState(0)
     const myAccount = getAccount() as Account
     const [sendBntLoading, setSendBntLoading] = useState(false)
     const [txHash, setTxHash] = useState(false)
@@ -29,19 +26,15 @@ const SendTransaction = () => {
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
 
-    useEffect(() => {
-        (async () => {
-            const balance = await getBalance(myAccount.publickey)
-            setBalance(Number(weiToKAI(balance)))
-        })()
-    }, [myAccount.publickey])
 
     const validateAmount = (amount: any): boolean => {
         if (Number(amount) === 0) {
             setAmountErr(ErrorMessage.AmountNotZero)
             return false
         }
-        if (Number(balance) === 0 || Number(balance) < amount) {
+        const balance = getStoredBalance();
+        
+        if (balance === 0 || balance < Number(amount)) {
             setAmountErr(ErrorMessage.BalanceNotEnough)
             return false
         }
@@ -212,7 +205,7 @@ const SendTransaction = () => {
                     <Modal.Title>Confirm send transaction</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>Are you sure you want to transfer <span style={{ fontWeight: 'bold', color: '#36638A' }}>{amount} KAI</span></div>
+                    <div style={{ textAlign: 'center' }}>Are you sure you want to transfer <span style={{ fontWeight: 'bold', color: '#36638A' }}>{numberFormat(amount)} KAI</span></div>
                     <div style={{ textAlign: 'center' }}>TO</div>
                     <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A' }}>{toAddress}</div>
                 </Modal.Body>

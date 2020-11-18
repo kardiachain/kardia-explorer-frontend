@@ -4,6 +4,7 @@ import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, IconButton, Aler
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import { getTxByHash } from '../../service/kai-explorer';
 import './txDetail.css'
 
@@ -30,7 +31,7 @@ const TxDetail = () => {
                 setLoading(false)
                 clearInterval(fetchTxDetail)
             }
-        }, 1000)
+        }, TIME_INTERVAL_MILISECONDS)
         return () => clearInterval(fetchTxDetail);
     }, [txHash])
 
@@ -63,7 +64,7 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
-                                            <Link to={`/block/${txDetail?.blockNumber}`} >{numberFormat(Number(txDetail?.blockNumber))}</Link>
+                                            <Link to={`/block/${txDetail?.blockNumber}`} >{numberFormat(txDetail?.blockNumber)}</Link>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
