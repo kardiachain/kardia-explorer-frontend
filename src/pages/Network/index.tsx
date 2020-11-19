@@ -41,11 +41,13 @@ const Network = () => {
                 // Random links number for each node
                 for (let i = 0; i < r.peerCount; i++) {
                     const nodeRandom = Math.floor(Math.random() * (result?.length - 1));
-                    if (nodeRandom !== i) {
-                        linkArr.push({ source: r.id, target: result[nodeRandom]?.id })
+                    const targetValue = result[nodeRandom]?.id;
+                    if (targetValue !== r.id) {
+                        linkArr.push({ source: r.id, target: targetValue })
                     }
                 }
             })
+            
             const graphData = {
                 nodes: result.map((item, index) => {
                     const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
