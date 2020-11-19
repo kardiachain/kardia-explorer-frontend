@@ -259,7 +259,7 @@ const YourDelegators = () => {
                                                                 name="commissionRate"
                                                                 value={commissionRate}
                                                                 onChange={(value) => {
-                                                                    if (onlyNumber(value)) {
+                                                                    if (onlyInteger(value)) {
                                                                         setCommissionRate(value)
                                                                         validateCommissionRate(value)
                                                                     }

@@ -138,8 +138,9 @@ const ValidatorCreate = () => {
             return false
         }
 
+        setMinSelfDelegationErr('');
         // Self-delegated amount is below minimum
-        if (Number(value) > Number(amountDel)) {
+        if (Number(value) >= Number(amountDel)) {
             setAmountDelErr(ErrorMessage.DelBelowMinimum)
             return false
         } else {
@@ -166,7 +167,7 @@ const ValidatorCreate = () => {
         }
 
         // Self-delegated amount is below minimum
-        if (Number(value) < Number(minSelfDelegation)) {
+        if (Number(value) <= Number(minSelfDelegation)) {
             setAmountDelErr(ErrorMessage.DelBelowMinimum)
             return false
         }
@@ -277,7 +278,7 @@ const ValidatorCreate = () => {
                             name="commissionRate"
                             value={commissionRate}
                             onChange={(value) => {
-                                if (onlyNumber(value)) {
+                                if (onlyInteger(value)) {
                                     setCommissionRate(value)
                                     validateCommissionRate(value)
                                 }
@@ -293,7 +294,7 @@ const ValidatorCreate = () => {
                             name="maxRate"
                             value={maxRate}
                             onChange={(value) => {
-                                if (onlyNumber(value)) {
+                                if (onlyInteger(value)) {
                                     setMaxRate(value)
                                     validateMaxRate(value)
                                 }
@@ -309,7 +310,7 @@ const ValidatorCreate = () => {
                             name="maxChangeRate"
                             value={maxChangeRate}
                             onChange={(value) => {
-                                if (onlyNumber(value)) {
+                                if (onlyInteger(value)) {
                                     setMaxChangeRate(value)
                                     validateMaxChangeRate(value)
                                 }
