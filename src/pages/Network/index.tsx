@@ -73,7 +73,7 @@ const Network = () => {
                         nodeLabel="id"
                         numDimensions={3}
                         linkOpacity={0.1}
-                        linkDirectionalParticles={1.5}
+                        linkDirectionalParticles={0.5}
                         linkDirectionalParticleWidth={1.05}
                         enableNodeDrag={false}
                         // linkCurvature={0.2}
