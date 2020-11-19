@@ -38,9 +38,10 @@ const Validators = () => {
             const nodes = data[1]
 
             const valDetails = stakingData.validators;
+            
             valDetails.map((v: any) => {
                 const node = nodes && nodes.filter(n => n.address === v.address)[0];
-                v.name = node.id || "";
+                v.name = node && node.id ? node.id : "";
                 return v
             })
 
@@ -50,11 +51,12 @@ const Validators = () => {
             // Calculate data for chart
             const dataForValidatorsChart = [] as any[];
             valDetails.forEach((value: ValidatorFromSMC, index: number) => {
+                const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
                 dataForValidatorsChart.push({
                     custom: value.address,
                     name: value.name || truncate(value.address, 5, 3),
                     y: value.votingPower,
-                    color: colors[index],
+                    color: colors[index] || colors[colorIndexRandom],
                     sliced: true
                 });
             });

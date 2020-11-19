@@ -138,8 +138,9 @@ const ValidatorCreate = () => {
             return false
         }
 
+        setMinSelfDelegationErr('');
         // Self-delegated amount is below minimum
-        if (Number(value) > Number(amountDel)) {
+        if (Number(value) >= Number(amountDel)) {
             setAmountDelErr(ErrorMessage.DelBelowMinimum)
             return false
         } else {
@@ -166,7 +167,7 @@ const ValidatorCreate = () => {
         }
 
         // Self-delegated amount is below minimum
-        if (Number(value) < Number(minSelfDelegation)) {
+        if (Number(value) <= Number(minSelfDelegation)) {
             setAmountDelErr(ErrorMessage.DelBelowMinimum)
             return false
         }

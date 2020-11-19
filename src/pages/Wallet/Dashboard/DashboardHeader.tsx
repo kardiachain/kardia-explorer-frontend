@@ -6,8 +6,8 @@ import { getBalance } from '../../../service/kai-explorer';
 import { getAccount, useBalanceStorage } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
-import { numberFormat } from '../../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
+import { numberFormat } from '../../../common/utils/number';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -15,15 +15,16 @@ const DashboardHeader = () => {
     const [showPrivateKey, setShowPrivateKey] = useState(false)
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
+
     useEffect(() => {
         (async() => {
             const balance = await getBalance(account.publickey);
-            setBalance(Number(weiToKAI(balance)))
+            setBalance(weiToKAI(balance))
         })();
 
         const fetchBalance = setInterval(async () => {
             const balance = await getBalance(account.publickey);
-            setBalance(Number(weiToKAI(balance)))
+            setBalance(weiToKAI(balance))
         }, TIME_INTERVAL_MILISECONDS)
 
         return () => clearInterval(fetchBalance);
@@ -35,7 +36,7 @@ const DashboardHeader = () => {
 
     const reloadBalance = async () => {
         const balance = await getBalance(account.publickey);
-        setBalance(Number(weiToKAI(balance)));
+        setBalance(weiToKAI(balance));
     }
 
     const renderCredential = () => {

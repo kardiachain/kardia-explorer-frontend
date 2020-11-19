@@ -37,20 +37,23 @@ const Network = () => {
             const result = await getNodes()
             setNetworks(result)
             let linkArr = [] as any[];
-
             result.forEach((r) => {
                 // Random links number for each node
                 for (let i = 0; i < r.peerCount; i++) {
                     const nodeRandom = Math.floor(Math.random() * (result?.length - 1));
-                    linkArr.push({ source: r.id, target: result[nodeRandom]?.id })
+                    const targetValue = result[nodeRandom]?.id;
+                    if (targetValue !== r.id) {
+                        linkArr.push({ source: r.id, target: targetValue })
+                    }
                 }
             })
+            
             const graphData = {
                 nodes: result.map((item, index) => {
-                    // Random color for each node
+                    const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
                     return {
                         id: item.id,
-                        color: colors[index]
+                        color: colors[index] || colors[colorIndexRandom]
                     }
                 }),
                 links: linkArr
@@ -73,10 +76,10 @@ const Network = () => {
                         nodeLabel="id"
                         numDimensions={3}
                         linkOpacity={0.1}
-                        linkDirectionalParticles={1.5}
-                        linkDirectionalParticleWidth={1.05}
+                        linkDirectionalParticles={0.5}
+                        linkDirectionalParticleWidth={1}
                         enableNodeDrag={false}
-                        // linkCurvature={0.2}
+                        linkCurvature={0.2}
                     /> : <></>
             }
             <div className="container">
