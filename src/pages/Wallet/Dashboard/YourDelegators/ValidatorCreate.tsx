@@ -138,8 +138,9 @@ const ValidatorCreate = () => {
             return false
         }
 
+        setMinSelfDelegationErr('');
         // Self-delegated amount is below minimum
-        if (Number(value) > Number(amountDel)) {
+        if (Number(value) >= Number(amountDel)) {
             setAmountDelErr(ErrorMessage.DelBelowMinimum)
             return false
         } else {
@@ -166,7 +167,7 @@ const ValidatorCreate = () => {
         }
 
         // Self-delegated amount is below minimum
-        if (Number(value) < Number(minSelfDelegation)) {
+        if (Number(value) <= Number(minSelfDelegation)) {
             setAmountDelErr(ErrorMessage.DelBelowMinimum)
             return false
         }
@@ -375,7 +376,7 @@ const ValidatorCreate = () => {
                     <Button loading={isLoading} onClick={registerValidator}>
                         Confirm
                     </Button>
-                    <Button className="primary-button" onClick={() => { setShowConfirmModal(false) }}>
+                    <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
                     </Button>
                 </Modal.Footer>

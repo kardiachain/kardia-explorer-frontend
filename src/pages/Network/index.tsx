@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
-import { randomRGBColor, renderHashToRedirect } from '../../common/utils/string';
+import { renderHashToRedirect } from '../../common/utils/string';
+import { colors } from '../../common/constant';
 import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';
 import { useHistory } from 'react-router-dom';
@@ -15,34 +16,49 @@ const Network = () => {
     const [graphData, setGraphData] = useState({} as any)
     const [networks, setNetworks] = useState([] as KAINode[])
     const { isMobile } = useViewport()
+    const fgRef = useRef({} as any);
+    const distance = 250;
+
+    useEffect(() => {
+        fgRef && fgRef.current && fgRef.current.cameraPosition && fgRef.current.cameraPosition({ z: distance });
+        // camera orbit
+        let angle = 0;
+        setInterval(() => {
+            fgRef && fgRef.current && fgRef.current.cameraPosition && fgRef.current.cameraPosition({
+                x: distance * Math.sin(angle),
+                z: distance * Math.cos(angle)
+            });
+            angle += Math.PI / 180;
+        }, 40);
+    }, []);
 
     useEffect(() => {
         (async () => {
             const result = await getNodes()
             setNetworks(result)
             let linkArr = [] as any[];
-            
             result.forEach((r) => {
                 // Random links number for each node
                 for (let i = 0; i < r.peerCount; i++) {
-                    const nodeRandom = Math.floor(Math.random() * result?.length);
-                    linkArr.push({ source: r.id, target: result[nodeRandom].id })
+                    const nodeRandom = Math.floor(Math.random() * (result?.length - 1));
+                    const targetValue = result[nodeRandom]?.id;
+                    if (targetValue !== r.id) {
+                        linkArr.push({ source: r.id, target: targetValue })
+                    }
                 }
             })
+            
             const graphData = {
-                nodes: result.map(item => {
-                    // Random color for each node
-                    const colorRandom = randomRGBColor()
+                nodes: result.map((item, index) => {
+                    const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
                     return {
                         id: item.id,
-                        // color: "#e62c2c"
-                        color: colorRandom
+                        color: colors[index] || colors[colorIndexRandom]
                     }
                 }),
                 links: linkArr
             }
             setGraphData(graphData)
-
         })()
     }, [])
 
@@ -51,13 +67,19 @@ const Network = () => {
             {
                 graphData?.nodes?.length > 0 ?
                     <ForceGraph3D
+                        ref={fgRef}
                         showNavInfo={false}
                         height={500}
-                        nodeRelSize={8}
+                        nodeRelSize={4}
                         graphData={graphData}
                         nodeResolution={30}
                         nodeLabel="id"
                         numDimensions={3}
+                        linkOpacity={0.1}
+                        linkDirectionalParticles={0.5}
+                        linkDirectionalParticleWidth={1}
+                        enableNodeDrag={false}
+                        linkCurvature={0.2}
                     /> : <></>
             }
             <div className="container">

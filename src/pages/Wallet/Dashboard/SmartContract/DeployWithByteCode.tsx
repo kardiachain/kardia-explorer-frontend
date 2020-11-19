@@ -234,7 +234,7 @@ const DeployWithByteCode = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
                                         <div>
-                                            <Button className="ghost-button" onClick={() => { setByteCode('') }}>Clear</Button>
+                                            <Button className="kai-button-gray" onClick={() => { setByteCode('') }}>Clear</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -257,16 +257,16 @@ const DeployWithByteCode = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} className="form-addon-container button-addon">
                                         <div>
-                                            <Button className="ghost-button"
+                                            <Button className="kai-button-gray"
                                                 onClick={() => {
                                                     setAbi('')
                                                     setAbiErr('')
                                                 }}>Clear</Button>
-                                            <Button className="ghost-button"
+                                            <Button className="kai-button-gray"
                                                 onClick={() => {
                                                     copyToClipboard(abi, onSuccess)
                                                 }}>Copy</Button>
-                                            <Button className="ghost-button" onClick={formatAbiJson}>Format</Button>
+                                            <Button className="kai-button-gray" onClick={formatAbiJson}>Format</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -308,7 +308,7 @@ const DeployWithByteCode = () => {
                             }
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 20, paddingLeft: 0 }}>
                                 <Button size="big" loading={loading} onClick={deploy} style={{ width: 230 }}>Deploy Contract</Button>
-                                <Button size="big" className="ghost-button" onClick={resetAll} style={{ width: 100 }}>Reset</Button>
+                                <Button size="big" className="kai-button-gray" onClick={resetAll} style={{ width: 100 }}>Reset</Button>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ paddingLeft: 0 }}>
                                 <ErrMessage message={deploySmcErr} />
@@ -345,10 +345,10 @@ const DeployWithByteCode = () => {
                                     </FlexboxGrid>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ paddingLeft: 0 }}>
-                                            <Button className="ghost-button" onClick={() => { setShowTxDetailModal(true) }} >
+                                            <Button className="kai-button-gray" onClick={() => { setShowTxDetailModal(true) }} >
                                                 <Icon icon="file-text-o" style={{ marginRight: 10 }} />View Transaction Details
                                             </Button>
-                                            <Button style={{ marginTop: 15 }} className="ghost-button" onClick={() => { downloadContractJsonFile(contractJsonFileDownload) }} >
+                                            <Button style={{ marginTop: 15 }} className="kai-button-gray" onClick={() => { downloadContractJsonFile(contractJsonFileDownload) }} >
                                                 <Icon icon="cloud-download" style={{ marginRight: 10 }} />Save Contract To Json File
                                             </Button>
                                         </FlexboxGrid.Item>

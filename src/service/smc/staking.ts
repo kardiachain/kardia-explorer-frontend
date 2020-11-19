@@ -205,11 +205,7 @@ const createValidator = async (commissionRate: number, maxRate: number, maxRateC
     const cellAmountDel = cellValue(amountDel);
     const minSeftDelegationDec = cellValue(minSeftDelegation);
 
-    // convert value percent type to decimal type
-    const commissionRateDec = cellValue(commissionRate / 100);
-    const maxRateDec = cellValue(maxRate / 100);
-    const maxRateChangeDec = cellValue(maxRateChange / 100)
-    return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegationDec], account, cellAmountDel, gasLimit, gasPrice);
+    return await invokeSendAction("createValidator", [commissionRate, maxRate, maxRateChange, minSeftDelegationDec], account, cellAmountDel, gasLimit, gasPrice);
 }
 
 // @Function: update validator
@@ -218,9 +214,7 @@ const updateValidator = async (commissionRate: number, minSeftDelegation: number
     // convert value number type to decimal type
     const minSeftDelegationDec = cellValue(minSeftDelegation);
 
-    // convert value percent type to decimal type
-    const commissionRateDec = cellValue(commissionRate / 100);
-    return await invokeSendAction("updateValidator", [commissionRateDec, minSeftDelegationDec], account);
+    return await invokeSendAction("updateValidator", [commissionRate, minSeftDelegationDec], account);
 }
 
 // Delegator withdraw reward
