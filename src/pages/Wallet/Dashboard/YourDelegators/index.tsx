@@ -224,7 +224,7 @@ const YourDelegators = () => {
                                                 <FormGroup>
                                                     <FlexboxGrid>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl name="gaslimit"
                                                                 placeholder="Gas Limit"
                                                                 value={gasLimit}
@@ -239,7 +239,7 @@ const YourDelegators = () => {
                                                             <ErrMessage message={gasLimitErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                                             <SelectPicker
                                                                 className="dropdown-custom"
                                                                 data={gasPriceOption}
@@ -254,7 +254,7 @@ const YourDelegators = () => {
                                                             <ErrMessage message={gasPriceErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>New Commission Rate (%) <span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl placeholder="Commission Rate"
                                                                 name="commissionRate"
                                                                 value={commissionRate}
@@ -267,7 +267,7 @@ const YourDelegators = () => {
                                                             <ErrMessage message={commissionRateErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>New Minimum Expected Delegate Amount (KAI)<span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>New Minimum Expected Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl placeholder="New Minimum Expected Delegate Amount"
                                                                 name="minSelfDelegation"
                                                                 value={minSelfDelegation}

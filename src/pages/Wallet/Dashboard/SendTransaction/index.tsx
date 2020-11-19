@@ -132,7 +132,7 @@ const SendTransaction = () => {
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel>Amount <span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel>Amount  <span className="required-mask">(*)</span></ControlLabel>
                                 <FormControl
                                     placeholder="Amount"
                                     name="amount"
@@ -147,7 +147,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={amountErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                <ControlLabel>To Address <span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel>To Address  <span className="required-mask">(*)</span></ControlLabel>
                                 <FormControl
                                     placeholder="Please enter the address"
                                     name="toAddress"
@@ -160,7 +160,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={toAddressErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Limit <span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel>Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
                                 <FormControl
                                     placeholder="Gas limit"
                                     name="gasLimit"
@@ -175,7 +175,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                 <SelectPicker
                                     className="dropdown-custom"
                                     data={gasPriceOption}

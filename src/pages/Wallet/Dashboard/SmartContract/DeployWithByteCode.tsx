@@ -196,7 +196,7 @@ const DeployWithByteCode = () => {
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel className="label">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                 <FormControl name="gaslimit"
                                     placeholder="Gas Limit"
                                     value={gasLimit}
@@ -211,9 +211,9 @@ const DeployWithByteCode = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                <ControlLabel className="label">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                 <SelectPicker
-                                    className="dropdown-custom"
+                                    className="dropdown-custom w100"
                                     data={gasPriceOption}
                                     searchable={false}
                                     value={gasPrice}
@@ -228,17 +228,12 @@ const DeployWithByteCode = () => {
                         </FlexboxGrid>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                <FlexboxGrid justify="space-between">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container">
-                                        <ControlLabel className="label">Byte Code:<span className="required-mask">*</span></ControlLabel>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
-                                        <div>
-                                            <Button className="kai-button-gray" onClick={() => { setByteCode('') }}>Clear</Button>
-                                        </div>
-                                    </FlexboxGrid.Item>
+                                <FlexboxGrid justify="space-between" align="middle" className="mb10">
+                                        <ControlLabel className="label">Byte Code <span className="required-mask">(*)</span></ControlLabel>
+                                            <Button className="kai-button-gray pd0" onClick={() => { setByteCode('') }}>Clear</Button>
                                 </FlexboxGrid>
                                 <FormControl rows={20}
+                                style={{minWidth:100}}
                                     name="bytecode"
                                     componentClass="textarea"
                                     placeholder="Byte Code"
@@ -251,26 +246,23 @@ const DeployWithByteCode = () => {
                                 <ErrMessage message={byteCodeErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                <FlexboxGrid justify="space-between">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} className="form-addon-container">
-                                        <ControlLabel className="label">Abi Json:<span className="required-mask">*</span></ControlLabel>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} className="form-addon-container button-addon">
-                                        <div>
-                                            <Button className="kai-button-gray"
+                                <FlexboxGrid justify="space-between" align="middle">
+                                        <ControlLabel className="label">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
+                                        <div className="mb10">
+                                            <Button className="kai-button-gray pd0"
                                                 onClick={() => {
                                                     setAbi('')
                                                     setAbiErr('')
                                                 }}>Clear</Button>
-                                            <Button className="kai-button-gray"
+                                            <Button className="kai-button-gray pd0"
                                                 onClick={() => {
                                                     copyToClipboard(abi, onSuccess)
                                                 }}>Copy</Button>
-                                            <Button className="kai-button-gray" onClick={formatAbiJson}>Format</Button>
+                                            <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
                                         </div>
-                                    </FlexboxGrid.Item>
                                 </FlexboxGrid>
                                 <FormControl rows={20}
+                                style={{minWidth:100}}
                                     name="abi"
                                     componentClass="textarea"
                                     placeholder="ABI"
@@ -307,8 +299,8 @@ const DeployWithByteCode = () => {
                                 ) : <></>
                             }
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 20, paddingLeft: 0 }}>
-                                <Button size="big" loading={loading} onClick={deploy} style={{ width: 230 }}>Deploy Contract</Button>
-                                <Button size="big" className="kai-button-gray" onClick={resetAll} style={{ width: 100 }}>Reset</Button>
+                                <Button size="big" loading={loading} onClick={deploy}>Deploy Contract</Button>
+                                <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ paddingLeft: 0 }}>
                                 <ErrMessage message={deploySmcErr} />

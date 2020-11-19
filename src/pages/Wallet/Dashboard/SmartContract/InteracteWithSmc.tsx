@@ -269,7 +269,7 @@ const InteracteWithSmc = () => {
                                 <>
                                     <FlexboxGrid style={{ marginBottom: 20 }}>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="label">Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                            <ControlLabel className="label">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                             <FormControl name="gaslimit"
                                                 placeholder="Gas Limit"
                                                 value={gasLimit}
@@ -284,7 +284,7 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={gasLimitErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="label">Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                            <ControlLabel className="label">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                             <SelectPicker
                                                 className="dropdown-custom"
                                                 data={gasPriceOption}
@@ -301,7 +301,7 @@ const InteracteWithSmc = () => {
                                     </FlexboxGrid>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginBottom: 20 }}>
-                                            <ControlLabel className="label">Contract Address:<span className="required-mask">*</span></ControlLabel>
+                                            <ControlLabel className="label">Contract Address <span className="required-mask">(*)</span></ControlLabel>
                                             <FormControl name="smcAddr"
                                                 placeholder="Input Contract Address"
                                                 value={smcAddr}
@@ -313,7 +313,7 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={smcAddrErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label">{'Or Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
+                                            <ControlLabel className="label">{'Or Upload Your <contract.json> file'} <span className="required-mask">(*)</span></ControlLabel>
                                             <Uploader
                                                 action="//jsonplaceholder.typicode.com/posts/"
                                                 draggable
@@ -329,24 +329,20 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={fileUploadErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                            <FlexboxGrid justify="space-between">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container">
-                                                    <ControlLabel className="label">Abi Json:<span className="required-mask">*</span></ControlLabel>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} className="form-addon-container button-addon">
+                                            <FlexboxGrid justify="space-between" align="middle" className="mb10">
+                                                    <ControlLabel className="label">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
                                                     <div>
-                                                        <Button className="kai-button-gray"
+                                                        <Button className="kai-button-gray pd0"
                                                             onClick={() => {
                                                                 setAbi('')
                                                                 setAbiErr('')
                                                             }}>Clear</Button>
-                                                        <Button className="kai-button-gray"
+                                                        <Button className="kai-button-gray pd0"
                                                             onClick={() => {
                                                                 copyToClipboard(abi, onSuccess)
                                                             }}>Copy</Button>
-                                                        <Button className="kai-button-gray" onClick={formatAbiJson}>Format</Button>
+                                                        <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
                                                     </div>
-                                                </FlexboxGrid.Item>
                                             </FlexboxGrid>
                                             <FormControl rows={10}
                                                 name="abi"
@@ -361,7 +357,7 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={abiErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
-                                            <Button size="big" style={{ width: '250px' }} onClick={compilerABIStep}>Go To Contract</Button>
+                                            <Button size="big" onClick={compilerABIStep}>Go To Contract</Button>
                                             <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

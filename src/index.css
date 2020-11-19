@@ -56,6 +56,10 @@ a:hover {
   border-radius: 0px !important;
 }
 
+.mb10{
+  margin-bottom:10px;
+}
+
 /* override css rsuite */
 
 .rs-content{
@@ -87,6 +91,7 @@ a:hover {
   font-weight:600 !important;
   color:#575757 !important;
 }
+
 
 /* end override rsuite */
 
@@ -163,6 +168,15 @@ a:hover {
 
   .chartjs-size-monitor{
     min-height: 0;
+  }
+
+  .rs-modal-sm{
+    width: auto !important;
+    padding:0px 10px;
+  }
+
+  .w100{
+    width:100% !important;
   }
 }
 .custom-tooltip .rs-tooltip-inner {

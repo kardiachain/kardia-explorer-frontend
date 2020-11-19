@@ -83,7 +83,7 @@ const DashboardHeader = () => {
                 </Col>
             </Row>
             {/* Modal show wallet address */}
-            <Modal size="sm" className="modalAddress" show={showAddress} onHide={() => { setShowAddress(false) }}>
+            <Modal size="sm" show={showAddress} onHide={() => { setShowAddress(false) }}>
                 <Modal.Header>
                     <Modal.Title>Your Wallet Address</Modal.Title>
                 </Modal.Header>
