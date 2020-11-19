@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, IconButton, Alert, Nav, Input } from 'rsuite';
+import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, IconButton, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup } from 'rsuite';
+import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import { getTxByHash } from '../../service/kai-explorer';
+import abiDecoder from 'abi-decoder'
 import './txDetail.css'
+
+import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
+import ReactJson from 'react-json-view';
+import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
+import { jsonValid } from '../../common/utils/validate';
+import { ErrorMessage } from '../../common/constant/Message';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -21,6 +29,12 @@ const TxDetail = () => {
     const [txDetail, setTxDetail] = useState<KAITransaction>()
     const [loading, setLoading] = useState(false)
     const [inputDataActiveKey, setInputDataActiveKey] = useState("origin")
+    const [fileList, setListFile] = useState([] as FileType[]);
+    const [abi, setAbi] = useState('');
+    const [abiErr, setAbiErr] = useState('')
+    const [inputDataDecode, setInputDataDecode] = useState({ name: '', params: [] })
+    const [fileUploadErr, setFileUploadErr] = useState('');
+    const [decodeErr, setDecodeErr] = useState('');
 
 
     useEffect(() => {
@@ -39,7 +53,89 @@ const TxDetail = () => {
 
     const onSelectInputData = (e: any) => {
         setInputDataActiveKey(e)
-        
+    }
+
+    const validateAbi = (abiString: string): boolean => {
+        if (!abiString) {
+            setAbiErr(ErrorMessage.Require);
+            return false;
+        }
+        if (!jsonValid(abiString)) {
+            setAbiErr(ErrorMessage.AbiInvalid);
+            return false;
+        }
+        setAbiErr('')
+        return true;
+    }
+
+    const uploadFileFailed = (response: Object, file: FileType) => {
+        setListFile([]);
+        Alert.error('Uploaded failed.');
+    }
+
+    const handleRemoveFile = (file: FileType) => {
+        setListFile([]);
+        setAbi('')
+    }
+
+    const handleUpload = (fileList: any) => {
+        setFileUploadErr('')
+        if (fileList.length > 0) {
+            setListFile([fileList[fileList.length - 1]]);
+            const reader = new FileReader();
+            reader.readAsText(fileList[fileList.length - 1].blobFile)
+            reader.onload = () => {
+                const { abi } = JSON.parse(reader.result as any)
+                if (!validateAbi(abi)) {
+                    setFileUploadErr(ErrorMessage.FileUploadInvalid)
+                    setAbi('')
+                    setListFile([]);
+                    return
+                }
+                setListFile([fileList[fileList.length - 1]]);
+                setAbi(abi)
+                Alert.success('Uploaded successfully.');
+            }
+        }
+    }
+
+    const decodeABI = () => {
+        setDecodeErr('')
+        if(!validateAbi(abi)) {
+            return
+        }
+        try {
+            let abiJson = null;
+            // TODO: Action decode raw data of transaction calls, for implementation had using abi-decoder libs
+            if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === "0x0000000000000000000000000000000000001337") {
+                abiJson = STAKING_ABI
+            } else {
+                abiJson = JSON.parse(abi)
+            }
+            // parse contract abi input from string -> json
+            // Add abi for decoder
+            abiDecoder.addABI(abiJson);
+            // using decoder method to decode input data
+            let txDecodeData = abiDecoder.decodeMethod(`${txDetail?.input}`);
+
+            if (!txDecodeData) {
+                setDecodeErr("Decode input data failed.")
+                return
+            }
+            setInputDataDecode(JSON.parse(JSON.stringify(txDecodeData)));
+            setInputDataActiveKey("result")
+        } catch (error) {
+            setDecodeErr("Decode input data failed.")
+            return
+        }
+    }
+
+    const originStep = () => {
+        if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === "0x0000000000000000000000000000000000001337") {
+            decodeABI()
+        } else {
+            setInputDataActiveKey('decode')
+        }
     }
 
     return (
@@ -154,17 +250,17 @@ const TxDetail = () => {
                                                     showCopy: true
                                                 })}</div>
                                             ) : (
-                                                <div className="property-content"><Icon className="highlight" icon="file-text-o" style={{marginRight: 5}} /> {renderHashToRedirect({
-                                                    hash: txDetail?.toSmcAddr,
-                                                    headCount: 50,
-                                                    tailCount: 4,
-                                                    callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
-                                                })} {txDetail.toSmcName} <IconButton
-                                                size="xs"
-                                                onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
-                                                icon={<Icon icon="copy" />}
-                                            /></div>
-                                            )
+                                                    <div className="property-content"><Icon className="highlight" icon="file-text-o" style={{ marginRight: 5 }} /> {renderHashToRedirect({
+                                                        hash: txDetail?.toSmcAddr,
+                                                        headCount: 50,
+                                                        tailCount: 4,
+                                                        callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
+                                                    })} {txDetail.toSmcName} <IconButton
+                                                            size="xs"
+                                                            onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
+                                                            icon={<Icon icon="copy" />}
+                                                        /></div>
+                                                )
                                         }
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -237,26 +333,79 @@ const TxDetail = () => {
                                                 <div className="property-title">Input Data</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                                {/* <Nav appearance="tabs" activeKey={inputDataActiveKey} onSelect={(e) => { onSelectInputData(e) }}>
-                                                    <Nav.Item eventKey="origin">
-                                                        Original Data
-                                                    </Nav.Item>
-                                                    <Nav.Item eventKey="decode">Decode Data</Nav.Item>
-                                                </Nav> */}
                                                 {
-                                                    inputDataActiveKey === "origin" ?
-                                                        <div style={{marginTop: 10}}>
-                                                                <Input
-                                                                    componentClass="textarea"
-                                                                    rows={5}
-                                                                    // style={{ width:  }}
-                                                                    placeholder="resize: 'auto'"
-                                                                    value={txDetail?.input}
-                                                                />
-                                                                {/* <Button className="primary-button">Origin Data</Button> */}
-                                                                <Button className="primary-button" onClick={() => (setInputDataActiveKey('decode'))} style={{margin: 0, marginTop: 20}}>Decode Data</Button>
-                                                        </div>
-                                                        : <div>Decode Data</div>
+                                                    inputDataActiveKey === "origin" ? (
+                                                        <div style={{ marginTop: 10 }}>
+                                                            <Input
+                                                                componentClass="textarea"
+                                                                rows={5}
+                                                                placeholder="resize: 'auto'"
+                                                                value={txDetail?.input}
+                                                            />
+                                                            {
+                                                                txDetail.to != "0x" ?
+                                                                <Button className="kai-button-gray" onClick={() => originStep()} style={{ margin: 0, marginTop: 20 }}>
+                                                                    Decode Data
+                                                                </Button> : <></>
+                                                            }
+                                                        </div>) :
+                                                        (inputDataActiveKey === "result" ? (
+                                                            <FlexboxGrid>
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                                                    <Panel bordered style={{ width: '100%' }}>
+                                                                        <ReactJson name={false} src={{ inputDataDecode }} />
+                                                                    </Panel>
+                                                                </FlexboxGrid.Item>
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                                                    <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20 }}> <Icon style={{marginRight: 10}} icon="reply" /> Switch Back</Button>
+                                                                </FlexboxGrid.Item>
+                                                            </FlexboxGrid>
+                                                        ) : (
+                                                                <div>
+                                                                    <Form fluid>
+                                                                        <FormGroup>
+                                                                            <FlexboxGrid>
+                                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                                                                    <ControlLabel className="label">{'Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
+                                                                                    <Uploader
+                                                                                        action="//jsonplaceholder.typicode.com/posts/"
+                                                                                        draggable
+                                                                                        fileList={fileList}
+                                                                                        onChange={handleUpload}
+                                                                                        onError={uploadFileFailed}
+                                                                                        onRemove={handleRemoveFile}
+                                                                                    >
+                                                                                        <FormControl name="smcAddr"
+                                                                                            style={{ padding: '11px 12px' }}
+                                                                                            placeholder="Upload Your <contract.json> file:"
+                                                                                        />
+                                                                                    </Uploader>
+                                                                                    <ErrMessage message={fileUploadErr} />
+                                                                                </FlexboxGrid.Item>
+                                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                                                                    <ControlLabel className="label">Or Input contract ABI<span className="required-mask">*</span></ControlLabel>
+                                                                                    <FormControl rows={10}
+                                                                                        name="abi"
+                                                                                        componentClass="textarea"
+                                                                                        placeholder="ABI"
+                                                                                        value={abi}
+                                                                                        onChange={(value) => {
+                                                                                            setAbi(value)
+                                                                                            validateAbi(value)
+                                                                                        }}
+                                                                                    />
+                                                                                    <ErrMessage message={abiErr} />
+                                                                                </FlexboxGrid.Item>
+                                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                                                                    <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20, marginRight: 15 }}>Back</Button>
+                                                                                    <Button className="kai-button-gray" onClick={() => decodeABI()} style={{ margin: 0, marginTop: 20 }}>Decode</Button>
+                                                                                </FlexboxGrid.Item>
+                                                                                <ErrMessage message={decodeErr} />
+                                                                            </FlexboxGrid>
+                                                                        </FormGroup>
+                                                                    </Form>
+                                                                </div>
+                                                            ))
                                                 }
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
@@ -269,5 +418,6 @@ const TxDetail = () => {
         </div>
     )
 }
+
 
 export default TxDetail;
