@@ -6,7 +6,7 @@ import Button from '../../common/components/Button';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
-import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
+import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import { getTxByHash } from '../../service/kai-explorer';
 import abiDecoder from 'abi-decoder'
 import './txDetail.css'
@@ -50,10 +50,6 @@ const TxDetail = () => {
         }, TIME_INTERVAL_MILISECONDS)
         return () => clearInterval(fetchTxDetail);
     }, [txHash])
-
-    const onSelectInputData = (e: any) => {
-        setInputDataActiveKey(e)
-    }
 
     const validateAbi = (abiString: string): boolean => {
         if (!abiString) {
@@ -101,13 +97,10 @@ const TxDetail = () => {
 
     const decodeABI = () => {
         setDecodeErr('')
-        if(!validateAbi(abi)) {
-            return
-        }
         try {
             let abiJson = null;
             // TODO: Action decode raw data of transaction calls, for implementation had using abi-decoder libs
-            if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === "0x0000000000000000000000000000000000001337") {
+            if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === STAKING_SMC_ADDRESS) {
                 abiJson = STAKING_ABI
             } else {
                 abiJson = JSON.parse(abi)
@@ -131,7 +124,7 @@ const TxDetail = () => {
     }
 
     const originStep = () => {
-        if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === "0x0000000000000000000000000000000000001337") {
+        if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === STAKING_SMC_ADDRESS) {
             decodeABI()
         } else {
             setInputDataActiveKey('decode')
@@ -343,7 +336,7 @@ const TxDetail = () => {
                                                                 value={txDetail?.input}
                                                             />
                                                             {
-                                                                txDetail.to != "0x" ?
+                                                                txDetail.to !== "0x" ?
                                                                 <Button className="kai-button-gray" onClick={() => originStep()} style={{ margin: 0, marginTop: 20 }}>
                                                                     Decode Data
                                                                 </Button> : <></>
