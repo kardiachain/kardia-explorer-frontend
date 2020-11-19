@@ -278,7 +278,7 @@ const ValidatorCreate = () => {
                             name="commissionRate"
                             value={commissionRate}
                             onChange={(value) => {
-                                if (onlyNumber(value)) {
+                                if (onlyInteger(value)) {
                                     setCommissionRate(value)
                                     validateCommissionRate(value)
                                 }
@@ -294,7 +294,7 @@ const ValidatorCreate = () => {
                             name="maxRate"
                             value={maxRate}
                             onChange={(value) => {
-                                if (onlyNumber(value)) {
+                                if (onlyInteger(value)) {
                                     setMaxRate(value)
                                     validateMaxRate(value)
                                 }
@@ -310,7 +310,7 @@ const ValidatorCreate = () => {
                             name="maxChangeRate"
                             value={maxChangeRate}
                             onChange={(value) => {
-                                if (onlyNumber(value)) {
+                                if (onlyInteger(value)) {
                                     setMaxChangeRate(value)
                                     validateMaxChangeRate(value)
                                 }
