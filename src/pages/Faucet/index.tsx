@@ -3,7 +3,6 @@ import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Message, P
 import Button from '../../common/components/Button';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
-import { numberFormat } from '../../common/utils/number';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { addressValid } from '../../common/utils/validate';
 import { FAUCET_ENDPOINT } from '../../config/api';
@@ -34,7 +33,7 @@ const Faucet = () => {
             method: 'GET'
         };
         const response = await fetch(`${FAUCET_ENDPOINT}/giveFaucet?address=${walletAddress}`, requestOptions)
-        const responseJSON = await response.json();
+        const responseJSON = response && await response.json();
         
         if (responseJSON && responseJSON.error) {
             Alert.error(responseJSON.error, 5000);
@@ -45,8 +44,8 @@ const Faucet = () => {
             Alert.warning(responseJSON.warning, 5000);
             return
         }
-        setHashTransaction(responseJSON.txHash)
-        Alert.success(`Congratulations! You had received ${numberFormat(process.env.REACT_APP_FAUCET_AMOUNT)} KAI free.`, 5000);
+        setHashTransaction(responseJSON && responseJSON.txHash)
+        Alert.success(`Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`, 5000);
     }
 
     return (

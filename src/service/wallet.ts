@@ -47,7 +47,7 @@ export const useBalanceStorage = () => {
         try {
             const balance = window.localStorage.getItem(window.btoa("kaibalance"))
             const balanceDecode = window.atob(balance || '');
-            return Number(balanceDecode) || 0;
+            return balanceDecode || 0;
         } catch (error) {
             console.error(error)
             return 0;
