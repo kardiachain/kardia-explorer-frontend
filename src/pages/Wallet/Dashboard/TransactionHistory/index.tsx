@@ -53,7 +53,7 @@ const TransactionHistory = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={3}>
+                                    <Column flexGrow={3} minWidth={isMobile ? 100 : 0}>
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -85,7 +85,7 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center">
+                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 90 : 0}>
                                         <HeaderCell>Age</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -98,7 +98,7 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2}>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -130,7 +130,7 @@ const TransactionHistory = () => {
                                         }}
                                     </Cell>
                                     </Column>
-                                    <Column flexGrow={2}>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -163,7 +163,7 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center">
+                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0}>
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

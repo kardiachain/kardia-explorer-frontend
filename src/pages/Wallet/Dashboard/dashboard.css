@@ -67,6 +67,15 @@
 }
 
 
+@media only screen and (max-width: 740px) {
+   .modalAddress{
+       width: auto !important;
+       padding: 0px 12px;
+   }
+}
+
+
+
 .dashboard-container .rs-dropdown-item-active .rs-dropdown-item-content,
 .dashboard-container .rs-nav-item-active .rs-nav-item-content,
 .dashboard-container .rs-dropdown-menu-active ~ .rs-btn-subtle,

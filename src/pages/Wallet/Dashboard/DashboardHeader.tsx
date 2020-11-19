@@ -82,20 +82,17 @@ const DashboardHeader = () => {
                 </Col>
             </Row>
             {/* Modal show wallet address */}
-            <Modal size="sm" show={showAddress} onHide={() => { setShowAddress(false) }}>
+            <Modal size="sm" className="modalAddress" show={showAddress} onHide={() => { setShowAddress(false) }}>
                 <Modal.Header>
                     <Modal.Title>Your Wallet Address</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>
+                <Modal.Body style={{display:'flex', justifyContent:'center'}}>
                         <QRCode
                             id='qrcode'
                             value={account.publickey}
-                            size={200}
+                            size={300}
                             includeMargin={true}
                         />
-                        <div style={{ fontSize: '18px' }}>{account.publickey}</div>
-                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>
