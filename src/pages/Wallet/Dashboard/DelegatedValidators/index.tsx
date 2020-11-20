@@ -92,24 +92,24 @@ const Delegator = () => {
         setValidatorActive('')
     }
     const handleExpanded = (rowData: any, dataKey: any) => {
+        console.log("expandedRowKeys", expandedRowKeys);
+        
         let open = false;
         const nextExpandedRowKeys = [] as any;
-        
+
         expandedRowKeys.forEach((key: any) => {
             if (key === rowData[rowKey]) {
-              open = true;
+                open = true;
             } else {
-              nextExpandedRowKeys.push(key);
+                nextExpandedRowKeys.push(key);
             }
         });
-      
-          if (!open) {
+
+        if (!open) {
             nextExpandedRowKeys.push(rowData[rowKey]);
-          }
-        //   console.log("nextExpandedRowKeys", nextExpandedRowKeys);
-          
-          setExpandedRowKeys(nextExpandedRowKeys)
-        }   
+        }
+        setExpandedRowKeys(nextExpandedRowKeys)
+    }
 
     return (
         <div>
@@ -122,22 +122,24 @@ const Delegator = () => {
             <Panel shaded>
                 <Table
                     autoHeight
-                    rowHeight={70}
-                    rowExpandedHeight={100}
+                    rowHeight={60}
+                    // rowExpandedHeight={100}
                     data={yourValidators}
                     hover={false}
                     wordWrap
                     rowKey={rowKey}
+                    defaultExpandAllRows={true}
+                    defaultExpandedRowKeys={expandedRowKeys}
                     expandedRowKeys={expandedRowKeys}
                     renderRowExpanded={(rowData: YourValidator) => {
                         return (
-                          <div>
-                              Hello hello Hello helloHello helloHello helloHello hello
-                         </div>
+                            <div>
+                                fhbsahfb sbfhbsjkbfsbf bsabfsdbfj bfbaskbfkhabfjkbsafb
+                            </div>
                         );
-                      }}
-                    >
-                    <Column flexGrow={1} minWidth={50} align="center" verticalAlign="middle">
+                    }}
+                >
+                    <Column width={50}>
                         <HeaderCell>#</HeaderCell>
                         <ExpandCell
                             dataKey="validatorAddr"
@@ -145,7 +147,7 @@ const Delegator = () => {
                             onChange={handleExpanded}
                         />
                     </Column>
-                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                    <Column width={isMobile ? 110 : 300}>
                         <HeaderCell>Validator</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -165,7 +167,7 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
                         <HeaderCell>Staked Amount</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -175,7 +177,7 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
                         <HeaderCell>Claimable Rewards</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -185,17 +187,17 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                        <HeaderCell>Withdrawable Amount</HeaderCell>
-                        <Cell>
-                            {(rowData: YourValidator) => {
-                                return (
-                                    <div>{numberFormat(weiToKAI(rowData.withdrawableAmount))} KAI</div>
-                                )
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column flexGrow={4} minWidth={500} verticalAlign="middle">
+                    {/* <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
+                                            <HeaderCell>Withdrawable Amount</HeaderCell>
+                                            <Cell>
+                                                {(rowData: YourValidator) => {
+                                                    return (
+                                                        <div>{numberFormat(weiToKAI(rowData.withdrawableAmount))} KAI</div>
+                                                    )
+                                                }}
+                                            </Cell>
+                                        </Column> */}
+                    <Column flexGrow={3} minWidth={300}>
                         <HeaderCell>Action</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -205,33 +207,17 @@ const Delegator = () => {
                                             setShowConfirmWithdrawRewardsModal(true)
                                             setValidatorActive(rowData.validatorAddr)
                                         }}>Claims Rewards
-                                        </Button>
+                                                        </Button>
                                         <Button onClick={() => {
                                             setShowUndelegateModel(true)
                                             setValidatorActive(rowData.validatorAddr)
                                         }}>Undelegate
-                                        </Button>
-                                        <Button onClick={() => {
-                                        }}>Withdraw
-                                        </Button>
+                                                        </Button>
                                     </div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    {/* <Column width={200} verticalAlign="middle">
-                        <HeaderCell>Undelegate </HeaderCell>
-                        <Cell>
-                            {(rowData: YourValidator) => {
-                                return (
-                                    <div style={{ display: "flex" }}>
-                                        <Button onClick={() => {
-                                        }}>Claims Rewards </Button>
-                                    </div>
-                                )
-                            }}
-                        </Cell>
-                    </Column> */}
                 </Table>
             </Panel>
             {/* Modal confirm when withdraw rewards */}
@@ -308,30 +294,32 @@ const Delegator = () => {
 
 
 const rowKey = 'validatorAddr';
-const ExpandCell = ({ rowData, dataKey, expandedRowKeys = [], onChange, ...props }: { 
+const ExpandCell = ({ rowData, dataKey, expandedRowKeys = [], onChange, ...props }: {
     rowData?: any;
     dataKey?: any;
     expandedRowKeys?: any[];
     onChange?: any;
 }) => (
-  <Cell {...props}>
-    <IconButton
-      size="xs"
-      appearance="subtle"
-      onClick={() => {
-        onChange(rowData)
-      }}
-      icon={
-        <Icon
-          icon={
-            expandedRowKeys.some((key: any) => key === rowData[rowKey])
-              ? 'minus-square-o'
-              : 'plus-square-o'
-          }
-        />
-      }
-    />
-  </Cell>
-);
+        <Cell {...props}>
+            <IconButton
+                size="xs"
+                appearance="subtle"
+                onClick={() => {
+                    console.log("rowData........", rowData);
+                    onChange(rowData)
+                }}
+                icon={
+                    <Icon
+                        icon={
+                            expandedRowKeys.some((key: any) => key === rowData[rowKey])
+                                ? 'minus-square-o'
+                                :
+                                'plus-square-o'
+                        }
+                    />
+                }
+            />
+        </Cell>
+    );
 
 export default Delegator;
