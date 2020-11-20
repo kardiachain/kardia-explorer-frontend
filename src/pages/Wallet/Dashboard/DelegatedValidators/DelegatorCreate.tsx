@@ -154,7 +154,7 @@ const DelegatorCreate = () => {
                                     <FormGroup>
                                         <FlexboxGrid>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                                <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                                 <FormControl name="gaslimit"
                                                     placeholder="Gas Limit"
                                                     value={gasLimit}
@@ -169,7 +169,7 @@ const DelegatorCreate = () => {
                                                 <ErrMessage message={gasLimitErr} />
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                                <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                                 <SelectPicker
                                                     className="dropdown-custom"
                                                     data={gasPriceOption}
@@ -184,7 +184,7 @@ const DelegatorCreate = () => {
                                                 <ErrMessage message={gasPriceErr} />
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Delegation amount <span className="required-mask">*</span></ControlLabel>
+                                                <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
                                                 <FormControl
                                                     placeholder="Delegation amount*"
                                                     value={delAmount} name="delAmount"

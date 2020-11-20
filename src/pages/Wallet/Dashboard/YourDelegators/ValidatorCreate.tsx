@@ -240,7 +240,7 @@ const ValidatorCreate = () => {
             <Form fluid>
                 <FlexboxGrid>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
-                        <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                         <FormControl name="gaslimit"
                             placeholder="Gas Limit"
                             value={gasLimit}
@@ -255,7 +255,7 @@ const ValidatorCreate = () => {
                         <ErrMessage message={gasLimitErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
-                        <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                         <SelectPicker
                             className="dropdown-custom"
                             data={gasPriceOption}
@@ -272,7 +272,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                            Commission Rate (%) <span className="required-mask">*</span>
+                            Commission Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Commission Rate"
                             name="commissionRate"
@@ -288,7 +288,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                            Max Rate (%) <span className="required-mask">*</span>
+                            Max Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Max Rate"
                             name="maxRate"
@@ -304,7 +304,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
-                            Max Change Rate (%) <span className="required-mask">*</span>
+                            Max Change Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Max Change Rate"
                             name="maxChangeRate"
@@ -320,7 +320,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
-                            Minimum Expected Delegate Amount (KAI) <span className="required-mask">*</span>
+                            Minimum Expected Delegate Amount (KAI)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Minimum Expected Delegate Amount"
                             name="minSelfDelegation"
@@ -336,7 +336,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
-                            Amount Self Delegation (KAI) <span className="required-mask">*</span>
+                            Amount Self Delegation (KAI)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Amount Self Delegation"
                             name="amountDel"
