@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Icon, Modal, Panel, Table } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, Icon, IconButton, Modal, Panel, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
+import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat } from '../../../../common/utils/number';
+import { numberFormat, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { getValidatorsByDelegator, withdraw, withdrawReward } from '../../../../service/smc/staking';
+import { getValidatorsByDelegator, undelegateStake, withdraw, withdrawReward } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -20,13 +21,31 @@ const Delegator = () => {
     const [validatorActive, setValidatorActive] = useState('')
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false)
     // const [showConfirmUndelegateModal, setShowConfirmUndelegateModal] = useState(false)
+    const [showUndelegateModel, setShowUndelegateModel] = useState(false)
+    const [unStakeAmount, setUnstakeAmount] = useState(0)
+
+    const [expandedRowKeys, setExpandedRowKeys] = useState([] as any);
 
     useEffect(() => {
         (async () => {
             const yourVals = await getValidatorsByDelegator(myAccount.publickey)
             setYourValidators(yourVals)
+            setExpandedRowKeys(yourVals)
         })()
+
+        // const fetchYourVals = setInterval(async () => {
+        //     const yourVals = await getValidatorsByDelegator(myAccount.publickey)
+        //     setYourValidators(yourVals)
+        // }, 5000)
+
+        // return () => clearInterval(fetchYourVals);
+
     }, [myAccount.publickey]);
+
+    const reFetchData = async () => {
+        const yourVals = await getValidatorsByDelegator(myAccount.publickey)
+        setYourValidators(yourVals)
+    }
 
     const withdrawRewards = async () => {
         setIsLoading(true)
@@ -34,6 +53,7 @@ const Delegator = () => {
             const withdrawTx = await withdrawReward(validatorActive, myAccount);
             if (withdrawTx && withdrawTx.status) {
                 Alert.success('Withdraw rewards success.')
+                await reFetchData()
             } else {
                 Alert.error('Withdraw rewards failed.')
             }
@@ -62,6 +82,35 @@ const Delegator = () => {
         setValidatorActive('')
     }
 
+    const undelegate = async () => {
+        try {
+            const undelegateTx = await undelegateStake(validatorActive, unStakeAmount, myAccount)
+            console.log(undelegateTx);
+        } catch (error) {
+            console.log(error);
+        }
+        setValidatorActive('')
+    }
+    const handleExpanded = (rowData: any, dataKey: any) => {
+        let open = false;
+        const nextExpandedRowKeys = [] as any;
+        
+        expandedRowKeys.forEach((key: any) => {
+            if (key === rowData[rowKey]) {
+              open = true;
+            } else {
+              nextExpandedRowKeys.push(key);
+            }
+        });
+      
+          if (!open) {
+            nextExpandedRowKeys.push(rowData[rowKey]);
+          }
+        //   console.log("nextExpandedRowKeys", nextExpandedRowKeys);
+          
+          setExpandedRowKeys(nextExpandedRowKeys)
+        }   
+
     return (
         <div>
             <div className="block-title" style={{ padding: '0px 5px' }}>
@@ -74,10 +123,28 @@ const Delegator = () => {
                 <Table
                     autoHeight
                     rowHeight={70}
+                    rowExpandedHeight={100}
                     data={yourValidators}
                     hover={false}
                     wordWrap
-                >
+                    rowKey={rowKey}
+                    expandedRowKeys={expandedRowKeys}
+                    renderRowExpanded={(rowData: YourValidator) => {
+                        return (
+                          <div>
+                              Hello hello Hello helloHello helloHello helloHello hello
+                         </div>
+                        );
+                      }}
+                    >
+                    <Column flexGrow={1} minWidth={50} align="center" verticalAlign="middle">
+                        <HeaderCell>#</HeaderCell>
+                        <ExpandCell
+                            dataKey="validatorAddr"
+                            expandedRowKeys={expandedRowKeys}
+                            onChange={handleExpanded}
+                        />
+                    </Column>
                     <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                         <HeaderCell>Validator</HeaderCell>
                         <Cell>
@@ -113,27 +180,40 @@ const Delegator = () => {
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{numberFormat(weiToKAI(rowData.yourRewardAmount))} KAI</div>
+                                    <div>{numberFormat(weiToKAI(rowData.claimableAmount))} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column width={300} verticalAlign="middle">
+                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                        <HeaderCell>Withdrawable Amount</HeaderCell>
+                        <Cell>
+                            {(rowData: YourValidator) => {
+                                return (
+                                    <div>{numberFormat(weiToKAI(rowData.withdrawableAmount))} KAI</div>
+                                )
+                            }}
+                        </Cell>
+                    </Column>
+                    <Column flexGrow={4} minWidth={500} verticalAlign="middle">
                         <HeaderCell>Action</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
                                     <div style={{ display: "flex" }}>
-                                        <Button style={{ marginRight: '10px' }} onClick={() => {
+                                        <Button onClick={() => {
                                             setShowConfirmWithdrawRewardsModal(true)
                                             setValidatorActive(rowData.validatorAddr)
-                                        }}>Claims Rewards </Button>
-                                        {/* <Button onClick={() => {
-                                            setShowConfirmWithdrawModal(true)
+                                        }}>Claims Rewards
+                                        </Button>
+                                        <Button onClick={() => {
+                                            setShowUndelegateModel(true)
                                             setValidatorActive(rowData.validatorAddr)
-                                        }}>
-                                            Withdraw Staked Amount
-                                        </Button> */}
+                                        }}>Undelegate
+                                        </Button>
+                                        <Button onClick={() => {
+                                        }}>Withdraw
+                                        </Button>
                                     </div>
                                 )
                             }}
@@ -144,13 +224,10 @@ const Delegator = () => {
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <ButtonToolbar>
-                                        <Button appearance="primary"
-                                            onClick={() => {
-                                            }}>
-                                            Undelegate
-                                        </Button>
-                                    </ButtonToolbar>
+                                    <div style={{ display: "flex" }}>
+                                        <Button onClick={() => {
+                                        }}>Claims Rewards </Button>
+                                    </div>
                                 )
                             }}
                         </Cell>
@@ -191,8 +268,70 @@ const Delegator = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            {/* Undelegate staking*/}
+            <Modal backdrop={false} size="sm" enforceFocus={true} show={showUndelegateModel} onHide={() => { setShowUndelegateModel(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Undelegate Your Staked</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form fluid>
+                        <FlexboxGrid>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                <ControlLabel>Undelegate staked Amount  <span className="required-mask">(*)</span></ControlLabel>
+                                <FormControl
+                                    placeholder="Delegation amount*"
+                                    value={unStakeAmount} name="delAmount"
+                                    onChange={(value) => {
+                                        if (onlyNumber(value)) {
+                                            setUnstakeAmount(value)
+                                            // validateDelAmount(value)
+                                        }
+                                    }} />
+                                {/* <ErrMessage message={errorMessage} /> */}
+                            </FlexboxGrid.Item>
+                        </FlexboxGrid>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button loading={isLoading} onClick={undelegate}>
+                        Confirm
+                    </Button>
+                    <Button className="kai-button-gray" onClick={() => { setShowUndelegateModel(false) }}>
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     )
 }
+
+
+const rowKey = 'validatorAddr';
+const ExpandCell = ({ rowData, dataKey, expandedRowKeys = [], onChange, ...props }: { 
+    rowData?: any;
+    dataKey?: any;
+    expandedRowKeys?: any[];
+    onChange?: any;
+}) => (
+  <Cell {...props}>
+    <IconButton
+      size="xs"
+      appearance="subtle"
+      onClick={() => {
+        onChange(rowData)
+      }}
+      icon={
+        <Icon
+          icon={
+            expandedRowKeys.some((key: any) => key === rowData[rowKey])
+              ? 'minus-square-o'
+              : 'plus-square-o'
+          }
+        />
+      }
+    />
+  </Cell>
+);
 
 export default Delegator;

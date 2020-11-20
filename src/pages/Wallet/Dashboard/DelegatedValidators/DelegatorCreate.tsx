@@ -280,7 +280,7 @@ const DelegatorCreate = () => {
                     <Modal.Title>Confirm your delegate</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{delAmount} KAI</span></div>
+                    <div style={{ textAlign: 'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{numberFormat(delAmount)} KAI</span></div>
                     <div style={{ textAlign: 'center' }}>TO</div>
                     <div style={{ textAlign: 'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
                 </Modal.Body>
