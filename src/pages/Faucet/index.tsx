@@ -28,24 +28,28 @@ const Faucet = () => {
     }
 
     const sendKai = async () => {
-        if (!validateWalletAddr()) return;
-        const requestOptions = {
-            method: 'GET'
-        };
-        const response = await fetch(`${FAUCET_ENDPOINT}/giveFaucet?address=${walletAddress}`, requestOptions)
-        const responseJSON = response && await response.json();
-        
-        if (responseJSON && responseJSON.error) {
-            Alert.error(responseJSON.error, 5000);
-            return
+        try {
+            if (!validateWalletAddr()) return;
+            const requestOptions = {
+                method: 'GET'
+            };
+            const response = await fetch(`${FAUCET_ENDPOINT}/giveFaucet?address=${walletAddress}`, requestOptions)
+            const responseJSON = response && await response.json();
+            
+            if (responseJSON && responseJSON.error) {
+                Alert.error(responseJSON.error, 5000);
+                return
+            }
+    
+            if(responseJSON && responseJSON.warning) {
+                Alert.warning(responseJSON.warning, 5000);
+                return
+            }
+            setHashTransaction(responseJSON && responseJSON.txHash)
+            Alert.success(`Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`, 5000)
+        } catch (error) {
+            Alert.error("Faucet free KAI testnet failed", 5000);
         }
-
-        if(responseJSON && responseJSON.warning) {
-            Alert.warning(responseJSON.warning, 5000);
-            return
-        }
-        setHashTransaction(responseJSON && responseJSON.txHash)
-        Alert.success(`Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`, 5000);
     }
 
     return (

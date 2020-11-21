@@ -82,9 +82,9 @@ interface YourValidator {
     yourStakeAmount: number;
     claimableAmount: number;
     withdrawableAmount: number;
-    withdrawableTime: number;
+    unbondedAmount: number;
+    withdrawable: UBDEntries[];
 }
-
 interface Delegator {
     address: string;
     delegationsShares: number;
@@ -138,5 +138,6 @@ interface ToSmcAddress {
 
 interface UBDEntries {
     withdrawableAmount: number;
-    withdrawableTime: number;
+    withdrawableTime: any;
+    enableWithdraw: boolean;
 }
