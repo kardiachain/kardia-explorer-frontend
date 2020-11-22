@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, Icon, IconButton, List, Modal, Panel, Table } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, Icon, Modal, Panel, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyNumber } from '../../../../common/utils/number';
-import { dateToLocalTime, renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidatorsByDelegator, undelegateStake, withdraw, withdrawReward } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
@@ -20,100 +20,91 @@ const Delegator = () => {
     const myAccount = getAccount() as Account
     const [showConfirmWithdrawRewardsModal, setShowConfirmWithdrawRewardsModal] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [validatorActive, setValidatorActive] = useState('')
+    const [validatorActive, setValidatorActive] = useState<YourValidator>()
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false)
     const [showUndelegateModel, setShowUndelegateModel] = useState(false)
     const [unStakeAmount, setUnstakeAmount] = useState('')
     const [unStakeAmountErr, setUnstakeAmountErr] = useState('')
 
-    const [expandedRowKeys, setExpandedRowKeys] = useState([] as any);
-
     useEffect(() => {
         (async () => {
             const yourVals = await getValidatorsByDelegator(myAccount.publickey)
             setYourValidators(yourVals)
-            const valsExpandDefault = yourVals.filter(item => item.unbondedAmount > 0).map(item => {
-                return item.validatorAddr
-            })
-            setExpandedRowKeys(valsExpandDefault)
         })()
-
-        // const fetchYourVals = setInterval(async () => {
-        //     const yourVals = await getValidatorsByDelegator(myAccount.publickey)
-        //     setYourValidators(yourVals)
-        //     const valsExpandDefault =  yourVals.map(item => {
-        //         return item.validatorAddr
-        //     })
-        //     setExpandedRowKeys(valsExpandDefault)
-        // }, 5000)
-        // return () => clearInterval(fetchYourVals);
-
     }, [myAccount.publickey]);
 
 
     const reFetchData = async () => {
         const yourVals = await getValidatorsByDelegator(myAccount.publickey)
         setYourValidators(yourVals)
-        const valsExpandDefault = yourVals.filter(item => item.unbondedAmount > 0).map(item => {
-            return item.validatorAddr
-        })
-        setExpandedRowKeys(valsExpandDefault)
     }
 
     const withdrawRewards = async () => {
         setIsLoading(true)
         try {
-            const withdrawTx = await withdrawReward(validatorActive, myAccount);
+            const valAddr = validatorActive?.validatorAddr || '';
+            if(!valAddr) return;
+
+            const withdrawTx = await withdrawReward(valAddr, myAccount);
             if (withdrawTx && withdrawTx.status) {
                 Alert.success('Withdraw rewards success.', 5000)
-                await reFetchData()
             } else {
                 Alert.error('Withdraw rewards failed.', 5000)
             }
         } catch (error) {
             Alert.error(`Withdraw failed: ${error.message}`, 5000)
         }
+        await reFetchData()
         setIsLoading(false)
         setShowConfirmWithdrawRewardsModal(false)
-        setValidatorActive('')
+        setValidatorActive({} as YourValidator)
     }
 
     const widthdraw = async () => {
         setIsLoading(true)
         try {
-            const withdrawTx = await withdraw(validatorActive, myAccount);
+            const valAddr = validatorActive?.validatorAddr || '';
+            if(!valAddr) return;
 
+            const withdrawTx = await withdraw(valAddr, myAccount);
             if (withdrawTx && withdrawTx.status === 1) {
                 Alert.success('Withdraw success.', 5000)
-                reFetchData()
             } else {
                 Alert.error('Withdraw failed.', 5000)
             }
         } catch (error) {
             Alert.error(`Withdraw failed: ${error.message}`, 5000)
         }
+        reFetchData()
         setIsLoading(false)
         setShowConfirmWithdrawModal(false)
-        setValidatorActive('')
+        setValidatorActive({} as YourValidator)
+    }
+
+    const selectAllAmount = () => {
+        const stakedAmount = weiToKAI(validatorActive?.yourStakeAmount);
+        setUnstakeAmount(stakedAmount);
     }
 
     const undelegate = async () => {
-        if (!validateUnStakeAmount(unStakeAmount)) return
+        const valAddr = validatorActive?.validatorAddr || '';
+        if (!validateUnStakeAmount(unStakeAmount) || !valAddr) return
         setIsLoading(true)
         try {
-            const undelegateTx = await undelegateStake(validatorActive, Number(unStakeAmount), myAccount)
+            const undelegateTx = await undelegateStake(valAddr, Number(unStakeAmount), myAccount)
             if (undelegateTx && undelegateTx.status === 1) {
-                setShowUndelegateModel(false)
                 Alert.success('Undelegate success.', 5000)
-                reFetchData();
             } else {
                 Alert.error('Undelegate failed.', 5000)
             }
         } catch (error) {
             Alert.error('Undelegate failed.', 5000)
         }
+        reFetchData();
+        setShowUndelegateModel(false)
         setIsLoading(false)
-        setValidatorActive('')
+        setValidatorActive({} as YourValidator)
+        resetUndelegateForm()
     }
 
     const validateUnStakeAmount = (value: any): boolean => {
@@ -121,8 +112,18 @@ const Delegator = () => {
             setUnstakeAmountErr(ErrorMessage.Require)
             return false
         }
+        const stakedAmount = weiToKAI(validatorActive?.yourStakeAmount);
+        if (!Number(stakedAmount) || Number(stakedAmount) < Number(value)) {
+            setUnstakeAmountErr(ErrorMessage.ValueNotMoreThanStakedAmount)
+            return false
+        }
         setUnstakeAmountErr('')
         return true
+    }
+
+    const resetUndelegateForm = () => {
+        setUnstakeAmountErr('');
+        setUnstakeAmount('');
     }
 
     return (
@@ -139,8 +140,9 @@ const Delegator = () => {
                     data={yourValidators}
                     hover={false}
                     wordWrap
+                    rowHeight={60}
                 >
-                    <Column flexGrow={1} minWidth={isMobile ? 110 : 150}>
+                    <Column flexGrow={1} minWidth={isMobile ? 110 : 150} verticalAlign="middle">
                         <HeaderCell>Validator</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
@@ -160,69 +162,69 @@ const Delegator = () => {
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={1} minWidth={150}>
+                    <Column flexGrow={1} minWidth={150} verticalAlign="middle">
                         <HeaderCell>Staked Amount</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 3)} KAI</div>
+                                    <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={1} minWidth={150}>
+                    <Column flexGrow={1} minWidth={150} verticalAlign="middle">
                         <HeaderCell>Claimable Rewards</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{numberFormat(weiToKAI(rowData.claimableAmount), 3)} KAI</div>
+                                    <div>{numberFormat(weiToKAI(rowData.claimableAmount), 2)} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={1} minWidth={150}>
+                    <Column flexGrow={1} minWidth={150} verticalAlign="middle">
                         <HeaderCell>Unbonded Amount</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 3)} KAI</div>
+                                    <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={1} minWidth={180}>
+                    <Column flexGrow={1} minWidth={180} verticalAlign="middle">
                         <HeaderCell>Withdrawable Amount</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div>{numberFormat(weiToKAI(rowData.withdrawableAmount), 3)} KAI</div>
+                                    <div>{numberFormat(weiToKAI(rowData.withdrawableAmount), 2)} KAI</div>
                                 )
                             }}
                         </Cell>
                     </Column>
-                    <Column flexGrow={3} minWidth={450}>
+                    <Column flexGrow={3} minWidth={450} verticalAlign="middle">
                         <HeaderCell>Action</HeaderCell>
                         <Cell>
                             {(rowData: YourValidator) => {
                                 return (
-                                    <div style={{marginBottom: 10, display: "flex"}}>
-                                        <Button className="kai-button-gray" onClick={() => {
+                                    <div style={{ marginBottom: 10, display: "flex" }}>
+                                        <Button onClick={() => {
                                             setShowConfirmWithdrawRewardsModal(true)
-                                            setValidatorActive(rowData.validatorAddr)
+                                            setValidatorActive(rowData)
                                         }}>Claims Rewards
                                         </Button>
                                         <Button className="kai-button-gray" onClick={() => {
                                             setShowUndelegateModel(true)
-                                            setValidatorActive(rowData.validatorAddr)
+                                            setValidatorActive(rowData)
                                         }}>Undelegate
                                         </Button>
                                         {
-                                            rowData.withdrawableAmount > 0 ? 
-                                            <Button className="kai-button-gray withdraw-button" 
-                                                onClick={() => {
-                                                    setShowConfirmWithdrawModal(true)
-                                                    setValidatorActive(rowData.validatorAddr)
-                                                }}>Withdraw
+                                            rowData.withdrawableAmount > 0 ?
+                                                <Button className="withdraw-button"
+                                                    onClick={() => {
+                                                        setShowConfirmWithdrawModal(true)
+                                                        setValidatorActive(rowData)
+                                                    }}>Withdraw
                                             </Button> : <></>
                                         }
                                     </div>
@@ -267,7 +269,11 @@ const Delegator = () => {
                 </Modal.Footer>
             </Modal>
             {/* Undelegate staking*/}
-            <Modal backdrop={false} size="sm" enforceFocus={true} show={showUndelegateModel} onHide={() => { setShowUndelegateModel(false) }}>
+            <Modal backdrop={false} size="sm" enforceFocus={true} show={showUndelegateModel}
+                onHide={() => {
+                    setShowUndelegateModel(false)
+                    resetUndelegateForm()
+                }}>
                 <Modal.Header>
                     <Modal.Title>Undelegate Your Staked</Modal.Title>
                 </Modal.Header>
@@ -275,7 +281,15 @@ const Delegator = () => {
                     <Form fluid>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                <FlexboxGrid justify="space-between" align="middle" className="mb10">
                                 <ControlLabel>Undelegate staked Amount  <span className="required-mask">(*)</span></ControlLabel>
+                                    <div>
+                                        <Button className="kai-button-gray pd0"
+                                            onClick={() => { 
+                                                selectAllAmount()
+                                            }}>All</Button>
+                                    </div>
+                                </FlexboxGrid>
                                 <FormControl
                                     placeholder="Undelegate staked Amount"
                                     value={unStakeAmount} name="unStakeAmount"
@@ -286,6 +300,7 @@ const Delegator = () => {
                                         }
                                     }} />
                                 <ErrMessage message={unStakeAmountErr} />
+                                <div className="undelegate-note">*Note: The number undelegate amount will be added to withdrawable amount in next 24 hours.</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </Form>
@@ -294,7 +309,11 @@ const Delegator = () => {
                     <Button loading={isLoading} onClick={undelegate}>
                         Confirm
                     </Button>
-                    <Button className="kai-button-gray" onClick={() => { setShowUndelegateModel(false) }}>
+                    <Button className="kai-button-gray"
+                        onClick={() => {
+                            setShowUndelegateModel(false)
+                            resetUndelegateForm()
+                        }}>
                         Cancel
                     </Button>
                 </Modal.Footer>

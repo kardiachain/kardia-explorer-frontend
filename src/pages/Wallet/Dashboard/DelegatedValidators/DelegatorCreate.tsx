@@ -44,6 +44,15 @@ const DelegatorCreate = () => {
         })()
     }, [valAddr, myAccount.publickey]);
 
+    const fetchData = async() => {
+        const data = await Promise.all([
+            getDelegationsByValidator(valAddr),
+            getValidator(valAddr),
+        ]);
+        setDelegators(data[0])
+        setValidator(data[1])
+    }
+
     const validateDelAmount = (value: any): boolean => {
         if (!value) {
             setErrorMessage(ErrorMessage.Require)
@@ -91,12 +100,13 @@ const DelegatorCreate = () => {
         try {
             setIsLoading(true)
             let account = getAccount() as Account
-            const delegate = await delegateAction(valAddr, account, Number(delAmount), gasLimit, gasPrice)
+            const delegate = await delegateAction(valAddr, account, Number(delAmount), gasLimit, gasPrice);
             if (delegate && delegate.status === 1) {
-                Alert.success('Delegate success.')
-                setHashTransaction(delegate.transactionHash)
+                Alert.success('Delegate success.');
+                setHashTransaction(delegate.transactionHash);
+                fetchData();
             } else {
-                Alert.error('Delegate failed.')
+                Alert.error('Delegate failed.');
                 setDelegateErrMsg('Delegate failed.');
             }
         } catch (error) {
@@ -107,8 +117,9 @@ const DelegatorCreate = () => {
                 setDelegateErrMsg('Delegate failed.');
             }
         }
-        setIsLoading(false)
-        setShowConfirmModal(false)
+        setDelAmount('')
+        setIsLoading(false);
+        setShowConfirmModal(false);
     }
 
     return (
@@ -133,7 +144,7 @@ const DelegatorCreate = () => {
                                 <List.Item bordered={false}>
                                     <span className="property-title">Commission: </span>
                                     <span className="property-content">  
-                                        {validator?.commission || 0} %
+                                        {numberFormat(validator?.commission) || 0} %
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>

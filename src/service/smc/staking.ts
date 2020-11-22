@@ -63,7 +63,7 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
             delegationsShares: invoke[2][i],
             totalDels: totalDelsOfVal,
             votingPower: votingPower || 0,
-            commission: validatorDetail.commission || 0
+            commission: validatorDetail.commission,
         } as ValidatorFromSMC
 
     })
@@ -159,7 +159,6 @@ const getValidatorsByDelegator = async (delAddr: string): Promise<YourValidator[
 
         validators.push(validator)
     }
-    console.log("validators::::", validators);
 
 
     return validators
@@ -167,7 +166,6 @@ const getValidatorsByDelegator = async (delAddr: string): Promise<YourValidator[
 
 const getUBDEntries = async (valAddr: string, delAddr: string): Promise<UBDEntries[]> => {
     const ubdEntries = await invokeCallData("getUBDEntries", [valAddr, delAddr])
-    console.log("ubdEntries", ubdEntries);
 
     const result: UBDEntries[] = []
     for (let i = 0; i < ubdEntries[0].length; i++) {
@@ -199,7 +197,7 @@ const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
             jailed: invoke[2],
             votingPower: votingPower,
             totalDels: totalDels,
-            commission: invoke[3]
+            commission: weiToKAI(Number(invoke[3]) * 100) || 0,
         }
         return validator
 
