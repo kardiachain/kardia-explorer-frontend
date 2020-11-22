@@ -27,7 +27,7 @@ const Documentation = () => {
                     </Col>
                     <Col xs={24} md={12} className="col-step">
                         <ReactPlayer
-                            url="https://www.youtube.com/watch?v=M3EFi_POhps"
+                            url="https://www.youtube.com/watch?v=fDW7_Ru7w0A"
                             width="100%"
                         />
                     </Col>
@@ -74,21 +74,6 @@ const Documentation = () => {
                     </Col>
                 </Row>
 
-                {/* <Row gutter={14}>
-                    <Col md={12} xs={24}>
-                        <p className="document-title">Staking coins & cryptocurrencies</p>
-                        <p className="document-content">
-                            These are the types of coins and fiat currencies that you can earn rewards on through staking service. For example, staking coins such as Tezos (XTZ) and Cosmos (ATOM) can be purchased on wallet and staked to earn rewards.
-                    </p>
-                    </Col>
-
-                    <Col md={12} xs={24}>
-                        <p className="document-title">
-                            On-chain and Off-chain staking
-                    </p>
-                        <p className="document-content">On-Chain staking allows you to stake your assets with blockchain Proof of Stake protocols while Off-Chain staking allows you to stake your assets with the Margin Pools. Off-chain staking is only available for eligible countries.</p>
-                    </Col>
-                </Row> */}
             </Grid>
 
             <Grid fluid>
