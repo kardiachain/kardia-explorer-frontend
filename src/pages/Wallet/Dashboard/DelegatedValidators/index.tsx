@@ -300,7 +300,7 @@ const Delegator = () => {
                                         }
                                     }} />
                                 <ErrMessage message={unStakeAmountErr} />
-                                <div className="undelegate-note">*Note: The number undelegate amount will be added to withdrawable amount in next 24 hours.</div>
+                                <div className="undelegate-note">*Note: The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </Form>
