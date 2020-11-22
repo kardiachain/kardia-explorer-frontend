@@ -12,7 +12,7 @@ const CreateByMnemonic = () => {
     const strength = 256;
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
-    const setWalletStored = useWalletStorage(() => history.push('/wallet/send-transaction'))[1]
+    const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     let history = useHistory();
 
     useEffect(() => {

@@ -14,7 +14,7 @@ const AccessByMnemonicPhrase = () => {
     const [loadingBtnSubmit, setLoadingBtnSubmit] = useState(false);
     const [wordPhrase, setWordPhrase] = useState('');
     const [wordPhraseErr, setWordPhraseErr] = useState('')
-    const setWalletStored = useWalletStorage(() => history.push('/wallet/send-transaction'))[1]
+    const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
 
     const validateWordPhrase = (value: string): boolean => {
         if (!value) {
