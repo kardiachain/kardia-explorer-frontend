@@ -45,13 +45,13 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
     useEffect(() => {
         const newConfig = JSON.parse(JSON.stringify(chartConfigDefault))
         newConfig.series[0].data = [{
-            name: "Validators' Staked",
+            name: "Validators Stakes",
             y: dataForChart.totalValidatorStakedAmount,
             sliced: true,
             selected: true,
             color: '#ae0001'
         }, {
-            name: "Delegators' Staked",
+            name: "Delegators Stakes",
             y: dataForChart.totalDelegatorStakedAmount,
             color: '#680000'
         }]

@@ -259,7 +259,7 @@ const YourDelegators = () => {
                                                                 name="commissionRate"
                                                                 value={commissionRate}
                                                                 onChange={(value) => {
-                                                                    if (onlyInteger(value)) {
+                                                                    if (onlyNumber(value)) {
                                                                         setCommissionRate(value)
                                                                         validateCommissionRate(value)
                                                                     }
@@ -352,8 +352,8 @@ const YourDelegators = () => {
                         <Modal.Body>
                             <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to update validator with: </div>
                             <div>Your Address: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {myAccount.publickey} </span></div>
-                            <div>New Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {commissionRate} %</span></div>
-                            <div>New Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
+                            <div>New Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
+                            <div>New Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={() => { setShowConfirmModal(false) }} className="kai-button-gray">

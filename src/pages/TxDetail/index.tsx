@@ -346,7 +346,7 @@ const TxDetail = () => {
                                                             <FlexboxGrid>
                                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                                                                     <Panel bordered style={{ width: '100%' }}>
-                                                                        <ReactJson name={false} src={{ inputDataDecode }} />
+                                                                        <ReactJson style={{fontSize: 12}} name={false} src={{ inputDataDecode }} />
                                                                     </Panel>
                                                                 </FlexboxGrid.Item>
                                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
