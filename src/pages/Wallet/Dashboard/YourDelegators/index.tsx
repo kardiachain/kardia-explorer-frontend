@@ -224,7 +224,7 @@ const YourDelegators = () => {
                                                 <FormGroup>
                                                     <FlexboxGrid>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl name="gaslimit"
                                                                 placeholder="Gas Limit"
                                                                 value={gasLimit}
@@ -239,7 +239,7 @@ const YourDelegators = () => {
                                                             <ErrMessage message={gasLimitErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                                             <SelectPicker
                                                                 className="dropdown-custom"
                                                                 data={gasPriceOption}
@@ -254,12 +254,12 @@ const YourDelegators = () => {
                                                             <ErrMessage message={gasPriceErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>New Commission Rate (%) <span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl placeholder="Commission Rate"
                                                                 name="commissionRate"
                                                                 value={commissionRate}
                                                                 onChange={(value) => {
-                                                                    if (onlyInteger(value)) {
+                                                                    if (onlyNumber(value)) {
                                                                         setCommissionRate(value)
                                                                         validateCommissionRate(value)
                                                                     }
@@ -267,7 +267,7 @@ const YourDelegators = () => {
                                                             <ErrMessage message={commissionRateErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>New Minimum Expected Delegate Amount (KAI)<span className="required-mask">*</span></ControlLabel>
+                                                            <ControlLabel>New Minimum Expected Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl placeholder="New Minimum Expected Delegate Amount"
                                                                 name="minSelfDelegation"
                                                                 value={minSelfDelegation}
@@ -352,8 +352,8 @@ const YourDelegators = () => {
                         <Modal.Body>
                             <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to update validator with: </div>
                             <div>Your Address: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {myAccount.publickey} </span></div>
-                            <div>New Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {commissionRate} %</span></div>
-                            <div>New Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
+                            <div>New Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
+                            <div>New Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={() => { setShowConfirmModal(false) }} className="kai-button-gray">

@@ -104,7 +104,7 @@ const millisecondToHMS = (time: number) => {
     }
     return `${secondString} ago`
 };
-const dateToLocalTime = (time: Date) => {
+const dateToLocalTime = (time: any) => {
     const d = new Date(time);
     return d.toLocaleString()
 }

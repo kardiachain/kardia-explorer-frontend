@@ -14,7 +14,7 @@ const AccessByKeyStore = () => {
     let history = useHistory();
     const [loadingBtnSubmit, setLoadingBtnSubmit] = useState(false)
     const [password, setPassword] = useState('');
-    const setWalletStored = useWalletStorage(() => history.push('/wallet/send-transaction'))[1];
+    const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1];
     const [fileList, setListFile] = useState([] as FileType[]);
     const [passwordErr, setPasswordErr] = useState('');
     const [keystoreFileErr, setKeystoreFileErr] = useState('')

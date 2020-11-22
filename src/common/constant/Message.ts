@@ -18,4 +18,5 @@ export const ErrorMessage = {
     CannotSendKAIToYourSelf: 'Cannot send KAI to yourself.',
     FileUploadInvalid: 'The upload file format is invalid.',
     MinSelfDelegationBelowMinimum: 'The minimum self delegation amount is 10M',
+    ValueNotMoreThanStakedAmount: 'The value not be more than your staked amount.'
 }

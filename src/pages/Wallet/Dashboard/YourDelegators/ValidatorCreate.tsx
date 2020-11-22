@@ -4,7 +4,7 @@ import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage } from '../../../../common/constant/Message';
-import { onlyInteger, onlyNumber } from '../../../../common/utils/number';
+import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
@@ -240,7 +240,7 @@ const ValidatorCreate = () => {
             <Form fluid>
                 <FlexboxGrid>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
-                        <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                         <FormControl name="gaslimit"
                             placeholder="Gas Limit"
                             value={gasLimit}
@@ -255,7 +255,7 @@ const ValidatorCreate = () => {
                         <ErrMessage message={gasLimitErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
-                        <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                        <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                         <SelectPicker
                             className="dropdown-custom"
                             data={gasPriceOption}
@@ -272,13 +272,13 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                            Commission Rate (%) <span className="required-mask">*</span>
+                            Commission Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Commission Rate"
                             name="commissionRate"
                             value={commissionRate}
                             onChange={(value) => {
-                                if (onlyInteger(value)) {
+                                if (onlyNumber(value)) {
                                     setCommissionRate(value)
                                     validateCommissionRate(value)
                                 }
@@ -288,13 +288,13 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                            Max Rate (%) <span className="required-mask">*</span>
+                            Max Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Max Rate"
                             name="maxRate"
                             value={maxRate}
                             onChange={(value) => {
-                                if (onlyInteger(value)) {
+                                if (onlyNumber(value)) {
                                     setMaxRate(value)
                                     validateMaxRate(value)
                                 }
@@ -304,13 +304,13 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
-                            Max Change Rate (%) <span className="required-mask">*</span>
+                            Max Change Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Max Change Rate"
                             name="maxChangeRate"
                             value={maxChangeRate}
                             onChange={(value) => {
-                                if (onlyInteger(value)) {
+                                if (onlyNumber(value)) {
                                     setMaxChangeRate(value)
                                     validateMaxChangeRate(value)
                                 }
@@ -320,7 +320,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
-                            Minimum Expected Delegate Amount (KAI) <span className="required-mask">*</span>
+                            Minimum Expected Delegate Amount (KAI)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Minimum Expected Delegate Amount"
                             name="minSelfDelegation"
@@ -336,7 +336,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
-                            Amount Self Delegation (KAI) <span className="required-mask">*</span>
+                            Amount Self Delegation (KAI)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Amount Self Delegation"
                             name="amountDel"
@@ -366,11 +366,11 @@ const ValidatorCreate = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to create validator with: </div>
-                    <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {commissionRate} %</span></div>
-                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxRate} %</span></div>
-                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxChangeRate} %</span></div>
-                    <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
-                    <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {amountDel} KAI</span></div>
+                    <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
+                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
+                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
+                    <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
+                    <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(amountDel)} KAI</span></div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={registerValidator}>

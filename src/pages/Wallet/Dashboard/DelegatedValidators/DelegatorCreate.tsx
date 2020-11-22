@@ -44,6 +44,15 @@ const DelegatorCreate = () => {
         })()
     }, [valAddr, myAccount.publickey]);
 
+    const fetchData = async() => {
+        const data = await Promise.all([
+            getDelegationsByValidator(valAddr),
+            getValidator(valAddr),
+        ]);
+        setDelegators(data[0])
+        setValidator(data[1])
+    }
+
     const validateDelAmount = (value: any): boolean => {
         if (!value) {
             setErrorMessage(ErrorMessage.Require)
@@ -91,12 +100,13 @@ const DelegatorCreate = () => {
         try {
             setIsLoading(true)
             let account = getAccount() as Account
-            const delegate = await delegateAction(valAddr, account, Number(delAmount), gasLimit, gasPrice)
+            const delegate = await delegateAction(valAddr, account, Number(delAmount), gasLimit, gasPrice);
             if (delegate && delegate.status === 1) {
-                Alert.success('Delegate success.')
-                setHashTransaction(delegate.transactionHash)
+                Alert.success('Delegate success.');
+                setHashTransaction(delegate.transactionHash);
+                fetchData();
             } else {
-                Alert.error('Delegate failed.')
+                Alert.error('Delegate failed.');
                 setDelegateErrMsg('Delegate failed.');
             }
         } catch (error) {
@@ -107,8 +117,9 @@ const DelegatorCreate = () => {
                 setDelegateErrMsg('Delegate failed.');
             }
         }
-        setIsLoading(false)
-        setShowConfirmModal(false)
+        setDelAmount('')
+        setIsLoading(false);
+        setShowConfirmModal(false);
     }
 
     return (
@@ -133,7 +144,7 @@ const DelegatorCreate = () => {
                                 <List.Item bordered={false}>
                                     <span className="property-title">Commission: </span>
                                     <span className="property-content">  
-                                        {validator?.commission || 0} %
+                                        {numberFormat(validator?.commission) || 0} %
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
@@ -154,7 +165,7 @@ const DelegatorCreate = () => {
                                     <FormGroup>
                                         <FlexboxGrid>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Gas Limit:<span className="required-mask">*</span></ControlLabel>
+                                                <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                                 <FormControl name="gaslimit"
                                                     placeholder="Gas Limit"
                                                     value={gasLimit}
@@ -169,7 +180,7 @@ const DelegatorCreate = () => {
                                                 <ErrMessage message={gasLimitErr} />
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Gas Price:<span className="required-mask">*</span></ControlLabel>
+                                                <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                                 <SelectPicker
                                                     className="dropdown-custom"
                                                     data={gasPriceOption}
@@ -184,7 +195,7 @@ const DelegatorCreate = () => {
                                                 <ErrMessage message={gasPriceErr} />
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Delegation amount <span className="required-mask">*</span></ControlLabel>
+                                                <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
                                                 <FormControl
                                                     placeholder="Delegation amount*"
                                                     value={delAmount} name="delAmount"
@@ -280,7 +291,7 @@ const DelegatorCreate = () => {
                     <Modal.Title>Confirm your delegate</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{delAmount} KAI</span></div>
+                    <div style={{ textAlign: 'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{numberFormat(delAmount)} KAI</span></div>
                     <div style={{ textAlign: 'center' }}>TO</div>
                     <div style={{ textAlign: 'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
                 </Modal.Body>

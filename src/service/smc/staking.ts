@@ -1,5 +1,6 @@
 import { gasLimitDefault } from '../../common/constant';
 import { cellValue, weiToKAI } from '../../common/utils/amount';
+import { dateToLocalTime } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS } from '../../config/api';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
@@ -12,11 +13,11 @@ const invokeCallData = async (methodName: string, params: any[]) => {
         params: params,
         name: methodName
     })
-    
+
     return await invoke.call(STAKING_SMC_ADDRESS, {}, "latest")
 }
 
-const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0, gasLimit=gasLimitDefault, gasPrice=2) => {
+const invokeSendAction = async (methodName: string, params: any[], account: Account, amountVal: number = 0, gasLimit = gasLimitDefault, gasPrice = 2) => {
     const invoke = await stakingContract.invoke({
         params: params,
         name: methodName,
@@ -62,9 +63,9 @@ const getValidatorsFromSMC = async (): Promise<StakingContractResponse> => {
             delegationsShares: invoke[2][i],
             totalDels: totalDelsOfVal,
             votingPower: votingPower || 0,
-            commission: validatorDetail.commission || 0
+            commission: validatorDetail.commission,
         } as ValidatorFromSMC
-        
+
     })
 
     let validators: ValidatorFromSMC[] = await Promise.all(promiseArr);
@@ -135,14 +136,49 @@ const getValidatorsByDelegator = async (delAddr: string): Promise<YourValidator[
         const valAddress = valAddr[i];
         const stakeAmount = await getDelegatorStake(valAddress, delAddr)
         const rewardAmount = await getDelegationRewards(valAddress, delAddr)
+        const ubdEntries = await getUBDEntries(valAddress, delAddr)
+        let withdrawableAmount = 0;
+        let unbondedAmount = 0;
+        ubdEntries.filter(item => item.enableWithdraw).forEach(item => {
+            withdrawableAmount += item.withdrawableAmount;
+        });
+        ubdEntries.filter(item => !item.enableWithdraw).forEach(item => {
+            unbondedAmount += item.withdrawableAmount;
+        });
+
+
+
         const validator: YourValidator = {
             validatorAddr: valAddress,
             yourStakeAmount: stakeAmount,
-            yourRewardAmount: rewardAmount
+            claimableAmount: rewardAmount,
+            withdrawable: ubdEntries,
+            withdrawableAmount: withdrawableAmount,
+            unbondedAmount: unbondedAmount
         }
+
         validators.push(validator)
     }
+
+
     return validators
+}
+
+const getUBDEntries = async (valAddr: string, delAddr: string): Promise<UBDEntries[]> => {
+    const ubdEntries = await invokeCallData("getUBDEntries", [valAddr, delAddr])
+
+    const result: UBDEntries[] = []
+    for (let i = 0; i < ubdEntries[0].length; i++) {
+        const enableTime = dateToLocalTime(ubdEntries[1][i] * 1000);
+        const now = (new Date()).getTime()
+        const item = {
+            withdrawableAmount: ubdEntries[0][i],
+            withdrawableTime: enableTime,
+            enableWithdraw: ubdEntries[1][i] * 1000 < now ? true : false
+        }
+        result.push(item);
+    }
+    return result;
 }
 
 const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
@@ -153,7 +189,7 @@ const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
         const invoke = await invokeCallData("getValidator", [valAddr])
         const votingPower = await getValidatorPower(valAddr)
         const totalDels = await getNumberDelOfValidator(valAddr)
-        
+
         let validator: ValidatorFromSMC = {
             address: valAddr,
             totalStakedAmount: invoke[0],
@@ -161,10 +197,10 @@ const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
             jailed: invoke[2],
             votingPower: votingPower,
             totalDels: totalDels,
-            commission: invoke[3]
+            commission: weiToKAI(Number(invoke[3]) * 100) || 0,
         }
         return validator
-        
+
     } catch (error) {
         return {} as ValidatorFromSMC
     }
@@ -174,12 +210,12 @@ const isValidator = async (valAddr: string): Promise<boolean> => {
     try {
         if (!valAddr) return false;
         const invoke = await invokeCallData("getValidator", [valAddr])
-        if(invoke) return true
+        if (invoke) return true
     } catch (error) {
         return false
     }
     return false
-   
+
 }
 
 const getValidatorCommission = async (valAddr: string): Promise<number> => {
@@ -193,40 +229,71 @@ const getValidatorPower = async (valAddr: string): Promise<number> => {
 
 
 const delegateAction = async (valAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
-    if(!valAddr || !account || !amountDel) return
-    const cellAmountDel = cellValue(amountDel);
-    return await invokeSendAction("delegate", [valAddr], account, cellAmountDel, gasLimit, gasPrice);
+    try {
+        const cellAmountDel = cellValue(amountDel);
+        return await invokeSendAction("delegate", [valAddr], account, cellAmountDel, gasLimit, gasPrice);
+    } catch (error) {
+        throw error;
+    }
 }
 
 const createValidator = async (commissionRate: number, maxRate: number, maxRateChange: number, minSeftDelegation: number, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
-    if(!commissionRate || !maxRate || !maxRateChange || !minSeftDelegation || !account || !amountDel) return;
+    try {
+        // convert value number type to decimal type
+        const cellAmountDel = cellValue(amountDel);
+        const minSeftDelegationDec = cellValue(minSeftDelegation);
 
-    // convert value number type to decimal type
-    const cellAmountDel = cellValue(amountDel);
-    const minSeftDelegationDec = cellValue(minSeftDelegation);
-
-    return await invokeSendAction("createValidator", [commissionRate, maxRate, maxRateChange, minSeftDelegationDec], account, cellAmountDel, gasLimit, gasPrice);
+        // convert value percent type to decimal type
+        const commissionRateDec = cellValue(commissionRate / 100);
+        const maxRateDec = cellValue(maxRate / 100);
+        const maxRateChangeDec = cellValue(maxRateChange / 100)
+        return await invokeSendAction("createValidator", [commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegationDec], account, cellAmountDel, gasLimit, gasPrice);
+    } catch (error) {
+        throw error;
+    }
 }
 
 // @Function: update validator
 const updateValidator = async (commissionRate: number, minSeftDelegation: number, account: Account) => {
-    if(!commissionRate || !minSeftDelegation || !account) return
-    // convert value number type to decimal type
-    const minSeftDelegationDec = cellValue(minSeftDelegation);
+    try {
+        // convert value number type to decimal type
+        const minSeftDelegationDec = cellValue(minSeftDelegation);
 
-    return await invokeSendAction("updateValidator", [commissionRate, minSeftDelegationDec], account);
+        // convert value percent type to decimal type
+        const commissionRateDec = cellValue(commissionRate / 100);
+        return await invokeSendAction("updateValidator", [commissionRateDec, minSeftDelegationDec], account);
+    } catch (error) {
+        throw error;
+    }
 }
 
 // Delegator withdraw reward
 const withdrawReward = async (valAddr: string, account: Account) => {
-    if (!valAddr || !account) return;
-    return await invokeSendAction("withdrawReward", [valAddr], account, 0)
+    try {
+        return await invokeSendAction("withdrawReward", [valAddr], account, 0);
+    } catch (error) {
+        throw error;
+    }
 }
 
 // Delegator withdraw
 const withdraw = async (valAddr: string, account: Account) => {
-    if (!valAddr || !account) return;
-    return await invokeSendAction("withdraw", [valAddr], account, 0)
+    try {
+        return await invokeSendAction("withdraw", [valAddr], account, 0)
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Undelegate
+const undelegateStake = async (valAddr: string, amountUndel: number, account: Account) => {
+    try {
+        // convert value number type to decimal type
+        const amountUndelDec = cellValue(amountUndel);
+        return await invokeSendAction("undelegate", [valAddr, amountUndelDec], account, 0)
+    } catch (error) {
+        throw error
+    }
 }
 
 export {
@@ -244,5 +311,6 @@ export {
     getValidatorPower,
     withdrawReward,
     withdraw,
-    updateValidator
+    updateValidator,
+    undelegateStake
 }
