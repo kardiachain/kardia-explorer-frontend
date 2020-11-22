@@ -216,7 +216,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <div>{numberFormat(rowData?.commission || 0)} %</div>
+                                            <div>{numberFormat(rowData?.commission || 0, 2)} %</div>
                                         );
                                     }}
                                 </Cell>

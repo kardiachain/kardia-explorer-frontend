@@ -13,7 +13,7 @@ const CreateByKeystore = () => {
     const [keystoreFilename, setKeystoreFilename] = useState('')
     const [isLoading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
-    const setWalletStored = useWalletStorage(() => history.push('/wallet/send-transaction'))[1]
+    const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 
