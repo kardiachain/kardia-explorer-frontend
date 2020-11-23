@@ -75,6 +75,8 @@ interface ValidatorFromSMC {
     commission?: number;
     totalDels?: number;
     totalStakedAmount?: number;
+    maxRate: number;
+    maxChangeRate: number; 
 }
 
 interface YourValidator {

@@ -5,13 +5,13 @@ import { formatAmount, formatAmountwithPlus, weiToKAI } from '../../common/utils
 import { renderHashToRedirect, truncate } from '../../common/utils/string';
 import { colors } from '../../common/constant';
 import { useViewport } from '../../context/ViewportContext';
-import { isLoggedIn } from '../../service/wallet';
+import { getAccount, isLoggedIn } from '../../service/wallet';
 import './staking.css'
 import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
-import { getValidatorsFromSMC } from '../../service/smc/staking';
+import { getValidatorsFromSMC, isValidator } from '../../service/smc/staking';
 import { getNodes } from '../../service/kai-explorer/network';
 import { numberFormat } from '../../common/utils/number';
 
@@ -26,6 +26,20 @@ const Validators = () => {
     const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig);
     const [tableLoading, setTableLoading] = useState(true)
     const [totalStakedAmount, setTotalStakedAmount] = useState(0)
+    const [totalValidator, setTotalValidator] = useState(0)
+    const [totalDelegator, setTotalDelegator] = useState(0)
+    const myAccount = getAccount() as Account
+    const [isVal, setIsVal] = useState(false)
+
+    useEffect(() => {
+        (async() => {
+            if(myAccount.publickey) {
+                const isVal = await isValidator(myAccount.publickey);
+                setIsVal(isVal);
+            }
+        })()
+    }, [myAccount.publickey]);
+
     useEffect(() => {
         (async () => {
             setTableLoading(true)
@@ -71,6 +85,8 @@ const Validators = () => {
                 totalDelegatorStakedAmount: stakingData?.totalDelegatorStakedAmount
             });
             setTotalStakedAmount(stakingData.totalStakedAmont)
+            setTotalValidator(stakingData.totalVals)
+            setTotalDelegator(stakingData.totalDels)
         })()
     }, []);
 
@@ -83,13 +99,16 @@ const Validators = () => {
                         <p style={{ marginLeft: '12px', fontWeight: 600 }}>Validators</p>
                     </div>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: isMobile ? 'left' : 'right' }}>
-                    <Button size="big"
-                        onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
-                    >
-                        Register to become validator
-                    </Button>
-                </FlexboxGrid.Item>
+                {
+                    !isVal ? 
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: isMobile ? 'left' : 'right' }}>
+                        <Button size="big"
+                            onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
+                        >
+                            Register to become validator
+                        </Button>
+                    </FlexboxGrid.Item> : <></>
+                }
             </FlexboxGrid>
             <FlexboxGrid justify="space-between" align="top" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '15px' : '0' }}>
@@ -112,7 +131,20 @@ const Validators = () => {
                                         <div className="title">
                                             Validators
                                         </div>
-                                        <div className="value">{validators.length}</div>
+                                        <div className="value">{totalValidator}</div>
+                                    </div>
+                                </div>
+                            </FlexboxGrid.Item>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                                <div className="stats-container">
+                                    <div className="icon">
+                                        <Icon className="highlight icon" icon="people-group" size={"2x"} />
+                                    </div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Delegators
+                                        </div>
+                                        <div className="value">{totalDelegator}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -123,7 +155,7 @@ const Validators = () => {
                                     </div>
                                     <div className="content">
                                         <div className="title">
-                                            Staked Amount
+                                        Staked Amount
                                         </div>
                                         <div className="value">{formatAmountwithPlus(totalStakedAmount)} KAI</div>
                                     </div>

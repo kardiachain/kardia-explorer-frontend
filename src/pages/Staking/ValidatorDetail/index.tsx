@@ -9,6 +9,8 @@ import './validator.css'
 import { numberFormat } from '../../../common/utils/number';
 import Button from '../../../common/components/Button';
 import { getDelegationsByValidator, getValidator } from '../../../service/smc/staking';
+import Helper from '../../../common/components/Helper';
+import { HelperMessage } from '../../../common/constant/HelperMessage';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -49,6 +51,27 @@ const ValidatorDetail = () => {
                                                 callback: () => { window.open(`/address/${validator?.address}`) }
                                             })
                                         }
+                                    </span>
+                                </List.Item>
+                                <List.Item>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                                    <span className="property-title">Commission: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.commission || 0, 2)} %
+                                    </span>
+                                </List.Item>
+                                <List.Item bordered={false}>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                                    <span className="property-title">Max Commission Rate: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.maxRate || 0, 2)} %
+                                    </span>
+                                </List.Item>
+                                <List.Item bordered={false}>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                                    <span className="property-title">Max Change Commission Rate: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.maxChangeRate || 0, 2)} %
                                     </span>
                                 </List.Item>
                                 <List.Item>

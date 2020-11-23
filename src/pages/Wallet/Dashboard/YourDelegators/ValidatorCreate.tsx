@@ -369,7 +369,7 @@ const ValidatorCreate = () => {
                     <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
                     <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
                     <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
-                    <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
+                    <div>Minimum Delegate Amount: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
                     <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(amountDel)} KAI</span></div>
                 </Modal.Body>
                 <Modal.Footer>

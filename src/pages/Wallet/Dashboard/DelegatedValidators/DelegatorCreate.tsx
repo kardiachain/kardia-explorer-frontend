@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
+import Helper from '../../../../common/components/Helper';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
+import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
@@ -142,9 +144,24 @@ const DelegatorCreate = () => {
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                     <span className="property-title">Commission: </span>
-                                    <span className="property-content">  
-                                        {numberFormat(validator?.commission) || 0} %
+                                    <span className="property-content">
+                                        {numberFormat(validator?.commission || 0, 2)} %
+                                    </span>
+                                </List.Item>
+                                <List.Item bordered={false}>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                                    <span className="property-title">Max Commission Rate: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.maxRate || 0, 2)} %
+                                    </span>
+                                </List.Item>
+                                <List.Item bordered={false}>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                                    <span className="property-title">Max Change Commission Rate: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.maxChangeRate || 0, 2)} %
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
