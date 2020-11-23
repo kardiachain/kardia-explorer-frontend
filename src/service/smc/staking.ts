@@ -199,7 +199,7 @@ const getValidator = async (valAddr: string): Promise<ValidatorFromSMC> => {
             totalDels: totalDels,
             commission: weiToKAI(Number(invoke[3]) * 100) || 0,
             maxRate:  weiToKAI(Number(invoke[4]) * 100) || 0,
-            maxChangeRate:  weiToKAI(Number(invoke[4]) * 100) || 0,
+            maxChangeRate:  weiToKAI(Number(invoke[5]) * 100) || 0,
         }
         return validator
 
