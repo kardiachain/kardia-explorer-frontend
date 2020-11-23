@@ -13,6 +13,7 @@ import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
 import { getValidatorsFromSMC } from '../../service/smc/staking';
 import { getNodes } from '../../service/kai-explorer/network';
+import { numberFormat } from '../../common/utils/number';
 
 
 const { Column, HeaderCell, Cell } = Table;
@@ -215,7 +216,7 @@ const Validators = () => {
                                 <Cell>
                                     {(rowData: ValidatorFromSMC) => {
                                         return (
-                                            <div>{`${rowData.commission || '0'} %`}</div>
+                                            <div>{numberFormat(rowData?.commission || 0, 2)} %</div>
                                         );
                                     }}
                                 </Cell>

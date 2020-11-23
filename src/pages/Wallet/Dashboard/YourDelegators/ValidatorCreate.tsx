@@ -4,7 +4,7 @@ import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage } from '../../../../common/constant/Message';
-import { onlyInteger, onlyNumber } from '../../../../common/utils/number';
+import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
@@ -278,7 +278,7 @@ const ValidatorCreate = () => {
                             name="commissionRate"
                             value={commissionRate}
                             onChange={(value) => {
-                                if (onlyInteger(value)) {
+                                if (onlyNumber(value)) {
                                     setCommissionRate(value)
                                     validateCommissionRate(value)
                                 }
@@ -294,7 +294,7 @@ const ValidatorCreate = () => {
                             name="maxRate"
                             value={maxRate}
                             onChange={(value) => {
-                                if (onlyInteger(value)) {
+                                if (onlyNumber(value)) {
                                     setMaxRate(value)
                                     validateMaxRate(value)
                                 }
@@ -310,7 +310,7 @@ const ValidatorCreate = () => {
                             name="maxChangeRate"
                             value={maxChangeRate}
                             onChange={(value) => {
-                                if (onlyInteger(value)) {
+                                if (onlyNumber(value)) {
                                     setMaxChangeRate(value)
                                     validateMaxChangeRate(value)
                                 }
@@ -366,11 +366,11 @@ const ValidatorCreate = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to create validator with: </div>
-                    <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {commissionRate} %</span></div>
-                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxRate} %</span></div>
-                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {maxChangeRate} %</span></div>
-                    <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {minSelfDelegation} KAI</span></div>
-                    <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {amountDel} KAI</span></div>
+                    <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
+                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
+                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
+                    <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
+                    <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(amountDel)} KAI</span></div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={registerValidator}>

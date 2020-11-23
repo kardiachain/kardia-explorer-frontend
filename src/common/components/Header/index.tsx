@@ -65,8 +65,8 @@ const Header = () => {
                                             <Nav.Item eventKey="wallet" icon={<Icon icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
                                         ) : (
                                                 <Dropdown eventKey="wallet" icon={<Icon icon="money" />} title="Wallet">
+                                                <Dropdown.Item href="/wallet/dashboard">Dashboard</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/send-transaction">Send transaction</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/transaction-history">Transactions history</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/staking/delegated-validators">Delegated Validators</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>
@@ -110,8 +110,8 @@ const Header = () => {
                                     title="Wallet"
                                     placement="bottomEnd"
                                 >
+                                    <Dropdown.Item eventKey="dashboard" href="/wallet/dashboard">Dashboard</Dropdown.Item>
                                     <Dropdown.Item eventKey="send-transaction" href="/wallet/send-transaction">Send transaction</Dropdown.Item>
-                                    <Dropdown.Item eventKey="transaction-history" href="/wallet/transaction-history">Transactions history</Dropdown.Item>
                                     <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators" >Your Delegators</Dropdown.Item>
                                     <Dropdown.Item eventKey="delegated-validators" href="/wallet/staking/delegated-validators" >Delegated Validators</Dropdown.Item>
                                     <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>

@@ -286,7 +286,7 @@ const InteracteWithSmc = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
                                             <ControlLabel className="label">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                             <SelectPicker
-                                                className="dropdown-custom"
+                                                className="dropdown-custom w100"
                                                 data={gasPriceOption}
                                                 searchable={false}
                                                 value={gasPrice}

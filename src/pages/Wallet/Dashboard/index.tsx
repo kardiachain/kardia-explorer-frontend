@@ -32,11 +32,11 @@ const DashboardWallet = () => {
                     <Sidenav defaultOpenKeys={['staking','smart-contract']}>
                         <Sidenav.Body>
                             <Nav onSelect={setActiveKey} activeKey={activeKey}>
+                                <Nav.Item eventKey="dashboard" active={activeKey === "4"} href="/wallet/dashboard" icon={<Icon icon="order-form" />}>
+                                    Dashboard
+                                </Nav.Item>
                                 <Nav.Item eventKey="send-transaction" active={activeKey === "1"} href="/wallet/send-transaction" icon={<Icon icon="send" />}>
                                     Send Transaction
-                                </Nav.Item>
-                                <Nav.Item eventKey="transaction-history" active={activeKey === "4"} href="/wallet/transaction-history" icon={<Icon icon="order-form" />}>
-                                    Transactions History
                                 </Nav.Item>
                                 <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
                                     <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
@@ -61,7 +61,7 @@ const DashboardWallet = () => {
                     <AuthRouter component={YourDelegators}  path="/wallet/staking/your-delegators" />
                     <AuthRouter component={DelegatedValidators}  path="/wallet/staking/delegated-validators" />
                     <AuthRouter component={SmartContract}  path="/wallet/smart-contract" />
-                    <AuthRouter component={TransactionHistory}  path="/wallet/transaction-history" />
+                    <AuthRouter component={TransactionHistory}  path="/wallet/dashboard" />
                     {/* <AuthRouter component={DelegatorCreate}  path="/wallet/staking/:valAddr" /> */}
                     <Route path="/wallet/staking/:valAddr">
                         <DelegatorCreate />
@@ -70,7 +70,7 @@ const DashboardWallet = () => {
                     <AuthRouter component={DeployWithByteCode} path="/wallet/smc/byte-code-deployment" />
                     <AuthRouter component={InteracteWithSmc} path="/wallet/smc/interaction" />
                     <Route path="/wallet">
-                        <Redirect to="/wallet/send-transaction" />
+                        <Redirect to="/wallet/dashboard" />
                     </Route>
                 </Switch>
             </div>
