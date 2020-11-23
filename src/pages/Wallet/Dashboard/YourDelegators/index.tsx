@@ -267,7 +267,7 @@ const YourDelegators = () => {
                                                             <ErrMessage message={commissionRateErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>New Minimum Expected Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
+                                                            <ControlLabel>New Minimum Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl placeholder="New Minimum Expected Delegate Amount"
                                                                 name="minSelfDelegation"
                                                                 value={minSelfDelegation}

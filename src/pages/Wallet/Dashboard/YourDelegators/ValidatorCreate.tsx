@@ -320,7 +320,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
-                            Minimum Expected Delegate Amount (KAI)  <span className="required-mask">(*)</span>
+                            Minimum Delegate Amount (KAI)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Minimum Expected Delegate Amount"
                             name="minSelfDelegation"
