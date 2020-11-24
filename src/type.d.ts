@@ -33,6 +33,7 @@ interface KAIBlock {
     age?: number;
     gasLimit: number;
     gasUsed: number;
+    rewards: number;
 }
 
 interface KAIBlockDetails {
