@@ -125,7 +125,7 @@ const InteracteWithSmc = () => {
                 abi: abi,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: paramsFields && paramsFields.length > 0 ? paramsFields.map(item => item.value) : [],
+                params: paramsFields && paramsFields.length > 0 ? paramsFields.map(item => JSON.parse(item.value)) : [],
                 isPure: smcFuncActive ? (smcFuncActive.stateMutability === 'view' || smcFuncActive.stateMutability === 'pure' ? true : false) : [],
                 functionName: smcFuncActive ? smcFuncActive.name : '',
                 amount: payableAmount
@@ -439,7 +439,7 @@ const InteracteWithSmc = () => {
                                                 showResult ? <>
                                                     {
                                                         interactType === "call" ?
-                                                            <ControlLabel className="label">Result: {txResult}</ControlLabel> :
+                                                            <ControlLabel className="label"><ReactJson name={false} src={{ txResult }} /></ControlLabel> :
                                                             (
                                                                 interactType === "send" ? (
                                                                     <>
@@ -471,7 +471,7 @@ const InteracteWithSmc = () => {
                     <Modal.Title>Transaction Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ReactJson src={{ txResult }} />
+                    <ReactJson name={false} src={{ txResult }} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="kai-button-gray">
