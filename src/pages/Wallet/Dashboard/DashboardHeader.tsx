@@ -6,7 +6,6 @@ import { getBalance } from '../../../service/kai-explorer';
 import { getAccount, useBalanceStorage } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
-import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 import { numberFormat } from '../../../common/utils/number';
 
 const DashboardHeader = () => {
@@ -25,7 +24,7 @@ const DashboardHeader = () => {
         const fetchBalance = setInterval(async () => {
             const balance = await getBalance(account.publickey);
             setBalance(weiToKAI(balance))
-        }, TIME_INTERVAL_MILISECONDS)
+        }, 5000)
 
         return () => clearInterval(fetchBalance);
     }, [account.publickey, setBalance])

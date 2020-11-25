@@ -19,7 +19,8 @@ export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]>
             time: new Date(o.time),
             age: (nowTime - createdTime),
             gasUsed: o.gasUsed,
-            gasLimit: o.gasLimit
+            gasLimit: o.gasLimit,
+            rewards: o.rewards
         } as KAIBlock
     });
 }

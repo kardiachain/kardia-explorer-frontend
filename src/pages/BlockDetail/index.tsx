@@ -15,17 +15,14 @@ const BlockDetail = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setLoading(true)
-        // Refetch txD
-        const fetchBlockDetail = setInterval(async () => {
+        (async () => {
+            setLoading(true)
             const blockDetail = await getBlockBy(block);
             if (blockDetail.blockHash) {
                 setBlockDetail(blockDetail)
                 setLoading(false)
-                clearInterval(fetchBlockDetail)
             }
-        }, 1000)
-        return () => clearInterval(fetchBlockDetail);
+        })()
     }, [block])
 
 
@@ -67,7 +64,7 @@ const BlockDetail = () => {
                                         <div className="property-title">TimeStamp</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{blockDetail?.time ? dateToLocalTime(blockDetail?.time) : ''}</div>
+                                        <div className="property-content"><Icon className="highlight" icon="clock-o" style={{ marginRight: 5 }} />{blockDetail?.time ? dateToLocalTime(blockDetail?.time) : ''}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

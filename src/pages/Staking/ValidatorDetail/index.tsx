@@ -9,6 +9,9 @@ import './validator.css'
 import { numberFormat } from '../../../common/utils/number';
 import Button from '../../../common/components/Button';
 import { getDelegationsByValidator, getValidator } from '../../../service/smc/staking';
+import Helper from '../../../common/components/Helper';
+import { HelperMessage } from '../../../common/constant/HelperMessage';
+import { addressValid } from '../../../common/utils/validate';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -20,8 +23,13 @@ const ValidatorDetail = () => {
     const { valAddr }: any = useParams();
 
     useEffect(() => {
-        getDelegationsByValidator(valAddr).then(setDelegators);
-        getValidator(valAddr).then(setValidator)
+        if(addressValid(valAddr)) {
+            (async () => {
+                const data = await Promise.all([getDelegationsByValidator(valAddr), getValidator(valAddr)]);
+                setDelegators(data[0]);
+                setValidator(data[1]);
+            })()
+        }
     }, [valAddr]);
 
     return (
@@ -42,13 +50,34 @@ const ValidatorDetail = () => {
                                     <span className="property-content">
                                         {
                                             renderHashToRedirect({
-                                                hash: validator?.address,
+                                                hash: validator?.address || '',
                                                 headCount: isMobile ? 10 : 30,
                                                 tailCount: 4,
                                                 showTooltip: true,
                                                 callback: () => { window.open(`/address/${validator?.address}`) }
                                             })
                                         }
+                                    </span>
+                                </List.Item>
+                                <List.Item>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                                    <span className="property-title">Commission: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.commission || 0, 2)} %
+                                    </span>
+                                </List.Item>
+                                <List.Item bordered={false}>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                                    <span className="property-title">Max Commission Rate: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.maxRate || 0, 2)} %
+                                    </span>
+                                </List.Item>
+                                <List.Item bordered={false}>
+                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                                    <span className="property-title">Max Change Commission Rate: </span>
+                                    <span className="property-content">
+                                        {numberFormat(validator?.maxChangeRate || 0, 2)} %
                                     </span>
                                 </List.Item>
                                 <List.Item>

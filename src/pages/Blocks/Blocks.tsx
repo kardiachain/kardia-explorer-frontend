@@ -10,6 +10,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { numberFormat } from '../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import SearchSection from '../../common/components/Header/SearchSection';
+import { weiToKAI } from '../../common/utils/amount';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -89,7 +90,7 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    {/* <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Block Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -106,8 +107,8 @@ const Blocks = () => {
                                                 );
                                             }}
                                         </Cell>
-                                    </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    </Column> */}
+                                    <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
@@ -159,6 +160,18 @@ const Blocks = () => {
                                                 return (
                                                     <div>
                                                         {numberFormat(rowData.gasLimit)}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                        <HeaderCell>Rewards</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAIBlock) => {
+                                                return (
+                                                    <div>
+                                                        {numberFormat(weiToKAI(rowData.rewards), 3)} KAI
                                                     </div>
                                                 );
                                             }}

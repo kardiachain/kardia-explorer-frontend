@@ -105,14 +105,16 @@ const DeployWithByteCode = () => {
             setLoading(true)
             setDeploySmcErr('')
             setTxHash('')
+            
             const txObject = {
                 account: myAccount,
                 abi: abi,
                 bytecode: byteCode,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: construcFields ? (construcFields.length > 0 && construcFields.map(item => item.value)) : []
+                params: construcFields ? (construcFields.length > 0 && construcFields.map(item => JSON.parse(item.value))) : []
             } as SMCDeployObject
+            
             const deployTx = await deploySmartContract(txObject);
             if (deployTx.status === 1) {
                 Alert.success("Deploy smart contract success.")

@@ -320,7 +320,7 @@ const ValidatorCreate = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
-                            Minimum Expected Delegate Amount (KAI)  <span className="required-mask">(*)</span>
+                            Minimum Delegate Amount (KAI)  <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Minimum Expected Delegate Amount"
                             name="minSelfDelegation"
@@ -369,7 +369,7 @@ const ValidatorCreate = () => {
                     <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
                     <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
                     <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
-                    <div>Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
+                    <div>Minimum Delegate Amount: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
                     <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(amountDel)} KAI</span></div>
                 </Modal.Body>
                 <Modal.Footer>

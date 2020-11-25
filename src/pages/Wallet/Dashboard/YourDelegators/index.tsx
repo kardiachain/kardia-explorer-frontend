@@ -12,6 +12,8 @@ import ValidatorCreate from './ValidatorCreate';
 import Button from '../../../../common/components/Button';
 import { useViewport } from '../../../../context/ViewportContext';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
+import Helper from '../../../../common/components/Helper';
+import { HelperMessage } from '../../../../common/constant/HelperMessage';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -198,6 +200,27 @@ const YourDelegators = () => {
                                             </span>
                                         </List.Item>
                                         <List.Item>
+                                            <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                                            <span className="property-title">Commission: </span>
+                                            <span className="property-content">
+                                                {numberFormat(validator?.commission || 0, 2)} %
+                                            </span>
+                                        </List.Item>
+                                        <List.Item bordered={false}>
+                                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                                            <span className="property-title">Max Commission Rate: </span>
+                                            <span className="property-content">
+                                                {numberFormat(validator?.maxRate || 0, 2)} %
+                                            </span>
+                                        </List.Item>
+                                        <List.Item bordered={false}>
+                                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                                            <span className="property-title">Max Change Commission Rate: </span>
+                                            <span className="property-content">
+                                                {numberFormat(validator?.maxChangeRate || 0, 2)} %
+                                            </span>
+                                        </List.Item>
+                                        <List.Item>
                                             <span className="property-title">Total delegator: </span>
                                             <span className="property-content">
                                                 {numberFormat(validator?.totalDels || 0)}
@@ -267,7 +290,7 @@ const YourDelegators = () => {
                                                             <ErrMessage message={commissionRateErr} />
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                                            <ControlLabel>New Minimum Expected Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
+                                                            <ControlLabel>New Minimum Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
                                                             <FormControl placeholder="New Minimum Expected Delegate Amount"
                                                                 name="minSelfDelegation"
                                                                 value={minSelfDelegation}
@@ -353,7 +376,7 @@ const YourDelegators = () => {
                             <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to update validator with: </div>
                             <div>Your Address: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {myAccount.publickey} </span></div>
                             <div>New Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
-                            <div>New Min Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
+                            <div>New Minimum Delegate Amount: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={() => { setShowConfirmModal(false) }} className="kai-button-gray">

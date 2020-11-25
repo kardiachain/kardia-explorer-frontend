@@ -33,6 +33,7 @@ interface KAIBlock {
     age?: number;
     gasLimit: number;
     gasUsed: number;
+    rewards: number;
 }
 
 interface KAIBlockDetails {
@@ -75,6 +76,8 @@ interface ValidatorFromSMC {
     commission?: number;
     totalDels?: number;
     totalStakedAmount?: number;
+    maxRate: number;
+    maxChangeRate: number; 
 }
 
 interface YourValidator {

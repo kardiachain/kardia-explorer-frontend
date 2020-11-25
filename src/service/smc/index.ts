@@ -2,8 +2,9 @@ import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 
 const deploySmartContract = async (object: SMCDeployObject) => {
     try {
+        const paramsJson = JSON.parse(JSON.stringify(object.params))
         const contract = kardiaContract(kardiaProvider, object.bytecode, JSON.parse(object.abi));
-        const deployment = contract.deploy(object.params);
+        const deployment = contract.deploy(paramsJson);
         const deployResult = await deployment.send(object.account.privatekey, {
             gas: object.gasLimit,
             gasPrice: object.gasPrice,
@@ -16,9 +17,10 @@ const deploySmartContract = async (object: SMCDeployObject) => {
 
 const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
     try {
+        const paramsJson = JSON.parse(JSON.stringify(object.params))
         const contract = kardiaContract(kardiaProvider, "", JSON.parse(object.abi));
         const invoke = contract.invoke({
-          params: object.params,
+          params: paramsJson,
           name: object.functionName
         });
         let invokeResult = null; 
