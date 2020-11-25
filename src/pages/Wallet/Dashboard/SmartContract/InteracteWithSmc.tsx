@@ -164,9 +164,9 @@ const InteracteWithSmc = () => {
         setPayableFunction(false)
         try {
             setParamsFields([])
-            if (value.stateMutability !== 'pure' && value.stateMutability !== 'view') {
+            if (value.inputs && value.inputs.length > 0) {
                 setParamsFields(
-                    value.inputs && value.inputs.length > 0 && value.inputs.map((item: any) => {
+                    value.inputs.map((item: any) => {
                         return {
                             name: item.name,
                             type: item.type,

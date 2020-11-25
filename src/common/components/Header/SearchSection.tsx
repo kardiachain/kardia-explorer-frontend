@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Input, InputGroup, Button } from 'rsuite';
 import { getTxByHash } from '../../../service/kai-explorer';
-import { getBlockBy, getLatestBlockNumber } from '../../../service/kai-explorer/block';
+import { getBlockBy } from '../../../service/kai-explorer/block';
+import { onlyInteger } from '../../utils/number';
 import { addressValid, hashValid } from '../../utils/validate';
 
 const SearchSection = () => {
@@ -49,12 +50,12 @@ const SearchSection = () => {
         if (hashValid(input) && isTxHash) {
             return 'txhash'
         }
+        
         const isBlock = await blockHashAvailable(input)
         if (hashValid(input) && isBlock) {
             return 'blockhash'
         }
-        const availableBock = await blockHeightAvaiable(Number(input))
-        if (Number.isInteger(Number(input)) && availableBock) {
+        if (onlyInteger(input) && isBlock) {
             return 'blockheight'
         }
         return '';
@@ -74,14 +75,6 @@ const SearchSection = () => {
             return true
         }
         return false
-    }
-
-    const blockHeightAvaiable = async (blockHash: number): Promise<boolean> => {
-        const latestBlock = await getLatestBlockNumber()
-        if(blockHash <= Number(latestBlock)) {
-            return true
-        }
-        return false;
     }
 
     return (

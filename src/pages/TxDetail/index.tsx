@@ -6,7 +6,7 @@ import Button from '../../common/components/Button';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
-import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';
+import { STAKING_SMC_ADDRESS } from '../../config/api';
 import { getTxByHash } from '../../service/kai-explorer';
 import abiDecoder from 'abi-decoder'
 import './txDetail.css'
@@ -14,7 +14,7 @@ import './txDetail.css'
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import ReactJson from 'react-json-view';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
-import { jsonValid } from '../../common/utils/validate';
+import { hashValid, jsonValid } from '../../common/utils/validate';
 import { ErrorMessage } from '../../common/constant/Message';
 
 const onSuccess = () => {
@@ -40,15 +40,17 @@ const TxDetail = () => {
     useEffect(() => {
         setLoading(true)
         // Refetch txD
-        const fetchTxDetail = setInterval(async () => {
-            const tx = await getTxByHash(txHash);
-            if (tx.txHash) {
-                setTxDetail(tx)
-                setLoading(false)
-                clearInterval(fetchTxDetail)
-            }
-        }, TIME_INTERVAL_MILISECONDS)
-        return () => clearInterval(fetchTxDetail);
+        if(hashValid(txHash)) {
+            const fetchTxDetail = setInterval(async () => {
+                const tx = await getTxByHash(txHash);
+                if (tx.txHash) {
+                    setTxDetail(tx)
+                    setLoading(false)
+                    clearInterval(fetchTxDetail)
+                }
+            }, 5000);
+            return () => clearInterval(fetchTxDetail);
+        }
     }, [txHash])
 
     const validateAbi = (abiString: string): boolean => {

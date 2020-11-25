@@ -35,11 +35,15 @@ const TxList = () => {
     }, [page, size, block])
 
     useEffect(() => {
-        const loop = setInterval(async () => {
-            await fetchTxs(page, size, block)
-        }, TIME_INTERVAL_MILISECONDS)
-
-        return () => clearInterval(loop)
+        if(!block) {
+            const loop = setInterval(async () => {
+                const rs = await getTransactions(page, size);
+                setTransactionList(rs.transactions)
+                setTotalTxs(rs.totalTxs)
+            }, TIME_INTERVAL_MILISECONDS)
+    
+            return () => clearInterval(loop)
+        }
     }, [page, size, block])
 
     const fetchTxs = async (page: number, size: number, block: string) => {

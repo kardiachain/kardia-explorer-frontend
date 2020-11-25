@@ -11,6 +11,7 @@ import Button from '../../../common/components/Button';
 import { getDelegationsByValidator, getValidator } from '../../../service/smc/staking';
 import Helper from '../../../common/components/Helper';
 import { HelperMessage } from '../../../common/constant/HelperMessage';
+import { addressValid } from '../../../common/utils/validate';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,8 +23,13 @@ const ValidatorDetail = () => {
     const { valAddr }: any = useParams();
 
     useEffect(() => {
-        getDelegationsByValidator(valAddr).then(setDelegators);
-        getValidator(valAddr).then(setValidator)
+        if(addressValid(valAddr)) {
+            (async () => {
+                const data = await Promise.all([getDelegationsByValidator(valAddr), getValidator(valAddr)]);
+                setDelegators(data[0]);
+                setValidator(data[1]);
+            })()
+        }
     }, [valAddr]);
 
     return (
@@ -44,7 +50,7 @@ const ValidatorDetail = () => {
                                     <span className="property-content">
                                         {
                                             renderHashToRedirect({
-                                                hash: validator?.address,
+                                                hash: validator?.address || '',
                                                 headCount: isMobile ? 10 : 30,
                                                 tailCount: 4,
                                                 showTooltip: true,
