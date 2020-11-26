@@ -138,6 +138,19 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="icon">
+                                        <Icon className="highlight icon" icon="peoples" size={"2x"} />
+                                    </div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Proposers
+                                        </div>
+                                        <div className="value">{21}</div>
+                                    </div>
+                                </div>
+                            </FlexboxGrid.Item>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                                <div className="stats-container">
+                                    <div className="icon">
                                         <Icon className="highlight icon" icon="people-group" size={"2x"} />
                                     </div>
                                     <div className="content">
