@@ -46,13 +46,13 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
         const newConfig = JSON.parse(JSON.stringify(chartConfigDefault))
         newConfig.series[0].data = [{
             name: "Validators Stakes",
-            y: dataForChart.totalValidatorStakedAmount,
+            y: Number(dataForChart.totalValidatorStakedAmount),
             sliced: true,
             selected: true,
             color: '#ae0001'
         }, {
             name: "Delegators Stakes",
-            y: dataForChart.totalDelegatorStakedAmount,
+            y: Number(dataForChart.totalDelegatorStakedAmount),
             color: '#680000'
         }]
         setChartOptionsConfig(newConfig)

@@ -93,9 +93,9 @@ interface YourValidator {
 }
 interface Delegator {
     address: string;
-    delegationsShares: number;
+    delegationsShares?: number;
     stakeAmount: number;
-    validatorAddress: string;
+    validatorAddress?: string;
     rewardsAmount: number;
 }
 
@@ -110,12 +110,27 @@ interface Account {
     privatekey: string;
 }
 
+interface Validators {
+    totalValidators: number;
+    totalDelegators: number;
+    totalStakedAmount: number;
+    totalValidatorStakedAmount: number;
+    totalDelegatorStakedAmount: number;
+    totalProposer: number;
+    validators: Validator[]
+}
+
 interface Validator {
+    rank?: number;
     address: string;
-    votingPower: number;
+    votingPower: any;
+    stakedAmount: number;
+    commissionRate: any;
+    totalDelegators: any;
+    maxRate: any;
+    maxChangeRate: any;
     name: string;
-    peerCount: number;
-    rpcUrl: string;
+    delegators: Delegator[]
 }
 
 interface KaiToken {
