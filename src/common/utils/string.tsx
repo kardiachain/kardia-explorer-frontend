@@ -67,13 +67,13 @@ const renderHashToRedirect = ({
     }
     return showTooltip ? (
         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
-            <span className="hex" style={{ cursor: 'pointer' }}>
+            <span className="hex-link" style={{ cursor: 'pointer' }}>
                 <span onClick={() => {callback && callback()}}>{truncate(String(hash), headCount, tailCount)}{' '}</span>
                 {showCopy && renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
             </span>
         </Whisper>
     ) : (
-        <span className="hex" style={{ cursor: 'pointer' }}>
+        <span className="hex-link" style={{ cursor: 'pointer' }}>
             <span onClick={() => {callback && callback()}} >{truncate(String(hash), headCount, tailCount)}{' '}</span>
             {showCopy && renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
         </span>
@@ -104,9 +104,9 @@ const millisecondToHMS = (time: number) => {
     }
     return `${secondString} ago`
 };
-const dateToLocalTime = (time: any) => {
+const dateToUTCString = (time: any) => {
     const d = new Date(time);
-    return d.toLocaleString()
+    return d.toUTCString()
 }
 
 const randomRGBColor = (): string => {
@@ -115,4 +115,4 @@ const randomRGBColor = (): string => {
     const bbb =  Math.floor(Math.random() * 255);
     return `rgb(${rrr},${ggg},${bbb})`
 } 
-export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToLocalTime, renderHashStringAndTooltip, randomRGBColor, renderCopyButton}
+export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToUTCString, renderHashStringAndTooltip, randomRGBColor, renderCopyButton}

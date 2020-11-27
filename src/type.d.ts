@@ -19,6 +19,8 @@ interface KAITransaction {
     gasUsed: number;
     toSmcName: string;
     toSmcAddr: string;
+    gasUsedPercent: any;
+    txFee: number;
 }
 
 interface KAIBlock {
@@ -54,6 +56,7 @@ interface KAIBlockDetails {
     time: Date;
     age: number;
     rewards: number;
+    gasUsedPercent: any;
 }
 
 interface StakingContractResponse {

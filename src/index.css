@@ -27,6 +27,10 @@ body {
 
 .hex {
   font-weight: 600;
+}
+
+.hex-link {
+  font-weight: 600;
   color: var(--hyperlink-color);
 }
 
@@ -143,6 +147,16 @@ a:hover {
 .property-content {
   font-weight: bold;
   word-break: break-all;
+}
+
+.rs-table-cell-wrap a,
+.rs-table-cell-wrap a:hover,
+.rs-table-cell-wrap a:focus,
+.property-content a,
+.property-content a:hover,
+.property-content a:focus {
+  font-weight: 600;
+  color: var(--hyperlink-color);
 }
 
 .tab-in-out {

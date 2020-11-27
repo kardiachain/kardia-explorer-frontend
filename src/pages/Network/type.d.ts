@@ -4,10 +4,11 @@ interface KAINode {
     color: string,
     address: string,
     protocol: string,
-    peerCount: number,
+    peers: any[],
     votingPower: number,
     status: NodeStatus,
     listen_addr: string,
     rpcURL: string,
-    isValidator: boolean
+    isValidator: boolean,
+    peerCount: number;
 }

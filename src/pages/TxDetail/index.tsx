@@ -5,8 +5,8 @@ import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { copyToClipboard, dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
-import { STAKING_SMC_ADDRESS } from '../../config/api';
+import { copyToClipboard, dateToUTCString, millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import { getTxByHash } from '../../service/kai-explorer';
 import abiDecoder from 'abi-decoder'
 import './txDetail.css'
@@ -41,15 +41,24 @@ const TxDetail = () => {
         setLoading(true)
         // Refetch txD
         if(hashValid(txHash)) {
-            const fetchTxDetail = setInterval(async () => {
-                const tx = await getTxByHash(txHash);
+            (async() => {
+                let tx = await getTxByHash(txHash);
                 if (tx.txHash) {
-                    setTxDetail(tx)
-                    setLoading(false)
-                    clearInterval(fetchTxDetail)
+                    setTxDetail(tx);
+                    setLoading(false);
+                    return;
                 }
-            }, 5000);
-            return () => clearInterval(fetchTxDetail);
+
+                const fetchTxDetail = setInterval(async () => {
+                    tx = await getTxByHash(txHash);
+                    if (tx.txHash) {
+                        setTxDetail(tx)
+                        setLoading(false)
+                        clearInterval(fetchTxDetail)
+                    }
+                }, TIME_INTERVAL_MILISECONDS);
+                return () => clearInterval(fetchTxDetail);
+            })();
         }
     }, [txHash])
 
@@ -178,7 +187,7 @@ const TxDetail = () => {
                                                 hash: txDetail?.blockHash,
                                                 headCount: 70,
                                                 tailCount: 4,
-                                                showTooltip: true,
+                                                showTooltip: false,
                                                 callback: () => { history.push(`/block/${txDetail?.blockHash}`) },
                                                 showCopy: true
                                             })}
@@ -206,7 +215,7 @@ const TxDetail = () => {
                                         <div className="property-title">TimeStamp</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{txDetail?.time ? dateToLocalTime(txDetail?.time) : ''}</div>
+                                        <div className="property-content">{millisecondToHMS(txDetail?.age || 0)} ({txDetail?.time ? dateToUTCString(txDetail?.time) : ''})</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -221,7 +230,7 @@ const TxDetail = () => {
                                                 hash: txDetail?.from,
                                                 headCount: 50,
                                                 tailCount: 4,
-                                                showTooltip: true,
+                                                showTooltip: false,
                                                 callback: () => { history.push(`/address/${txDetail?.from}`) },
                                                 showCopy: true
                                             })}
@@ -241,6 +250,7 @@ const TxDetail = () => {
                                                     hash: txDetail?.to,
                                                     headCount: 50,
                                                     tailCount: 4,
+                                                    showTooltip: false,
                                                     callback: () => { history.push(`/address/${txDetail?.to}`) },
                                                     showCopy: true
                                                 })}</div>
@@ -249,7 +259,9 @@ const TxDetail = () => {
                                                         hash: txDetail?.toSmcAddr,
                                                         headCount: 50,
                                                         tailCount: 4,
+                                                        showTooltip: false,
                                                         callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
+                                                        showCopy: true
                                                     })} {txDetail.toSmcName} <IconButton
                                                             size="xs"
                                                             onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
@@ -267,6 +279,16 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(weiToKAI(txDetail?.value))} KAI</div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                        <div className="property-title">Transaction Fee</div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                        <div className="property-content">{numberFormat(txDetail?.txFee || 0)}</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -296,7 +318,7 @@ const TxDetail = () => {
                                         <div className="property-title">Gas Used</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)}</div>
+                                        <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)} ({txDetail?.gasUsedPercent}%)</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
