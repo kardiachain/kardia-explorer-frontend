@@ -30,7 +30,6 @@ const ValidatorDetail = () => {
         if(addressValid(valAddr)) {
             (async() => {
                 const val = await getValidator(valAddr, page, limit);
-                console.log("val", val);
                 setValidator(val)
                 setDelegators(val.delegators)
             })()

@@ -5,7 +5,7 @@ import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { onlyNumber, numberFormat, onlyInteger } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
-import { getDelegationsByValidator, getValidator, isValidator, updateValidator } from '../../../../service/smc/staking';
+import { isValidator, updateValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
@@ -14,6 +14,9 @@ import { useViewport } from '../../../../context/ViewportContext';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
+import { getValidator } from '../../../../service/kai-explorer';
+import { TABLE_CONFIG } from '../../../../config';
+import TablePagination from 'rsuite/lib/Table/TablePagination';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -23,7 +26,7 @@ const YourDelegators = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isVal, setIsVal] = useState(false);
     const [delegators, setDelegators] = useState([] as Delegator[]);
-    const [validator, setValidator] = useState<ValidatorFromSMC>()
+    const [validator, setValidator] = useState<Validator>()
     const myAccount = getAccount() as Account
 
     const [commissionRate, setCommissionRate] = useState('')
@@ -42,6 +45,8 @@ const YourDelegators = () => {
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
+    const [page, setPage] = useState(TABLE_CONFIG.page)
+    const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
 
     const validateCommissionRate = (value: any) => {
         if (!value) {
@@ -114,6 +119,7 @@ const YourDelegators = () => {
             if (validator && validator.status === 1) {
                 Alert.success('Update validator success.')
                 setHashTransaction(validator.transactionHash)
+                reFetchData();
             } else {
                 setUpdateValErrMsg('Update validator failed.');
             }
@@ -141,13 +147,18 @@ const YourDelegators = () => {
             setIsVal(isVal)
             setStatePending(false)
             if (isVal) {
-                const delegators = await getDelegationsByValidator(myAccount.publickey);
-                const validator = await getValidator(myAccount.publickey)
-                setDelegators(delegators)
-                setValidator(validator)
+                const val = await getValidator(myAccount.publickey, page, limit);
+                setValidator(val)
+                setDelegators(val.delegators)
             }
         })();
-    }, [myAccount.publickey]);
+    }, [myAccount.publickey, page, limit]);
+
+    const reFetchData = async () => {
+        const val = await getValidator(myAccount.publickey, page, limit);
+        setValidator(val)
+        setDelegators(val.delegators)
+    }
 
     return !statePending ? (
         !isVal ? (
@@ -203,7 +214,7 @@ const YourDelegators = () => {
                                             <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                             <span className="property-title">Commission: </span>
                                             <span className="property-content">
-                                                {numberFormat(validator?.commission || 0, 2)} %
+                                                {numberFormat(validator?.commissionRate || 0, 2)} %
                                             </span>
                                         </List.Item>
                                         <List.Item bordered={false}>
@@ -223,13 +234,13 @@ const YourDelegators = () => {
                                         <List.Item>
                                             <span className="property-title">Total delegator: </span>
                                             <span className="property-content">
-                                                {numberFormat(validator?.totalDels || 0)}
+                                                {numberFormat(validator?.totalDelegators || 0)}
                                             </span>
                                         </List.Item>
                                         <List.Item>
                                             <span className="property-title">Total staked amount: </span>
                                             <span className="property-content">
-                                                {numberFormat(weiToKAI(validator?.totalStakedAmount || 0))} KAI
+                                                {numberFormat(weiToKAI(validator?.stakedAmount || 0))} KAI
                                             </span>
                                         </List.Item>
                                     </List>
@@ -309,7 +320,7 @@ const YourDelegators = () => {
                                                 </FormGroup>
                                                 <ErrMessage message={updateValErrMsg} />
                                                 {
-                                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
+                                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction update validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
                                                 }
                                             </Form>
                                         ) : <></>
@@ -363,6 +374,14 @@ const YourDelegators = () => {
                                             </Cell>
                                         </Column>
                                     </Table>
+                                    <TablePagination
+                                        lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                        activePage={page}
+                                        displayLength={limit}
+                                        total={delegators?.length}
+                                        onChangePage={setPage}
+                                        onChangeLength={setLimit}
+                                    />
                                 </Panel>
                             </div>
                         </FlexboxGrid.Item>
