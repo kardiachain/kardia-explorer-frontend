@@ -149,9 +149,9 @@ a:hover {
   word-break: break-all;
 }
 
-.rs-table-cell-wrap a,
+/* .rs-table-cell-wrap a,
 .rs-table-cell-wrap a:hover,
-.rs-table-cell-wrap a:focus,
+.rs-table-cell-wrap a:focus, */
 .property-content a,
 .property-content a:hover,
 .property-content a:focus {

@@ -37,6 +37,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
+                txFee: o.txFee
             }
         })
     }
@@ -73,6 +74,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
+                txFee: o.txFee
             }
         })
     }
@@ -146,7 +148,8 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                 input:  o.input,
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
-                toSmcAddr: toSmcAddress.toSmcAddr
+                toSmcAddr: toSmcAddress.toSmcAddr,
+                txFee: o.txFee
             }
         })
     }

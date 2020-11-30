@@ -1,1 +1,5 @@
-
+.click-show-more {
+    color: var(--hyperlink-color);
+    font-weight: 600;
+    cursor: pointer;
+}

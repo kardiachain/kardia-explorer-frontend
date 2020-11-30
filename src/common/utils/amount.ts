@@ -24,6 +24,32 @@ const weiToKAI = (value: any): any => {
   return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
 };
 
+const weiToOXY = (value: any): any => {
+  if (!value || value === '0') {
+    return 0
+  }
+  
+  value = value.toLocaleString('en-US', { useGrouping: false });
+
+  const cellString = value.toString().padStart(18, '0');
+  const kaiNumString = parseInt(cellString.slice(0, 9));
+  const kaiDecimalString = cellString.slice(-9);
+  return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+};
+
+const oxyToKAI = (value: any): any => {
+  if (!value || value === '0') {
+    return 0
+  }
+  
+  value = value.toLocaleString('en-US', { useGrouping: false });
+
+  const cellString = value.toString().padStart(18, '0');
+  const kaiNumString = parseInt(cellString.slice(0, 9));
+  const kaiDecimalString = cellString.slice(-9);
+  return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+};
+
 const formatFullAmount = (amount: string) => {
   try {
     return amount && amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
@@ -88,4 +114,4 @@ const formatAmountwithPlus = (value: number) => {
 
 
 
-export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus, formatFullAmount}
+export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus, formatFullAmount, weiToOXY, oxyToKAI}
