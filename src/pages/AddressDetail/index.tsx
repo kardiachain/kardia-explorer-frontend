@@ -147,7 +147,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -181,7 +181,7 @@ const AddressDetail = () => {
                                         }}
                                     </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -222,6 +222,18 @@ const AddressDetail = () => {
                                                 return (
                                                     <div>
                                                         {numberFormat(weiToKAI(rowData.value))} KAI
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                        <HeaderCell>Tx Fee</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAITransaction) => {
+                                                return (
+                                                    <div>
+                                                        {numberFormat(weiToKAI(rowData.txFee))} KAI
                                                     </div>
                                                 );
                                             }}
