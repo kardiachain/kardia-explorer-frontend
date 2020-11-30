@@ -7,6 +7,7 @@ import { getAccount, useBalanceStorage } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
 import { numberFormat } from '../../../common/utils/number';
+import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -24,7 +25,7 @@ const DashboardHeader = () => {
         const fetchBalance = setInterval(async () => {
             const balance = await getBalance(account.publickey);
             setBalance(weiToKAI(balance))
-        }, 5000)
+        }, TIME_INTERVAL_MILISECONDS)
 
         return () => clearInterval(fetchBalance);
     }, [account.publickey, setBalance])

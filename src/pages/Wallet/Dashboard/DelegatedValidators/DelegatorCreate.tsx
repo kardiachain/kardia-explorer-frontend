@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
+import TablePagination from 'rsuite/lib/Table/TablePagination';
 import Button from '../../../../common/components/Button';
 import Helper from '../../../../common/components/Helper';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
@@ -10,14 +11,16 @@ import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
+import { TABLE_CONFIG } from '../../../../config';
 import { useViewport } from '../../../../context/ViewportContext';
-import { delegateAction, getDelegationsByValidator, getValidator } from '../../../../service/smc/staking';
+import { getValidator } from '../../../../service/kai-explorer';
+import { delegateAction } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
 const { Column, HeaderCell, Cell } = Table;
 
 const DelegatorCreate = () => {
     const [delegators, setDelegators] = useState([] as Delegator[]);
-    const [validator, setValidator] = useState<ValidatorFromSMC>()
+    const [validator, setValidator] = useState<Validator>()
     const { isMobile } = useViewport();
     const [isLoading, setIsLoading] = useState(false)
     const [delAmount, setDelAmount] = useState('')
@@ -27,32 +30,27 @@ const DelegatorCreate = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const history = useHistory()
     const [delegateErrMsg, setDelegateErrMsg] = useState('')
-    const myAccount = getAccount() as Account
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
+    const [page, setPage] = useState(TABLE_CONFIG.page)
+    const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
 
 
     useEffect(() => {
         (async () => {
-            const data = await Promise.all([
-                getDelegationsByValidator(valAddr),
-                getValidator(valAddr),
-            ]);
-            setDelegators(data[0])
-            setValidator(data[1])
-        })()
-    }, [valAddr, myAccount.publickey]);
+            const val = await getValidator(valAddr, page, limit);
+            setValidator(val)
+            setDelegators(val.delegators)
+        })();
+    }, [valAddr, page, limit]);
 
     const fetchData = async() => {
-        const data = await Promise.all([
-            getDelegationsByValidator(valAddr),
-            getValidator(valAddr),
-        ]);
-        setDelegators(data[0])
-        setValidator(data[1])
+        const val = await getValidator(valAddr, page, limit);
+        setValidator(val)
+        setDelegators(val.delegators)
     }
 
     const validateDelAmount = (value: any): boolean => {
@@ -147,33 +145,33 @@ const DelegatorCreate = () => {
                                     <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                     <span className="property-title">Commission: </span>
                                     <span className="property-content">
-                                        {numberFormat(validator?.commission || 0, 2)} %
+                                        {numberFormat(validator?.commissionRate || 0, 3)} %
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
                                     <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                                     <span className="property-title">Max Commission Rate: </span>
                                     <span className="property-content">
-                                        {numberFormat(validator?.maxRate || 0, 2)} %
+                                        {numberFormat(validator?.maxRate || 0, 3)} %
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
                                     <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                                     <span className="property-title">Max Change Commission Rate: </span>
                                     <span className="property-content">
-                                        {numberFormat(validator?.maxChangeRate || 0, 2)} %
+                                        {numberFormat(validator?.maxChangeRate || 0, 3)} %
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
                                     <span className="property-title">Total delegator: </span>
                                     <span className="property-content">
-                                        {validator?.totalDels}
+                                        {validator?.totalDelegators}
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
                                     <span className="property-title">Total staked amount: </span>
                                     <span className="property-content">
-                                        {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
+                                        {numberFormat(weiToKAI(validator?.stakedAmount))} KAI
                                     </span>
                                 </List.Item>
                             </List>
@@ -298,6 +296,14 @@ const DelegatorCreate = () => {
                                     </Cell>
                                 </Column>
                             </Table>
+                            <TablePagination
+                                lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                activePage={page}
+                                displayLength={limit}
+                                total={delegators?.length}
+                                onChangePage={setPage}
+                                onChangeLength={setLimit}
+                            />
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
