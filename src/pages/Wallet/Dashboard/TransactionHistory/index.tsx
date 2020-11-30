@@ -175,6 +175,18 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
+                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0}>
+                                        <HeaderCell>Tx Fee</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAITransaction) => {
+                                                return (
+                                                    <div>
+                                                        {numberFormat(weiToKAI(rowData.txFee))} KAI
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
                                 </Table>
                                 <TablePagination
                                     lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
