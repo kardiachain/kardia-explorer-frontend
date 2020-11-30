@@ -18,35 +18,39 @@ const Network = () => {
     const { isMobile } = useViewport()
     const fgRef = useRef({} as any);
     const distance = 250;
+    const peerSimolation = 3;
 
     useEffect(() => {
         fgRef && fgRef.current && fgRef.current.cameraPosition && fgRef.current.cameraPosition({ z: distance });
         // camera orbit
         let angle = 0;
-        setInterval(() => {
+
+        const autoOrbite = setInterval(() => {
             fgRef && fgRef.current && fgRef.current.cameraPosition && fgRef.current.cameraPosition({
                 x: distance * Math.sin(angle),
                 z: distance * Math.cos(angle)
             });
             angle += Math.PI / 180;
         }, 40);
+
+        return () => clearInterval(autoOrbite);
     }, []);
 
     useEffect(() => {
         (async () => {
             const result = await getNodes()
             setNetworks(result)
+
             let linkArr = [] as any[];
             result.forEach((r) => {
-                // Random links number for each node
-                for (let i = 0; i < r.peerCount; i++) {
+                for (let i = 0; i < peerSimolation; i++) {
                     const nodeRandom = Math.floor(Math.random() * (result?.length - 1));
                     const targetValue = result[nodeRandom]?.id;
                     if (targetValue !== r.id) {
                         linkArr.push({ source: r.id, target: targetValue })
                     }
                 }
-            })
+            });
             
             const graphData = {
                 nodes: result.map((item, index) => {
@@ -79,7 +83,7 @@ const Network = () => {
                         linkDirectionalParticles={0.5}
                         linkDirectionalParticleWidth={1}
                         enableNodeDrag={false}
-                        linkCurvature={0.2}
+                        linkCurvature={0.5}
                     /> : <></>
             }
             <div className="container">

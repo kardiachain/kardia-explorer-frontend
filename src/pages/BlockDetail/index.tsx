@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, List, Panel, Placeholder } from 'rsuite'
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { dateToLocalTime, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { dateToUTCString, millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { getBlockBy } from '../../service/kai-explorer/block';
 import './blockDetail.css'
 
 const { Paragraph } = Placeholder;
 
 const BlockDetail = () => {
+    const history = useHistory();
     const [blockDetail, setBlockDetail] = useState<KAIBlockDetails>()
     const { block }: any = useParams();
     const [loading, setLoading] = useState(true)
@@ -64,7 +65,7 @@ const BlockDetail = () => {
                                         <div className="property-title">TimeStamp</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content"><Icon className="highlight" icon="clock-o" style={{ marginRight: 5 }} />{blockDetail?.time ? dateToLocalTime(blockDetail?.time) : ''}</div>
+                                        <div className="property-content"><Icon className="highlight" icon="clock-o" style={{ marginRight: 5 }} />{millisecondToHMS(blockDetail?.age || 0)} ({blockDetail?.time ? dateToUTCString(blockDetail?.time) : ''})</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -110,7 +111,26 @@ const BlockDetail = () => {
                                         <div className="property-title">Gas Used</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(blockDetail?.gasUsed || 0)}</div>
+                                        <div className="property-content">{numberFormat(blockDetail?.gasUsed || 0)} ({blockDetail?.gasUsedPercent}%)</div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                        <div className="property-title">Last Block Hash</div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                        <div className="property-content">
+                                            {renderHashToRedirect({
+                                                hash: blockDetail?.lastBlock,
+                                                headCount: 70,
+                                                tailCount: 4,
+                                                showTooltip: false,
+                                                callback: () => { history.push(`/block/${blockDetail?.lastBlock}`) },
+                                                showCopy: true
+                                            })}
+                                        </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

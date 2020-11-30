@@ -1,6 +1,6 @@
 import { gasLimitDefault } from '../../common/constant';
 import { cellValue, weiToKAI } from '../../common/utils/amount';
-import { dateToLocalTime } from '../../common/utils/string';
+import { dateToUTCString } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS } from '../../config/api';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
@@ -169,7 +169,7 @@ const getUBDEntries = async (valAddr: string, delAddr: string): Promise<UBDEntri
 
     const result: UBDEntries[] = []
     for (let i = 0; i < ubdEntries[0].length; i++) {
-        const enableTime = dateToLocalTime(ubdEntries[1][i] * 1000);
+        const enableTime = dateToUTCString(ubdEntries[1][i] * 1000);
         const now = (new Date()).getTime()
         const item = {
             withdrawableAmount: ubdEntries[0][i],

@@ -8,10 +8,12 @@ import { isLoggedIn } from '../../../service/wallet'
 import './validator.css'
 import { numberFormat } from '../../../common/utils/number';
 import Button from '../../../common/components/Button';
-import { getDelegationsByValidator, getValidator } from '../../../service/smc/staking';
 import Helper from '../../../common/components/Helper';
 import { HelperMessage } from '../../../common/constant/HelperMessage';
 import { addressValid } from '../../../common/utils/validate';
+import { TABLE_CONFIG } from '../../../config';
+import { getValidator } from '../../../service/kai-explorer';
+import TablePagination from 'rsuite/lib/Table/TablePagination';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -19,18 +21,20 @@ const ValidatorDetail = () => {
     const { isMobile } = useViewport()
     const history = useHistory()
     const [delegators, setDelegators] = useState([] as Delegator[]);
-    const [validator, setValidator] = useState<ValidatorFromSMC>()
+    const [validator, setValidator] = useState<Validator>()
     const { valAddr }: any = useParams();
+    const [page, setPage] = useState(TABLE_CONFIG.page)
+    const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
 
     useEffect(() => {
         if(addressValid(valAddr)) {
-            (async () => {
-                const data = await Promise.all([getDelegationsByValidator(valAddr), getValidator(valAddr)]);
-                setDelegators(data[0]);
-                setValidator(data[1]);
+            (async() => {
+                const val = await getValidator(valAddr, page, limit);
+                setValidator(val)
+                setDelegators(val.delegators)
             })()
         }
-    }, [valAddr]);
+    }, [valAddr, page, limit])
 
     return (
         <div className="container val-detail-container">
@@ -63,7 +67,7 @@ const ValidatorDetail = () => {
                                     <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                     <span className="property-title">Commission: </span>
                                     <span className="property-content">
-                                        {numberFormat(validator?.commission || 0, 2)} %
+                                        {numberFormat(validator?.commissionRate || 0, 2)} %
                                     </span>
                                 </List.Item>
                                 <List.Item bordered={false}>
@@ -83,13 +87,13 @@ const ValidatorDetail = () => {
                                 <List.Item>
                                     <span className="property-title">Total Delegator: </span>
                                     <span className="property-content">
-                                        {numberFormat(validator?.totalDels || 0)}
+                                        {numberFormat(validator?.totalDelegators || 0)}
                                     </span>
                                 </List.Item>
                                 <List.Item>
                                     <span className="property-title">Total staked amount: </span>
                                     <span className="property-content">
-                                        {numberFormat(weiToKAI(validator?.totalStakedAmount))} KAI
+                                        {numberFormat(weiToKAI(validator?.stakedAmount))} KAI
                                     </span>
                                 </List.Item>
                             </List>
@@ -158,6 +162,14 @@ const ValidatorDetail = () => {
                                     </Cell>
                                 </Column>
                             </Table>
+                            <TablePagination
+                                lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                activePage={page}
+                                displayLength={limit}
+                                total={delegators?.length}
+                                onChangePage={setPage}
+                                onChangeLength={setLimit}
+                            />
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>

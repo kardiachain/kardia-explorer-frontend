@@ -1,3 +1,4 @@
+import { numberFormat } from "../../../common/utils/number";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
 
@@ -35,6 +36,8 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
     }
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(blockDetail.time)).getTime()
+    const gasUsedPercent = numberFormat(blockDetail.gasUsed / blockDetail.gasLimit, 3);
+    
     return {
         blockHash: blockDetail.hash,
         blockHeight: blockDetail.height,
@@ -52,7 +55,8 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
         evidenceHash: blockDetail.evidenceHash,
         time: blockDetail.time,
         age: (nowTime - createdTime),
-        rewards: blockDetail.rewards
+        rewards: blockDetail.rewards,
+        gasUsedPercent: gasUsedPercent
     } as KAIBlockDetails
 }
 

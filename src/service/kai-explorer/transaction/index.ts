@@ -1,3 +1,4 @@
+import { numberFormat } from "../../../common/utils/number";
 import { STAKING_SMC_ADDRESS } from "../../../config/api";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
@@ -36,6 +37,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
             }
         })
     }
@@ -72,6 +74,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
             }
         })
     }
@@ -88,6 +91,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(tx.time)).getTime()
     const toSmcAddress = defineToSmcAddress(tx.to, tx.contractAddress)
+    const gasUsedPercent = numberFormat(tx.gasUsed / tx.gas * 100, 3)
     return {
         txHash:tx.hash,
         from: tx.from,
@@ -108,7 +112,9 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         input: tx.input,
         logs: tx.logs,
         toSmcName: toSmcAddress.toSmcName,
-        toSmcAddr: toSmcAddress.toSmcAddr
+        toSmcAddr: toSmcAddress.toSmcAddr,
+        gasUsedPercent: gasUsedPercent,
+        txFee: tx.txFee ? tx.txFee : (tx.gasUsed * tx.gasPrice * 10**9)
     }
 }
 
@@ -142,7 +148,8 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                 input:  o.input,
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
-                toSmcAddr: toSmcAddress.toSmcAddr
+                toSmcAddr: toSmcAddress.toSmcAddr,
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
             }
         })
     }

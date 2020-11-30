@@ -11,9 +11,10 @@ import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
-import { getValidatorsFromSMC, isValidator } from '../../service/smc/staking';
+import { isValidator } from '../../service/smc/staking';
 import { getNodes } from '../../service/kai-explorer/network';
 import { numberFormat } from '../../common/utils/number';
+import { getValidators } from '../../service/kai-explorer';
 
 
 const { Column, HeaderCell, Cell } = Table;
@@ -21,13 +22,14 @@ const { Column, HeaderCell, Cell } = Table;
 const Validators = () => {
     let history = useHistory();
     const { isMobile } = useViewport();
-    const [validators, setValidators] = useState([] as ValidatorFromSMC[]);
+    const [validators, setValidators] = useState([] as Validator[]);
     const [dataForValidatorsChart, setDataForValidatorsChart] = useState([] as DataChartConfig[]);
     const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig);
     const [tableLoading, setTableLoading] = useState(true)
     const [totalStakedAmount, setTotalStakedAmount] = useState(0)
     const [totalValidator, setTotalValidator] = useState(0)
     const [totalDelegator, setTotalDelegator] = useState(0)
+    const [totalProposer, setTotalProposer] = useState(0)
     const myAccount = getAccount() as Account
     const [isVal, setIsVal] = useState(false)
 
@@ -43,34 +45,29 @@ const Validators = () => {
     useEffect(() => {
         (async () => {
             setTableLoading(true)
-
             // get data validator and nodes
             const data = await Promise.all([
-                getValidatorsFromSMC(),
+                getValidators(),
                 getNodes()
             ])
             const stakingData = data[0];
             const nodes = data[1]
 
-            const valDetails = stakingData.validators;
-            
-            valDetails.map((v: any) => {
+            const valDetails = stakingData.validators ? stakingData.validators.map((v: any) => {
                 const node = nodes && nodes.filter(n => n.address === v.address)[0];
                 v.name = node && node.id ? node.id : "";
                 return v
-            })
-
+            }) : [];
             setValidators(valDetails);
             setTableLoading(false)
-
             // Calculate data for chart
             const dataForValidatorsChart = [] as any[];
-            valDetails.forEach((value: ValidatorFromSMC, index: number) => {
+            valDetails.forEach((value: Validator, index: number) => {
                 const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
                 dataForValidatorsChart.push({
                     custom: value.address,
                     name: value.name || truncate(value.address, 5, 3),
-                    y: value.votingPower,
+                    y: Number(value.votingPower),
                     color: colors[index] || colors[colorIndexRandom],
                     sliced: true
                 });
@@ -78,15 +75,16 @@ const Validators = () => {
 
             setDataForValidatorsChart(dataForValidatorsChart)
             setDataForStakedPieChart({
-                totalVals: stakingData?.totalVals,
-                totalDels: stakingData?.totalDels,
-                totalStakedAmont: stakingData?.totalStakedAmont,
-                totalValidatorStakedAmount: stakingData?.totalValidatorStakedAmount,
-                totalDelegatorStakedAmount: stakingData?.totalDelegatorStakedAmount
+                totalVals: stakingData?.totalValidators,
+                totalDels: stakingData?.totalDelegators,
+                totalStakedAmont: weiToKAI(stakingData?.totalStakedAmount),
+                totalValidatorStakedAmount: weiToKAI(stakingData?.totalValidatorStakedAmount),
+                totalDelegatorStakedAmount: weiToKAI(stakingData?.totalDelegatorStakedAmount)
             });
-            setTotalStakedAmount(stakingData.totalStakedAmont)
-            setTotalValidator(stakingData.totalVals)
-            setTotalDelegator(stakingData.totalDels)
+            setTotalStakedAmount(stakingData.totalStakedAmount)
+            setTotalValidator(stakingData.totalValidators)
+            setTotalDelegator(stakingData.totalDelegators)
+            setTotalProposer(stakingData.totalProposer)
         })()
     }, []);
 
@@ -138,6 +136,19 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="icon">
+                                        <Icon className="highlight icon" icon="peoples" size={"2x"} />
+                                    </div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Proposers
+                                        </div>
+                                        <div className="value">{totalProposer}</div>
+                                    </div>
+                                </div>
+                            </FlexboxGrid.Item>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                                <div className="stats-container">
+                                    <div className="icon">
                                         <Icon className="highlight icon" icon="people-group" size={"2x"} />
                                     </div>
                                     <div className="content">
@@ -157,7 +168,7 @@ const Validators = () => {
                                         <div className="title">
                                         Staked Amount
                                         </div>
-                                        <div className="value">{formatAmountwithPlus(totalStakedAmount)} KAI</div>
+                                        <div className="value">{formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -180,10 +191,10 @@ const Validators = () => {
                             <Column width={60} verticalAlign="middle">
                                 <HeaderCell>Rank</HeaderCell>
                                 <Cell>
-                                    {(rowData: ValidatorFromSMC) => {
+                                    {(rowData: Validator) => {
                                         return (
-                                            <div className="rank-tab" style={{ backgroundColor: dataForValidatorsChart[rowData.rank || 0]?.color }}>
-                                                {Number(rowData.rank) + 1}
+                                            <div className="rank-tab" style={{ backgroundColor: dataForValidatorsChart[(rowData?.rank || 1) - 1 || 0]?.color }}>
+                                                {rowData.rank}
                                             </div>
                                         );
                                     }}
@@ -192,7 +203,7 @@ const Validators = () => {
                             <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                 <HeaderCell>Validator</HeaderCell>
                                 <Cell>
-                                    {(rowData: ValidatorFromSMC) => {
+                                    {(rowData: Validator) => {
                                         return (
                                             <div>
                                                 {
@@ -216,9 +227,9 @@ const Validators = () => {
                             <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Staked Amount</HeaderCell>
                                 <Cell>
-                                    {(rowData: ValidatorFromSMC) => {
+                                    {(rowData: Validator) => {
                                         return (
-                                            <div>{formatAmount(Number(weiToKAI(rowData.totalStakedAmount)))} KAI</div>
+                                            <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))} KAI</div>
                                         );
                                     }}
                                 </Cell>
@@ -226,7 +237,7 @@ const Validators = () => {
                             <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Voting power</HeaderCell>
                                 <Cell>
-                                    {(rowData: ValidatorFromSMC) => {
+                                    {(rowData: Validator) => {
                                         return (
                                             <div>{rowData.votingPower || '0'} %</div>
                                         );
@@ -236,9 +247,9 @@ const Validators = () => {
                             <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Total Delegators</HeaderCell>
                                 <Cell>
-                                    {(rowData: ValidatorFromSMC) => {
+                                    {(rowData: Validator) => {
                                         return (
-                                            <div>{rowData.totalDels || '0'}</div>
+                                            <div>{rowData.totalDelegators || '0'}</div>
                                         );
                                     }}
                                 </Cell>
@@ -246,9 +257,9 @@ const Validators = () => {
                             <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                                 <HeaderCell>Commission</HeaderCell>
                                 <Cell>
-                                    {(rowData: ValidatorFromSMC) => {
+                                    {(rowData: Validator) => {
                                         return (
-                                            <div>{numberFormat(rowData?.commission || 0, 2)} %</div>
+                                            <div>{numberFormat(rowData?.commissionRate || 0, 2)} %</div>
                                         );
                                     }}
                                 </Cell>
@@ -256,7 +267,7 @@ const Validators = () => {
                             <Column width={150} verticalAlign="middle" align="center">
                                 <HeaderCell>Action</HeaderCell>
                                 <Cell>
-                                    {(rowData: ValidatorFromSMC) => {
+                                    {(rowData: Validator) => {
                                         return (
                                             <Button onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                                         );
