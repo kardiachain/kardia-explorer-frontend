@@ -190,6 +190,18 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
+                                        <HeaderCell>Tx Fee</HeaderCell>
+                                        <Cell>
+                                            {(rowData: KAITransaction) => {
+                                                return (
+                                                    <div>
+                                                        {numberFormat(weiToKAI(rowData.txFee))} KAI
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
                                 </Table>
                                 <TablePagination
                                     lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
