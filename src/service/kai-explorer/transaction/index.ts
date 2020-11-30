@@ -37,7 +37,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**8)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
             }
         })
     }
@@ -74,7 +74,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 logs:  o.logs,
                 toSmcName: toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**8)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
             }
         })
     }
@@ -114,7 +114,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         toSmcName: toSmcAddress.toSmcName,
         toSmcAddr: toSmcAddress.toSmcAddr,
         gasUsedPercent: gasUsedPercent,
-        txFee: tx.txFee ? tx.txFee : (tx.gasUsed * tx.gasPrice * 10**8)
+        txFee: tx.txFee ? tx.txFee : (tx.gasUsed * tx.gasPrice * 10**9)
     }
 }
 
