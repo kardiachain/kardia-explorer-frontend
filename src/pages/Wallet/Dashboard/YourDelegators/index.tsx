@@ -47,6 +47,7 @@ const YourDelegators = () => {
     const [gasLimitErr, setGasLimitErr] = useState('')
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
+    const [tableLoading, setTableLoading] = useState(true);
 
     const validateCommissionRate = (value: any) => {
         if (!value) {
@@ -143,6 +144,7 @@ const YourDelegators = () => {
 
     useEffect(() => {
         (async () => {
+            setTableLoading(true);
             const isVal = await isValidator(myAccount.publickey);
             setIsVal(isVal)
             setStatePending(false)
@@ -150,14 +152,17 @@ const YourDelegators = () => {
                 const val = await getValidator(myAccount.publickey, page, limit);
                 setValidator(val)
                 setDelegators(val.delegators)
+                setTableLoading(false);
             }
         })();
     }, [myAccount.publickey, page, limit]);
 
     const reFetchData = async () => {
+        setTableLoading(true);
         const val = await getValidator(myAccount.publickey, page, limit);
         setValidator(val)
         setDelegators(val.delegators)
+        setTableLoading(false);
     }
 
     return !statePending ? (
@@ -342,6 +347,8 @@ const YourDelegators = () => {
                                         autoHeight
                                         rowHeight={60}
                                         data={delegators}
+                                        wordWrap
+                                        loading={tableLoading}
                                     >
                                         <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Delegator address</HeaderCell>
@@ -388,7 +395,7 @@ const YourDelegators = () => {
                                         lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
                                         activePage={page}
                                         displayLength={limit}
-                                        total={delegators?.length}
+                                        total={validator?.totalDelegators}
                                         onChangePage={setPage}
                                         onChangeLength={setLimit}
                                     />

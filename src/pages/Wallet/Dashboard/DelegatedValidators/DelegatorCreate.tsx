@@ -37,20 +37,25 @@ const DelegatorCreate = () => {
     const [gasLimitErr, setGasLimitErr] = useState('')
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
+    const [tableLoading, setTableLoading] = useState(true);
 
 
     useEffect(() => {
         (async () => {
+            setTableLoading(true)
             const val = await getValidator(valAddr, page, limit);
             setValidator(val)
             setDelegators(val.delegators)
+            setTableLoading(false)
         })();
     }, [valAddr, page, limit]);
 
     const fetchData = async() => {
+        setTableLoading(true)
         const val = await getValidator(valAddr, page, limit);
         setValidator(val)
         setDelegators(val.delegators)
+        setTableLoading(false)
     }
 
     const validateDelAmount = (value: any): boolean => {
@@ -257,6 +262,7 @@ const DelegatorCreate = () => {
                                 data={delegators}
                                 wordWrap
                                 hover={false}
+                                loading={tableLoading}
                             >
                                 <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
@@ -300,7 +306,7 @@ const DelegatorCreate = () => {
                                 lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
                                 activePage={page}
                                 displayLength={limit}
-                                total={delegators?.length}
+                                total={validator?.totalDelegators}
                                 onChangePage={setPage}
                                 onChangeLength={setLimit}
                             />

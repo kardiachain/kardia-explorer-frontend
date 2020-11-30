@@ -25,13 +25,16 @@ const ValidatorDetail = () => {
     const { valAddr }: any = useParams();
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true)
         if(addressValid(valAddr)) {
             (async() => {
                 const val = await getValidator(valAddr, page, limit);
                 setValidator(val)
                 setDelegators(val.delegators)
+                setLoading(false)
             })()
         }
     }, [valAddr, page, limit])
@@ -120,6 +123,7 @@ const ValidatorDetail = () => {
                                 autoHeight
                                 rowHeight={60}
                                 data={delegators}
+                                loading={loading}
                             >
                                 <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                     <HeaderCell>Delegator Address</HeaderCell>
@@ -166,7 +170,7 @@ const ValidatorDetail = () => {
                                 lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
                                 activePage={page}
                                 displayLength={limit}
-                                total={delegators?.length}
+                                total={validator?.totalDelegators}
                                 onChangePage={setPage}
                                 onChangeLength={setLimit}
                             />
