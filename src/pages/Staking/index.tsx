@@ -45,7 +45,6 @@ const Validators = () => {
     useEffect(() => {
         (async () => {
             setTableLoading(true)
-
             // get data validator and nodes
             const data = await Promise.all([
                 getValidators(),
@@ -54,21 +53,16 @@ const Validators = () => {
             const stakingData = data[0];
             const nodes = data[1]
 
-            const valDetails = stakingData.validators;
-            
-            valDetails.map((v: any) => {
+            const valDetails = stakingData.validators ? stakingData.validators.map((v: any) => {
                 const node = nodes && nodes.filter(n => n.address === v.address)[0];
                 v.name = node && node.id ? node.id : "";
                 return v
-            })
-
+            }) : [];
             setValidators(valDetails);
             setTableLoading(false)
-
             // Calculate data for chart
             const dataForValidatorsChart = [] as any[];
             valDetails.forEach((value: Validator, index: number) => {
-                
                 const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
                 dataForValidatorsChart.push({
                     custom: value.address,
@@ -78,7 +72,6 @@ const Validators = () => {
                     sliced: true
                 });
             });
-            console.log("dataForValidatorsChart", dataForValidatorsChart);
 
             setDataForValidatorsChart(dataForValidatorsChart)
             setDataForStakedPieChart({

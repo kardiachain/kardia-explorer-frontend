@@ -18,6 +18,7 @@ const Network = () => {
     const { isMobile } = useViewport()
     const fgRef = useRef({} as any);
     const distance = 250;
+    const peerSimolation = 3;
 
     useEffect(() => {
         fgRef && fgRef.current && fgRef.current.cameraPosition && fgRef.current.cameraPosition({ z: distance });
@@ -42,9 +43,13 @@ const Network = () => {
 
             let linkArr = [] as any[];
             result.forEach((r) => {
-                r.peers && r.peers.forEach((peer: any, index: number) => {
-                    linkArr.push({source: r.id, target: peer.node_info.moniker});
-                })
+                for (let i = 0; i < peerSimolation; i++) {
+                    const nodeRandom = Math.floor(Math.random() * (result?.length - 1));
+                    const targetValue = result[nodeRandom]?.id;
+                    if (targetValue !== r.id) {
+                        linkArr.push({ source: r.id, target: targetValue })
+                    }
+                }
             });
             
             const graphData = {

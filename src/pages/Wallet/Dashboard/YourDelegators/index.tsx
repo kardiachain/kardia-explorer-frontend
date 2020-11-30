@@ -373,6 +373,16 @@ const YourDelegators = () => {
                                                 }}
                                             </Cell>
                                         </Column>
+                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                            <HeaderCell>Claimable Rewards</HeaderCell>
+                                            <Cell>
+                                                {(rowData: Delegator) => {
+                                                    return (
+                                                        <div> {numberFormat(weiToKAI(rowData.rewardsAmount))} KAI</div>
+                                                    );
+                                                }}
+                                            </Cell>
+                                        </Column>
                                     </Table>
                                     <TablePagination
                                         lengthMenu={TABLE_CONFIG.pagination.lengthMenu}

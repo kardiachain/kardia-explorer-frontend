@@ -12,7 +12,7 @@ export const getValidators = async (): Promise<Validators> => {
         totalValidatorStakedAmount: raw.totalValidatorStakedAmount,
         totalDelegatorStakedAmount: raw.totalDelegatorStakedAmount,
         totalProposer: raw.totalProposer,
-        validators: raw.validators.map((v: any, i: number) => {
+        validators: raw.validators ? raw.validators.map((v: any, i: number) => {
             return {
                 rank: i + 1,
                 address: v.address,
@@ -24,7 +24,7 @@ export const getValidators = async (): Promise<Validators> => {
                 maxChangeRate: v.maxChangeRate,
                 name: v.name || v.address
             }
-        }) || []
+        }) : []
     } as Validators
 }
 
@@ -44,12 +44,12 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         maxRate: val.maxRate,
         maxChangeRate: val.maxChangeRate,
         name: val.name || val.address,
-        delegators: val.delegators.map((del: any, index: number) => {
+        delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
             return {
                 address: del.address,
                 stakeAmount: del.stakedAmount,
                 rewardsAmount: del.reward
-            } as Delegator
-        })
+            } as Delegator 
+        }) : []
     } as Validator
 }
