@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
-import { Dropdown } from 'rsuite';
+import React from 'react';
+import { Dropdown, Icon } from 'rsuite';
+import { useViewport } from '../../../context/ViewportContext';
+
+
+const mainnetMode = process.env.REACT_APP_MAINNET_MODE === 'true' ? true : false;
+const mainnetDisable = process.env.REACT_APP_MAINNET_DISABLE === 'true' ? true : false;
+const mainnetLink = process.env.REACT_APP_MAINNET_LINK || ''
+const testnetDisable = process.env.REACT_APP_TESTNET_DISABLE === 'true' ? true : false;
+const testnetLink = process.env.REACT_APP_TESTNET_LINK || ''
 
 const networkList = [
     {
         label: 'Fengari Testnet 3.0',
         value: 'testnet-3.0',
-        disabled: false
+        disabled: testnetDisable,
+        link: testnetLink
+    },
+    {
+        label: 'Mainnet',
+        value: 'mainnet',
+        disabled: mainnetDisable,
+        link: mainnetLink
     }
 ]
 
@@ -15,16 +30,30 @@ const getNetworkLabel = (value: string) => {
 }
 
 const NetworkSelect = () => {
-    const [network, setNetwork] = useState('testnet-3.0')
+    const { isMobile } = useViewport()
+    const network = mainnetMode ? 'mainnet' : 'testnet-3.0';
+
+    const selectNetworkHandle = (link: string) => {
+        window.open(link);
+    }
+
     return (
         <div className="network-select-wrapper">
-            <Dropdown activeKey={network} title={getNetworkLabel(network)}>
+            <Dropdown  icon={<Icon className={isMobile ? "highlight" : ""} icon="cubes" />} activeKey={network} title={getNetworkLabel(network)}>
                 {
                     networkList.map((networkItem) => {
-                        return <Dropdown.Item key={networkItem.value} eventKey={networkItem.value} onSelect={(key) => setNetwork(key)} disabled={networkItem.disabled}>{networkItem.label}</Dropdown.Item>
+                        return <Dropdown.Item
+                            key={networkItem.value}
+                            eventKey={networkItem.value}
+                            onSelect={() => selectNetworkHandle(networkItem.link) }
+                            disabled={networkItem.disabled}>
+                            {networkItem.label}
+                        </Dropdown.Item>
                     })
                 }
-                <Dropdown.Item eventKey="faucet" href="/faucet">Fengari Faucet</Dropdown.Item>
+                {
+                    !mainnetMode ? <Dropdown.Item eventKey="faucet" onSelect={() => window.open('/faucet')}>Fengari Faucet</Dropdown.Item> : <></>
+                }   
             </Dropdown>
         </div>
     )

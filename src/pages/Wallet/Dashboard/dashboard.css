@@ -64,6 +64,10 @@
     .wallet-info-card .action {
         bottom: 25px;
     }
+
+    .wallet-info-card .rs-panel-body {
+        padding: 0 !important;
+    }    
 }
 
 

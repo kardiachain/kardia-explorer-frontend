@@ -210,7 +210,7 @@ const YourDelegators = () => {
                                                         headCount: isMobile ? 20 : 30,
                                                         tailCount: 4,
                                                         showTooltip: true,
-                                                        callback: () => { window.open(`/address/${validator?.address}`) }
+                                                        callback: () => { window.open(`/validator/${validator?.address}`) }
                                                     })
                                                 }
                                             </span>

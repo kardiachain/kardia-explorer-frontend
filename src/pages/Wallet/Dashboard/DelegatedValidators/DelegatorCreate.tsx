@@ -130,7 +130,7 @@ const DelegatorCreate = () => {
     return (
         <>
             <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
                     <div className="val-info-container">
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -247,7 +247,7 @@ const DelegatorCreate = () => {
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24}>
                     <div className="del-list-container">
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>

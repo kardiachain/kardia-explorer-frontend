@@ -1,7 +1,8 @@
 :root{
   --highlight: linear-gradient(137.34deg,#e62c2c 14.41%,#623555 116.67%);
   --gray: #5c5c5c;
-  --nav-color:#2a343d;
+  --nav-color:#000000;
+  --nav-color-active: #ae0001;
   --black-color: #302b3c;
   --bg-color: #f8f9fa;
   --white-color: #FFFFFF;
@@ -88,6 +89,20 @@ a:hover {
 .rs-header{
   background-color: var(--nav-color);
   height:56px;
+}
+.rs-navbar.rs-navbar-inverse {
+  background-color: var(--nav-color) !important;
+}
+
+.rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item-active a,
+.rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item:hover a,
+.rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item:focus a,
+.rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item:active a,
+.rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu-active ~ .rs-dropdown-toggle,
+.rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:active,
+.rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:hover,
+.rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:focus {
+  background-color: var(--nav-color-active) !important;
 }
 
 .rs-table-cell-header .rs-table-cell-content{

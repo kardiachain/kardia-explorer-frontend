@@ -22,7 +22,7 @@
 
 
 .kai-header-container-mobile {
-    background-color: #2A343D;
+    background-color: var(--nav-color);
     display: flex;
 }
 
@@ -69,6 +69,10 @@
 .btn-search{
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
+}
+
+.rs-header .rs-navbar.rs-navbar-inverse .network-select-wrapper .rs-dropdown .rs-dropdown-menu-active ~ .rs-dropdown-toggle {
+    background-color: var(--nav-color) !important;
 }
 
 @media only screen and (max-width: 740px) {
