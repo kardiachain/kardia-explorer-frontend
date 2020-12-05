@@ -1,6 +1,7 @@
 import { numberFormat } from "../../../common/utils/number";
 import { STAKING_SMC_ADDRESS } from "../../../config/api";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
+import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 
 interface TransactionsResponse {
     totalTxs: number;
@@ -119,7 +120,8 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 }
 
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
-    const response = await fetch(`${END_POINT}addresses/${address}/txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
+    const checkSumAddr = toChecksum(address.toLocaleLowerCase());
+    const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime()

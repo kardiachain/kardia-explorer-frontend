@@ -262,7 +262,7 @@ const TxDetail = () => {
                                                         tailCount: 4,
                                                         showTooltip: false,
                                                         callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
-                                                        showCopy: true
+                                                        showCopy: false
                                                     })} {txDetail.toSmcName} <IconButton
                                                             size="xs"
                                                             onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
@@ -283,17 +283,17 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                        <div className="property-title">Transaction Fee</div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                        <div className="property-content">{numberFormat(weiToKAI(txDetail?.txFee || 0))} KAI</div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
                             { showMore ?  <>
-                                    <List.Item>
-                                        <FlexboxGrid justify="start" align="middle">
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                                <div className="property-title">Transaction Fee</div>
-                                            </FlexboxGrid.Item>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                                <div className="property-content">{numberFormat(weiToKAI(txDetail?.txFee || 0))} KAI</div>
-                                            </FlexboxGrid.Item>
-                                        </FlexboxGrid>
-                                    </List.Item>
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
