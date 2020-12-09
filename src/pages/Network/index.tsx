@@ -83,7 +83,7 @@ const Network = () => {
                         linkDirectionalParticles={0.5}
                         linkDirectionalParticleWidth={1}
                         enableNodeDrag={false}
-                        linkCurvature={0.5}
+                        linkCurvature={0.3}
                     /> : <></>
             }
             <div className="container">

@@ -1,29 +1,37 @@
 import { numberFormat } from "../../../common/utils/number";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
-export const getBlocks = async (page: number, size: number): Promise<KAIBlock[]> => {
 
-    const response = await fetch(`${END_POINT}blocks?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
-    const responseJSON = await response.json()
+interface BlocksResponse {
+    totalTxs: number;
+    blocks: KAIBlock[]
+}
 
-    const rawBlockList = responseJSON?.data?.data || []
-    const nowTime = (new Date()).getTime()
-    return rawBlockList.map((o: any) => {
-        const createdTime = (new Date(o.time)).getTime()
-        return {
-            blockHash: o.hash,
-            blockHeight: o.height,
-            transactions: o.numTxs,
-            validator: {
-                label: 'Validator',
-                hash: o.proposerAddress || ''
-            },
-            time: new Date(o.time),
-            age: (nowTime - createdTime),
-            gasUsed: o.gasUsed,
-            gasLimit: o.gasLimit,
-            rewards: o.rewards
-        } as KAIBlock
-    });
+export const getBlocks = async (page: number, size: number): Promise<BlocksResponse> => {
+
+    const response = await fetch(`${END_POINT}blocks?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+    const responseJSON = await response.json();
+    const rawBlockList = responseJSON?.data?.data || [];
+    const nowTime = (new Date()).getTime();
+    return {
+        totalTxs: responseJSON?.data?.total || 0,
+        blocks: rawBlockList.map((o: any) => {
+            const createdTime = (new Date(o.time)).getTime()
+            return {
+                blockHash: o.hash,
+                blockHeight: o.height,
+                transactions: o.numTxs,
+                validator: {
+                    label: 'Validator',
+                    hash: o.proposerAddress || ''
+                },
+                time: new Date(o.time),
+                age: (nowTime - createdTime),
+                gasUsed: o.gasUsed,
+                gasLimit: o.gasLimit,
+                rewards: o.rewards
+            } as KAIBlock
+        })
+    }
 }
 
 // Common for get block detail by blockhash or blocknumber

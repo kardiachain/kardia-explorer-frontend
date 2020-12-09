@@ -16,7 +16,7 @@ const { Column, HeaderCell, Cell } = Table;
 
 const Blocks = () => {
     const [blocks, setBlocks] = useState([] as KAIBlock[])
-    const [latestBlock, setLatestBlock] = useState<KAIBlock>()
+    const [totalBlock, setTotalBlock] = useState(0)
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const { isMobile } = useViewport()
@@ -40,8 +40,8 @@ const Blocks = () => {
 
     const fetchBlocks = async (page: number, size: number) => {
         const blocks = await getBlocks(page, size);
-        setLatestBlock(blocks[0])
-        setBlocks(blocks)
+        setTotalBlock(blocks.totalTxs)
+        setBlocks(blocks.blocks)
     }
 
     return (
@@ -182,7 +182,7 @@ const Blocks = () => {
                                     lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
                                     activePage={page}
                                     displayLength={size}
-                                    total={latestBlock?.blockHeight}
+                                    total={totalBlock}
                                     onChangePage={setPage}
                                     onChangeLength={setSize}
                                 />
