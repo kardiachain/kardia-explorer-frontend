@@ -2,7 +2,7 @@ import { numberFormat } from "../../../common/utils/number";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 interface BlocksResponse {
-    totalTxs: number;
+    totalBlocks: number;
     blocks: KAIBlock[]
 }
 
@@ -13,7 +13,7 @@ export const getBlocks = async (page: number, size: number): Promise<BlocksRespo
     const rawBlockList = responseJSON?.data?.data || [];
     const nowTime = (new Date()).getTime();
     return {
-        totalTxs: responseJSON?.data?.total || 0,
+        totalBlocks: responseJSON?.data?.total || 0,
         blocks: rawBlockList.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
             return {

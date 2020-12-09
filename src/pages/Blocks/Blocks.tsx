@@ -40,7 +40,7 @@ const Blocks = () => {
 
     const fetchBlocks = async (page: number, size: number) => {
         const blocks = await getBlocks(page, size);
-        setTotalBlock(blocks.totalTxs)
+        setTotalBlock(blocks.totalBlocks)
         setBlocks(blocks.blocks)
     }
 

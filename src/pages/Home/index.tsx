@@ -38,7 +38,7 @@ const Home = () => {
 
         // Get blocks
         const blockResponse = await getBlocks(TABLE_CONFIG.page, BLOCK_COUNT_FOR_CHART)
-        blockResponse && setBlockHeight(blockResponse.totalTxs);
+        blockResponse && setBlockHeight(blockResponse.totalBlocks);
         const blockList = blockResponse.blocks;
         const originBlockList = JSON.parse(JSON.stringify(blockList))
 
