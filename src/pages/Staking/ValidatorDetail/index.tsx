@@ -29,8 +29,8 @@ const ValidatorDetail = () => {
 
     useEffect(() => {
         setLoading(true)
-        if(addressValid(valAddr)) {
-            (async() => {
+        if (addressValid(valAddr)) {
+            (async () => {
                 const val = await getValidator(valAddr, page, limit);
                 setValidator(val)
                 setDelegators(val.delegators)
@@ -42,7 +42,7 @@ const ValidatorDetail = () => {
     return (
         <div className="container val-detail-container">
             <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} style={{ marginBottom: '30px' }}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: '30px' }}>
                     <div>
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -53,51 +53,96 @@ const ValidatorDetail = () => {
                         <Panel shaded>
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Address: </span>
-                                    <span className="property-content">
-                                        {
-                                            renderHashToRedirect({
-                                                hash: validator?.address || '',
-                                                headCount: isMobile ? 10 : 30,
-                                                tailCount: 4,
-                                                showTooltip: true,
-                                                callback: () => { window.open(`/address/${validator?.address}`) }
-                                            })
-                                        }
-                                    </span>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Validator Name</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content validator-name">{validator?.name} <Icon className="verify-proposer-icon" icon="check-circle" size={"lg"} /></div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
                                 </List.Item>
                                 <List.Item>
-                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                                    <span className="property-title">Commission: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.commissionRate || 0, 2)} %
-                                    </span>
-                                </List.Item>
-                                <List.Item bordered={false}>
-                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                                    <span className="property-title">Max Commission Rate: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.maxRate || 0, 2)} %
-                                    </span>
-                                </List.Item>
-                                <List.Item bordered={false}>
-                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
-                                    <span className="property-title">Max Change Commission Rate: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.maxChangeRate || 0, 2)} %
-                                    </span>
-                                </List.Item>
-                                <List.Item>
-                                    <span className="property-title">Total Delegator: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.totalDelegators || 0)}
-                                    </span>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Address</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {
+                                                    renderHashToRedirect({
+                                                        hash: validator?.address || '',
+                                                        headCount: 45,
+                                                        tailCount: 4,
+                                                        showTooltip: true,
+                                                        showCopy: true,
+                                                        callback: () => { window.open(`/address/${validator?.address}`) }
+                                                    })
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total staked amount: </span>
-                                    <span className="property-content">
-                                        {numberFormat(weiToKAI(validator?.stakedAmount))} KAI
-                                    </span>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                                                <span className="property-title">Max Commission Rate: </span>
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {numberFormat(validator?.commissionRate || 0, 2)} %
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                                                <span className="property-title">Max Commission Rate: </span>
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.maxRate || 0, 2)} %</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                                                <span className="property-title">Max Change Commission Rate</span>
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.maxChangeRate || 0, 2)} %</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Total Delegator</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.totalDelegators || 0)}</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Total staked amount</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(weiToKAI(validator?.stakedAmount))} KAI</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
                                 </List.Item>
                             </List>
                             <Button size="big" style={{ marginTop: '30px' }}
@@ -108,7 +153,7 @@ const ValidatorDetail = () => {
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div>
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>

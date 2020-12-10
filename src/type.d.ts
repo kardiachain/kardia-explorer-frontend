@@ -131,6 +131,7 @@ interface Validator {
     maxChangeRate: any;
     name: string;
     delegators: Delegator[]
+    color?: string;
 }
 
 interface KaiToken {

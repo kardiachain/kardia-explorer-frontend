@@ -1,9 +1,11 @@
+import { colors } from "../../../common/constant"
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 
 export const getValidators = async (): Promise<Validators> => {
     const response = await fetch(`${END_POINT}validators`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const raw = responseJSON.data || []
+    const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
 
     return {
         totalValidators: raw.totalValidators,
@@ -15,6 +17,7 @@ export const getValidators = async (): Promise<Validators> => {
         validators: raw.validators ? raw.validators.map((v: any, i: number) => {
             return {
                 rank: i + 1,
+                color: colors[i] || colors[colorIndexRandom],
                 address: v.address,
                 votingPower: v.votingPowerPercentage,
                 stakedAmount: v.stakedAmount,
@@ -22,7 +25,7 @@ export const getValidators = async (): Promise<Validators> => {
                 totalDelegators: v.totalDelegators,
                 maxRate: v.maxRate,
                 maxChangeRate: v.maxChangeRate,
-                name: v.name || v.address
+                name: v.name
             }
         }) : []
     } as Validators

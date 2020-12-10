@@ -6,7 +6,6 @@
     line-height: 35px;
     border-radius: 50%;
     color: var(--white-color);
-    font-family: 600;
 }
 
 .validators-container .staking-stats .stats-container {
@@ -29,5 +28,33 @@
 
 .validators-container .staking-stats .stats-container .value {
     font-size: 25px;
+    font-weight: 600;
+}
+
+.validators-container .rs-nav-subtle.rs-nav-horizontal .rs-nav-item > .rs-nav-item-content::before {
+    height: 4px;
+    background: var(--highlight);
+}
+.validators-container .rs-nav .rs-nav-item-content {
+    font-weight: 600;
+}
+.validators-container .rs-nav .rs-nav-item-active > .rs-nav-item-content {
+    color: var(--hyperlink-color);
+}
+.verify-proposer-icon {
+    display: inline-block;
+    width: 25px;
+    color: #0a940a;
+}
+.validator-address {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+}
+.validator-title {
+    display: inline-block;
+}
+.validator-title .validator-name {
+    text-transform: uppercase;
     font-weight: 600;
 }

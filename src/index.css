@@ -28,11 +28,15 @@ body {
 
 .hex {
   font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
 }
 
 .hex-link {
   font-weight: 600;
   color: var(--hyperlink-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
 }
 
 a:active,
@@ -108,9 +112,12 @@ a:hover {
 .rs-table-cell-header .rs-table-cell-content{
   font-size: 14px !important;
   font-weight:600 !important;
-  color:#575757 !important;
+  color:#000000 !important;
 }
-
+.rs-table-row-header,
+.rs-table-row-header .rs-table-cell {
+  background: #f0f0f0 !important
+}
 
 /* end override rsuite */
 
