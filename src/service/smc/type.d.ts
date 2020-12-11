@@ -18,3 +18,11 @@ interface SMCInvokeObject {
     functionName: string;
     amount: numner;
 }
+
+interface CreateValParams {
+    valName: string;
+    commissionRate: number;
+    maxRate: number;
+    maxChangeRate: number;
+    minSeftDelegation: number;
+}

@@ -7,7 +7,7 @@ import { ErrorMessage } from '../../../../common/constant/Message';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc/staking';
-import { getAccount, getStoredBalance } from '../../../../service/wallet';
+import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
@@ -19,13 +19,13 @@ const ValidatorCreate = () => {
     const [maxRate, setMaxRate] = useState('')
     const [maxChangeRate, setMaxChangeRate] = useState('')
     const [minSelfDelegation, setMinSelfDelegation] = useState('')
-    const [amountDel, setAmountDel] = useState('')
+    const [valName, setValName] = useState('')
 
     const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
     const [maxChangeRateErr, setMaxChangeRateErr] = useState('')
     const [minSelfDelegationErr, setMinSelfDelegationErr] = useState('')
-    const [amountDelErr, setAmountDelErr] = useState('')
+    const [valNameErr, setValNameErr] = useState('')
 
     const [hashTransaction, setHashTransaction] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
@@ -35,6 +35,15 @@ const ValidatorCreate = () => {
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
+
+    const validateValName = (value: string) => {
+        if (!value) {
+            setValNameErr(ErrorMessage.Require);
+            return false;
+        }
+        setValNameErr('');
+        return true;
+    }
 
     const validateCommissionRate = (value: any) => {
         if (!value) {
@@ -133,48 +142,9 @@ const ValidatorCreate = () => {
             return false
         }
 
-        if (Number(value) < 10000000) {
-            setMinSelfDelegationErr(ErrorMessage.MinSelfDelegationBelowMinimum)
-            return false
-        }
-
         setMinSelfDelegationErr('');
-        // Self-delegated amount is below minimum
-        if (Number(value) >= Number(amountDel)) {
-            setAmountDelErr(ErrorMessage.DelBelowMinimum)
-            return false
-        } else {
-            setAmountDelErr('')
-        }
-        setMinSelfDelegationErr('')
         return true
     }
-
-    const validateAmountDel = (value: any) => {
-        if (!value) {
-            setAmountDelErr(ErrorMessage.Require)
-            return false
-        }
-        if (Number(value) === 0) {
-            setAmountDelErr(ErrorMessage.ValueInvalid)
-            return false
-        }
-
-        const balance = getStoredBalance();
-        if (balance === 0 || balance < Number(value)) {
-            setAmountDelErr(ErrorMessage.BalanceNotEnough)
-            return false
-        }
-
-        // Self-delegated amount is below minimum
-        if (Number(value) <= Number(minSelfDelegation)) {
-            setAmountDelErr(ErrorMessage.DelBelowMinimum)
-            return false
-        }
-        setAmountDelErr('')
-        return true
-    }
-
 
     const validateGasPrice = (gasPrice: any): boolean => {
         if (!Number(gasPrice)) {
@@ -199,11 +169,17 @@ const ValidatorCreate = () => {
         setMaxRate('')
         setMaxChangeRate('')
         setMinSelfDelegation('')
-        setAmountDel('')
+        setValName('')
     }
 
     const submitValidator = () => {
-        if (!validateGasPrice(gasPrice) || !validateGasLimit(gasLimit) || !validateCommissionRate(commissionRate) || !validateMaxRate(maxRate) || !validateMaxChangeRate(maxChangeRate) || !validateMinSelfDelegation(minSelfDelegation) || !validateAmountDel(amountDel)) {
+        if (!validateGasPrice(gasPrice) ||
+            !validateValName(valName) ||
+            !validateGasLimit(gasLimit) ||
+            !validateCommissionRate(commissionRate) ||
+            !validateMaxRate(maxRate) ||
+            !validateMaxChangeRate(maxChangeRate) ||
+            !validateMinSelfDelegation(minSelfDelegation)) {
             return
         }
         setShowConfirmModal(true)
@@ -213,15 +189,23 @@ const ValidatorCreate = () => {
         setHashTransaction('');
         try {
             setIsLoading(true)
-            let account = await getAccount() as Account;
-            let validator = await createValidator(Number(commissionRate), Number(maxRate), Number(maxChangeRate), Number(minSelfDelegation), account, Number(amountDel), gasLimit, gasPrice);
+            const account = await getAccount() as Account;
+            const params = {
+                valName: valName,
+                commissionRate: Number(commissionRate),
+                maxRate: Number(maxRate),
+                maxChangeRate: Number(maxChangeRate),
+                minSeftDelegation: Number(minSelfDelegation)
+            } as CreateValParams;
 
+            let validator = await createValidator(params, account, gasLimit, gasPrice);
             if (validator && validator.status === 1) {
                 Alert.success('Create validator success.')
-                setHashTransaction(validator.transactionHash)
             } else {
-                setCreateValErrMsg('Create validator failed.');
+                const errMsg = validator.gasUsed === Number(gasLimit) ? 'Create transaction fail with error: Out of gas.' : 'Create validator failed.'
+                setCreateValErrMsg(errMsg)
             }
+            setHashTransaction(validator.transactionHash)
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -239,7 +223,7 @@ const ValidatorCreate = () => {
         <>
             <Form fluid>
                 <FlexboxGrid>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
                         <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                         <FormControl name="gaslimit"
                             placeholder="Gas Limit"
@@ -254,7 +238,7 @@ const ValidatorCreate = () => {
                         />
                         <ErrMessage message={gasLimitErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{marginBottom: 15}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
                         <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
                         <SelectPicker
                             className="dropdown-custom"
@@ -269,7 +253,21 @@ const ValidatorCreate = () => {
                         />
                         <ErrMessage message={gasPriceErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                        <ControlLabel>
+                            Name <span className="required-mask">(*)</span>
+                        </ControlLabel>
+                        <FormControl placeholder="Name"
+                            name="valName"
+                            value={valName}
+                            onChange={(value) => {
+                                setValName(value)
+                                validateValName(value);
+                            }} />
+                        <ErrMessage message={valNameErr} />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                             Commission Rate (%)  <span className="required-mask">(*)</span>
@@ -285,7 +283,7 @@ const ValidatorCreate = () => {
                             }} />
                         <ErrMessage message={commissionRateErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                             Max Rate (%)  <span className="required-mask">(*)</span>
@@ -301,7 +299,7 @@ const ValidatorCreate = () => {
                             }} />
                         <ErrMessage message={maxRateErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                             Max Change Rate (%)  <span className="required-mask">(*)</span>
@@ -317,7 +315,7 @@ const ValidatorCreate = () => {
                             }} />
                         <ErrMessage message={maxChangeRateErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel>
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
                             Minimum Delegate Amount (KAI)  <span className="required-mask">(*)</span>
@@ -333,23 +331,7 @@ const ValidatorCreate = () => {
                             }} />
                         <ErrMessage message={minSelfDelegationErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
-                        <ControlLabel>
-                            <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
-                            Amount Self Delegation (KAI)  <span className="required-mask">(*)</span>
-                        </ControlLabel>
-                        <FormControl placeholder="Amount Self Delegation"
-                            name="amountDel"
-                            value={amountDel}
-                            onChange={(value) => {
-                                if (onlyNumber(value)) {
-                                    setAmountDel(value)
-                                    validateAmountDel(value)
-                                }
-                            }} />
-                        <ErrMessage message={amountDelErr} />
-                    </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 15}}>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <Button size="big" onClick={submitValidator}>Register</Button>
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
@@ -366,11 +348,11 @@ const ValidatorCreate = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to create validator with: </div>
+                    <div>Validator Name: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valName}</span></div>
                     <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
                     <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
                     <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
                     <div>Minimum Delegate Amount: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
-                    <div>Amount Self Delegation: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(amountDel)} KAI</span></div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={registerValidator}>

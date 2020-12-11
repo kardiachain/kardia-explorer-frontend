@@ -65,7 +65,28 @@ const ValidatorDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Address</div>
+                                            <div className="property-title">Staking Contract</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {
+                                                    renderHashToRedirect({
+                                                        hash: validator?.address || '',
+                                                        headCount: 45,
+                                                        tailCount: 4,
+                                                        showTooltip: true,
+                                                        showCopy: true,
+                                                        callback: () => { window.open(`/address/${validator?.address}`) }
+                                                    })
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Owner</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
