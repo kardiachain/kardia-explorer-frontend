@@ -187,6 +187,7 @@ const ValidatorCreate = () => {
 
     const registerValidator = async () => {
         setHashTransaction('');
+        setCreateValErrMsg('');
         try {
             setIsLoading(true)
             const account = await getAccount() as Account;

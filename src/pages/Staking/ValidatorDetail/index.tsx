@@ -65,7 +65,7 @@ const ValidatorDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Staking Contract</div>
+                                            <div className="property-title">Validator Address</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
@@ -86,7 +86,7 @@ const ValidatorDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Owner</div>
+                                            <div className="property-title">Staking Contract</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
@@ -161,7 +161,7 @@ const ValidatorDetail = () => {
                                             <div className="property-title">Total staked amount</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                            <div className="property-content">{numberFormat(weiToKAI(validator?.stakedAmount))} KAI</div>
+                                            <div className="property-content">{numberFormat(weiToKAI(validator?.stakedAmount), 4)} KAI</div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
@@ -216,7 +216,7 @@ const ValidatorDetail = () => {
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {numberFormat(weiToKAI(rowData.stakeAmount))} KAI</div>
+                                                <div> {numberFormat(weiToKAI(rowData.stakeAmount), 4)} KAI</div>
                                             );
                                         }}
                                     </Cell>
@@ -226,7 +226,7 @@ const ValidatorDetail = () => {
                                     <Cell>
                                         {(rowData: Delegator) => {
                                             return (
-                                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount))} KAI</div>
+                                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount), 4)} KAI</div>
                                             );
                                         }}
                                     </Cell>
