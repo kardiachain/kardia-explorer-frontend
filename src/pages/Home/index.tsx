@@ -37,8 +37,9 @@ const Home = () => {
         setTotalTxs(transactionsResponse.totalTxs);
 
         // Get blocks
-        const blockList = await getBlocks(TABLE_CONFIG.page, BLOCK_COUNT_FOR_CHART)
-        blockList[0] && setBlockHeight(blockList[0].blockHeight)
+        const blockResponse = await getBlocks(TABLE_CONFIG.page, BLOCK_COUNT_FOR_CHART)
+        blockResponse && setBlockHeight(blockResponse.totalBlocks);
+        const blockList = blockResponse.blocks;
         const originBlockList = JSON.parse(JSON.stringify(blockList))
 
         // Get block for calculate tps
