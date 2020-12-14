@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table, Tag } from 'rsuite';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { onlyNumber, numberFormat, onlyInteger } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
-import { isValidator, updateValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
@@ -14,9 +13,10 @@ import { useViewport } from '../../../../context/ViewportContext';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { getValidator } from '../../../../service/kai-explorer';
+import { checkIsValidator, getValidator } from '../../../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../../../config';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
+import { updateValidator } from '../../../../service/smc/staking';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -129,16 +129,16 @@ const YourDelegators = () => {
             setIsLoading(true);
 
             const params: UpdateValParams = {
-                valSmcAddr: '',
+                valSmcAddr: validator?.smcAddress || '',
                 newValName: valName,
                 newCommissionRate: Number(commissionRate),
                 newMinSelfDelegation: Number(minSelfDelegation)
             }
 
-            let validator = await updateValidator(params, myAccount, gasLimit, gasPrice);
-            if (validator && validator.status === 1) {
+            let result = await updateValidator(params, myAccount, gasLimit, gasPrice);
+            if (result && result.status === 1) {
                 Alert.success('Update validator success.');
-                setHashTransaction(validator.transactionHash);
+                setHashTransaction(result.transactionHash);
                 reFetchData();
             } else {
                 setUpdateValErrMsg('Update validator failed.');
@@ -164,7 +164,7 @@ const YourDelegators = () => {
     useEffect(() => {
         (async () => {
             setTableLoading(true);
-            const isVal = await isValidator(myAccount.publickey);
+            const isVal = await checkIsValidator(myAccount.publickey);
             setIsVal(isVal)
             setStatePending(false)
             if (isVal) {
@@ -223,28 +223,20 @@ const YourDelegators = () => {
                                         <List.Item>
                                             <FlexboxGrid justify="start" align="middle">
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Validator Name</div>
+                                                    <div className="property-title">Validator</div>
                                                 </FlexboxGrid.Item>
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content validator-name">
                                                         {validator?.name} <Icon className="verify-proposer-icon" icon="check-circle" size={"lg"} />
                                                     </div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Validator address</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content">
                                                         {
                                                             renderHashToRedirect({
                                                                 hash: validator?.address,
-                                                                headCount: isMobile ? 20 : 30,
+                                                                headCount: 45,
                                                                 tailCount: 4,
-                                                                showTooltip: true,
+                                                                showTooltip: false,
+                                                                showCopy: true,
                                                                 callback: () => { window.open(`/validator/${validator?.address}`) }
                                                             })
                                                         }
@@ -261,14 +253,30 @@ const YourDelegators = () => {
                                                     <div className="property-content">
                                                         {
                                                             renderHashToRedirect({
-                                                                hash: validator?.address || '',
+                                                                hash: validator?.smcAddress || '',
                                                                 headCount: 45,
                                                                 tailCount: 4,
-                                                                showTooltip: true,
+                                                                showTooltip: false,
                                                                 showCopy: true,
-                                                                callback: () => { window.open(`/address/${validator?.address}`) }
+                                                                callback: () => { window.open(`/address/${validator?.smcAddress}`) }
                                                             })
                                                         }
+                                                    </div>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </List.Item>
+                                        <List.Item>
+                                            <FlexboxGrid justify="start" align="middle">
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                    <div className="property-title">
+                                                        <span className="property-title">Status </span>
+                                                    </div>
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                    <div className="property-content">
+                                                        <Tag color="blue">Validated</Tag>
+                                                        <Tag color="green">Registered</Tag>
+                                                        <Tag color="violet">Proposer</Tag>
                                                     </div>
                                                 </FlexboxGrid.Item>
                                             </FlexboxGrid>

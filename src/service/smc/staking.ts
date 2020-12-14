@@ -1,6 +1,5 @@
 import { gasLimitDefault } from '../../common/constant';
 import { cellValue } from '../../common/utils/amount';
-import { dateToUTCString } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS } from '../../config/api';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
@@ -39,8 +38,6 @@ const invokeSendAction = async (
         params: params,
         name: methodName,
     });
-
-    console.log("Params", params);
     const invokeResult = await invoke.send(account.privatekey, contractAddr, {
         from: account.publickey,
         amount: amountVal,
@@ -48,74 +45,7 @@ const invokeSendAction = async (
         gasPrice: gasPrice
     });
 
-    console.log("invokeResult", invokeResult);
     return invokeResult;
-}
-
-
-const getValidatorsByDelegator = async (delAddr: string): Promise<YourValidator[]> => {
-    // const valAddr = await invokeCallData(stakingContract, STAKING_SMC_ADDRESS, "getValidatorsByDelegator", [delAddr])
-    let validators: YourValidator[] = [];
-    // if (valAddr.length === 0) return validators
-    // for (let i = 0; i < valAddr.length; i++) {
-    //     const valAddress = valAddr[i];
-    //     const stakeAmount = await getDelegatorStake(valAddress, delAddr)
-    //     const rewardAmount = await getDelegationRewards(valAddress, delAddr)
-    //     const ubdEntries = await getUBDEntries(valAddress, delAddr)
-    //     let withdrawableAmount = 0;
-    //     let unbondedAmount = 0;
-    //     ubdEntries.filter(item => item.enableWithdraw).forEach(item => {
-    //         withdrawableAmount += item.withdrawableAmount;
-    //     });
-    //     ubdEntries.filter(item => !item.enableWithdraw).forEach(item => {
-    //         unbondedAmount += item.withdrawableAmount;
-    //     });
-
-
-
-    //     const validator: YourValidator = {
-    //         validatorAddr: valAddress,
-    //         yourStakeAmount: stakeAmount,
-    //         claimableAmount: rewardAmount,
-    //         withdrawable: ubdEntries,
-    //         withdrawableAmount: withdrawableAmount,
-    //         unbondedAmount: unbondedAmount
-    //     }
-
-    //     validators.push(validator)
-    // }
-
-
-    return validators
-}
-
-const getUBDEntries = async (valAddr: string, delAddr: string): Promise<UBDEntries[]> => {
-    const ubdEntries = await invokeCallData(stakingContract, STAKING_SMC_ADDRESS, "getUBDEntries", [valAddr, delAddr])
-
-    const result: UBDEntries[] = []
-    for (let i = 0; i < ubdEntries[0].length; i++) {
-        const enableTime = dateToUTCString(ubdEntries[1][i] * 1000);
-        const now = (new Date()).getTime()
-        const item = {
-            withdrawableAmount: ubdEntries[0][i],
-            withdrawableTime: enableTime,
-            enableWithdraw: ubdEntries[1][i] * 1000 < now ? true : false
-        }
-        result.push(item);
-    }
-    return result;
-}
-
-const isValidator = async (valAddr: string): Promise<boolean> => {
-    try {
-        if (!valAddr) return false;
-        const invoke = await invokeCallData(stakingContract, STAKING_SMC_ADDRESS, "getValidator", [valAddr])
-        if (invoke) return true
-    } catch (error) {
-        return false
-    }
-    return false
-
 }
 
 const delegateAction = async (valSmcAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
@@ -160,6 +90,16 @@ const updateValidator = async (params: UpdateValParams, account: Account, gasLim
         throw error;
     }
 }
+
+// @Function registor start to become validator
+const startValidator = async (valSmcAddr: string, account: Account) => {
+    try {
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "start", [], account, 0);
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 // Validator withdraw commission reward
 const withdrawCommission = async (valSmcAddr: string, account: Account) => {
@@ -211,14 +151,13 @@ const undelegateAll = async (valSmcAddr: string, account: Account) => {
 export {
     invokeCallData,
     invokeSendAction,
-    getValidatorsByDelegator,
     delegateAction,
     createValidator,
-    isValidator,
     withdrawReward,
     withdraw,
     updateValidator,
     undelegateWithAmount,
     withdrawCommission,
-    undelegateAll
+    undelegateAll,
+    startValidator
 }

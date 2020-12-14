@@ -60,3 +60,36 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         }) : []
     } as Validator
 }
+
+// Get validator by delegator
+export const getValidatorByDelegator = async (delAddr: string): Promise<YourValidator[]> => {
+    const response = await fetch(`${END_POINT}delegators/${delAddr}/validators`, GET_REQUEST_OPTION);
+    const responseJSON = await response.json();
+    const vals = responseJSON.data || [];
+
+    return vals ? vals.map((v: any) => {
+        return {
+            validatorName: v.validatorName || '',
+            validatorAddr: v.validator || '',
+            yourStakeAmount: v.stakedAmount,
+            validatorSmcAddr: v.validatorContractAddr || '',
+            claimableAmount: v.claimableRewards,
+            unbondedAmount: v.unbondedAmount,
+            withdrawableAmount: v.withdrawableAmount
+        } as YourValidator
+    }) : []
+}
+
+
+// check validator had register
+export const checkIsValidator = async (valAddr: string): Promise<boolean> => {
+    try {
+        const response = await fetch(`${END_POINT}validators/${valAddr}?page=0&limit=10`, GET_REQUEST_OPTION);
+        if (response.status === 200) {
+            return true
+        }
+    } catch (error) {
+        return false;
+    }
+    return false;
+}

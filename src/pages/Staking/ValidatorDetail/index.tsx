@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Panel, Table, Tag } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { renderHashToRedirect } from '../../../common/utils/string';
 import { useViewport } from '../../../context/ViewportContext';
@@ -96,6 +96,22 @@ const ValidatorDetail = () => {
                                                         callback: () => { window.open(`/address/${validator?.smcAddress}`) }
                                                     })
                                                 }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <span className="property-title">Status </span>
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                <Tag color="blue">Validated</Tag>
+                                                <Tag color="green">Registered</Tag>
+                                                <Tag color="violet">Proposer</Tag>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

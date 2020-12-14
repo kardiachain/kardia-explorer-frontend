@@ -10,7 +10,7 @@ import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
-import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashToRedirect } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidator } from '../../../../service/kai-explorer';
@@ -104,8 +104,13 @@ const DelegatorCreate = () => {
     const confirmDelegate = async () => {
         try {
             setIsLoading(true)
-            let account = getAccount() as Account
-            const delegate = await delegateAction(valAddr, account, Number(delAmount), gasLimit, gasPrice);
+            const account = getAccount() as Account;
+            const valSmcAddr = validator?.smcAddress || '';
+            if (!valSmcAddr) {
+                return
+            }
+            const delegate = await delegateAction(valSmcAddr, account, Number(delAmount), gasLimit, gasPrice);
+           
             if (delegate && delegate.status === 1) {
                 Alert.success('Delegate success.');
                 setHashTransaction(delegate.transactionHash);

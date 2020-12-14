@@ -84,12 +84,13 @@ interface ValidatorFromSMC {
 }
 
 interface YourValidator {
+    validatorName: string;
     validatorAddr: string;
+    validatorSmcAddr: string;
     yourStakeAmount: number;
     claimableAmount: number;
     withdrawableAmount: number;
     unbondedAmount: number;
-    withdrawable: UBDEntries[];
 }
 interface Delegator {
     address: string;
@@ -158,10 +159,4 @@ interface TotalStats {
 interface ToSmcAddress {
     toSmcAddr: string;
     toSmcName: string;
-}
-
-interface UBDEntries {
-    withdrawableAmount: number;
-    withdrawableTime: any;
-    enableWithdraw: boolean;
 }

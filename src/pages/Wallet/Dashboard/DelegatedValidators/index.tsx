@@ -7,7 +7,8 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
-import { getValidatorsByDelegator, undelegateStake, withdraw, withdrawReward } from '../../../../service/smc/staking';
+import { getValidatorByDelegator } from '../../../../service/kai-explorer';
+import { undelegateWithAmount, withdraw, withdrawReward } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './stype.css';
 
@@ -28,31 +29,31 @@ const Delegator = () => {
 
     useEffect(() => {
         (async () => {
-            const yourVals = await getValidatorsByDelegator(myAccount.publickey)
+            const yourVals = await getValidatorByDelegator(myAccount.publickey)
             setYourValidators(yourVals)
         })()
     }, [myAccount.publickey]);
 
 
     const reFetchData = async () => {
-        const yourVals = await getValidatorsByDelegator(myAccount.publickey)
+        const yourVals = await getValidatorByDelegator(myAccount.publickey)
         setYourValidators(yourVals)
     }
 
     const withdrawRewards = async () => {
         setIsLoading(true)
         try {
-            const valAddr = validatorActive?.validatorAddr || '';
-            if(!valAddr) return;
+            const valSmcAddr = validatorActive?.validatorSmcAddr || '';
+            if(!valSmcAddr) return;
 
-            const withdrawTx = await withdrawReward(valAddr, myAccount);
+            const withdrawTx = await withdrawReward(valSmcAddr, myAccount);
             if (withdrawTx && withdrawTx.status) {
-                Alert.success('Withdraw rewards success.', 5000)
+                Alert.success('Withdraw rewards success.', 5000);
             } else {
-                Alert.error('Withdraw rewards failed.', 5000)
+                Alert.error('Withdraw rewards failed.', 5000);
             }
         } catch (error) {
-            Alert.error(`Withdraw failed: ${error.message}`, 5000)
+            Alert.error(`Withdraw failed: ${error.message}`, 5000);
         }
         await reFetchData()
         setIsLoading(false)
@@ -87,11 +88,13 @@ const Delegator = () => {
     }
 
     const undelegate = async () => {
-        const valAddr = validatorActive?.validatorAddr || '';
-        if (!validateUnStakeAmount(unStakeAmount) || !valAddr) return
-        setIsLoading(true)
+        const valSmcAddr = validatorActive?.validatorSmcAddr || '';
+        if(!valSmcAddr) return;
+        if (!validateUnStakeAmount(unStakeAmount) || !valSmcAddr) return
+        setIsLoading(true);
+
         try {
-            const undelegateTx = await undelegateStake(valAddr, Number(unStakeAmount), myAccount)
+            const undelegateTx = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
             if (undelegateTx && undelegateTx.status === 1) {
                 Alert.success('Undelegate success.', 5000)
             } else {

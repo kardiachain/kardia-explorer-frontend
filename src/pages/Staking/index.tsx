@@ -10,8 +10,7 @@ import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
-import { isValidator } from '../../service/smc/staking';
-import { getValidators } from '../../service/kai-explorer';
+import { checkIsValidator, getValidators } from '../../service/kai-explorer';
 import ValidatorList from './ValidatorList';
 import WaitingList from './WaitingList';
 
@@ -32,7 +31,7 @@ const Validators = () => {
     useEffect(() => {
         (async () => {
             if (myAccount.publickey) {
-                const isVal = await isValidator(myAccount.publickey);
+                const isVal = await checkIsValidator(myAccount.publickey);
                 setIsVal(isVal);
             }
         })()
