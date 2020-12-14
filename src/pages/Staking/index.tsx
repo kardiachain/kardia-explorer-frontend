@@ -40,7 +40,6 @@ const Validators = () => {
 
     useEffect(() => {
         (async () => {
-            // setTableLoading(true)
             // get data validator and nodes
             const stakingData = await getValidators();
             const valDetails = stakingData.validators

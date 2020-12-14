@@ -25,7 +25,9 @@ export const getValidators = async (): Promise<Validators> => {
                 totalDelegators: v.totalDelegators,
                 maxRate: v.maxRate,
                 maxChangeRate: v.maxChangeRate,
-                name: v.name
+                name: v.name,
+                smcAddress: v.smcAddress || '',
+                isProposer: v.isProposer
             }
         }) : []
     } as Validators
@@ -47,6 +49,8 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         maxRate: val.maxRate,
         maxChangeRate: val.maxChangeRate,
         name: val.name || val.address,
+        smcAddress: val.smcAddress || '',
+        isProposer: val.isProposer,
         delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
             return {
                 address: del.address,

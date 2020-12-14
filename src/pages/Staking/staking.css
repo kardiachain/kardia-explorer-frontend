@@ -41,11 +41,6 @@
 .validators-container .rs-nav .rs-nav-item-active > .rs-nav-item-content {
     color: var(--hyperlink-color);
 }
-.verify-proposer-icon {
-    display: inline-block;
-    width: 25px;
-    color: #0a940a;
-}
 .validator-address {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
@@ -53,8 +48,4 @@
 }
 .validator-title {
     display: inline-block;
-}
-.validator-title .validator-name {
-    text-transform: uppercase;
-    font-weight: 600;
 }

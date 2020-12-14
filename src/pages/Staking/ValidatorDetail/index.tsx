@@ -55,19 +55,15 @@ const ValidatorDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Validator Name</div>
+                                            <div className="property-title">Validator</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                            <div className="property-content validator-name">{validator?.name} <Icon className="verify-proposer-icon" icon="check-circle" size={"lg"} /></div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </List.Item>
-                                <List.Item>
-                                    <FlexboxGrid justify="start" align="middle">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Validator Address</div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content validator-name">
+                                                {validator?.name}
+                                                {
+                                                    validator?.isProposer ? <Icon className="verify-proposer-icon" icon="check-circle" size={"lg"} /> : <></>
+                                                }
+                                            </div>
                                             <div className="property-content">
                                                 {
                                                     renderHashToRedirect({
@@ -92,12 +88,12 @@ const ValidatorDetail = () => {
                                             <div className="property-content">
                                                 {
                                                     renderHashToRedirect({
-                                                        hash: validator?.address || '',
+                                                        hash: validator?.smcAddress || '',
                                                         headCount: 45,
                                                         tailCount: 4,
                                                         showTooltip: true,
                                                         showCopy: true,
-                                                        callback: () => { window.open(`/address/${validator?.address}`) }
+                                                        callback: () => { window.open(`/address/${validator?.smcAddress}`) }
                                                     })
                                                 }
                                             </div>
@@ -109,7 +105,7 @@ const ValidatorDetail = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
                                                 <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                                                <span className="property-title">Max Commission Rate: </span>
+                                                <span className="property-title">Commission Rate </span>
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -124,7 +120,7 @@ const ValidatorDetail = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
                                                 <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                                                <span className="property-title">Max Commission Rate: </span>
+                                                <span className="property-title">Max Commission Rate</span>
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -142,6 +138,16 @@ const ValidatorDetail = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">{numberFormat(validator?.maxChangeRate || 0, 2)} %</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Voting Power</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.votingPower || 0)} %</div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>

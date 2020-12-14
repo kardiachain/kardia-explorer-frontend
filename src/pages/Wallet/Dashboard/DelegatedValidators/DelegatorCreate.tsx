@@ -144,20 +144,48 @@ const DelegatorCreate = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Validator Name</div>
+                                            <div className="property-title">Validator</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                            <div className="property-content validator-name">XXXXXXXXX</div>
+                                            <div className="property-content validator-name">
+                                                {validator?.name}
+                                                {
+                                                    validator?.isProposer ? <Icon className="verify-proposer-icon" icon="check-circle" size={"lg"} /> : <></>
+                                                }
+                                            </div>
+                                            <div className="property-content">
+                                                {
+                                                    renderHashToRedirect({
+                                                        hash: validator?.address || '',
+                                                        headCount: 45,
+                                                        tailCount: 4,
+                                                        showTooltip: true,
+                                                        showCopy: true,
+                                                        callback: () => { window.open(`/address/${validator?.address}`) }
+                                                    })
+                                                }
+                                            </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Validator Address</div>
+                                            <div className="property-title">Staking Contract</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                            <div className="property-content">{renderHashString(valAddr, 45)}</div>
+                                            <div className="property-content">
+                                                {
+                                                    renderHashToRedirect({
+                                                        hash: validator?.smcAddress || '',
+                                                        headCount: 45,
+                                                        tailCount: 4,
+                                                        showTooltip: true,
+                                                        showCopy: true,
+                                                        callback: () => { window.open(`/address/${validator?.smcAddress}`) }
+                                                    })
+                                                }
+                                            </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
@@ -206,6 +234,20 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
+                                                Voting Power
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {numberFormat(validator?.votingPower || 0, 3)} %
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
                                                 Total delegator
                                             </div>
                                         </FlexboxGrid.Item>
@@ -235,48 +277,52 @@ const DelegatorCreate = () => {
                                 <Form fluid>
                                     <FormGroup>
                                         <FlexboxGrid>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
-                                                <FormControl name="gaslimit"
-                                                    placeholder="Gas Limit"
-                                                    value={gasLimit}
-                                                    onChange={(value) => {
-                                                        if (onlyInteger(value)) {
-                                                            setGasLimit(value);
-                                                            validateGasLimit(value)
-                                                        }
-                                                    }}
-                                                    style={{ width: '100%' }}
-                                                />
-                                                <ErrMessage message={gasLimitErr} />
-                                            </FlexboxGrid.Item>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
-                                                <SelectPicker
-                                                    className="dropdown-custom"
-                                                    data={gasPriceOption}
-                                                    searchable={false}
-                                                    value={gasPrice}
-                                                    onChange={(value) => {
-                                                        setGasPrice(value)
-                                                        validateGasPrice(value)
-                                                    }}
-                                                    style={{ width: '100%' }}
-                                                />
-                                                <ErrMessage message={gasPriceErr} />
-                                            </FlexboxGrid.Item>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24} style={{ marginBottom: 15 }}>
-                                                <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
-                                                <FormControl
-                                                    placeholder="Delegation amount*"
-                                                    value={delAmount} name="delAmount"
-                                                    onChange={(value) => {
-                                                        if (onlyNumber(value)) {
-                                                            setDelAmount(value)
-                                                            validateDelAmount(value)
-                                                        }
-                                                    }} />
-                                                <ErrMessage message={errorMessage} />
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
+                                                <FlexboxGrid>
+                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
+                                                        <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                                        <FormControl name="gaslimit"
+                                                            placeholder="Gas Limit"
+                                                            value={gasLimit}
+                                                            onChange={(value) => {
+                                                                if (onlyInteger(value)) {
+                                                                    setGasLimit(value);
+                                                                    validateGasLimit(value)
+                                                                }
+                                                            }}
+                                                            style={{ width: '100%' }}
+                                                        />
+                                                        <ErrMessage message={gasLimitErr} />
+                                                    </FlexboxGrid.Item>
+                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
+                                                        <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                                        <SelectPicker
+                                                            className="dropdown-custom"
+                                                            data={gasPriceOption}
+                                                            searchable={false}
+                                                            value={gasPrice}
+                                                            onChange={(value) => {
+                                                                setGasPrice(value)
+                                                                validateGasPrice(value)
+                                                            }}
+                                                            style={{ width: '100%' }}
+                                                        />
+                                                        <ErrMessage message={gasPriceErr} />
+                                                    </FlexboxGrid.Item>
+                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
+                                                        <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
+                                                        <FormControl
+                                                            placeholder="Delegation amount*"
+                                                            value={delAmount} name="delAmount"
+                                                            onChange={(value) => {
+                                                                if (onlyNumber(value)) {
+                                                                    setDelAmount(value)
+                                                                    validateDelAmount(value)
+                                                                }
+                                                            }} />
+                                                        <ErrMessage message={errorMessage} />
+                                                    </FlexboxGrid.Item>
+                                                </FlexboxGrid>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </FormGroup>

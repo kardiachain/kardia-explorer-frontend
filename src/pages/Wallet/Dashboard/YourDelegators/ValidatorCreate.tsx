@@ -33,7 +33,7 @@ const ValidatorCreate = () => {
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
-    const [gasLimit, setGasLimit] = useState(gasLimitDefault)
+    const [gasLimit, setGasLimit] = useState(5000000)
     const [gasLimitErr, setGasLimitErr] = useState('')
 
     const validateValName = (value: string) => {

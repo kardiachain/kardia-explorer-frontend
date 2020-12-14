@@ -132,6 +132,8 @@ interface Validator {
     name: string;
     delegators: Delegator[]
     color?: string;
+    smcAddress: string;
+    isProposer: boolean;
 }
 
 interface KaiToken {

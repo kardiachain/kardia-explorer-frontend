@@ -21,7 +21,7 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
                 wordWrap
                 hover={false}
                 autoHeight
-                rowHeight={70}
+                rowHeight={60}
                 data={validators}
                 loading={validators.length === 0}
             >
@@ -43,14 +43,17 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
                         {(rowData: Validator) => {
                             return (
                                 <div>
-                                    <div className="verify-proposer-icon">
-                                        <Icon icon="check-circle" size={"lg"} />
-                                    </div>
+                                    { rowData.isProposer ? (
+                                        <div className="verify-proposer-icon">
+                                            <Icon icon="check-circle" size={"lg"} />
+                                        </div>
+                                        ) : <></>
+                                    }
                                     <Link to={`/validator/${rowData?.address}`}>
                                         <div className="validator-title">
                                             {
                                                 rowData.name ? <span className="validator-name">{rowData.name}</span> : <></>
-                                            } 
+                                            }
                                             <div className="validator-address">{truncate(rowData.address, 10, 4)}</div>
                                         </div>
                                     </Link>

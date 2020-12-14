@@ -26,3 +26,10 @@ interface CreateValParams {
     maxChangeRate: number;
     minSeftDelegation: number;
 }
+
+interface UpdateValParams {
+    valSmcAddr: string;
+    newValName: string;
+    newCommissionRate: number;
+    newMinSelfDelegation: number;
+}

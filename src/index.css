@@ -186,6 +186,18 @@ a:hover {
   text-align: center;
 }
 
+.verify-proposer-icon {
+  display: inline-block;
+  width: 25px;
+  color: #0a940a;
+  margin-left: 5px;
+}
+
+.validator-name {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
 @media screen and (max-width: 740px) {
   .rs-header{
     display: flex;
