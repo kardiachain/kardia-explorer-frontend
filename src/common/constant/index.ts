@@ -29,3 +29,5 @@ export const colors = [
 ]
 
 export const gasLimitDefault = 3000000
+export const MIN_DELEGATION_AMOUNT = 25000
+export const MIN_STAKED_AMOUNT_START_VALIDATOR = 12500000

@@ -48,4 +48,8 @@
 }
 .validator-title {
     display: inline-block;
+    margin-bottom: 2px;
+}
+.validator-name {
+    margin-bottom: 2px;
 }

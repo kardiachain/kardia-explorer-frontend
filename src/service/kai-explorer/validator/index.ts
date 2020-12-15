@@ -27,7 +27,10 @@ export const getValidators = async (): Promise<Validators> => {
                 maxChangeRate: v.maxChangeRate,
                 name: v.name,
                 smcAddress: v.smcAddress || '',
-                isProposer: v.isProposer
+                isProposer: v.role === 2,
+                isValidator: v.role === 1,
+                isRegister: v.role === 0,
+                status: checkValidatorStatus(v.role),
             }
         }) : []
     } as Validators
@@ -50,7 +53,10 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         maxChangeRate: val.maxChangeRate,
         name: val.name || val.address,
         smcAddress: val.smcAddress || '',
-        isProposer: val.isProposer,
+        status: checkValidatorStatus(val.role),
+        isProposer: val.role === 2,
+        isValidator: val.role === 1,
+        isRegister: val.role === 0,
         delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
             return {
                 address: del.address,
@@ -60,6 +66,32 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         }) : []
     } as Validator
 }
+
+export const getRegisters = async (): Promise<Register[]> => {
+    const response = await fetch(`${END_POINT}validators/registered`, GET_REQUEST_OPTION)
+    const responseJSON = await response.json();
+    const registers = responseJSON.data.validators || [];
+
+    return registers.map((v: any, index: number) => {
+        return {
+            rank: index + 1,
+            name: v.name,
+            address: v.address,
+            smcAddress: v.smcAddress,
+            status: checkValidatorStatus(v.role),
+            isProposer: v.role === 2,
+            isValidator: v.role === 1,
+            isRegister: v.role === 0,
+            votingPower: v.votingPowerPercentage,
+            stakedAmount: v.stakedAmount,
+            commissionRate: v.commissionRate,
+            totalDelegators: v.totalDelegators,
+            maxRate: v.maxRate,
+            maxChangeRate: v.maxChangeRate
+        } as Register
+    }) || [];
+}
+
 
 // Get validator by delegator
 export const getValidatorByDelegator = async (delAddr: string): Promise<YourValidator[]> => {
@@ -93,3 +125,32 @@ export const checkIsValidator = async (valAddr: string): Promise<boolean> => {
     }
     return false;
 }
+
+
+export const checkValidatorStatus = (status: number): ValidatorStatus => {
+    let result: ValidatorStatus = {
+        content: "",
+        color: ""
+    };
+    switch (status) {
+        case 0:
+            result = {
+                content: "Register",
+                color: "register"
+            };
+            break;
+        case 1:
+            result = {
+                content: "Validator",
+                color: "validator"
+            };
+            break;
+        case 2: 
+            result = {
+                content: "Proposer",
+                color: "proposer"
+            } 
+            break;
+    }
+    return result;
+} 

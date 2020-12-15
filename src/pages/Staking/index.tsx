@@ -10,14 +10,16 @@ import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
-import { checkIsValidator, getValidators } from '../../service/kai-explorer';
+import { checkIsValidator, getRegisters, getValidators } from '../../service/kai-explorer';
 import ValidatorList from './ValidatorList';
-import WaitingList from './WaitingList';
+import RegisterList from './RegisterList';
+
 
 const Validators = () => {
     let history = useHistory();
     const { isMobile } = useViewport();
     const [validators, setValidators] = useState([] as Validator[]);
+    const [registers, setRegisters] = useState([] as Register[])
     const [dataForValidatorsChart, setDataForValidatorsChart] = useState([] as DataChartConfig[]);
     const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig);
     const [totalStakedAmount, setTotalStakedAmount] = useState(0)
@@ -26,7 +28,7 @@ const Validators = () => {
     const [totalProposer, setTotalProposer] = useState(0)
     const myAccount = getAccount() as Account
     const [isVal, setIsVal] = useState(false)
-    const [activeKey, setActiveKey] = useState('current');
+    const [activeKey, setActiveKey] = useState('validators');
 
     useEffect(() => {
         (async () => {
@@ -39,10 +41,18 @@ const Validators = () => {
 
     useEffect(() => {
         (async () => {
-            // get data validator and nodes
-            const stakingData = await getValidators();
-            const valDetails = stakingData.validators
+
+            // fetch data validator and register
+            const fetchData = await Promise.all([
+                getValidators(),
+                getRegisters()
+            ]);
+            
+            setRegisters(fetchData[1]);
+            const stakingData = fetchData[0];
+            const valDetails = stakingData.validators;
             setValidators(stakingData.validators);
+
             // Calculate data for chart
             const dataForValidatorsChart = [] as any[];
             valDetails.forEach((value: Validator, index: number) => {
@@ -166,15 +176,15 @@ const Validators = () => {
                             activeKey={activeKey}
                             onSelect={setActiveKey}
                             style={{marginBottom: 20}}>
-                            <Nav.Item eventKey="current">
-                                Validator
+                            <Nav.Item eventKey="validators">
+                                Validators
                             </Nav.Item>
-                            <Nav.Item eventKey="waiting">
-                                Waiting
+                            <Nav.Item eventKey="registers">
+                                Registers
                             </Nav.Item>
                         </Nav>
                         {
-                            activeKey === "current" ? <ValidatorList validators={validators} /> : <WaitingList />
+                            activeKey === "validators" ? <ValidatorList validators={validators} /> : <RegisterList registers={registers} />
                         }
                     </Panel>
                 </FlexboxGrid.Item>

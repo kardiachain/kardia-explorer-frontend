@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table, Tag } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import Button from '../../../../common/components/Button';
 import Helper from '../../../../common/components/Helper';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import { gasLimitDefault, gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { ErrorMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
@@ -29,7 +30,6 @@ const DelegatorCreate = () => {
     const { valAddr }: any = useParams();
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const history = useHistory()
-    const [delegateErrMsg, setDelegateErrMsg] = useState('')
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
@@ -72,6 +72,10 @@ const DelegatorCreate = () => {
             setErrorMessage(ErrorMessage.BalanceNotEnough)
             return false
         }
+        if (Number(value) < MIN_DELEGATION_AMOUNT) {
+            setErrorMessage(ErrorMessage.BelowMinimumDelegationAmount)
+            return false;
+        }
         setErrorMessage('')
         return true
     }
@@ -110,21 +114,28 @@ const DelegatorCreate = () => {
                 return
             }
             const delegate = await delegateAction(valSmcAddr, account, Number(delAmount), gasLimit, gasPrice);
-           
+
             if (delegate && delegate.status === 1) {
-                Alert.success('Delegate success.');
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
                 setHashTransaction(delegate.transactionHash);
                 fetchData();
             } else {
-                Alert.error('Delegate failed.');
-                setDelegateErrMsg('Delegate failed.');
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setDelegateErrMsg(`Delegate failed: ${errJson?.error?.message}`)
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                });
             } catch (error) {
-                setDelegateErrMsg('Delegate failed.');
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         }
         setDelAmount('')
@@ -190,6 +201,22 @@ const DelegatorCreate = () => {
                                                         callback: () => { window.open(`/address/${validator?.smcAddress}`) }
                                                     })
                                                 }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <span className="property-title">Title </span>
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                <Tag className={validator?.status.color}>
+                                                    {validator?.status.content}
+                                                </Tag>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -282,7 +309,7 @@ const DelegatorCreate = () => {
                                 <Form fluid>
                                     <FormGroup>
                                         <FlexboxGrid>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
                                                         <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
@@ -329,22 +356,22 @@ const DelegatorCreate = () => {
                                                     </FlexboxGrid.Item>
                                                 </FlexboxGrid>
                                             </FlexboxGrid.Item>
+
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
+                                                <Button size="big" style={{minWidth: 200}} onClick={submitDelegate}>Delegate</Button>
+                                                {
+                                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
+                                                        hash: hashTransaction,
+                                                        headCount: 30,
+                                                        tailCount: 4,
+                                                        showTooltip: false,
+                                                        callback: () => { window.open(`/tx/${hashTransaction}`) }
+                                                    })}</div> : <></>
+                                                }
+                                            </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </FormGroup>
-                                    <FormGroup>
-                                        <Button size="big" onClick={submitDelegate}>Delegate</Button>
-                                    </FormGroup>
                                 </Form>
-                                <ErrMessage message={delegateErrMsg} />
-                                {
-                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
-                                        hash: hashTransaction,
-                                        headCount: 30,
-                                        tailCount: 4,
-                                        showTooltip: false,
-                                        callback: () => { window.open(`/tx/${hashTransaction}`) }
-                                    })}</div> : <></>
-                                }
                             </div>
                         </Panel>
                     </div>

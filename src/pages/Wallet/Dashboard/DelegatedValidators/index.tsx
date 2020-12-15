@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, Icon, Modal, Panel, Table } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, Icon, Modal, Panel, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage } from '../../../../common/constant/Message';
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidatorByDelegator } from '../../../../service/kai-explorer';
-import { undelegateWithAmount, withdraw, withdrawReward } from '../../../../service/smc/staking';
+import { undelegateAll, undelegateWithAmount, withdraw, withdrawReward } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './stype.css';
 
@@ -21,6 +22,7 @@ const Delegator = () => {
     const myAccount = getAccount() as Account
     const [showConfirmWithdrawRewardsModal, setShowConfirmWithdrawRewardsModal] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [undelAllLoading, setUndelAllLoading] = useState(false)
     const [validatorActive, setValidatorActive] = useState<YourValidator>()
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false)
     const [showUndelegateModel, setShowUndelegateModel] = useState(false)
@@ -30,6 +32,7 @@ const Delegator = () => {
     useEffect(() => {
         (async () => {
             const yourVals = await getValidatorByDelegator(myAccount.publickey)
+     
             setYourValidators(yourVals)
         })()
     }, [myAccount.publickey]);
@@ -47,13 +50,19 @@ const Delegator = () => {
             if(!valSmcAddr) return;
 
             const withdrawTx = await withdrawReward(valSmcAddr, myAccount);
-            if (withdrawTx && withdrawTx.status) {
-                Alert.success('Withdraw rewards success.', 5000);
+            if (withdrawTx && withdrawTx.status === 1) {
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
             } else {
-                Alert.error('Withdraw rewards failed.', 5000);
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         } catch (error) {
-            Alert.error(`Withdraw failed: ${error.message}`, 5000);
+            NotificationError({
+                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
+            });
         }
         await reFetchData()
         setIsLoading(false)
@@ -61,6 +70,7 @@ const Delegator = () => {
         setValidatorActive({} as YourValidator)
     }
 
+    // @Function for withdraw your withdrawable staked amount
     const widthdraw = async () => {
         setIsLoading(true)
         try {
@@ -69,12 +79,18 @@ const Delegator = () => {
 
             const withdrawTx = await withdraw(valAddr, myAccount);
             if (withdrawTx && withdrawTx.status === 1) {
-                Alert.success('Withdraw success.', 5000)
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
             } else {
-                Alert.error('Withdraw failed.', 5000)
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         } catch (error) {
-            Alert.error(`Withdraw failed: ${error.message}`, 5000)
+            NotificationError({
+                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
+            });
         }
         reFetchData()
         setIsLoading(false)
@@ -82,30 +98,58 @@ const Delegator = () => {
         setValidatorActive({} as YourValidator)
     }
 
-    const selectAllAmount = () => {
-        const stakedAmount = weiToKAI(validatorActive?.yourStakeAmount);
-        setUnstakeAmount(stakedAmount);
-    }
-
+    // @Function undelegate with amount
     const undelegate = async () => {
         const valSmcAddr = validatorActive?.validatorSmcAddr || '';
-        if(!valSmcAddr) return;
         if (!validateUnStakeAmount(unStakeAmount) || !valSmcAddr) return
         setIsLoading(true);
-
         try {
             const undelegateTx = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
             if (undelegateTx && undelegateTx.status === 1) {
-                Alert.success('Undelegate success.', 5000)
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
             } else {
-                Alert.error('Undelegate failed.', 5000)
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         } catch (error) {
-            Alert.error('Undelegate failed.', 5000)
+            NotificationError({
+                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
+            });
         }
         reFetchData();
         setShowUndelegateModel(false)
         setIsLoading(false)
+        setValidatorActive({} as YourValidator)
+        resetUndelegateForm()
+    }
+
+    // Undelegate with all your staked amount
+    const undelegateAllAmount = async () => {
+        const valSmcAddr = validatorActive?.validatorSmcAddr || '';
+        if(!valSmcAddr) return;
+        setUndelAllLoading(true);
+        try {
+            const undelegateTx = await undelegateAll(valSmcAddr, myAccount);
+            if (undelegateTx && undelegateTx.status === 1) {
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
+            } else {
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
+            }
+        } catch (error) {
+            NotificationError({
+                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
+            });
+        }
+        reFetchData();
+        setShowUndelegateModel(false)
+        setUndelAllLoading(false)
         setValidatorActive({} as YourValidator)
         resetUndelegateForm()
     }
@@ -285,16 +329,10 @@ const Delegator = () => {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                 <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                <ControlLabel>Undelegate staked Amount  <span className="required-mask">(*)</span></ControlLabel>
-                                    <div>
-                                        <Button className="kai-button-gray pd0"
-                                            onClick={() => { 
-                                                selectAllAmount()
-                                            }}>All</Button>
-                                    </div>
+                                <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
                                 </FlexboxGrid>
                                 <FormControl
-                                    placeholder="Undelegate staked Amount"
+                                    placeholder="Amount"
                                     value={unStakeAmount} name="unStakeAmount"
                                     onChange={(value) => {
                                         if (onlyNumber(value)) {
@@ -309,8 +347,11 @@ const Delegator = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button loading={undelAllLoading} onClick={undelegateAllAmount}>
+                        Undelegate All
+                    </Button>
                     <Button loading={isLoading} onClick={undelegate}>
-                        Confirm
+                        Undelegate
                     </Button>
                     <Button className="kai-button-gray"
                         onClick={() => {

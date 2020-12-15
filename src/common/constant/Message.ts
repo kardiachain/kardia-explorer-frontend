@@ -18,5 +18,12 @@ export const ErrorMessage = {
     CannotSendKAIToYourSelf: 'Cannot send KAI to yourself.',
     FileUploadInvalid: 'The upload file format is invalid.',
     MinSelfDelegationBelowMinimum: 'The minimum self delegation amount is 10M',
-    ValueNotMoreThanStakedAmount: 'The value not be more than your staked amount.'
+    ValueNotMoreThanStakedAmount: 'The value not be more than your staked amount.',
+    StakedAmountNotEnough: 'Your stake amount not enough 12.5M KAI to start become validator.',
+    BelowMinimumDelegationAmount: 'The minimum delegation amoint is 25K KAI'
+}
+
+export const NotifiMessage = {
+    TransactionSuccess: 'Congratulations! Your transaction has executed successfully.',
+    TransactionError: 'Sorry! Your transaction has executed unsuccessfully.'
 }

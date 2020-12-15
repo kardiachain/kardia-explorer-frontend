@@ -1,17 +1,18 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Table, Tag } from 'rsuite';
+import { Icon, Table, Tag } from 'rsuite';
 import Button from '../../common/components/Button';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { renderHashStringAndTooltip } from '../../common/utils/string';
+import { truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validator[] }) => {
+const RegisterList = ({ registers = [] as Register[] }: { registers: Register[] }) => {
+
     let history = useHistory();
     const { isMobile } = useViewport();
 
@@ -21,16 +22,14 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
                 wordWrap
                 hover={false}
                 autoHeight
-                rowHeight={60}
-                data={validators}
-                loading={validators.length === 0}
+                data={registers}
             >
                 <Column width={60} verticalAlign="middle">
                     <HeaderCell>Rank</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <div className="rank-tab" style={{ backgroundColor: rowData.color }}>
+                                <div className="rank-tab" style={{ backgroundColor: "#502052" }}>
                                     {rowData.rank}
                                 </div>
                             );
@@ -43,21 +42,27 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
                         {(rowData: Validator) => {
                             return (
                                 <div>
+                                    { rowData.isProposer ? (
+                                        <div className="verify-proposer-icon">
+                                            <Icon icon="check-circle" size={"lg"} />
+                                        </div>
+                                    ) : <></>
+                                    }
                                     <Link to={`/validator/${rowData?.address}`}>
+
                                         <div className="validator-title">
                                             <Tag className={rowData?.status.color} style={{marginRight: 5}}>
                                                 {rowData?.status.content}
                                             </Tag>
                                             <span className="validator-name">{rowData.name}</span>
                                         </div>
-                                        <div className="validator-address">
-                                            {renderHashStringAndTooltip(
-                                                rowData.address,
-                                                isMobile ? 10 : 15,
-                                                4,
-                                                true
-                                            )}
-                                        </div>
+                                        {/* <div className="validator-title">
+                                            {
+                                                rowData.name ? <span className="validator-name">{rowData.name}</span> : <></>
+                                            }
+                                            <div className="validator-address">{truncate(rowData.address, 10, 4)}</div>
+                                        </div> */}
+                                        <div className="validator-address">{truncate(rowData.address, 10, 4)}</div>
                                     </Link>
                                 </div>
                             );
@@ -119,4 +124,4 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
     )
 }
 
-export default ValidatorList;
+export default RegisterList;

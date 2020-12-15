@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, Modal, SelectPicker } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, Modal, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasPriceOption } from '../../../../common/constant';
-import { ErrorMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc/staking';
@@ -11,6 +11,7 @@ import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 
 const ValidatorCreate = () => {
 
@@ -29,7 +30,6 @@ const ValidatorCreate = () => {
 
     const [hashTransaction, setHashTransaction] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const [createValErrMsg, setCreateValErrMsg] = useState('')
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
@@ -185,9 +185,9 @@ const ValidatorCreate = () => {
         setShowConfirmModal(true)
     }
 
+    // @Function for register validator
     const registerValidator = async () => {
         setHashTransaction('');
-        setCreateValErrMsg('');
         try {
             setIsLoading(true)
             const account = await getAccount() as Account;
@@ -201,18 +201,26 @@ const ValidatorCreate = () => {
 
             let validator = await createValidator(params, account, gasLimit, gasPrice);
             if (validator && validator.status === 1) {
-                Alert.success('Create validator success.')
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
             } else {
-                const errMsg = validator.gasUsed === Number(gasLimit) ? 'Create transaction fail with error: Out of gas.' : 'Create validator failed.'
-                setCreateValErrMsg(errMsg)
+                const errMsg = validator.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas.` : NotifiMessage.TransactionError;
+                NotificationError({
+                    description: errMsg
+                });
             }
             setHashTransaction(validator.transactionHash)
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setCreateValErrMsg(`Create validator failed: ${errJson?.error?.message}`)
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                });
             } catch (error) {
-                setCreateValErrMsg('Create validator failed.');
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         }
         resetForm();
@@ -332,12 +340,9 @@ const ValidatorCreate = () => {
                             }} />
                         <ErrMessage message={minSelfDelegationErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                        <Button size="big" onClick={submitValidator}>Register</Button>
-                    </FlexboxGrid.Item>
                 </FlexboxGrid>
+                <Button size="big" style={{ minWidth: 200 }} onClick={submitValidator}>Register</Button>
             </Form>
-            <ErrMessage message={createValErrMsg} />
             {
                 hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
             }

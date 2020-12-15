@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, Alert, ControlLabel, Modal, SelectPicker } from 'rsuite'
-import { ErrorMessage } from '../../../../common/constant/Message'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker } from 'rsuite'
+import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message'
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
@@ -9,6 +9,7 @@ import { getAccount, generateTx, getStoredBalance } from '../../../../service/wa
 import { renderHashToRedirect } from '../../../../common/utils/string'
 import Button from '../../../../common/components/Button'
 import { gasPriceOption } from '../../../../common/constant'
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -21,7 +22,6 @@ const SendTransaction = () => {
     const [sendBntLoading, setSendBntLoading] = useState(false)
     const [txHash, setTxHash] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const [sendTxErrMs, setSendTxErrMsg] = useState('')
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
@@ -101,16 +101,24 @@ const SendTransaction = () => {
             const txHash = await generateTx(myAccount, toAddress, Number(amount), gasLimit, gasPrice)
             if (txHash) {
                 setTxHash(txHash);
-                Alert.success('Send transaction success.')
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
             } else {
-                setSendTxErrMsg('Send transaction failed.')
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setSendTxErrMsg(`Send transaction failed: ${errJson?.error?.message}`)
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                })
             } catch (error) {
-                setSendTxErrMsg('Send transaction failed.')
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         }
 
@@ -132,7 +140,7 @@ const SendTransaction = () => {
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel>Amount  <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
                                 <FormControl
                                     placeholder="Amount"
                                     name="amount"
@@ -192,7 +200,6 @@ const SendTransaction = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Button size="big" style={{margin: 0}} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                             </FlexboxGrid.Item>
-                            <ErrMessage message={sendTxErrMs} />
                             {
                                 txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}</div> : <></>
                             }

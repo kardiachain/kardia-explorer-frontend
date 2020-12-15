@@ -135,6 +135,31 @@ interface Validator {
     color?: string;
     smcAddress: string;
     isProposer: boolean;
+    isValidator: boolean;
+    isRegister: boolean;
+    status: ValidatorStatus
+}
+
+interface Register {
+    rank?: number;
+    address: string;
+    votingPower: any;
+    stakedAmount: number;
+    commissionRate: any;
+    totalDelegators: any;
+    maxRate: any;
+    maxChangeRate: any;
+    name: string;
+    smcAddress: string;
+    isProposer: boolean;
+    isValidator: boolean;
+    isRegister: boolean;
+    status: ValidatorStatus
+}
+
+interface ValidatorStatus {
+    content: string;
+    color: string;
 }
 
 interface KaiToken {
