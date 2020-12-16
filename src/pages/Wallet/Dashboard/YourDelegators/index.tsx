@@ -18,6 +18,7 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import UpdateValidator from './UpdateValidator';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -52,13 +53,13 @@ const YourDelegators = () => {
             }
         })();
     }, [myAccount.publickey, page, limit]);
-    
+
     const startBecomeValidator = async () => {
         if (Number(weiToKAI(validator?.stakedAmount)) < MIN_STAKED_AMOUNT_START_VALIDATOR) {
             setStartValErr(ErrorMessage.StakedAmountNotEnough);
             return false;
         }
-        setShowConfirmModal(true);
+        setShowConfirmModal(true)
         setStartValErr('');
     }
 
@@ -78,6 +79,7 @@ const YourDelegators = () => {
                     description: NotifiMessage.TransactionSuccess
                 });
                 setTxHash(result.transactionHash);
+
             } else {
                 NotificationError({
                     description: NotifiMessage.TransactionError
@@ -134,6 +136,7 @@ const YourDelegators = () => {
                                     </div>
                                 </div>
                                 <Panel shaded>
+                                    <UpdateValidator validator={validator || {} as Validator}/>
                                     <List>
                                         <List.Item>
                                             <FlexboxGrid justify="start" align="middle">
@@ -275,7 +278,6 @@ const YourDelegators = () => {
                                                 <div style={{ marginTop: '30px', marginBottom: '20px' }}>
                                                     <Button size="big"
                                                         onClick={startBecomeValidator}
-                                                        loading={btnLoading}
                                                     >
                                                         Start To Become Validator
                                                     </Button>
@@ -315,11 +317,11 @@ const YourDelegators = () => {
                                                         <div>
                                                             {
                                                                 renderHashToRedirect({
-                                                                    hash: validator?.address,
+                                                                    hash: rowData?.address,
                                                                     headCount: isMobile ? 15 : 30,
                                                                     tailCount: 4,
                                                                     showTooltip: true,
-                                                                    callback: () => { window.open(`/address/${validator?.address}`) }
+                                                                    callback: () => { window.open(`/address/${rowData?.address}`) }
                                                                 })
                                                             }
                                                         </div>
@@ -332,7 +334,7 @@ const YourDelegators = () => {
                                             <Cell>
                                                 {(rowData: Delegator) => {
                                                     return (
-                                                        <div> {numberFormat(weiToKAI(rowData.stakeAmount))} KAI</div>
+                                                        <div> {numberFormat(weiToKAI(rowData.stakeAmount), 4)} KAI</div>
                                                     );
                                                 }}
                                             </Cell>
@@ -342,7 +344,7 @@ const YourDelegators = () => {
                                             <Cell>
                                                 {(rowData: Delegator) => {
                                                     return (
-                                                        <div> {numberFormat(weiToKAI(rowData.rewardsAmount))} KAI</div>
+                                                        <div> {numberFormat(weiToKAI(rowData.rewardsAmount), 4)} KAI</div>
                                                     );
                                                 }}
                                             </Cell>
@@ -361,25 +363,25 @@ const YourDelegators = () => {
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
 
-            {/* Modal confirm when withdraw staked token */}
-            <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModel} onHide={() => { setShowConfirmModal(false) }}>
-                <Modal.Header>
-                    <Modal.Title>Confirm starting to become validator</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
-                        Are you sure you want to starting to become validator.
+                    {/* Modal confirm when withdraw staked token */}
+                    <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModel} onHide={() => { setShowConfirmModal(false) }}>
+                        <Modal.Header>
+                            <Modal.Title>Confirm starting to become validator</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
+                                Are you sure you want to starting to become validator.
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button loading={btnLoading} onClick={confirmStart}>
-                        Confirm
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button loading={btnLoading} onClick={confirmStart}>
+                                Confirm
                     </Button>
-                    <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
-                        Cancel
+                            <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
+                                Cancel
                     </Button>
-                </Modal.Footer>
-            </Modal>
+                        </Modal.Footer>
+                    </Modal>
                 </>
             )
     ) : (<></>)

@@ -119,8 +119,8 @@ const withdrawReward = async (valSmcAddr: string, account: Account) => {
     }
 }
 
-// Delegator withdraw
-const withdraw = async (valSmcAddr: string, account: Account) => {
+// Delegator withdraw their staked amount
+const withdrawDelegatedAmount = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "withdraw", [], account, 0);
     } catch (error) {
@@ -154,7 +154,7 @@ export {
     delegateAction,
     createValidator,
     withdrawReward,
-    withdraw,
+    withdrawDelegatedAmount,
     updateValidator,
     undelegateWithAmount,
     withdrawCommission,

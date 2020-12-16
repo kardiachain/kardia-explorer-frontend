@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, SelectPicker } from "rsuite";
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Modal, SelectPicker } from "rsuite";
 import Button from "../../../../common/components/Button";
 import ErrMessage from "../../../../common/components/InputErrMessage/InputErrMessage";
+import { NotificationError, NotificationSuccess } from "../../../../common/components/Notification";
 import { gasLimitDefault, gasPriceOption } from "../../../../common/constant";
-import { ErrorMessage } from "../../../../common/constant/Message";
-import { numberFormat, onlyInteger, onlyNumber } from "../../../../common/utils/number";
-import { renderHashToRedirect } from "../../../../common/utils/string";
+import { ErrorMessage, NotifiMessage } from "../../../../common/constant/Message";
+import { onlyInteger, onlyNumber } from "../../../../common/utils/number";
 import { updateValidator } from "../../../../service/smc/staking";
 import { getAccount } from "../../../../service/wallet";
 
-const UpdateValidator = () => {
-
+const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [commissionRate, setCommissionRate] = useState('')
@@ -20,16 +19,13 @@ const UpdateValidator = () => {
     const [minSelfDelegationErr, setMinSelfDelegationErr] = useState('')
     const [valNameErr, setValNameErr] = useState('')
     const myAccount = getAccount() as Account;
-    const [validator, setValidator] = useState<Validator>();
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
-
-    const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const [hashTransaction, setHashTransaction] = useState('')
-    const [updateValErrMsg, setUpdateValErrMsg] = useState('')
+    
+    const [showEditModel, setShowEditModel] = useState(false);
 
 
     const validateValName = (value: any) => {
@@ -97,20 +93,19 @@ const UpdateValidator = () => {
         return true
     }
 
-    const submitUpdateValidator = () => {
-        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateCommissionRate(commissionRate) || !validateMinSelfDelegation(minSelfDelegation)) {
-            return
-        }
-        setShowConfirmModal(true)
-    }
 
     const update = async () => {
-        setHashTransaction('')
+        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateValName(valName) || !validateCommissionRate(commissionRate) || !validateMinSelfDelegation(minSelfDelegation)) {
+            return
+        }
         try {
             setIsLoading(true);
-
+            const valSmcAddr = validator?.smcAddress || '';
+            if (!valSmcAddr) {
+                return
+            }
             const params: UpdateValParams = {
-                valSmcAddr: validator?.smcAddress || '',
+                valSmcAddr: valSmcAddr,
                 newValName: valName,
                 newCommissionRate: Number(commissionRate),
                 newMinSelfDelegation: Number(minSelfDelegation)
@@ -118,136 +113,140 @@ const UpdateValidator = () => {
 
             let result = await updateValidator(params, myAccount, gasLimit, gasPrice);
             if (result && result.status === 1) {
-                Alert.success('Update validator success.');
-                setHashTransaction(result.transactionHash);
-                // reFetchData();
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess
+                });
             } else {
-                setUpdateValErrMsg('Update validator failed.');
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setUpdateValErrMsg(`Update validator failed: ${errJson?.error?.message}`);
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                });
             } catch (error) {
-                setUpdateValErrMsg('Update validator failed.');
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         }
-        resetForm();
         setIsLoading(false);
-        setShowConfirmModal(false);
+        cancelEdit();
     }
 
     const resetForm = () => {
+        setValName('');
+        setValNameErr('');
         setCommissionRate('');
+        setCommissionRateErr('');
         setMinSelfDelegation('');
+        setMinSelfDelegationErr('');
+    }
+
+    const cancelEdit = () => {
+        setShowEditModel(false);
+        resetForm();
     }
 
     return (
         <>
-        <Form fluid>
-            <FormGroup>
-                <FlexboxGrid>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                        <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl name="gaslimit"
-                                    placeholder="Gas Limit"
-                                    value={gasLimit}
-                                    onChange={(value) => {
-                                        if (onlyInteger(value)) {
-                                            setGasLimit(value);
-                                            validateGasLimit(value)
-                                        }
-                                    }}
-                                    style={{ width: '100%' }}
-                                />
-                                <ErrMessage message={gasLimitErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
-                                <SelectPicker
-                                    className="dropdown-custom"
-                                    data={gasPriceOption}
-                                    searchable={false}
-                                    value={gasPrice}
-                                    onChange={(value) => {
-                                        setGasPrice(value)
-                                        validateGasPrice(value)
-                                    }}
-                                    style={{ width: '100%' }}
-                                />
-                                <ErrMessage message={gasPriceErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                <ControlLabel>New Validator Name <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl placeholder="Validator Name"
-                                    name="valName"
-                                    value={valName}
-                                    onChange={(value) => {
-                                        setValName(value)
-                                        validateValName(value)
-                                    }} />
-                                <ErrMessage message={valNameErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl placeholder="Commission Rate"
-                                    name="commissionRate"
-                                    value={commissionRate}
-                                    onChange={(value) => {
-                                        if (onlyNumber(value)) {
-                                            setCommissionRate(value)
-                                            validateCommissionRate(value)
-                                        }
-                                    }} />
-                                <ErrMessage message={commissionRateErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                <ControlLabel>New Minimum Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl placeholder="New Minimum Expected Delegate Amount"
-                                    name="minSelfDelegation"
-                                    value={minSelfDelegation}
-                                    onChange={(value) => {
-                                        if (onlyNumber(value)) {
-                                            setMinSelfDelegation(value)
-                                            validateMinSelfDelegation(value)
-                                        }
-                                    }} />
-                                <ErrMessage message={minSelfDelegationErr} />
-                            </FlexboxGrid.Item>
-                        </FlexboxGrid>
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
-            </FormGroup>
-            <FormGroup>
-                <Button size="big" onClick={submitUpdateValidator}>Update</Button>
-            </FormGroup>
-            <ErrMessage message={updateValErrMsg} />
-            {
-                hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction update validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
-            }
-        </Form>
-        {/* Modal confirm when update validator */}
-        <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
-            <Modal.Header>
-                <Modal.Title>Confirm update validator</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to update validator with: </div>
-                <div>Your Address: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {myAccount.publickey} </span></div>
-                <div>New Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
-                <div>New Minimum Delegate Amount: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={() => { setShowConfirmModal(false) }} className="kai-button-gray">
-                    Cancel
+            <div style={{ textAlign: 'right' }}>
+                <Button className="kai-button-gray" onClick={() => { setShowEditModel(true) }}>
+                    <Icon icon="edit" /> Edit
                 </Button>
-                <Button loading={isLoading} onClick={update}>
-                    Confirm
-                </Button>
-            </Modal.Footer>
-        </Modal>
+            </div>
+            {/* Modal edit validator infomation */}
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showEditModel} onHide={cancelEdit}>
+                <Modal.Header>
+                    <Modal.Title>Edit Validator</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form fluid>
+                        <FormGroup>
+                            <FlexboxGrid>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
+                                    <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                    <FormControl name="gaslimit"
+                                        placeholder="Gas Limit"
+                                        value={gasLimit}
+                                        onChange={(value) => {
+                                            if (onlyInteger(value)) {
+                                                setGasLimit(value);
+                                                validateGasLimit(value)
+                                            }
+                                        }}
+                                        style={{ width: '100%' }}
+                                    />
+                                    <ErrMessage message={gasLimitErr} />
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
+                                    <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                    <SelectPicker
+                                        className="dropdown-custom"
+                                        data={gasPriceOption}
+                                        searchable={false}
+                                        value={gasPrice}
+                                        onChange={(value) => {
+                                            setGasPrice(value)
+                                            validateGasPrice(value)
+                                        }}
+                                        style={{ width: '100%' }}
+                                    />
+                                    <ErrMessage message={gasPriceErr} />
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                    <ControlLabel>New Validator Name <span className="required-mask">(*)</span></ControlLabel>
+                                    <FormControl placeholder="Validator Name"
+                                        name="valName"
+                                        value={valName}
+                                        onChange={(value) => {
+                                            setValName(value)
+                                            validateValName(value)
+                                        }} />
+                                    <ErrMessage message={valNameErr} />
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                    <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
+                                    <FormControl placeholder="Commission Rate"
+                                        name="commissionRate"
+                                        value={commissionRate}
+                                        onChange={(value) => {
+                                            if (onlyNumber(value)) {
+                                                setCommissionRate(value)
+                                                validateCommissionRate(value)
+                                            }
+                                        }} />
+                                    <ErrMessage message={commissionRateErr} />
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                    <ControlLabel>New Minimum Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
+                                    <FormControl placeholder="New Minimum Expected Delegate Amount"
+                                        name="minSelfDelegation"
+                                        value={minSelfDelegation}
+                                        onChange={(value) => {
+                                            if (onlyNumber(value)) {
+                                                setMinSelfDelegation(value)
+                                                validateMinSelfDelegation(value)
+                                            }
+                                        }} />
+                                    <ErrMessage message={minSelfDelegationErr} />
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </FormGroup>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button loading={isLoading} onClick={update}>
+                        Update
+                    </Button>
+                    <Button className="kai-button-gray" onClick={cancelEdit}>
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

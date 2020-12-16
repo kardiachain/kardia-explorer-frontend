@@ -21,7 +21,7 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
                 wordWrap
                 hover={false}
                 autoHeight
-                rowHeight={60}
+                rowHeight={() => 80}
                 data={validators}
                 loading={validators.length === 0}
             >

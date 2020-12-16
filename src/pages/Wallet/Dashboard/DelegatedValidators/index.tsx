@@ -9,7 +9,7 @@ import { numberFormat, onlyNumber } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidatorByDelegator } from '../../../../service/kai-explorer';
-import { undelegateAll, undelegateWithAmount, withdraw, withdrawReward } from '../../../../service/smc/staking';
+import { undelegateAll, undelegateWithAmount, withdrawDelegatedAmount, withdrawReward } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './stype.css';
 
@@ -77,7 +77,7 @@ const Delegator = () => {
             const valAddr = validatorActive?.validatorAddr || '';
             if(!valAddr) return;
 
-            const withdrawTx = await withdraw(valAddr, myAccount);
+            const withdrawTx = await withdrawDelegatedAmount(valAddr, myAccount);
             if (withdrawTx && withdrawTx.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess

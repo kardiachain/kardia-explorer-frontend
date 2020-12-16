@@ -165,9 +165,6 @@ const DelegatorCreate = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content validator-name">
                                                 {validator?.name}
-                                                {
-                                                    validator?.isProposer ? <Icon className="verify-proposer-icon" icon="check-circle" size={"lg"} /> : <></>
-                                                }
                                             </div>
                                             <div className="property-content">
                                                 {
@@ -299,7 +296,7 @@ const DelegatorCreate = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
-                                                {numberFormat(weiToKAI(validator?.stakedAmount))} KAI
+                                                {numberFormat(weiToKAI(validator?.stakedAmount), 4)} KAI
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

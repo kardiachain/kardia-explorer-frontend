@@ -1,5 +1,6 @@
 import { colors } from "../../../common/constant"
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
+import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 
 export const getValidators = async (): Promise<Validators> => {
     const response = await fetch(`${END_POINT}validators`, GET_REQUEST_OPTION)
@@ -18,7 +19,7 @@ export const getValidators = async (): Promise<Validators> => {
             return {
                 rank: i + 1,
                 color: colors[i] || colors[colorIndexRandom],
-                address: v.address,
+                address: toChecksum(v.address),
                 votingPower: v.votingPowerPercentage,
                 stakedAmount: v.stakedAmount,
                 commissionRate: v.commissionRate,
@@ -26,7 +27,7 @@ export const getValidators = async (): Promise<Validators> => {
                 maxRate: v.maxRate,
                 maxChangeRate: v.maxChangeRate,
                 name: v.name,
-                smcAddress: v.smcAddress || '',
+                smcAddress: toChecksum(v.smcAddress) || '',
                 isProposer: v.role === 2,
                 isValidator: v.role === 1,
                 isRegister: v.role === 0,
@@ -44,22 +45,22 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         return {} as Validator
     }
     return {
-        address: val.address,
+        address: toChecksum(val.address),
         votingPower: val.votingPowerPercentage,
         stakedAmount: val.stakedAmount,
         commissionRate: val.commissionRate,
         totalDelegators: val.totalDelegators,
         maxRate: val.maxRate,
         maxChangeRate: val.maxChangeRate,
-        name: val.name || val.address,
-        smcAddress: val.smcAddress || '',
+        name: val.name || '',
+        smcAddress: toChecksum(val.smcAddress) || '',
         status: checkValidatorStatus(val.role),
         isProposer: val.role === 2,
         isValidator: val.role === 1,
         isRegister: val.role === 0,
         delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
             return {
-                address: del.address,
+                address: toChecksum(del.address),
                 stakeAmount: del.stakedAmount,
                 rewardsAmount: del.reward
             } as Delegator 
@@ -76,8 +77,8 @@ export const getRegisters = async (): Promise<Register[]> => {
         return {
             rank: index + 1,
             name: v.name,
-            address: v.address,
-            smcAddress: v.smcAddress,
+            address: toChecksum(v.address),
+            smcAddress: toChecksum(v.smcAddress),
             status: checkValidatorStatus(v.role),
             isProposer: v.role === 2,
             isValidator: v.role === 1,
@@ -102,9 +103,9 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
     return vals ? vals.map((v: any) => {
         return {
             validatorName: v.validatorName || '',
-            validatorAddr: v.validator || '',
+            validatorAddr: toChecksum(v.validator) || '',
             yourStakeAmount: v.stakedAmount,
-            validatorSmcAddr: v.validatorContractAddr || '',
+            validatorSmcAddr: toChecksum(v.validatorContractAddr) || '',
             claimableAmount: v.claimableRewards,
             unbondedAmount: v.unbondedAmount,
             withdrawableAmount: v.withdrawableAmount
