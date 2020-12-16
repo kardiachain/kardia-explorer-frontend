@@ -30,7 +30,7 @@ const RegisterList = ({ registers = [] as Register[] }: { registers: Register[] 
                     <Cell>
                         {(rowData: Register) => {
                             return (
-                                <div className="rank-tab" style={{ backgroundColor: "#502052" }}>
+                                <div className="rank-tab" style={{ backgroundColor: "rgb(214 140 4)" }}>
                                     {rowData.rank}
                                 </div>
                             );
@@ -43,12 +43,6 @@ const RegisterList = ({ registers = [] as Register[] }: { registers: Register[] 
                         {(rowData: Register) => {
                             return (
                                 <div>
-                                    {/* { rowData.isProposer ? (
-                                        <div className="verify-proposer-icon">
-                                            <Icon icon="check-circle" size={"lg"} />
-                                        </div>
-                                    ) : <></>
-                                    } */}
                                     <Link to={`/validator/${rowData?.address}`}>
 
                                         <div className="validator-title">

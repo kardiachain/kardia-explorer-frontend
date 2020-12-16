@@ -30,7 +30,7 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <div className="rank-tab" style={{ backgroundColor: rowData.color }}>
+                                <div className="rank-tab" style={{ backgroundColor: rowData.isProposer ? rowData.color : 'rgb(53 162 92)' }}>
                                     {rowData.rank}
                                 </div>
                             );

@@ -58,6 +58,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         isProposer: val.role === 2,
         isValidator: val.role === 1,
         isRegister: val.role === 0,
+        accumulatedCommission: val.accumulatedCommission,
         delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
             return {
                 address: toChecksum(del.address),

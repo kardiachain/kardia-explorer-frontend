@@ -55,7 +55,7 @@ const Validators = () => {
 
             // Calculate data for chart
             const dataForValidatorsChart = [] as any[];
-            valDetails.forEach((value: Validator, index: number) => {
+            valDetails.filter(v => v.isProposer).forEach((value: Validator, index: number) => {
                 dataForValidatorsChart.push({
                     custom: value.address,
                     name: value.name || truncate(value.address, 5, 3),

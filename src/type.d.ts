@@ -137,7 +137,8 @@ interface Validator {
     isProposer: boolean;
     isValidator: boolean;
     isRegister: boolean;
-    status: ValidatorStatus
+    status: ValidatorStatus;
+    accumulatedCommission: number;
 }
 
 interface Register {
