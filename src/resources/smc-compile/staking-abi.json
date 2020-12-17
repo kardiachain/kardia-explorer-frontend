@@ -56,12 +56,6 @@
 				"internalType": "uint256",
 				"name": "_commissionMaxChangeRate",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "_minSelfDelegation",
-				"type": "uint256"
 			}
 		],
 		"name": "CreatedValidator",
@@ -109,6 +103,15 @@
 			}
 		],
 		"name": "addDelegation",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "addVote",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -207,11 +210,6 @@
 			{
 				"internalType": "uint256",
 				"name": "maxChangeRate",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "minSelfDelegation",
 				"type": "uint256"
 			}
 		],
@@ -414,23 +412,43 @@
 		"name": "params",
 		"outputs": [
 			{
-				"internalType": "uint256",
-				"name": "baseProposerReward",
-				"type": "uint256"
-			},
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "proposal",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "bonusProposerReward",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "maxValidator",
+				"name": "",
 				"type": "uint256"
 			}
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_maxValidators",
+				"type": "uint256"
+			}
+		],
+		"name": "proposalMaxValidators",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -468,9 +486,163 @@
 	},
 	{
 		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_maxValidators",
+				"type": "uint256"
+			}
+		],
+		"name": "setMaxValidators",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_inflationRateChange",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_goalBonded",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_blocksPerYear",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_inflationMax",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_inflationMin",
+				"type": "uint256"
+			}
+		],
+		"name": "setMintParams",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_params",
+				"type": "address"
+			}
+		],
+		"name": "setParams",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "previousProposer",
+				"type": "address"
+			}
+		],
+		"name": "setPreviousProposer",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "setProposalFail",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_downtimeJailDuration",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_slashFractionDowntime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_unbondingTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_slashFractionDoubleSign",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_signedBlockWindow",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minSignedPerWindow",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minStake",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minValidatorBalance",
+				"type": "uint256"
+			}
+		],
+		"name": "setValidatorParams",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [],
 		"name": "startValidator",
 		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "sumVotingPowerProposer",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -494,6 +666,21 @@
 		"constant": true,
 		"inputs": [],
 		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalVoted",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -586,6 +773,27 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "vote",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"payable": false,

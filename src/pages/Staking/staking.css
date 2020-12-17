@@ -31,16 +31,6 @@
     font-weight: 600;
 }
 
-.validators-container .rs-nav-subtle.rs-nav-horizontal .rs-nav-item > .rs-nav-item-content::before {
-    height: 4px;
-    background: var(--highlight);
-}
-.validators-container .rs-nav .rs-nav-item-content {
-    font-weight: 600;
-}
-.validators-container .rs-nav .rs-nav-item-active > .rs-nav-item-content {
-    color: var(--hyperlink-color);
-}
 .validator-address {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;

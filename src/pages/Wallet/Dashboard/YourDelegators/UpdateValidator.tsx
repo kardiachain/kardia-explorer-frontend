@@ -13,10 +13,8 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
 
     const [isLoading, setIsLoading] = useState(false);
     const [commissionRate, setCommissionRate] = useState('')
-    const [minSelfDelegation, setMinSelfDelegation] = useState('')
     const [valName, setValName] = useState('')
     const [commissionRateErr, setCommissionRateErr] = useState('')
-    const [minSelfDelegationErr, setMinSelfDelegationErr] = useState('')
     const [valNameErr, setValNameErr] = useState('')
     const myAccount = getAccount() as Account;
 
@@ -56,25 +54,6 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
         return true
     }
 
-    const validateMinSelfDelegation = (value: any) => {
-        if (!value) {
-            setMinSelfDelegationErr(ErrorMessage.Require)
-            return false
-        }
-        if (Number(value) === 0) {
-            setMinSelfDelegationErr(ErrorMessage.ValueInvalid)
-            return false
-        }
-
-        if (Number(value) < 10000000) {
-            setMinSelfDelegationErr(ErrorMessage.MinSelfDelegationBelowMinimum)
-            return false
-        }
-
-        setMinSelfDelegationErr('')
-        return true
-    }
-
     const validateGasPrice = (gasPrice: any): boolean => {
         if (!Number(gasPrice)) {
             setGasPriceErr(ErrorMessage.Require)
@@ -95,7 +74,7 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
 
 
     const update = async () => {
-        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateValName(valName) || !validateCommissionRate(commissionRate) || !validateMinSelfDelegation(minSelfDelegation)) {
+        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateValName(valName) || !validateCommissionRate(commissionRate)) {
             return
         }
         try {
@@ -107,8 +86,7 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
             const params: UpdateValParams = {
                 valSmcAddr: valSmcAddr,
                 newValName: valName,
-                newCommissionRate: Number(commissionRate),
-                newMinSelfDelegation: Number(minSelfDelegation)
+                newCommissionRate: Number(commissionRate)
             }
 
             let result = await updateValidator(params, myAccount, gasLimit, gasPrice);
@@ -142,8 +120,6 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
         setValNameErr('');
         setCommissionRate('');
         setCommissionRateErr('');
-        setMinSelfDelegation('');
-        setMinSelfDelegationErr('');
     }
 
     const cancelEdit = () => {
@@ -220,19 +196,6 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
                                             }
                                         }} />
                                     <ErrMessage message={commissionRateErr} />
-                                </FlexboxGrid.Item>
-                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>New Minimum Delegate Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
-                                    <FormControl placeholder="New Minimum Expected Delegate Amount"
-                                        name="minSelfDelegation"
-                                        value={minSelfDelegation}
-                                        onChange={(value) => {
-                                            if (onlyNumber(value)) {
-                                                setMinSelfDelegation(value)
-                                                validateMinSelfDelegation(value)
-                                            }
-                                        }} />
-                                    <ErrMessage message={minSelfDelegationErr} />
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
                         </FormGroup>

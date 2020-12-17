@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Nav, Panel } from 'rsuite';
-import { formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
+import { weiToKAI } from '../../common/utils/amount';
 import { truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getAccount, isLoggedIn } from '../../service/wallet';
@@ -13,13 +13,16 @@ import Button from '../../common/components/Button';
 import { checkIsValidator, getRegisters, getValidators } from '../../service/kai-explorer';
 import ValidatorList from './ValidatorList';
 import RegisterList from './RegisterList';
+import { StakingIcon } from '../../common/components/IconCustom';
 
 
 const Validators = () => {
     let history = useHistory();
     const { isMobile } = useViewport();
     const [validators, setValidators] = useState([] as Validator[]);
-    const [registers, setRegisters] = useState([] as Register[])
+    const [validatorsLoading, setValidatorsLoading] = useState(true);
+    const [registers, setRegisters] = useState([] as Register[]);
+    const [registersLoading, setRegisterLoading] = useState(true);
     const [dataForValidatorsChart, setDataForValidatorsChart] = useState([] as DataChartConfig[]);
     const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig);
     const [totalStakedAmount, setTotalStakedAmount] = useState(0)
@@ -41,7 +44,8 @@ const Validators = () => {
 
     useEffect(() => {
         (async () => {
-
+            setValidatorsLoading(true);
+            setRegisterLoading(true)
             // fetch data validator and register
             const fetchData = await Promise.all([
                 getValidators(),
@@ -77,6 +81,8 @@ const Validators = () => {
             setTotalValidator(stakingData.totalValidators)
             setTotalDelegator(stakingData.totalDelegators)
             setTotalProposer(stakingData.totalProposer)
+            setValidatorsLoading(false);
+            setRegisterLoading(false)
         })()
     }, []);
 
@@ -112,10 +118,10 @@ const Validators = () => {
                     </Panel>
                     <Panel shaded>
                         <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }} className="staking-stats">
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12} style={{marginBottom: 10}}>
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <Icon className="highlight icon" icon="group" size={"2x"} />
+                                        <StakingIcon character='V' size="big" />
                                     </div>
                                     <div className="content">
                                         <div className="title">
@@ -125,10 +131,10 @@ const Validators = () => {
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12} style={{marginBottom: 10}}>
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <Icon className="highlight icon" icon="peoples" size={"2x"} />
+                                        <StakingIcon character='P' size="big" />
                                     </div>
                                     <div className="content">
                                         <div className="title">
@@ -141,7 +147,7 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <Icon className="highlight icon" icon="people-group" size={"2x"} />
+                                        <StakingIcon character='D' size="big" />
                                     </div>
                                     <div className="content">
                                         <div className="title">
@@ -154,6 +160,19 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="icon">
+                                        <StakingIcon character='R' size="big" />
+                                    </div>
+                                    <div className="content">
+                                        <div className="title">
+                                            Registers
+                                        </div>
+                                        <div className="value">{totalDelegator}</div>
+                                    </div>
+                                </div>
+                            </FlexboxGrid.Item>
+                            {/* <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
+                                <div className="stats-container">
+                                    <div className="icon">
                                         <Icon className="highlight icon" icon="rate" size={"2x"} />
                                     </div>
                                     <div className="content">
@@ -163,7 +182,7 @@ const Validators = () => {
                                         <div className="value">{formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
                                     </div>
                                 </div>
-                            </FlexboxGrid.Item>
+                            </FlexboxGrid.Item> */}
                         </FlexboxGrid>
                     </Panel>
                 </FlexboxGrid.Item>
@@ -171,20 +190,33 @@ const Validators = () => {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>
-                        <Nav
-                            appearance="subtle"
-                            activeKey={activeKey}
-                            onSelect={setActiveKey}
-                            style={{marginBottom: 20}}>
-                            <Nav.Item eventKey="validators">
-                                Validators
-                            </Nav.Item>
-                            <Nav.Item eventKey="registers">
-                                Registers
-                            </Nav.Item>
-                        </Nav>
+                        <div className="custom-nav">
+                            <Nav
+                                appearance="subtle"
+                                activeKey={activeKey}
+                                onSelect={setActiveKey}
+                                style={{marginBottom: 20}}>
+                                <Nav.Item eventKey="validators">
+                                    {`Validators (${validators.length})`}
+                                </Nav.Item>
+                                <Nav.Item eventKey="registers">
+                                    {`Registers (${registers.length})`}
+                                </Nav.Item>
+                            </Nav>
+                        </div>
                         {
-                            activeKey === "validators" ? <ValidatorList validators={validators} /> : <RegisterList registers={registers} />
+                            (() => {
+                                switch (activeKey) {
+                                    case 'validators':
+                                        return (
+                                            <ValidatorList validators={validators} loading={validatorsLoading} />
+                                        );
+                                    case 'registers':
+                                        return (
+                                            <RegisterList registers={registers} loading={registersLoading} />
+                                        )
+                                }
+                            })()
                         }
                     </Panel>
                 </FlexboxGrid.Item>

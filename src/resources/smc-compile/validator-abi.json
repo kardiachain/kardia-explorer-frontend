@@ -132,12 +132,6 @@
 				"internalType": "uint256",
 				"name": "_commissionRate",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "_minSelfDelegation",
-				"type": "uint256"
 			}
 		],
 		"name": "UpdateValidator",
@@ -428,11 +422,6 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "minSelfDelegation",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
 				"name": "delegationShares",
 				"type": "uint256"
 			},
@@ -498,11 +487,6 @@
 				"internalType": "uint256",
 				"name": "_maxChangeRate",
 				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minSelfDelegation",
-				"type": "uint256"
 			}
 		],
 		"name": "initialize",
@@ -532,44 +516,9 @@
 		"name": "params",
 		"outputs": [
 			{
-				"internalType": "uint256",
-				"name": "downtimeJailDuration",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "slashFractionDowntime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "unbondingTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "slashFractionDoubleSign",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "signedBlockWindow",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "minSignedPerWindow",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "minStake",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "minValidatorBalance",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"payable": false,
@@ -580,6 +529,21 @@
 		"constant": false,
 		"inputs": [],
 		"name": "renounceOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_params",
+				"type": "address"
+			}
+		],
+		"name": "setParams",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -764,11 +728,6 @@
 			{
 				"internalType": "uint256",
 				"name": "_commissionRate",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minSelfDelegation",
 				"type": "uint256"
 			}
 		],

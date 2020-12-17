@@ -211,8 +211,8 @@ const DelegatorCreate = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
-                                                <Tag className={validator?.status.color}>
-                                                    {validator?.status.content}
+                                                <Tag className={validator?.status?.color}>
+                                                    {validator?.status?.content}
                                                 </Tag>
                                             </div>
                                         </FlexboxGrid.Item>

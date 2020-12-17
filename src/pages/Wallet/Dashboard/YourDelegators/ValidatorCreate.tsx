@@ -19,13 +19,11 @@ const ValidatorCreate = () => {
     const [commissionRate, setCommissionRate] = useState('')
     const [maxRate, setMaxRate] = useState('')
     const [maxChangeRate, setMaxChangeRate] = useState('')
-    const [minSelfDelegation, setMinSelfDelegation] = useState('')
     const [valName, setValName] = useState('')
 
     const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
     const [maxChangeRateErr, setMaxChangeRateErr] = useState('')
-    const [minSelfDelegationErr, setMinSelfDelegationErr] = useState('')
     const [valNameErr, setValNameErr] = useState('')
 
     const [hashTransaction, setHashTransaction] = useState('')
@@ -132,20 +130,6 @@ const ValidatorCreate = () => {
         return true
     }
 
-    const validateMinSelfDelegation = (value: any) => {
-        if (!value) {
-            setMinSelfDelegationErr(ErrorMessage.Require)
-            return false
-        }
-        if (Number(value) === 0) {
-            setMinSelfDelegationErr(ErrorMessage.ValueInvalid)
-            return false
-        }
-
-        setMinSelfDelegationErr('');
-        return true
-    }
-
     const validateGasPrice = (gasPrice: any): boolean => {
         if (!Number(gasPrice)) {
             setGasPriceErr(ErrorMessage.Require)
@@ -168,7 +152,6 @@ const ValidatorCreate = () => {
         setCommissionRate('')
         setMaxRate('')
         setMaxChangeRate('')
-        setMinSelfDelegation('')
         setValName('')
     }
 
@@ -178,8 +161,7 @@ const ValidatorCreate = () => {
             !validateGasLimit(gasLimit) ||
             !validateCommissionRate(commissionRate) ||
             !validateMaxRate(maxRate) ||
-            !validateMaxChangeRate(maxChangeRate) ||
-            !validateMinSelfDelegation(minSelfDelegation)) {
+            !validateMaxChangeRate(maxChangeRate)) {
             return
         }
         setShowConfirmModal(true)
@@ -195,8 +177,7 @@ const ValidatorCreate = () => {
                 valName: valName,
                 commissionRate: Number(commissionRate),
                 maxRate: Number(maxRate),
-                maxChangeRate: Number(maxChangeRate),
-                minSeftDelegation: Number(minSelfDelegation)
+                maxChangeRate: Number(maxChangeRate)
             } as CreateValParams;
 
             let validator = await createValidator(params, account, gasLimit, gasPrice);
@@ -324,27 +305,11 @@ const ValidatorCreate = () => {
                             }} />
                         <ErrMessage message={maxChangeRateErr} />
                     </FlexboxGrid.Item>
-                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                        <ControlLabel>
-                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MinSelfDelegation} />
-                            Minimum Delegate Amount (KAI)  <span className="required-mask">(*)</span>
-                        </ControlLabel>
-                        <FormControl placeholder="Minimum Expected Delegate Amount"
-                            name="minSelfDelegation"
-                            value={minSelfDelegation}
-                            onChange={(value) => {
-                                if (onlyNumber(value)) {
-                                    setMinSelfDelegation(value)
-                                    validateMinSelfDelegation(value)
-                                }
-                            }} />
-                        <ErrMessage message={minSelfDelegationErr} />
-                    </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <Button size="big" style={{ minWidth: 200 }} onClick={submitValidator}>Register</Button>
             </Form>
             {
-                hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>Txs create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
+                hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>Transaction create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
             }
 
             {/* Modal confirm when create validator */}
@@ -358,7 +323,6 @@ const ValidatorCreate = () => {
                     <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
                     <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
                     <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
-                    <div>Minimum Delegate Amount: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(minSelfDelegation)} KAI</span></div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={registerValidator}>

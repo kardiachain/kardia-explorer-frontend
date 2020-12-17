@@ -11,7 +11,10 @@ import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validator[] }) => {
+const ValidatorList = ({ validators = [] as Validator[], loading = true }: { 
+    validators: Validator[];
+    loading: boolean;
+}) => {
     let history = useHistory();
     const { isMobile } = useViewport();
 
@@ -23,7 +26,7 @@ const ValidatorList = ({ validators = [] as Validator[] }: { validators: Validat
                 autoHeight
                 rowHeight={() => 80}
                 data={validators}
-                loading={validators.length === 0}
+                loading={loading}
             >
                 <Column width={60} verticalAlign="middle">
                     <HeaderCell>Rank</HeaderCell>

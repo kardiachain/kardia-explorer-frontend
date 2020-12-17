@@ -11,7 +11,7 @@ import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const RegisterList = ({ registers = [] as Register[] }: { registers: Register[] }) => {
+const RegisterList = ({ registers = [] as Register[], loading = true }: { registers: Register[]; loading: boolean }) => {
 
     let history = useHistory();
     const { isMobile } = useViewport();
@@ -24,6 +24,7 @@ const RegisterList = ({ registers = [] as Register[] }: { registers: Register[] 
                 autoHeight
                 data={registers}
                 rowHeight={() => 80}
+                loading={loading}
             >
                 <Column width={60} verticalAlign="middle">
                     <HeaderCell>Rank</HeaderCell>

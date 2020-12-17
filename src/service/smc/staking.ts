@@ -59,16 +59,13 @@ const delegateAction = async (valSmcAddr: string, account: Account, amountDel: n
 
 const createValidator = async (params: CreateValParams, account: Account, gasLimit: number, gasPrice: number) => {
     try {
-        // convert value number type to decimal type
-        const minSeftDelegationDec = cellValue(params.minSeftDelegation);
-
         // convert value percent type to decimal type
         const commissionRateDec = cellValue(params.commissionRate / 100);
         const maxRateDec = cellValue(params.maxRate / 100);
         const maxRateChangeDec = cellValue(params.maxChangeRate / 100);
         // Convert validator name to bytes
         const valName = fromAscii(params.valName);
-        return await invokeSendAction(stakingContract, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec, minSeftDelegationDec], account, 0, gasLimit, gasPrice);
+        return await invokeSendAction(stakingContract, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, 0, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }
@@ -77,15 +74,13 @@ const createValidator = async (params: CreateValParams, account: Account, gasLim
 // @Function: update validator
 const updateValidator = async (params: UpdateValParams, account: Account, gasLimit: number, gasPrice: number) => {
     try {
-        // convert value number type to decimal type
-        const minSeftDelegationDec = cellValue(params.newMinSelfDelegation);
         // convert value percent type to decimal type
         const commissionRateDec = cellValue(params.newCommissionRate / 100);
         // Convert new validator name to bytes
         const valName = fromAscii(params.newValName);
         // Checksum validator's smart contract address
         const valSmcAddr = toChecksum(params.valSmcAddr);
-        return await invokeSendAction(validatorContract, valSmcAddr, "updateValidator", [valName, commissionRateDec, minSeftDelegationDec], account, 0, gasLimit, gasPrice);
+        return await invokeSendAction(validatorContract, valSmcAddr, "updateValidator", [valName, commissionRateDec], account, 0, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }

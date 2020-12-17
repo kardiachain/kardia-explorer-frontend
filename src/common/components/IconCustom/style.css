@@ -1,0 +1,24 @@
+.staking-icon {
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+}
+
+.normal {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+}
+
+.big {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+}
+
+.common {
+    background: var(--highlight);
+}
