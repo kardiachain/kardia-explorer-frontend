@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table, Tag } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import Button from '../../../../common/components/Button';
 import Helper from '../../../../common/components/Helper';
+import { StakingIcon } from '../../../../common/components/IconCustom';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { gasLimitDefault, gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
@@ -11,7 +12,7 @@ import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
-import { renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidator } from '../../../../service/kai-explorer';
@@ -168,14 +169,11 @@ const DelegatorCreate = () => {
                                             </div>
                                             <div className="property-content">
                                                 {
-                                                    renderHashToRedirect({
-                                                        hash: validator?.address || '',
-                                                        headCount: 45,
-                                                        tailCount: 4,
-                                                        showTooltip: true,
-                                                        showCopy: true,
-                                                        callback: () => { window.open(`/address/${validator?.address}`) }
-                                                    })
+                                                    renderHashString(
+                                                        validator?.address || '',
+                                                        45,
+                                                        4
+                                                    )
                                                 }
                                             </div>
                                         </FlexboxGrid.Item>
@@ -189,14 +187,11 @@ const DelegatorCreate = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
                                                 {
-                                                    renderHashToRedirect({
-                                                        hash: validator?.smcAddress || '',
-                                                        headCount: 45,
-                                                        tailCount: 4,
-                                                        showTooltip: true,
-                                                        showCopy: true,
-                                                        callback: () => { window.open(`/address/${validator?.smcAddress}`) }
-                                                    })
+                                                    renderHashString(
+                                                        validator?.smcAddress || '',
+                                                        45,
+                                                        4
+                                                    )
                                                 }
                                             </div>
                                         </FlexboxGrid.Item>
@@ -206,14 +201,16 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <span className="property-title">Title </span>
+                                                <span className="property-title">Role </span>
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
-                                                <Tag className={validator?.status?.color}>
-                                                    {validator?.status?.content}
-                                                </Tag>
+                                                <StakingIcon
+                                                    color={validator?.role?.classname}
+                                                    character={validator?.role?.character || ''}
+                                                    style={{ marginRight: 5 }} />
+                                                <span>{validator?.role?.name}</span>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -355,7 +352,7 @@ const DelegatorCreate = () => {
                                             </FlexboxGrid.Item>
 
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                                <Button size="big" style={{minWidth: 200}} onClick={submitDelegate}>Delegate</Button>
+                                                <Button size="big" style={{ minWidth: 200 }} onClick={submitDelegate}>Delegate</Button>
                                                 {
                                                     hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
                                                         hash: hashTransaction,

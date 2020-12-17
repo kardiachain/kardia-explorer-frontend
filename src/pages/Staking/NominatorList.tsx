@@ -1,17 +1,18 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Table, Tag } from 'rsuite';
+import { Table } from 'rsuite';
 import Button from '../../common/components/Button';
+import { StakingIcon } from '../../common/components/IconCustom';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { truncate } from '../../common/utils/string';
+import { renderHashStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const RegisterList = ({ registers = [] as Register[], loading = true }: { registers: Register[]; loading: boolean }) => {
+const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nominators: Nominator[]; loading: boolean }) => {
 
     let history = useHistory();
     const { isMobile } = useViewport();
@@ -22,16 +23,16 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
                 wordWrap
                 hover={false}
                 autoHeight
-                data={registers}
+                data={nominators}
                 rowHeight={() => 80}
                 loading={loading}
             >
                 <Column width={60} verticalAlign="middle">
                     <HeaderCell>Rank</HeaderCell>
                     <Cell>
-                        {(rowData: Register) => {
+                        {(rowData: Nominator) => {
                             return (
-                                <div className="rank-tab" style={{ backgroundColor: "rgb(214 140 4)" }}>
+                                <div className="rank-tab" style={{ backgroundColor: "#e8d21d" }}>
                                     {rowData.rank}
                                 </div>
                             );
@@ -41,20 +42,25 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
                 <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                     <HeaderCell>Validator</HeaderCell>
                     <Cell>
-                        {(rowData: Register) => {
+                        {(rowData: Nominator) => {
                             return (
-                                <div>
-                                    <Link to={`/validator/${rowData?.address}`}>
-
-                                        <div className="validator-title">
-                                            <Tag className={rowData?.status.color} style={{marginRight: 5}}>
-                                                {rowData?.status.content}
-                                            </Tag>
-                                            <span className="validator-name">{rowData.name}</span>
+                                <Link to={`/validator/${rowData?.address}`}>
+                                    <div>
+                                        <StakingIcon
+                                            color={rowData?.role?.classname}
+                                            character={rowData?.role?.character}
+                                            size='small' style={{ marginRight: 5 }} />
+                                        <span className="validator-name">{rowData.name}</span>
+                                        <div className="validator-address">
+                                            {renderHashStringAndTooltip(
+                                                rowData.address,
+                                                isMobile ? 10 : 15,
+                                                4,
+                                                true
+                                            )}
                                         </div>
-                                        <div className="validator-address">{truncate(rowData.address, 10, 4)}</div>
-                                    </Link>
-                                </div>
+                                    </div>
+                                </Link>
                             );
                         }}
                     </Cell>
@@ -62,7 +68,7 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Staked Amount</HeaderCell>
                     <Cell>
-                        {(rowData: Register) => {
+                        {(rowData: Nominator) => {
                             return (
                                 <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))} KAI</div>
                             );
@@ -72,7 +78,7 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Voting power</HeaderCell>
                     <Cell>
-                        {(rowData: Register) => {
+                        {(rowData: Nominator) => {
                             return (
                                 <div>{rowData.votingPower || '0'} %</div>
                             );
@@ -82,7 +88,7 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Total Delegators</HeaderCell>
                     <Cell>
-                        {(rowData: Register) => {
+                        {(rowData: Nominator) => {
                             return (
                                 <div>{rowData.totalDelegators || '0'}</div>
                             );
@@ -92,7 +98,7 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
                 <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Commission</HeaderCell>
                     <Cell>
-                        {(rowData: Register) => {
+                        {(rowData: Nominator) => {
                             return (
                                 <div>{numberFormat(rowData?.commissionRate || 0, 2)} %</div>
                             );
@@ -102,7 +108,7 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
                 <Column width={150} verticalAlign="middle" align="center">
                     <HeaderCell>Action</HeaderCell>
                     <Cell>
-                        {(rowData: Register) => {
+                        {(rowData: Nominator) => {
                             return (
                                 <Button onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                             );
@@ -114,4 +120,4 @@ const RegisterList = ({ registers = [] as Register[], loading = true }: { regist
     )
 }
 
-export default RegisterList;
+export default NominatorList;

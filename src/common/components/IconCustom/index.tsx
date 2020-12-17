@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css'
 
-const StakingIcon = ({character, className, style, size = "normal", color = 'common'}: {
+const StakingIcon = ({character, className='', style, size = "normal", color}: {
     character: string;
     className?: string;
     style?: React.CSSProperties;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Nav, Panel, Tag } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Nav, Panel } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
-import { renderHashToRedirect } from '../../../common/utils/string';
+import { renderHashString } from '../../../common/utils/string';
 import { isLoggedIn } from '../../../service/wallet'
 import './validator.css'
 import { numberFormat } from '../../../common/utils/number';
@@ -16,6 +16,7 @@ import DelegatorList from './DelegatorList';
 import { getBlocksByProposer } from '../../../service/kai-explorer/block';
 import BlockByProposerList from './BlockByProposerList';
 import MissingBlock from './MissingBlock';
+import { StakingIcon } from '../../../common/components/IconCustom';
 
 const ValidatorDetail = () => {
     const history = useHistory()
@@ -85,16 +86,14 @@ const ValidatorDetail = () => {
                                             <div className="property-content validator-name">
                                                 {validator?.name}
                                             </div>
+
                                             <div className="property-content">
                                                 {
-                                                    renderHashToRedirect({
-                                                        hash: validator?.address || '',
-                                                        headCount: 45,
-                                                        tailCount: 4,
-                                                        showTooltip: true,
-                                                        showCopy: true,
-                                                        callback: () => { window.open(`/address/${validator?.address}`) }
-                                                    })
+                                                    renderHashString(
+                                                        validator?.address || '',
+                                                        45,
+                                                        4
+                                                    )
                                                 }
                                             </div>
                                         </FlexboxGrid.Item>
@@ -108,14 +107,11 @@ const ValidatorDetail = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
                                                 {
-                                                    renderHashToRedirect({
-                                                        hash: validator?.smcAddress || '',
-                                                        headCount: 45,
-                                                        tailCount: 4,
-                                                        showTooltip: true,
-                                                        showCopy: true,
-                                                        callback: () => { window.open(`/address/${validator?.smcAddress}`) }
-                                                    })
+                                                    renderHashString(
+                                                        validator?.smcAddress || '',
+                                                        45,
+                                                        4
+                                                    )
                                                 }
                                             </div>
                                         </FlexboxGrid.Item>
@@ -125,14 +121,16 @@ const ValidatorDetail = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <span className="property-title">Title </span>
+                                                <span className="property-title">Role </span>
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
-                                                <Tag className={validator?.status?.color}>
-                                                    {validator?.status?.content}
-                                                </Tag>
+                                                <StakingIcon
+                                                    color={validator?.role?.classname}
+                                                    character={validator?.role?.character || ''}
+                                                    style={{ marginRight: 5 }} />
+                                                <span>{validator?.role?.name}</span>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -219,12 +217,6 @@ const ValidatorDetail = () => {
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div>
-                        <div className="block-title" style={{ padding: '0px 5px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="people-group" size={"2x"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Delegators</p>
-                            </div>
-                        </div>
                         <Panel shaded>
                             <div className="custom-nav">
                                 <Nav
@@ -240,11 +232,11 @@ const ValidatorDetail = () => {
                                     </Nav.Item>
 
                                     <Nav.Item eventKey="missingblocks">
-                                        {`Missing Blocks (0})`}
+                                        {`Missing Blocks (0)`}
                                     </Nav.Item>
                                 </Nav>
                             </div>
-                            
+
                             {(() => {
                                 switch (activeKey) {
                                     case 'delegators':
@@ -270,7 +262,7 @@ const ValidatorDetail = () => {
                                                 loading={loadingBlockRewards}
                                             />
                                         );
-                                    case 'missingblocks': 
+                                    case 'missingblocks':
                                         return (
                                             <MissingBlock />
                                         )

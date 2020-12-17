@@ -15,7 +15,8 @@ export const getValidators = async (): Promise<Validators> => {
             totalStakedAmount: raw.totalStakedAmount,
             totalValidatorStakedAmount: raw.totalValidatorStakedAmount,
             totalDelegatorStakedAmount: raw.totalDelegatorStakedAmount,
-            totalProposer: raw.totalProposer,
+            totalProposer: raw.totalProposers,
+            totalNominators: raw.totalNominators,
             validators: raw.validators ? raw.validators.map((v: any, i: number) => {
                 return {
                     rank: i + 1,
@@ -32,7 +33,7 @@ export const getValidators = async (): Promise<Validators> => {
                     isProposer: v.status === 2,
                     isValidator: v.status === 1,
                     isRegister: v.status === 0,
-                    status: checkValidatorStatus(v.status),
+                    role: checkValidatorRole(v.status),
                 }
             }) : []
         } as Validators
@@ -59,7 +60,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             maxChangeRate: val.maxChangeRate,
             name: val.name || '',
             smcAddress: toChecksum(val.smcAddress) || '',
-            status: checkValidatorStatus(val.status),
+            role: checkValidatorRole(val.status),
             isProposer: val.status === 2,
             isValidator: val.status === 1,
             isRegister: val.status === 0,
@@ -77,19 +78,19 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
     }
 }
 
-export const getRegisters = async (): Promise<Register[]> => {
+export const getNominators = async (): Promise<Nominator[]> => {
     try {
-        const response = await fetch(`${END_POINT}validators/registered`, GET_REQUEST_OPTION)
+        const response = await fetch(`${END_POINT}validators/nominators`, GET_REQUEST_OPTION)
         const responseJSON = await response.json();
-        const registers = responseJSON?.data?.validators || [];
+        const nominators = responseJSON?.data?.validators || [];
     
-        return registers.map((v: any, index: number) => {
+        return nominators.map((v: any, index: number) => {
             return {
                 rank: index + 1,
                 name: v.name,
                 address: toChecksum(v.address),
                 smcAddress: toChecksum(v.smcAddress),
-                status: checkValidatorStatus(v.status),
+                role: checkValidatorRole(v.status),
                 isProposer: v.status === 2,
                 isValidator: v.status === 1,
                 isRegister: v.status === 0,
@@ -99,7 +100,7 @@ export const getRegisters = async (): Promise<Register[]> => {
                 totalDelegators: v.totalDelegators,
                 maxRate: v.maxRate,
                 maxChangeRate: v.maxChangeRate
-            } as Register
+            } as Nominator
         }) || [];
     } catch (error) {
         return [];
@@ -145,28 +146,32 @@ export const checkIsValidator = async (valAddr: string): Promise<boolean> => {
 }
 
 
-export const checkValidatorStatus = (status: number): ValidatorStatus => {
-    let result: ValidatorStatus = {
-        content: "",
-        color: ""
+export const checkValidatorRole = (status: number): ValidatorRole => {
+    let result: ValidatorRole = {
+        name: "",
+        classname: "",
+        character: ""
     };
     switch (status) {
         case 0:
             result = {
-                content: "Register",
-                color: "register"
+                name: "Nominator",
+                classname: "nominator",
+                character: "N"
             };
             break;
         case 1:
             result = {
-                content: "Validator",
-                color: "validator"
+                name: "Validator",
+                classname: "validator",
+                character: 'V'
             };
             break;
         case 2: 
             result = {
-                content: "Proposer",
-                color: "proposer"
+                name: "Proposer",
+                classname: "proposer",
+                character: "P"
             } 
             break;
     }

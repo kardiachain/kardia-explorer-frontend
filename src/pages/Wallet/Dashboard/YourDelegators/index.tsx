@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Col, FlexboxGrid, Icon, List, Modal, Panel, Table, Tag } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Modal, Panel, Table } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
@@ -19,6 +19,7 @@ import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message
 import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import UpdateValidator from './UpdateValidator';
+import { StakingIcon } from '../../../../common/components/IconCustom';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -186,7 +187,7 @@ const YourDelegators = () => {
                                     </div>
                                 </div>
                                 <Panel shaded>
-                                    <UpdateValidator validator={validator || {} as Validator}/>
+                                    <UpdateValidator validator={validator || {} as Validator} />
                                     <List>
                                         <List.Item>
                                             <FlexboxGrid justify="start" align="middle">
@@ -199,14 +200,11 @@ const YourDelegators = () => {
                                                     </div>
                                                     <div className="property-content">
                                                         {
-                                                            renderHashToRedirect({
-                                                                hash: validator?.address,
-                                                                headCount: 45,
-                                                                tailCount: 4,
-                                                                showTooltip: false,
-                                                                showCopy: true,
-                                                                callback: () => { window.open(`/validator/${validator?.address}`) }
-                                                            })
+                                                            renderHashString(
+                                                                validator?.address || '',
+                                                                45,
+                                                                4
+                                                            )
                                                         }
                                                     </div>
                                                 </FlexboxGrid.Item>
@@ -220,14 +218,11 @@ const YourDelegators = () => {
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content">
                                                         {
-                                                            renderHashToRedirect({
-                                                                hash: validator?.smcAddress || '',
-                                                                headCount: 45,
-                                                                tailCount: 4,
-                                                                showTooltip: false,
-                                                                showCopy: true,
-                                                                callback: () => { window.open(`/address/${validator?.smcAddress}`) }
-                                                            })
+                                                            renderHashString(
+                                                                validator?.smcAddress || '',
+                                                                45,
+                                                                4
+                                                            )
                                                         }
                                                     </div>
                                                 </FlexboxGrid.Item>
@@ -237,14 +232,16 @@ const YourDelegators = () => {
                                             <FlexboxGrid justify="start" align="middle">
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                     <div className="property-title">
-                                                        <span className="property-title">Title </span>
+                                                        <span className="property-title">Role </span>
                                                     </div>
                                                 </FlexboxGrid.Item>
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content">
-                                                        <Tag className={validator?.status?.color}>
-                                                            {validator?.status?.content}
-                                                        </Tag>
+                                                        <StakingIcon
+                                                            color={validator?.role?.classname}
+                                                            character={validator?.role?.character || ''}
+                                                            style={{ marginRight: 5 }} />
+                                                        <span>{validator?.role?.name}</span>
                                                     </div>
                                                 </FlexboxGrid.Item>
                                             </FlexboxGrid>
@@ -319,7 +316,7 @@ const YourDelegators = () => {
                                                         </FlexboxGrid.Item>
                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                             <div className="property-content">
-                                                                <span style={{marginRight: 10}}>{numberFormat(weiToKAI(validator?.accumulatedCommission), 4)} KAI </span>
+                                                                <span style={{ marginRight: 10 }}>{numberFormat(weiToKAI(validator?.accumulatedCommission), 4)} KAI </span>
                                                                 <Button className="kai-button-gray" onClick={() => setShowWithdrawCommissionModal(true)}>
                                                                     Withdraw
                                                                 </Button>

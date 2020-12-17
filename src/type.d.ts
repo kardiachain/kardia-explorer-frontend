@@ -118,6 +118,7 @@ interface Validators {
     totalValidatorStakedAmount: number;
     totalDelegatorStakedAmount: number;
     totalProposer: number;
+    totalNominators: number;
     validators: Validator[]
 }
 
@@ -137,11 +138,11 @@ interface Validator {
     isProposer: boolean;
     isValidator: boolean;
     isRegister: boolean;
-    status: ValidatorStatus;
+    role: ValidatorRole;
     accumulatedCommission: number;
 }
 
-interface Register {
+interface Nominator {
     rank?: number;
     address: string;
     votingPower: any;
@@ -155,12 +156,13 @@ interface Register {
     isProposer: boolean;
     isValidator: boolean;
     isRegister: boolean;
-    status: ValidatorStatus
+    role: ValidatorRole
 }
 
-interface ValidatorStatus {
-    content: string;
-    color: string;
+interface ValidatorRole {
+    name: string;
+    classname: string;
+    character: string;
 }
 
 interface KaiToken {

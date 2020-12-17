@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Table, Tag } from 'rsuite';
+import { Table } from 'rsuite';
 import Button from '../../common/components/Button';
+import { StakingIcon } from '../../common/components/IconCustom';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { renderHashStringAndTooltip } from '../../common/utils/string';
@@ -11,7 +12,7 @@ import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const ValidatorList = ({ validators = [] as Validator[], loading = true }: { 
+const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
     validators: Validator[];
     loading: boolean;
 }) => {
@@ -28,7 +29,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                 data={validators}
                 loading={loading}
             >
-                <Column width={60} verticalAlign="middle">
+                <Column width={70} verticalAlign="middle">
                     <HeaderCell>Rank</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
@@ -45,14 +46,13 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <div>
-                                    <Link to={`/validator/${rowData?.address}`}>
-                                        <div className="validator-title">
-                                            <Tag className={rowData?.status.color} style={{marginRight: 5}}>
-                                                {rowData?.status.content}
-                                            </Tag>
-                                            <span className="validator-name">{rowData.name}</span>
-                                        </div>
+                                <Link to={`/validator/${rowData?.address}`}>
+                                    <div>
+                                        <StakingIcon
+                                            color={rowData?.role?.classname}
+                                            character={rowData?.role?.character}
+                                            size='small' style={{ marginRight: 5 }} />
+                                        <span className="validator-name">{rowData.name}</span>
                                         <div className="validator-address">
                                             {renderHashStringAndTooltip(
                                                 rowData.address,
@@ -61,8 +61,8 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                                                 true
                                             )}
                                         </div>
-                                    </Link>
-                                </div>
+                                    </div>
+                                </Link>
                             );
                         }}
                     </Cell>

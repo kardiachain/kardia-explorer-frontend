@@ -3,6 +3,7 @@
     text-align: center;
     color: white;
     font-weight: 600;
+    display: inline-block;
 }
 
 .normal {
@@ -19,6 +20,27 @@
     font-size: 16px;
 }
 
+.small {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+}
+
 .common {
     background: var(--highlight);
+}
+
+.proposer {
+    background: #cf1578;
+}
+
+.validator {
+    background: #039fbe;
+}
+.nominator {
+    background: #e8d21d;
+}
+.delegator {
+    background: #b20238;
 }
