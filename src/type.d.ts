@@ -118,7 +118,7 @@ interface Validators {
     totalValidatorStakedAmount: number;
     totalDelegatorStakedAmount: number;
     totalProposer: number;
-    totalNominators: number;
+    totalCandidates: number;
     validators: Validator[]
 }
 
@@ -140,9 +140,11 @@ interface Validator {
     isRegister: boolean;
     role: ValidatorRole;
     accumulatedCommission: number;
+    missedBlocks: number;
+    updateTime: string;
 }
 
-interface Nominator {
+interface Candidate {
     rank?: number;
     address: string;
     votingPower: any;

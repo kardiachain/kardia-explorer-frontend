@@ -207,6 +207,7 @@ const DelegatorCreate = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
                                                 <StakingIcon
+                                                    size="small"
                                                     color={validator?.role?.classname}
                                                     character={validator?.role?.character || ''}
                                                     style={{ marginRight: 5 }} />

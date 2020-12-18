@@ -194,8 +194,9 @@ a:hover {
 }
 
 .validator-name {
-    text-transform: uppercase;
-    font-weight: 600;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--hyperlink-color);
 }
 
 .proposer,

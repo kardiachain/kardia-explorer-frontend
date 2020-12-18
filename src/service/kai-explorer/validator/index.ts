@@ -16,7 +16,7 @@ export const getValidators = async (): Promise<Validators> => {
             totalValidatorStakedAmount: raw.totalValidatorStakedAmount,
             totalDelegatorStakedAmount: raw.totalDelegatorStakedAmount,
             totalProposer: raw.totalProposers,
-            totalNominators: raw.totalNominators,
+            totalCandidates: raw.totalCandidates,
             validators: raw.validators ? raw.validators.map((v: any, i: number) => {
                 return {
                     rank: i + 1,
@@ -65,6 +65,8 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             isValidator: val.status === 1,
             isRegister: val.status === 0,
             accumulatedCommission: val.accumulatedCommission,
+            missedBlocks: val.missedBlocks,
+            updateTime: val.updateTime,
             delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
                 return {
                     address: toChecksum(del.address),
@@ -78,13 +80,13 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
     }
 }
 
-export const getNominators = async (): Promise<Nominator[]> => {
+export const getCandidates = async (): Promise<Candidate[]> => {
     try {
-        const response = await fetch(`${END_POINT}validators/nominators`, GET_REQUEST_OPTION)
+        const response = await fetch(`${END_POINT}validators/candidates`, GET_REQUEST_OPTION)
         const responseJSON = await response.json();
-        const nominators = responseJSON?.data?.validators || [];
+        const candidates = responseJSON?.data?.validators || [];
     
-        return nominators.map((v: any, index: number) => {
+        return candidates.map((v: any, index: number) => {
             return {
                 rank: index + 1,
                 name: v.name,
@@ -100,7 +102,7 @@ export const getNominators = async (): Promise<Nominator[]> => {
                 totalDelegators: v.totalDelegators,
                 maxRate: v.maxRate,
                 maxChangeRate: v.maxChangeRate
-            } as Nominator
+            } as Candidate
         }) || [];
     } catch (error) {
         return [];
@@ -155,9 +157,9 @@ export const checkValidatorRole = (status: number): ValidatorRole => {
     switch (status) {
         case 0:
             result = {
-                name: "Nominator",
-                classname: "nominator",
-                character: "N"
+                name: "Candidate",
+                classname: "candidate",
+                character: "C"
             };
             break;
         case 1:

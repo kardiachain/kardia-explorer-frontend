@@ -44,7 +44,7 @@ const ValidatorDetail = () => {
                 const val = await getValidator(valAddr, pageDelegators, limitDelegators);
                 setValidator(val);
                 setDelegators(val.delegators);
-                setLoadingDelegators(false)
+                setLoadingDelegators(false);
             })()
         }
     }, [valAddr, pageDelegators, limitDelegators]);
@@ -55,8 +55,6 @@ const ValidatorDetail = () => {
         if (addressValid(valAddr)) {
             (async () => {
                 const rs = await getBlocksByProposer(valAddr, pageBlockRewards, limitBlockRewards);
-                console.log("Block rewards: ", rs);
-
                 setBlockRewards(rs.blocks);
                 setTotalBlockRewards(rs.totalBlocks);
                 setLoadingBlockRewards(false);
@@ -127,6 +125,7 @@ const ValidatorDetail = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
                                                 <StakingIcon
+                                                    size="small"
                                                     color={validator?.role?.classname}
                                                     character={validator?.role?.character || ''}
                                                     style={{ marginRight: 5 }} />
@@ -232,7 +231,7 @@ const ValidatorDetail = () => {
                                     </Nav.Item>
 
                                     <Nav.Item eventKey="missingblocks">
-                                        {`Missing Blocks (0)`}
+                                        {`Missing Blocks (${validator?.missedBlocks})`}
                                     </Nav.Item>
                                 </Nav>
                             </div>
@@ -264,7 +263,7 @@ const ValidatorDetail = () => {
                                         );
                                     case 'missingblocks':
                                         return (
-                                            <MissingBlock />
+                                            <MissingBlock validator={validator || {} as Validator} />
                                         )
                                 }
                             })()}

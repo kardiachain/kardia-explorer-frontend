@@ -15,7 +15,7 @@ const chartConfigDefault = {
         }
     },
     title: {
-        text: 'Validators'
+        text: 'Proposers'
     },
     accessibility: {
         point: {

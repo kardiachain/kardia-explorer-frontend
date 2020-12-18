@@ -10,25 +10,25 @@ import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
-import { checkIsValidator, getNominators, getValidators } from '../../service/kai-explorer';
+import { checkIsValidator, getCandidates, getValidators } from '../../service/kai-explorer';
 import ValidatorList from './ValidatorList';
 import { StakingIcon } from '../../common/components/IconCustom';
-import NominatorList from './NominatorList';
+import CandidateList from './CandidateList';
 
 const Validators = () => {
     let history = useHistory();
     const { isMobile } = useViewport();
     const [validators, setValidators] = useState([] as Validator[]);
     const [validatorsLoading, setValidatorsLoading] = useState(true);
-    const [nominators, setNominators] = useState([] as Nominator[]);
-    const [nominatorsLoading, setNominatorsLoading] = useState(true);
+    const [candidates, setCandidates] = useState([] as Candidate[]);
+    const [candidatesLoading, setCandidatesLoading] = useState(true);
     const [dataForValidatorsChart, setDataForValidatorsChart] = useState([] as DataChartConfig[]);
     const [dataForStakedPieChart, setDataForStakedPieChart] = useState({} as StakedPieChartConfig);
     const [totalStakedAmount, setTotalStakedAmount] = useState(0)
     const [totalValidator, setTotalValidator] = useState(0)
     const [totalDelegator, setTotalDelegator] = useState(0)
     const [totalProposer, setTotalProposer] = useState(0)
-    const [totalNominator, setTotalNominator] = useState(0)
+    const [totalCandidate, setTotalCandidate] = useState(0)
     const myAccount = getAccount() as Account
     const [isVal, setIsVal] = useState(false)
     const [activeKey, setActiveKey] = useState('validators');
@@ -45,14 +45,14 @@ const Validators = () => {
     useEffect(() => {
         (async () => {
             setValidatorsLoading(true);
-            setNominatorsLoading(true)
-            // fetch data validator and nominator
+            setCandidatesLoading(true)
+            // fetch data validator and candidate
             const fetchData = await Promise.all([
                 getValidators(),
-                getNominators()
+                getCandidates()
             ]);
             
-            setNominators(fetchData[1]);
+            setCandidates(fetchData[1]);
             const stakingData = fetchData[0];
             const valDetails = stakingData.validators;
             setValidators(stakingData.validators);
@@ -81,9 +81,9 @@ const Validators = () => {
             setTotalValidator(stakingData.totalValidators)
             setTotalDelegator(stakingData.totalDelegators)
             setTotalProposer(stakingData.totalProposer)
-            setTotalNominator(stakingData.totalNominators)
+            setTotalCandidate(stakingData.totalCandidates)
             setValidatorsLoading(false);
-            setNominatorsLoading(false)
+            setCandidatesLoading(false)
         })()
     }, []);
 
@@ -152,13 +152,13 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <StakingIcon character='N' color="nominator"/>
+                                        <StakingIcon character='C' color="candidate"/>
                                     </div>
                                     <div className="content">
                                         <div className="title">
-                                            Nominators
+                                            Candidates
                                         </div>
-                                        <div className="value">{totalNominator}</div>
+                                        <div className="value">{totalCandidate}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -191,8 +191,8 @@ const Validators = () => {
                                 <Nav.Item eventKey="validators">
                                     {`Validators (${validators.length})`}
                                 </Nav.Item>
-                                <Nav.Item eventKey="nominators">
-                                    {`Nominators (${nominators.length})`}
+                                <Nav.Item eventKey="candidates">
+                                    {`Candidates (${candidates.length})`}
                                 </Nav.Item>
                             </Nav>
                         </div>
@@ -203,9 +203,9 @@ const Validators = () => {
                                         return (
                                             <ValidatorList validators={validators} loading={validatorsLoading} />
                                         );
-                                    case 'nominators':
+                                    case 'candidates':
                                         return (
-                                            <NominatorList nominators={nominators} loading={nominatorsLoading} />
+                                            <CandidateList candidates={candidates} loading={candidatesLoading} />
                                         )
                                 }
                             })()

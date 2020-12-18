@@ -34,3 +34,13 @@
     font-size: 16px;
     font-weight: 600;
 }
+.latest-update-validator {
+    font-size: 12px;
+    font-weight: 300;
+    font-style: italic;
+}
+.warning-note {
+    font-size: 12px;
+    font-style: italic;
+    color: red;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Modal, SelectPicker } from "rsuite";
 import Button from "../../../../common/components/Button";
 import ErrMessage from "../../../../common/components/InputErrMessage/InputErrMessage";
@@ -6,8 +6,10 @@ import { NotificationError, NotificationSuccess } from "../../../../common/compo
 import { gasLimitDefault, gasPriceOption } from "../../../../common/constant";
 import { ErrorMessage, NotifiMessage } from "../../../../common/constant/Message";
 import { onlyInteger, onlyNumber } from "../../../../common/utils/number";
+import { dateToUTCString } from "../../../../common/utils/string";
 import { updateValidator } from "../../../../service/smc/staking";
 import { getAccount } from "../../../../service/wallet";
+import './validators.css'
 
 const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) => {
 
@@ -22,8 +24,18 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
+    const [canUpdate, setCanUpdate] = useState(false);
     
     const [showEditModel, setShowEditModel] = useState(false);
+
+    useEffect(() => {
+        const updateTime = (new Date(validator.updateTime)).getTime()
+        const nowTime = (new Date()).getTime();
+        if (nowTime > updateTime + 86400000) {
+            setCanUpdate(true);
+        }
+        
+    }, [validator])
 
 
     const validateValName = (value: any) => {
@@ -74,6 +86,7 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
 
 
     const update = async () => {
+        if (!canUpdate) return;
         if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateValName(valName) || !validateCommissionRate(commissionRate)) {
             return
         }
@@ -129,15 +142,20 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
 
     return (
         <>
-            <div style={{ textAlign: 'right' }}>
-                <Button className="kai-button-gray" onClick={() => { setShowEditModel(true) }}>
-                    <Icon icon="edit" /> Edit
-                </Button>
-            </div>
+            <Button className="kai-button-gray" onClick={() => { setShowEditModel(true) }}>
+                <Icon icon="edit" /> Edit
+            </Button>
             {/* Modal edit validator infomation */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showEditModel} onHide={cancelEdit}>
                 <Modal.Header>
-                    <Modal.Title>Edit Validator</Modal.Title>
+                    <Modal.Title>Edit Validator
+                        <div className="latest-update-validator">
+                            <span>Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
+                        </div>
+                        {
+                            !canUpdate ? <div className="warning-note">* The next update only can perform after 24 hours since the last update.</div> : <></>
+                        }
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form fluid>
@@ -202,7 +220,7 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={update}>
+                    <Button loading={isLoading} disable={!canUpdate} onClick={update}>
                         Update
                     </Button>
                     <Button className="kai-button-gray" onClick={cancelEdit}>

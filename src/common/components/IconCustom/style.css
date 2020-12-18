@@ -21,10 +21,10 @@
 }
 
 .small {
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 10px;
 }
 
 .common {
@@ -38,9 +38,9 @@
 .validator {
     background: #039fbe;
 }
-.nominator {
+.candidate {
     background: #e8d21d;
 }
 .delegator {
-    background: #b20238;
+    background: #676767;
 }

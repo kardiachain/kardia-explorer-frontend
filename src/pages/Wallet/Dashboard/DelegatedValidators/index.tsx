@@ -74,7 +74,7 @@ const Delegator = () => {
     const widthdraw = async () => {
         setIsLoading(true)
         try {
-            const valAddr = validatorActive?.validatorAddr || '';
+            const valAddr = validatorActive?.validatorSmcAddr || '';
             if(!valAddr) return;
 
             const withdrawTx = await withdrawDelegatedAmount(valAddr, myAccount);
@@ -341,7 +341,9 @@ const Delegator = () => {
                                         }
                                     }} />
                                 <ErrMessage message={unStakeAmountErr} />
-                                <div className="undelegate-note">*Note: The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
+                                <div className="undelegate-note">*Note:</div>
+                                <div className="undelegate-note">- After undelegated, the number of your current rewards will be an automatic withdrawal.</div>
+                                <div className="undelegate-note">- The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </Form>

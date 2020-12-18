@@ -12,7 +12,7 @@ import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
-const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nominators: Nominator[]; loading: boolean }) => {
+const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { candidates: Candidate[]; loading: boolean }) => {
 
     let history = useHistory();
     const { isMobile } = useViewport();
@@ -23,14 +23,14 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
                 wordWrap
                 hover={false}
                 autoHeight
-                data={nominators}
+                data={candidates}
                 rowHeight={() => 80}
                 loading={loading}
             >
                 <Column width={60} verticalAlign="middle">
                     <HeaderCell>Rank</HeaderCell>
                     <Cell>
-                        {(rowData: Nominator) => {
+                        {(rowData: Candidate) => {
                             return (
                                 <div className="rank-tab" style={{ backgroundColor: "#e8d21d" }}>
                                     {rowData.rank}
@@ -42,7 +42,7 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
                 <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                     <HeaderCell>Validator</HeaderCell>
                     <Cell>
-                        {(rowData: Nominator) => {
+                        {(rowData: Candidate) => {
                             return (
                                 <Link to={`/validator/${rowData?.address}`}>
                                     <div>
@@ -68,7 +68,7 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Staked Amount</HeaderCell>
                     <Cell>
-                        {(rowData: Nominator) => {
+                        {(rowData: Candidate) => {
                             return (
                                 <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))} KAI</div>
                             );
@@ -78,7 +78,7 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Voting power</HeaderCell>
                     <Cell>
-                        {(rowData: Nominator) => {
+                        {(rowData: Candidate) => {
                             return (
                                 <div>{rowData.votingPower || '0'} %</div>
                             );
@@ -88,7 +88,7 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Total Delegators</HeaderCell>
                     <Cell>
-                        {(rowData: Nominator) => {
+                        {(rowData: Candidate) => {
                             return (
                                 <div>{rowData.totalDelegators || '0'}</div>
                             );
@@ -98,7 +98,7 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
                 <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
                     <HeaderCell>Commission</HeaderCell>
                     <Cell>
-                        {(rowData: Nominator) => {
+                        {(rowData: Candidate) => {
                             return (
                                 <div>{numberFormat(rowData?.commissionRate || 0, 2)} %</div>
                             );
@@ -108,7 +108,7 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
                 <Column width={150} verticalAlign="middle" align="center">
                     <HeaderCell>Action</HeaderCell>
                     <Cell>
-                        {(rowData: Nominator) => {
+                        {(rowData: Candidate) => {
                             return (
                                 <Button onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                             );
@@ -120,4 +120,4 @@ const NominatorList = ({ nominators = [] as Nominator[], loading = true }: { nom
     )
 }
 
-export default NominatorList;
+export default CandidateList;

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Col, FlexboxGrid, Icon, List, Modal, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Modal, Nav, Panel } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashString } from '../../../../common/utils/string';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
 import Button from '../../../../common/components/Button';
-import { useViewport } from '../../../../context/ViewportContext';
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { checkIsValidator, getValidator } from '../../../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../../../config';
-import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { startValidator, withdrawCommission } from '../../../../service/smc/staking';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
@@ -20,12 +18,16 @@ import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import UpdateValidator from './UpdateValidator';
 import { StakingIcon } from '../../../../common/components/IconCustom';
-
-const { Column, HeaderCell, Cell } = Table;
+import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
+import { addressValid } from '../../../../common/utils/validate';
+import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
+import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
+import MissingBlock from '../../../Staking/ValidatorDetail/MissingBlock';
+import { useHistory } from 'react-router-dom';
 
 const YourDelegators = () => {
 
-    const { isMobile } = useViewport();
+    const history = useHistory();
     const [isVal, setIsVal] = useState(false);
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const [validator, setValidator] = useState<Validator>();
@@ -41,6 +43,16 @@ const YourDelegators = () => {
     const [showWithdrawCommissionModal, setShowWithdrawCommissionModal] = useState(false);
     const [withdrawLoading, setWithdrawLoading] = useState(false);
 
+    const [activeKey, setActiveKey] = useState("delegators");
+
+    const [blockRewards, setBlockRewards] = useState([] as KAIBlock[]);
+    const [pageBlockRewards, setPageBlockRewards] = useState(TABLE_CONFIG.page);
+    const [limitBlockRewards, setLimitBlockRewards] = useState(TABLE_CONFIG.limitDefault);
+    const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
+    const [totalBlockRewards, setTotalBlockRewards] = useState(0);
+    
+    const [readyStarting, setReadyStarting] = useState(false);
+
     useEffect(() => {
         (async () => {
             setTableLoading(true);
@@ -52,9 +64,25 @@ const YourDelegators = () => {
                 setValidator(val)
                 setDelegators(val.delegators)
                 setTableLoading(false);
+                if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
+                    setReadyStarting(true)
+                }
             }
         })();
     }, [myAccount.publickey, page, limit]);
+
+    // Fetch block rewards
+    useEffect(() => {
+        setLoadingBlockRewards(true)
+        if (addressValid(myAccount.publickey)) {
+            (async () => {
+                const rs = await getBlocksByProposer(myAccount.publickey, pageBlockRewards, limitBlockRewards);
+                setBlockRewards(rs.blocks);
+                setTotalBlockRewards(rs.totalBlocks);
+                setLoadingBlockRewards(false);
+            })()
+        }
+    }, [myAccount.publickey, pageBlockRewards, limitBlockRewards]);
 
     const fetchData = async () => {
         setTableLoading(true);
@@ -68,6 +96,7 @@ const YourDelegators = () => {
             setTableLoading(false);
         }
     }
+
 
     const startBecomeValidator = async () => {
         if (Number(weiToKAI(validator?.stakedAmount)) < MIN_STAKED_AMOUNT_START_VALIDATOR) {
@@ -187,7 +216,12 @@ const YourDelegators = () => {
                                     </div>
                                 </div>
                                 <Panel shaded>
-                                    <UpdateValidator validator={validator || {} as Validator} />
+                                    <div style={{ textAlign: 'right' }}>
+                                        <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`)  }}>
+                                            Delegate
+                                        </Button>
+                                        <UpdateValidator validator={validator || {} as Validator} />
+                                    </div>
                                     <List>
                                         <List.Item>
                                             <FlexboxGrid justify="start" align="middle">
@@ -238,6 +272,7 @@ const YourDelegators = () => {
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content">
                                                         <StakingIcon
+                                                            size="small"
                                                             color={validator?.role?.classname}
                                                             character={validator?.role?.character || ''}
                                                             style={{ marginRight: 5 }} />
@@ -331,8 +366,12 @@ const YourDelegators = () => {
                                         validator?.isRegister ? (
                                             <>
                                                 <div style={{ marginTop: '30px', marginBottom: '20px' }}>
+                                                    {
+                                                        !readyStarting ? <div className="warning-note" style={{marginBottom: 5, fontSize: 14}}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
+                                                    }
                                                     <Button size="big"
                                                         onClick={startBecomeValidator}
+                                                        disable={!readyStarting}
                                                     >
                                                         Start To Become Validator
                                                     </Button>
@@ -353,63 +392,56 @@ const YourDelegators = () => {
                                     </div>
                                 </div>
                                 <Panel shaded>
-                                    <Table
-                                        hover={false}
-                                        autoHeight
-                                        rowHeight={60}
-                                        data={delegators}
-                                        wordWrap
-                                        loading={tableLoading}
-                                    >
-                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                            <HeaderCell>Delegator address</HeaderCell>
-                                            <Cell>
-                                                {(rowData: Delegator) => {
-                                                    return (
-                                                        <div>
-                                                            {
-                                                                renderHashToRedirect({
-                                                                    hash: rowData?.address,
-                                                                    headCount: isMobile ? 15 : 30,
-                                                                    tailCount: 4,
-                                                                    showTooltip: true,
-                                                                    callback: () => { window.open(`/address/${rowData?.address}`) }
-                                                                })
-                                                            }
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                            <HeaderCell>Staked Amount</HeaderCell>
-                                            <Cell>
-                                                {(rowData: Delegator) => {
-                                                    return (
-                                                        <div> {numberFormat(weiToKAI(rowData.stakeAmount), 4)} KAI</div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                            <HeaderCell>Claimable Rewards</HeaderCell>
-                                            <Cell>
-                                                {(rowData: Delegator) => {
-                                                    return (
-                                                        <div> {numberFormat(weiToKAI(rowData.rewardsAmount), 4)} KAI</div>
-                                                    );
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                    </Table>
-                                    <TablePagination
-                                        lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                        activePage={page}
-                                        displayLength={limit}
-                                        total={validator?.totalDelegators}
-                                        onChangePage={setPage}
-                                        onChangeLength={setLimit}
-                                    />
+                                    <div className="custom-nav">
+                                        <Nav
+                                            appearance="subtle"
+                                            activeKey={activeKey}
+                                            onSelect={setActiveKey}
+                                            style={{ marginBottom: 20 }}>
+                                            <Nav.Item eventKey="delegators">
+                                                {`Delegators (${validator?.totalDelegators || 0})`}
+                                            </Nav.Item>
+                                            <Nav.Item eventKey="blocksreward">
+                                                {`Block Rewards (${totalBlockRewards || 0})`}
+                                            </Nav.Item>
+
+                                            <Nav.Item eventKey="missingblocks">
+                                                {`Missing Blocks (${validator?.missedBlocks})`}
+                                            </Nav.Item>
+                                        </Nav>
+                                    </div>
+
+                                    {(() => {
+                                        switch (activeKey) {
+                                            case 'delegators':
+                                                return (
+                                                    <DelegatorList
+                                                        delegators={delegators}
+                                                        page={page}
+                                                        limit={limit}
+                                                        loading={tableLoading}
+                                                        totalDelegators={validator?.totalDelegators}
+                                                        setpage={setPage}
+                                                        setLimit={setLimit} />
+                                                );
+                                            case 'blocksreward':
+                                                return (
+                                                    <BlockByProposerList
+                                                        blockRewards={blockRewards}
+                                                        totalBlockRewards={totalBlockRewards}
+                                                        page={pageBlockRewards}
+                                                        limit={limitBlockRewards}
+                                                        setPage={setPageBlockRewards}
+                                                        setLimit={setLimitBlockRewards}
+                                                        loading={loadingBlockRewards}
+                                                    />
+                                                );
+                                            case 'missingblocks':
+                                                return (
+                                                    <MissingBlock validator={validator || {} as Validator} />
+                                                )
+                                        }
+                                    })()}
                                 </Panel>
                             </div>
                         </FlexboxGrid.Item>
