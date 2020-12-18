@@ -4,7 +4,7 @@ import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
+import { numberFormat } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
@@ -12,8 +12,9 @@ import './validators.css'
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import NumberInputFormat from '../../../../common/components/FormInput';
 
-const ValidatorCreate = () => {
+const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [commissionRate, setCommissionRate] = useState('')
@@ -149,10 +150,13 @@ const ValidatorCreate = () => {
     }
 
     const resetForm = () => {
-        setCommissionRate('')
-        setMaxRate('')
-        setMaxChangeRate('')
-        setValName('')
+        setCommissionRate('');
+        setMaxRate('');
+        setMaxChangeRate('');
+        setValName('');
+        setCommissionRateErr('');
+        setMaxRateErr('');
+        setMaxChangeRateErr('');
     }
 
     const submitValidator = () => {
@@ -185,6 +189,7 @@ const ValidatorCreate = () => {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess
                 });
+                reFetchData();
             } else {
                 const errMsg = validator.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas.` : NotifiMessage.TransactionError;
                 NotificationError({
@@ -215,17 +220,13 @@ const ValidatorCreate = () => {
                 <FlexboxGrid>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
                         <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
-                        <FormControl name="gaslimit"
-                            placeholder="Gas Limit"
+                        <NumberInputFormat
                             value={gasLimit}
-                            onChange={(value) => {
-                                if (onlyInteger(value)) {
-                                    setGasLimit(value);
-                                    validateGasLimit(value)
-                                }
-                            }}
-                            style={{ width: '100%' }}
-                        />
+                            placeholder="Gas Limit"
+                            onChange={(event) => {
+                                setGasLimit(event.value);
+                                validateGasLimit(event.value)
+                            }} />
                         <ErrMessage message={gasLimitErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
@@ -262,14 +263,12 @@ const ValidatorCreate = () => {
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                             Commission Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
-                        <FormControl placeholder="Commission Rate"
-                            name="commissionRate"
+                        <NumberInputFormat
                             value={commissionRate}
-                            onChange={(value) => {
-                                if (onlyNumber(value)) {
-                                    setCommissionRate(value)
-                                    validateCommissionRate(value)
-                                }
+                            placeholder="Commission Rate"
+                            onChange={(event) => {
+                                setCommissionRate(event.value);
+                                validateCommissionRate(event.value)
                             }} />
                         <ErrMessage message={commissionRateErr} />
                     </FlexboxGrid.Item>
@@ -278,14 +277,12 @@ const ValidatorCreate = () => {
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                             Max Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
-                        <FormControl placeholder="Max Rate"
-                            name="maxRate"
+                        <NumberInputFormat
                             value={maxRate}
-                            onChange={(value) => {
-                                if (onlyNumber(value)) {
-                                    setMaxRate(value)
-                                    validateMaxRate(value)
-                                }
+                            placeholder="Max Rate"
+                            onChange={(event) => {
+                                setMaxRate(event.value);
+                                validateMaxRate(event.value)
                             }} />
                         <ErrMessage message={maxRateErr} />
                     </FlexboxGrid.Item>
@@ -294,14 +291,12 @@ const ValidatorCreate = () => {
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                             Max Change Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
-                        <FormControl placeholder="Max Change Rate"
-                            name="maxChangeRate"
+                        <NumberInputFormat
                             value={maxChangeRate}
-                            onChange={(value) => {
-                                if (onlyNumber(value)) {
-                                    setMaxChangeRate(value)
-                                    validateMaxChangeRate(value)
-                                }
+                            placeholder="Max Change Rate"
+                            onChange={(event) => {
+                                setMaxChangeRate(event.value);
+                                validateMaxChangeRate(event.value)
                             }} />
                         <ErrMessage message={maxChangeRateErr} />
                     </FlexboxGrid.Item>

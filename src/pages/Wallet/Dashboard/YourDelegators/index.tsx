@@ -196,7 +196,7 @@ const YourDelegators = () => {
                             <Panel shaded>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                                        <ValidatorCreate />
+                                        <ValidatorCreate reFetchData={fetchData} />
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </Panel>

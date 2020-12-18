@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, Icon, Modal, Panel, Table } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, Icon, Modal, Panel, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
+import NumberInputFormat from '../../../../common/components/FormInput';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat, onlyNumber } from '../../../../common/utils/number';
+import { numberFormat } from '../../../../common/utils/number';
 import { renderHashToRedirect } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { getValidatorByDelegator } from '../../../../service/kai-explorer';
@@ -32,7 +33,7 @@ const Delegator = () => {
     useEffect(() => {
         (async () => {
             const yourVals = await getValidatorByDelegator(myAccount.publickey)
-     
+
             setYourValidators(yourVals)
         })()
     }, [myAccount.publickey]);
@@ -47,7 +48,7 @@ const Delegator = () => {
         setIsLoading(true)
         try {
             const valSmcAddr = validatorActive?.validatorSmcAddr || '';
-            if(!valSmcAddr) return;
+            if (!valSmcAddr) return;
 
             const withdrawTx = await withdrawReward(valSmcAddr, myAccount);
             if (withdrawTx && withdrawTx.status === 1) {
@@ -75,7 +76,7 @@ const Delegator = () => {
         setIsLoading(true)
         try {
             const valAddr = validatorActive?.validatorSmcAddr || '';
-            if(!valAddr) return;
+            if (!valAddr) return;
 
             const withdrawTx = await withdrawDelegatedAmount(valAddr, myAccount);
             if (withdrawTx && withdrawTx.status === 1) {
@@ -129,7 +130,7 @@ const Delegator = () => {
     // Undelegate with all your staked amount
     const undelegateAllAmount = async () => {
         const valSmcAddr = validatorActive?.validatorSmcAddr || '';
-        if(!valSmcAddr) return;
+        if (!valSmcAddr) return;
         setUndelAllLoading(true);
         try {
             const undelegateTx = await undelegateAll(valSmcAddr, myAccount);
@@ -329,16 +330,14 @@ const Delegator = () => {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                 <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
                                 </FlexboxGrid>
-                                <FormControl
+                                <NumberInputFormat
+                                    value={unStakeAmount}
                                     placeholder="Amount"
-                                    value={unStakeAmount} name="unStakeAmount"
-                                    onChange={(value) => {
-                                        if (onlyNumber(value)) {
-                                            setUnstakeAmount(value)
-                                            validateUnStakeAmount(value)
-                                        }
+                                    onChange={(event) => {
+                                        setUnstakeAmount(event.value);
+                                        validateUnStakeAmount(event.value)
                                     }} />
                                 <ErrMessage message={unStakeAmountErr} />
                                 <div className="undelegate-note">*Note:</div>

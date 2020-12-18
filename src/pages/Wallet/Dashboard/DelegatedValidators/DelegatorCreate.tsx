@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import Button from '../../../../common/components/Button';
+import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
@@ -11,7 +12,7 @@ import { gasLimitDefault, gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../..
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number';
+import { numberFormat } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
 import { useViewport } from '../../../../context/ViewportContext';
@@ -139,9 +140,16 @@ const DelegatorCreate = () => {
                 });
             }
         }
-        setDelAmount('')
+        resetFrom();
         setIsLoading(false);
         setShowConfirmModal(false);
+    }
+
+    const resetFrom = () => {
+        setDelAmount('');
+        setGasLimit(21000);
+        setGasPrice(1);
+        setErrorMessage('');
     }
 
     return (
@@ -308,17 +316,13 @@ const DelegatorCreate = () => {
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
                                                         <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
-                                                        <FormControl name="gaslimit"
-                                                            placeholder="Gas Limit"
+                                                        <NumberInputFormat
                                                             value={gasLimit}
-                                                            onChange={(value) => {
-                                                                if (onlyInteger(value)) {
-                                                                    setGasLimit(value);
-                                                                    validateGasLimit(value)
-                                                                }
-                                                            }}
-                                                            style={{ width: '100%' }}
-                                                        />
+                                                            placeholder="Gas Limit"
+                                                            onChange={(event) => {
+                                                                setGasLimit(event.value);
+                                                                validateGasLimit(event.value)
+                                                            }} />
                                                         <ErrMessage message={gasLimitErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
@@ -338,14 +342,12 @@ const DelegatorCreate = () => {
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
                                                         <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
-                                                        <FormControl
-                                                            placeholder="Delegation amount*"
-                                                            value={delAmount} name="delAmount"
-                                                            onChange={(value) => {
-                                                                if (onlyNumber(value)) {
-                                                                    setDelAmount(value)
-                                                                    validateDelAmount(value)
-                                                                }
+                                                        <NumberInputFormat
+                                                            value={delAmount}
+                                                            placeholder="Delegation amount"
+                                                            onChange={(event) => {
+                                                                setDelAmount(event.value);
+                                                                validateDelAmount(event.value)
                                                             }} />
                                                         <ErrMessage message={errorMessage} />
                                                     </FlexboxGrid.Item>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Modal, SelectPicker } from "rsuite";
 import Button from "../../../../common/components/Button";
+import NumberInputFormat from "../../../../common/components/FormInput";
 import ErrMessage from "../../../../common/components/InputErrMessage/InputErrMessage";
 import { NotificationError, NotificationSuccess } from "../../../../common/components/Notification";
 import { gasLimitDefault, gasPriceOption } from "../../../../common/constant";
 import { ErrorMessage, NotifiMessage } from "../../../../common/constant/Message";
-import { onlyInteger, onlyNumber } from "../../../../common/utils/number";
+import { onlyInteger } from "../../../../common/utils/number";
 import { dateToUTCString } from "../../../../common/utils/string";
 import { updateValidator } from "../../../../service/smc/staking";
 import { getAccount } from "../../../../service/wallet";
@@ -204,15 +205,13 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                     <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
-                                    <FormControl placeholder="Commission Rate"
-                                        name="commissionRate"
-                                        value={commissionRate}
-                                        onChange={(value) => {
-                                            if (onlyNumber(value)) {
-                                                setCommissionRate(value)
-                                                validateCommissionRate(value)
-                                            }
-                                        }} />
+                                        <NumberInputFormat
+                                            value={commissionRate}
+                                            placeholder="Commission Rate"
+                                            onChange={(event) => {
+                                                setCommissionRate(event.value);
+                                                validateCommissionRate(event.value)
+                                            }} />
                                     <ErrMessage message={commissionRateErr} />
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>

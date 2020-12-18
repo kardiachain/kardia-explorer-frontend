@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './sendTxs.css'
 import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker } from 'rsuite'
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message'
-import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number'
+import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx, getStoredBalance } from '../../../../service/wallet'
@@ -10,6 +10,7 @@ import { renderHashToRedirect } from '../../../../common/utils/string'
 import Button from '../../../../common/components/Button'
 import { gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
+import NumberInputFormat from '../../../../common/components/FormInput'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -33,7 +34,7 @@ const SendTransaction = () => {
             return false
         }
         const balance = getStoredBalance();
-        
+
         if (balance === 0 || balance < Number(amount)) {
             setAmountErr(ErrorMessage.BalanceNotEnough)
             return false
@@ -84,8 +85,9 @@ const SendTransaction = () => {
     const resetFrom = () => {
         setAmount('');
         setToAddress('');
-        setGasLimit(21000)
-        setGasPrice(1)
+        setGasLimit(21000);
+        setGasPrice(1);
+        setAmountErr('');
     }
 
     const submitSend = () => {
@@ -141,17 +143,13 @@ const SendTransaction = () => {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                 <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl
-                                    placeholder="Amount"
-                                    name="amount"
+                                <NumberInputFormat
                                     value={amount}
-                                    onChange={(value) => {
-                                        if (onlyNumber(value)) {
-                                            setAmount(value)
-                                            validateAmount(value)
-                                        }
-                                    }}
-                                />
+                                    placeholder="Amount"
+                                    onChange={(event) => {
+                                        setAmount(event.value);
+                                        validateAmount(event.value)
+                                    }} />
                                 <ErrMessage message={amountErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
@@ -169,17 +167,13 @@ const SendTransaction = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
                                 <ControlLabel>Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl
-                                    placeholder="Gas limit"
-                                    name="gasLimit"
+                                 <NumberInputFormat
                                     value={gasLimit}
-                                    onChange={(value) => {
-                                        if (onlyInteger(value)) {
-                                            setGasLimit(value)
-                                            validateGasLimit(value)
-                                        }
-                                    }}
-                                />
+                                    placeholder="Gas limit"
+                                    onChange={(event) => {
+                                        setGasLimit(event.value);
+                                        validateGasLimit(event.value)
+                                    }} />
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
@@ -198,7 +192,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasPriceErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button size="big" style={{margin: 0}} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                             </FlexboxGrid.Item>
                             {
                                 txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}</div> : <></>
