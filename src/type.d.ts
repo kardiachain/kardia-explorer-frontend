@@ -91,6 +91,7 @@ interface YourValidator {
     claimableAmount: number;
     withdrawableAmount: number;
     unbondedAmount: number;
+    role: ValidatorRole;
 }
 interface Delegator {
     address: string;

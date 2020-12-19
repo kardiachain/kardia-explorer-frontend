@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Panel, SelectPicker, Table } from 'rsuite';
-import TablePagination from 'rsuite/lib/Table/TablePagination';
+import { useParams } from 'react-router-dom';
+import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Nav, Panel, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -15,24 +14,23 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
-import { useViewport } from '../../../../context/ViewportContext';
 import { getValidator } from '../../../../service/kai-explorer';
+import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
 import { delegateAction } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
-const { Column, HeaderCell, Cell } = Table;
+import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
+import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
+import MissingBlock from '../../../Staking/ValidatorDetail/MissingBlock';
 
 const DelegatorCreate = () => {
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const [validator, setValidator] = useState<Validator>()
-    const { isMobile } = useViewport();
     const [isLoading, setIsLoading] = useState(false)
     const [delAmount, setDelAmount] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [hashTransaction, setHashTransaction] = useState('')
     const { valAddr }: any = useParams();
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const history = useHistory()
-
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
@@ -40,6 +38,14 @@ const DelegatorCreate = () => {
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
     const [tableLoading, setTableLoading] = useState(true);
+
+    const [activeKey, setActiveKey] = useState("delegators");
+
+    const [blockRewards, setBlockRewards] = useState([] as KAIBlock[]);
+    const [pageBlockRewards, setPageBlockRewards] = useState(TABLE_CONFIG.page);
+    const [limitBlockRewards, setLimitBlockRewards] = useState(TABLE_CONFIG.limitDefault);
+    const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
+    const [totalBlockRewards, setTotalBlockRewards] = useState(0);
 
 
     useEffect(() => {
@@ -51,6 +57,17 @@ const DelegatorCreate = () => {
             setTableLoading(false)
         })();
     }, [valAddr, page, limit]);
+
+    // Fetch block rewards
+    useEffect(() => {
+        (async () => {
+            setLoadingBlockRewards(true)
+            const rs = await getBlocksByProposer(valAddr, pageBlockRewards, limitBlockRewards);
+            setBlockRewards(rs.blocks);
+            setTotalBlockRewards(rs.totalBlocks);
+            setLoadingBlockRewards(false);
+        })()
+    }, [valAddr, pageBlockRewards, limitBlockRewards]);
 
     const fetchData = async () => {
         setTableLoading(true)
@@ -357,9 +374,9 @@ const DelegatorCreate = () => {
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
                                                 <Button size="big" style={{ minWidth: 200 }} onClick={submitDelegate}>Delegate</Button>
                                                 {
-                                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Transaction created: {renderHashToRedirect({
+                                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({
                                                         hash: hashTransaction,
-                                                        headCount: 30,
+                                                        headCount: 100,
                                                         tailCount: 4,
                                                         showTooltip: false,
                                                         callback: () => { window.open(`/tx/${hashTransaction}`) }
@@ -375,67 +392,57 @@ const DelegatorCreate = () => {
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                     <div className="del-list-container">
-                        <div className="block-title" style={{ padding: '0px 5px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="group" />
-                                <p style={{ marginLeft: '12px' }} className="title">Other Delegators</p>
-                            </div>
-                        </div>
                         <Panel shaded>
-                            <Table
-                                autoHeight
-                                rowHeight={60}
-                                data={delegators}
-                                wordWrap
-                                hover={false}
-                                loading={tableLoading}
-                            >
-                                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell>Delegator Address</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Delegator) => {
-                                            return (
-                                                <div>
-                                                    {renderHashToRedirect({
-                                                        hash: rowData.address,
-                                                        headCount: isMobile ? 10 : 20,
-                                                        showTooltip: true,
-                                                        callback: () => { history.push(`/address/${rowData.address}`) }
-                                                    })}
-                                                </div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell>Staked Amount</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Delegator) => {
-                                            return (
-                                                <div> {numberFormat(weiToKAI(rowData.stakeAmount), 4)} KAI</div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell>Claimable Rewards</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Delegator) => {
-                                            return (
-                                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount), 4)} KAI</div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                            </Table>
-                            <TablePagination
-                                lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                activePage={page}
-                                displayLength={limit}
-                                total={validator?.totalDelegators}
-                                onChangePage={setPage}
-                                onChangeLength={setLimit}
-                            />
+                            <div className="custom-nav">
+                                <Nav
+                                    appearance="subtle"
+                                    activeKey={activeKey}
+                                    onSelect={setActiveKey}
+                                    style={{ marginBottom: 20 }}>
+                                    <Nav.Item eventKey="delegators">
+                                        {`Delegators (${validator?.totalDelegators || 0})`}
+                                    </Nav.Item>
+                                    <Nav.Item eventKey="blocksreward">
+                                        {`Block Rewards (${totalBlockRewards || 0})`}
+                                    </Nav.Item>
+
+                                    <Nav.Item eventKey="missingblocks">
+                                        {`Missing Blocks (${validator?.missedBlocks})`}
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+
+                            {(() => {
+                                switch (activeKey) {
+                                    case 'delegators':
+                                        return (
+                                            <DelegatorList
+                                                delegators={delegators}
+                                                page={page}
+                                                limit={limit}
+                                                loading={tableLoading}
+                                                totalDelegators={validator?.totalDelegators}
+                                                setpage={setPage}
+                                                setLimit={setLimit} />
+                                        );
+                                    case 'blocksreward':
+                                        return (
+                                            <BlockByProposerList
+                                                blockRewards={blockRewards}
+                                                totalBlockRewards={totalBlockRewards}
+                                                page={pageBlockRewards}
+                                                limit={limitBlockRewards}
+                                                setPage={setPageBlockRewards}
+                                                setLimit={setLimitBlockRewards}
+                                                loading={loadingBlockRewards}
+                                            />
+                                        );
+                                    case 'missingblocks':
+                                        return (
+                                            <MissingBlock validator={validator || {} as Validator} />
+                                        )
+                                }
+                            })()}
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>

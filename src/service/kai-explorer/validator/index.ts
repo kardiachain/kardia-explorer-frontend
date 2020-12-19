@@ -119,13 +119,14 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
     
         return vals ? vals.map((v: any) => {
             return {
-                validatorName: v.validatorName || '',
+                validatorName: v.name || '',
                 validatorAddr: toChecksum(v.validator) || '',
                 yourStakeAmount: v.stakedAmount,
                 validatorSmcAddr: toChecksum(v.validatorContractAddr) || '',
                 claimableAmount: v.claimableRewards,
                 unbondedAmount: v.unbondedAmount,
-                withdrawableAmount: v.withdrawableAmount
+                withdrawableAmount: v.withdrawableAmount,
+                role: checkValidatorRole(v.validatorStatus),
             } as YourValidator
         }) : []
     } catch (error) {

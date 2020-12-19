@@ -385,12 +385,6 @@ const YourDelegators = () => {
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                             <div className="del-list-container">
-                                <div className="block-title" style={{ padding: '0px 5px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <Icon className="highlight" icon="people-group" size={"2x"} />
-                                        <p style={{ marginLeft: '12px' }} className="title">Your Delegators</p>
-                                    </div>
-                                </div>
                                 <Panel shaded>
                                     <div className="custom-nav">
                                         <Nav
