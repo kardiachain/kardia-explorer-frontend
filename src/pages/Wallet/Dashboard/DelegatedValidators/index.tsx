@@ -9,7 +9,7 @@ import './stype.css';
 const Delegator = () => {
     const [yourValidators, setYourValidators] = useState([] as YourValidator[]);
     const myAccount = getAccount() as Account
-    const [activeKey, setActiveKey] = useState("withdraw");
+    const [activeKey, setActiveKey] = useState("rewards");
 
     useEffect(() => {
         (async () => {

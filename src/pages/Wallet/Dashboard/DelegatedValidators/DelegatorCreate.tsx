@@ -12,7 +12,7 @@ import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashString, renderHashToRedirect } from '../../../../common/utils/string';
+import { renderHashString } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
 import { getValidator } from '../../../../service/kai-explorer';
 import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
@@ -28,7 +28,6 @@ const DelegatorCreate = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [delAmount, setDelAmount] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
-    const [hashTransaction, setHashTransaction] = useState('')
     const { valAddr }: any = useParams();
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [gasPrice, setGasPrice] = useState(1)
@@ -136,13 +135,16 @@ const DelegatorCreate = () => {
 
             if (delegate && delegate.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${delegate.transactionHash}`) },
+                    seeTxdetail: true
                 });
-                setHashTransaction(delegate.transactionHash);
                 fetchData();
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${delegate.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {
@@ -373,15 +375,6 @@ const DelegatorCreate = () => {
 
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
                                                 <Button size="big" style={{ minWidth: 200 }} onClick={submitDelegate}>Delegate</Button>
-                                                {
-                                                    hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({
-                                                        hash: hashTransaction,
-                                                        headCount: 100,
-                                                        tailCount: 4,
-                                                        showTooltip: false,
-                                                        callback: () => { window.open(`/tx/${hashTransaction}`) }
-                                                    })}</div> : <></>
-                                                }
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </FormGroup>

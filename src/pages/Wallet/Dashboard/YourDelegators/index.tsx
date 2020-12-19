@@ -120,13 +120,17 @@ const YourDelegators = () => {
             const result = await startValidator(valSmcAddr, myAccount);
             if (result && result.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
                 fetchData();
 
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {
@@ -157,12 +161,16 @@ const YourDelegators = () => {
             const result = await withdrawCommission(valSmcAddr, myAccount);
             if (result && result.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
                 fetchData();
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {

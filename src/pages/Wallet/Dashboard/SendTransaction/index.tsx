@@ -6,7 +6,6 @@ import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx, getStoredBalance } from '../../../../service/wallet'
-import { renderHashToRedirect } from '../../../../common/utils/string'
 import Button from '../../../../common/components/Button'
 import { gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
@@ -21,7 +20,6 @@ const SendTransaction = () => {
     const [gasLimitErr, serGasLimitErr] = useState('')
     const myAccount = getAccount() as Account
     const [sendBntLoading, setSendBntLoading] = useState(false)
-    const [txHash, setTxHash] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     const [gasPrice, setGasPrice] = useState(1)
@@ -102,13 +100,16 @@ const SendTransaction = () => {
         try {
             const txHash = await generateTx(myAccount, toAddress, Number(amount), gasLimit, gasPrice)
             if (txHash) {
-                setTxHash(txHash);
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${txHash}`) },
+                    seeTxdetail: true
                 });
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${txHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {
@@ -194,9 +195,6 @@ const SendTransaction = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                             </FlexboxGrid.Item>
-                            {
-                                txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}</div> : <></>
-                            }
                         </FlexboxGrid>
                     </FormGroup>
                 </Form>

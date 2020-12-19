@@ -106,11 +106,15 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
             let result = await updateValidator(params, myAccount, gasLimit, gasPrice);
             if (result && result.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {

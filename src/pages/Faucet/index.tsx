@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Message, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Message, Panel } from 'rsuite';
 import Button from '../../common/components/Button';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
+import { NotificationError, NotificationSuccess, NotificationWarning } from '../../common/components/Notification';
 import { ErrorMessage } from '../../common/constant/Message';
-import { renderHashToRedirect } from '../../common/utils/string';
 import { addressValid } from '../../common/utils/validate';
 import { FAUCET_ENDPOINT } from '../../config/api';
 import './faucet.css';
@@ -12,7 +12,6 @@ const Faucet = () => {
     
     const [walletAddress, setWalletAddress] = useState('')
     const [walletAddrErr, setWalletAddrErr] = useState('')
-    const [hashTransaction, setHashTransaction] = useState('')
 
     const validateWalletAddr = () => {
         if (!walletAddress) {
@@ -37,18 +36,27 @@ const Faucet = () => {
             const responseJSON = response && await response.json();
             
             if (responseJSON && responseJSON.error) {
-                Alert.error(responseJSON.error, 5000);
+                NotificationError({
+                    description: responseJSON.error,
+                });
                 return
             }
-    
+
             if(responseJSON && responseJSON.warning) {
-                Alert.warning(responseJSON.warning, 5000);
+                NotificationWarning({
+                    description: responseJSON.warning,
+                });
                 return
             }
-            setHashTransaction(responseJSON && responseJSON.txHash)
-            Alert.success(`Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`, 5000)
+            NotificationSuccess({
+                description: `Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`,
+                callback: () => { window.open(`/tx/${responseJSON.txHash}`) },
+                seeTxdetail: true
+            });
         } catch (error) {
-            Alert.error("Faucet free KAI testnet failed", 5000);
+            NotificationError({
+                description: "Faucet free KAI testnet failed",
+            });
         }
     }
 
@@ -80,9 +88,6 @@ const Faucet = () => {
                                 <Button size="big" onClick={sendKai}>Send me some KAI</Button>
                             </FormGroup>
                         </Form>
-                        {
-                            hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all'}}>Transaction hash: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
-                        }
                         <Message className="faucet-warning" type="warning" description="These tokens are for testing purpose only. They can't be used to trade or pay for any services." />
                     </Panel>
                 </FlexboxGrid.Item>

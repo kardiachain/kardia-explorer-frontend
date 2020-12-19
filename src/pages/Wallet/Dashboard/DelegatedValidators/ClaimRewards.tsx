@@ -30,14 +30,18 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
             const valSmcAddr = validatorActive?.validatorSmcAddr || '';
             if (!valSmcAddr) return;
 
-            const withdrawTx = await withdrawReward(valSmcAddr, myAccount);
-            if (withdrawTx && withdrawTx.status === 1) {
+            const result = await withdrawReward(valSmcAddr, myAccount);
+            if (result && result.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {
@@ -114,7 +118,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                                 <Button onClick={() => {
                                     setShowConfirmWithdrawRewardsModal(true)
                                     setValidatorActive(rowData)
-                                }}>Claims Rewards
+                                }}>Claim Rewards
                                 </Button>
                             )
                         }}

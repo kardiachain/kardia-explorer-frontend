@@ -5,7 +5,6 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashToRedirect } from '../../../../common/utils/string';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
@@ -27,7 +26,6 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
     const [maxChangeRateErr, setMaxChangeRateErr] = useState('')
     const [valNameErr, setValNameErr] = useState('')
 
-    const [hashTransaction, setHashTransaction] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     const [gasPrice, setGasPrice] = useState(1)
@@ -173,7 +171,6 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 
     // @Function for register validator
     const registerValidator = async () => {
-        setHashTransaction('');
         try {
             setIsLoading(true)
             const account = await getAccount() as Account;
@@ -187,16 +184,19 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             let validator = await createValidator(params, account, gasLimit, gasPrice);
             if (validator && validator.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${validator.transactionHash}`) },
+                    seeTxdetail: true
                 });
                 reFetchData();
             } else {
                 const errMsg = validator.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas.` : NotifiMessage.TransactionError;
                 NotificationError({
-                    description: errMsg
+                    description: errMsg,
+                    callback: () => { window.open(`/tx/${validator.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
-            setHashTransaction(validator.transactionHash)
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -303,9 +303,6 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                 </FlexboxGrid>
                 <Button size="big" style={{ minWidth: 200 }} onClick={submitValidator}>Register</Button>
             </Form>
-            {
-                hashTransaction ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>Transaction create validator: {renderHashToRedirect({ hash: hashTransaction, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${hashTransaction}`) } })}</div> : <></>
-            }
 
             {/* Modal confirm when create validator */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>

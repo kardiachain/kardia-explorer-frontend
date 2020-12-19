@@ -36,14 +36,18 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
         if (!validateUnStakeAmount(unStakeAmount) || !valSmcAddr) return
         setIsLoading(true);
         try {
-            const undelegateTx = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
-            if (undelegateTx && undelegateTx.status === 1) {
+            const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
+            if (result && result.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {
@@ -64,14 +68,18 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
         if (!valSmcAddr) return;
         setUndelAllLoading(true);
         try {
-            const undelegateTx = await undelegateAll(valSmcAddr, myAccount);
-            if (undelegateTx && undelegateTx.status === 1) {
+            const result = await undelegateAll(valSmcAddr, myAccount);
+            if (result && result.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {
@@ -112,14 +120,18 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             const valAddr = validatorActive?.validatorSmcAddr || '';
             if (!valAddr) return;
 
-            const withdrawTx = await withdrawDelegatedAmount(valAddr, myAccount);
-            if (withdrawTx && withdrawTx.status === 1) {
+            const result = await withdrawDelegatedAmount(valAddr, myAccount);
+            if (result && result.status === 1) {
                 NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             } else {
                 NotificationError({
-                    description: NotifiMessage.TransactionError
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
                 });
             }
         } catch (error) {
