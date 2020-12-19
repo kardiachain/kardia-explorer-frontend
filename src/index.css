@@ -199,25 +199,6 @@ a:hover {
   color: var(--hyperlink-color);
 }
 
-.proposer,
-.validator,
-.register  {
-  color: #ffffff !important;
-  font-weight: 600 !important;
-}
-
-.proposer{
-  background-color: #ef0551 !important;
-}
-
-.validator {
-  background-color: #24a25c !important;
-}
-
-.register {
-  background-color: #d68c05 !important;
-}
-
 .custom-nav .rs-nav-subtle.rs-nav-horizontal .rs-nav-item > .rs-nav-item-content::before {
   height: 4px;
   background: var(--highlight);

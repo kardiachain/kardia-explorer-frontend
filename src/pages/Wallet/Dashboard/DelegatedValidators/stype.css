@@ -1,5 +1,9 @@
 .undelegate-note {
-    color: #be3039;
-    font-weight: 600;
+    color: var(--hyperlink-color);
     margin-top: 5px;
+    font-size: 13px;
+}
+
+.undelegate-model-container .rs-modal-body {
+    margin-top: 0 !important;
 }

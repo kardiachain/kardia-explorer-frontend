@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, Modal, Table } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, Modal, Radio, RadioGroup, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
+import Helper from '../../../../common/components/Helper';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
@@ -26,70 +28,62 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
     const [unStakeAmount, setUnstakeAmount] = useState('');
     const [unStakeAmountErr, setUnstakeAmountErr] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [undelAllLoading, setUndelAllLoading] = useState(false);
     const [validatorActive, setValidatorActive] = useState<YourValidator>();
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false);
+    const [delegateOption, setDelegateOption] = useState('part');
 
     // @Function undelegate with amount
     const undelegate = async () => {
         const valSmcAddr = validatorActive?.validatorSmcAddr || '';
-        if (!validateUnStakeAmount(unStakeAmount) || !valSmcAddr) return
+        if (!valSmcAddr) return;
         setIsLoading(true);
-        try {
-            const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
+        if (delegateOption === 'part') {
+            if (!validateUnStakeAmount(unStakeAmount)) return
+            try {
+                const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
+                if (result && result.status === 1) {
+                    NotificationSuccess({
+                        description: NotifiMessage.TransactionSuccess,
+                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                } else {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError,
+                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                }
+            } catch (error) {
                 NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
+                    description: `${NotifiMessage.TransactionError} Error: ${error.message}`
                 });
             }
-        } catch (error) {
-            NotificationError({
-                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
-            });
+        } else {
+            try {
+                const result = await undelegateAll(valSmcAddr, myAccount);
+                if (result && result.status === 1) {
+                    NotificationSuccess({
+                        description: NotifiMessage.TransactionSuccess,
+                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                } else {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError,
+                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                }
+            } catch (error) {
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${error.message}`
+                });
+            }
         }
         reFetchData();
         setShowUndelegateModel(false)
         setIsLoading(false)
-        setValidatorActive({} as YourValidator)
-        resetUndelegateForm()
-    }
-
-    // Undelegate with all your staked amount
-    const undelegateAllAmount = async () => {
-        const valSmcAddr = validatorActive?.validatorSmcAddr || '';
-        if (!valSmcAddr) return;
-        setUndelAllLoading(true);
-        try {
-            const result = await undelegateAll(valSmcAddr, myAccount);
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
-        } catch (error) {
-            NotificationError({
-                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
-            });
-        }
-        reFetchData();
-        setShowUndelegateModel(false)
-        setUndelAllLoading(false)
         setValidatorActive({} as YourValidator)
         resetUndelegateForm()
     }
@@ -111,6 +105,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
     const resetUndelegateForm = () => {
         setUnstakeAmountErr('');
         setUnstakeAmount('');
+        setDelegateOption('part');
     }
 
     // @Function for withdraw your withdrawable staked amount
@@ -210,13 +205,14 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={200} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={300} verticalAlign="middle">
                     <HeaderCell>Action</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <div style={{ marginBottom: 10, display: "flex" }}>
                                     <Button className="kai-button-gray" onClick={() => {
+                                        resetUndelegateForm()
                                         setShowUndelegateModel(true)
                                         setValidatorActive(rowData)
                                     }}>Undelegate
@@ -238,47 +234,59 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             </Table>
 
             {/* Undelegate staking*/}
-            <Modal backdrop={false} size="sm" enforceFocus={true} show={showUndelegateModel}
+            <Modal backdrop={false} size="sm" className="undelegate-model-container" enforceFocus={true} show={showUndelegateModel}
                 onHide={() => {
                     setShowUndelegateModel(false)
-                    resetUndelegateForm()
                 }}>
                 <Modal.Header>
                     <Modal.Title>Undelegate Your Staked</Modal.Title>
+                    <div className="undelegate-note" style={{ marginTop: 20 }}>* After undelegated, the number of your current rewards will be an automatic withdrawal.</div>
+                    <div className="undelegate-note">* The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
                 </Modal.Header>
                 <Modal.Body>
                     <Form fluid>
                         <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                    <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
-                                </FlexboxGrid>
-                                <NumberInputFormat
-                                    value={unStakeAmount}
-                                    placeholder="Amount"
-                                    onChange={(event) => {
-                                        setUnstakeAmount(event.value);
-                                        validateUnStakeAmount(event.value)
-                                    }} />
-                                <ErrMessage message={unStakeAmountErr} />
-                                <div className="undelegate-note">*Note:</div>
-                                <div className="undelegate-note">- After undelegated, the number of your current rewards will be an automatic withdrawal.</div>
-                                <div className="undelegate-note">- The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
-                            </FlexboxGrid.Item>
+                            <RadioGroup
+                                name="delegateOption"
+                                value={delegateOption}
+                                onChange={(value) => {
+                                    setDelegateOption(value);
+                                    setUnstakeAmountErr('');
+                                    setUnstakeAmount('');
+                                }}>
+                                <Radio value="part">Enter Amount</Radio>
+                                <Radio value="all">
+                                    <span>Maximun Amount</span>
+                                    <Helper style={{ marginLeft: 5 }} info={HelperMessage.UndelegateAll} />
+                                </Radio>
+                            </RadioGroup>
+                            {
+                                delegateOption === 'part' ? (
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                                        <FlexboxGrid justify="space-between" align="middle">
+                                            <ControlLabel>Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
+                                        </FlexboxGrid>
+                                        <NumberInputFormat
+                                            value={unStakeAmount}
+                                            placeholder="Enter Your Amount"
+                                            onChange={(event) => {
+                                                setUnstakeAmount(event.value);
+                                                validateUnStakeAmount(event.value)
+                                            }} />
+                                        <ErrMessage message={unStakeAmountErr} />
+                                    </FlexboxGrid.Item>
+                                ) : <></>
+                            }
                         </FlexboxGrid>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={undelAllLoading} onClick={undelegateAllAmount}>
-                        Undelegate All
-                    </Button>
                     <Button loading={isLoading} onClick={undelegate}>
                         Undelegate
                     </Button>
                     <Button className="kai-button-gray"
                         onClick={() => {
                             setShowUndelegateModel(false)
-                            resetUndelegateForm()
                         }}>
                         Cancel
                     </Button>
