@@ -90,13 +90,13 @@ const Network = () => {
                 <SearchSection />
                 <div className="block-title" style={{ padding: '0px 5px' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon className="highlight" icon="connectdevelop" size={"2x"} />
-                        <p style={{ marginLeft: '12px' }} className="title">Network</p>
+                        <Icon className="gray-highlight" icon="connectdevelop" size={"2x"} />
+                        <p style={{ marginLeft: '12px' }} className="title color-white">Network</p>
                     </div>
                 </div>
                 <FlexboxGrid>
                     <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={24}>
-                        <Panel shaded>
+                        <Panel shaded className="panel-bg-gray">
                             <FlexboxGrid justify="space-between">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                     <Table
@@ -123,7 +123,7 @@ const Network = () => {
                                                 {(rowData: KAINode) => {
                                                     return (
                                                         <div>
-                                                            {isMobile ? <></> : <Icon className="highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
+                                                            {isMobile ? <></> : <Icon className="gray-highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
                                                             {rowData.id}
                                                         </div>
                                                     )

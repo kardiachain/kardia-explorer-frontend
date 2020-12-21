@@ -14,7 +14,7 @@ const BlockSection = ({ blockList = [] }: {
     const { isMobile } = useViewport()
     const history = useHistory();
     return (
-        <Panel shaded>
+        <Panel shaded className="panel-bg-gray">
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
@@ -32,8 +32,8 @@ const BlockSection = ({ blockList = [] }: {
                                     return (
                                         <div>
                                             <div>
-                                                <Icon icon="cubes" className="highlight" style={{ marginRight: '10px' }} />
-                                                <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                <Icon icon="cubes" className="gray-highlight" style={{ marginRight: '10px' }} />
+                                                <Link className="color-white" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
                                             </div>
                                             <div>{millisecondToHMS(rowData.age || 0)}</div>
                                         </div>

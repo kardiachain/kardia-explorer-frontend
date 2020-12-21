@@ -6,9 +6,13 @@ const chartConfigDefault = {
     chart: {
         height: 300,
         type: 'pie',
+        backgroundColor: '#27282A'
     },
     title: {
-        text: 'Stakes'
+        text: 'Stakes',
+        style: {
+            "color": "white"
+        }
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -49,11 +53,13 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
             y: Number(dataForChart.totalValidatorStakedAmount),
             sliced: true,
             selected: true,
-            color: '#ae0001'
+            color: '#ae0001',
+            className: 'color-white'
         }, {
             name: "Delegators Stakes",
             y: Number(dataForChart.totalDelegatorStakedAmount),
-            color: '#680000'
+            color: '#680000',
+            className: 'color-white'
         }]
         setChartOptionsConfig(newConfig)
     }, [dataForChart])

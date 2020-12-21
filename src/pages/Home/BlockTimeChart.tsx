@@ -6,7 +6,7 @@ const BlockTimeChart = ({ blockList = [] }: { blockList: KAIBlock[] }) => {
 
     const [blockTimeData, setBlockTimeData] = useState({})
 
-    const {isMobile} = useViewport()
+    const {isMobile} = useViewport();
 
     useEffect(() => {
         if (blockList.length > 0) {
@@ -104,6 +104,11 @@ const buildLabel = (blockList: KAIBlock[]) => {
 
 const buildBlockTimeData = (blockList: KAIBlock[]) => {
     const blockTimeList = [] as any[]
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    const gradient = ctx.createLinearGradient(0, 100, 400, 0);
+    gradient.addColorStop(0, '#5DD0A5');
+    gradient.addColorStop(1, '#437CCB');
 
     for (let index = 1; index < blockList.length; index++) {
         blockTimeList.push(((new Date(blockList[index]?.time)).getTime() - (new Date(blockList[index - 1]?.time)).getTime())/1000)
@@ -114,28 +119,35 @@ const buildBlockTimeData = (blockList: KAIBlock[]) => {
         type: 'line',
         data: blockTimeList,
         fill: false,
-        borderColor: '#e62c2c',
-        backgroundColor: '#e62c2c',
-        pointBorderColor: '#e62c2c',
-        pointBackgroundColor: '#e62c2c',
-        pointHoverBackgroundColor: '#e62c2c',
-        pointHoverBorderColor: '#e62c2c',
-        pointRadius: 3,
+        borderColor: gradient,
+        backgroundColor: gradient,
+        pointBorderColor: ' #FFFFFF',
+        pointBackgroundColor: gradient,
+        pointHoverBackgroundColor: gradient,
+        pointHoverBorderColor: gradient,
+        pointRadius: 5,
         borderWidth: 3,
         yAxisID: 'y-axis-2'
     }
 }
 
 const buildBlockTransactionsData = (blockList: KAIBlock[]) => {
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    const gradient = ctx.createLinearGradient(0, 100, 0, 300);
+    gradient.addColorStop(0, '#6E5CE6');
+    gradient.addColorStop(1, '#C047FD');
+
     return {
         type: 'bar',
         label: 'Block transactions',
         data: blockList.map((b) => b.transactions || 0),
         fill: false,
-        backgroundColor: '#2a343d',
-        borderColor: '#2a343d',
-        hoverBackgroundColor: '#2a343d',
-        hoverBorderColor: '#2a343d',
+        backgroundColor: gradient,
+        borderColor: gradient,
+        hoverBackgroundColor: gradient,
+        hoverBorderColor: gradient,
         yAxisID: 'y-axis-1',
     }
 }

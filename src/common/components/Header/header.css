@@ -64,11 +64,15 @@
     padding:12px 11px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    background: var(--input-gray-color);
+    color: var(--white-color);
+    border: 1px solid var(--input-gray-color);
 }
 
 .btn-search{
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
+    width: 150px;
 }
 
 .rs-header .rs-navbar.rs-navbar-inverse .network-select-wrapper .rs-dropdown .rs-dropdown-menu-active ~ .rs-dropdown-toggle {

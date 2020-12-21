@@ -51,10 +51,10 @@ const CreateByMnemonic = () => {
         <div className="show-grid create-container mnemonic">
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="center">
                             <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                <div className="title" style={{ textAlign: 'center' }}>CREATE WITH MNEMONIC PHRASE</div>
+                                <div className="title color-white" style={{ textAlign: 'center' }}>CREATE WITH MNEMONIC PHRASE</div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
@@ -62,7 +62,7 @@ const CreateByMnemonic = () => {
                                 <>
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                            <div style={{ textAlign: 'center' }}>
+                                            <div className="color-white" style={{ textAlign: 'center' }}>
                                                 <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle'}} icon='check-circle' /> Create wallet success, you can access wallet now.
                                         </div>
                                             <div className="button-container">
@@ -76,7 +76,7 @@ const CreateByMnemonic = () => {
                                 </>
                             ) : (
                                 <>
-                                    <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
+                                    <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
                                     <div className="mnemonic-container">
                                         <Form fluid style={{ width: '100%' }}>
                                             <FormGroup>
@@ -86,9 +86,9 @@ const CreateByMnemonic = () => {
                                                     value={mnemonic}
                                                     readOnly
                                                     style={{
-                                                        fontWeight: 600,
-                                                        color: '#9e3144'
+                                                        fontWeight: 600
                                                     }}
+                                                    className="color-white"
                                                 />
                                                 <div style={{ textAlign: 'right', marginTop: 10 }}>
                                                     <Button className="kai-button-gray"
@@ -106,7 +106,7 @@ const CreateByMnemonic = () => {
                                             </FormGroup>
                                         </Form>
                                     </div>
-                                    <div>Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
+                                    <div className="color-white">Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                     <div className="button-container">
                                         <Link to="/create-wallet">
                                             <Button size="big" className="kai-button-gray">Back</Button>

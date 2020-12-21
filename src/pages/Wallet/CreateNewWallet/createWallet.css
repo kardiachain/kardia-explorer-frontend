@@ -96,8 +96,10 @@
 }
 
 .note {
-    color: #0f198e;
     font-weight: bold;
+    background: var(--orange-highlight);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .privatekey-input-container:hover {

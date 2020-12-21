@@ -63,14 +63,14 @@ const TxList = () => {
             <SearchSection />
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
+                    <Icon className="gray-highlight" icon="exchange" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Transactions</p>
                 </div>
             </div>
             <div>{block ? `Block number: #${block}` : ''}</div>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -88,10 +88,10 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }} />}
+                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="exchange" style={{ marginRight: '5px' }} />}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
-                                                            headCount: isMobile ? 5 : 12,
+                                                            headCount: isMobile ? 5 : 10,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`) }
@@ -107,8 +107,8 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
+                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="cubes" style={{ marginRight: '5px' }} />}
+                                                        <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -120,7 +120,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
+                                                        {isMobile ? <></> : <Icon className="orange-highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
                                                         {millisecondToHMS(rowData.age || 0)}
                                                     </div>
                                                 );
@@ -135,7 +135,7 @@ const TxList = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.from,
-                                                            headCount: isMobile ? 5 : 12,
+                                                            headCount: isMobile ? 5 : 10,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.from}`) }
@@ -154,10 +154,10 @@ const TxList = () => {
                                                         {
                                                             !rowData.toSmcAddr ? (
                                                                 <>
-                                                                {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
+                                                                {isMobile ? <></> : <Icon className="gray-highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                 {renderHashToRedirect({
                                                                     hash: rowData.to,
-                                                                    headCount: isMobile ? 5 : 12,
+                                                                    headCount: isMobile ? 5 : 10,
                                                                     tailCount: 4,
                                                                     showTooltip: true,
                                                                     callback: () => { history.push(`/address/${rowData.to}`) }
@@ -165,9 +165,9 @@ const TxList = () => {
                                                                 </>
                                                             ) : (
                                                                 <>
-                                                                {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
+                                                                {isMobile ? <></> : <Icon className="gray-highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
                                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link style={{fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                    <Link className="color-white" style={{fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                 </Whisper>
                                                                 </>
 

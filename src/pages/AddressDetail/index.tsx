@@ -40,13 +40,13 @@ const AddressDetail = () => {
         <div className="container address-detail-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="user" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Address Detail</p>
+                    <Icon className="gray-highlight" icon="user" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Address Detail</p>
                 </div>
             </div>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
-                    <Panel className="overview" shaded>
+                    <Panel className="overview panel-bg-gray" shaded>
                         <List bordered={false}>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
@@ -86,11 +86,11 @@ const AddressDetail = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div className="block-title" style={{ padding: '0px 5px' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="exchange" size={"2x"} />
-                            <p style={{ marginLeft: '12px' }} className="title">Transaction History</p>
+                            <Icon className="gray-highlight" icon="exchange" size={"2x"} />
+                            <p style={{ marginLeft: '12px' }} className="title color-white">Transaction History</p>
                         </div>
                     </div>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -108,7 +108,7 @@ const AddressDetail = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }} />}
+                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="exchange" style={{ marginRight: '5px' }} />}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 5 : 12,
@@ -127,8 +127,8 @@ const AddressDetail = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        { isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
+                                                        { isMobile ? <></> : <Icon className="gray-highlight" icon="cubes" style={{ marginRight: '5px' }} />}
+                                                        <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -140,7 +140,7 @@ const AddressDetail = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
+                                                        {isMobile ? <></> : <Icon className="orange-highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
                                                         {millisecondToHMS(rowData.age || 0)}
                                                     </div>
                                                 );
@@ -174,7 +174,7 @@ const AddressDetail = () => {
                                             return (
                                                 <div>
                                                     {
-                                                        address === rowData.from ?  <Tag color="yellow" className="tab-in-out">OUT</Tag> :  <Tag color="green" className="tab-in-out">IN</Tag>
+                                                        address === rowData.from ?  <Tag className="tab-in-out tab-out">OUT</Tag> :  <Tag color="green" className="tab-in-out tab-in">IN</Tag>
                                                     }
                                                 </div>
                                             )
@@ -190,7 +190,7 @@ const AddressDetail = () => {
                                                         {
                                                             !rowData.toSmcAddr ? (
                                                                 <>
-                                                                    {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
+                                                                    {isMobile ? <></> : <Icon className="gray-highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                     {
                                                                     address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
                                                                         hash: rowData.to,
@@ -202,9 +202,9 @@ const AddressDetail = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
+                                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr || '0x'}</Tooltip>}>
-                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
                                                                     </>
 

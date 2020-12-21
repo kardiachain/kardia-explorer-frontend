@@ -82,9 +82,9 @@ const AccessByKeyStore = () => {
         <div className="show-grid access-keystore-container">
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="center">
-                            <div className="title">ACCESS WALLET BY KEYSTORE FILE</div>
+                            <div className="title color-white">ACCESS WALLET BY KEYSTORE FILE</div>
                         </FlexboxGrid>
                         <FlexboxGrid justify="center">
                             <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>

@@ -73,64 +73,64 @@ const Home = () => {
 
                 <div className="home-top-section">
                     <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ background: 'white', height: 356, paddingTop: 30 }}>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} className="bg-panel-gray" style={{ height: 356, paddingTop: 30 }}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
 
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} className="wrap-token">
-                            <Panel shaded className="_wrap">
+                            <Panel shaded className="_wrap panel-bg-gray">
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="rocket" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="rocket" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Symbol:</p>
-                                        <p className="mt0 fw700">KAI</p>
+                                        <p className="color-graylight">Symbol:</p>
+                                        <p className="mt0 fw700 color-white">KAI</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="usd" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="usd" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Price:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
+                                        <p className="color-graylight">Price:</p>
+                                        <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="line-chart" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Market Cap:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(2033200000 * tokenInfor.price, 3) : ''}</p>
+                                        <p className="color-graylight">Market Cap:</p>
+                                        <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(2033200000 * tokenInfor.price, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="signal" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="signal" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Volume 24h:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
+                                        <p className="color-graylight">Volume 24h:</p>
+                                        <p className="mt0 fw700 color-white">$ {tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="refresh" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="refresh" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Circulating Supply:</p>
-                                        <p className="mt0 fw700">{tokenInfor.circulating_supply ? numberFormat(2033200000) : ''}</p>
+                                        <p className="color-graylight">Circulating Supply:</p>
+                                        <p className="mt0 fw700 color-white">{tokenInfor.circulating_supply ? numberFormat(2033200000) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="database" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="database" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Total Supply:</p>
-                                        <p className="mt0 fw700">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
+                                        <p className="color-graylight">Total Supply:</p>
+                                        <p className="mt0 fw700 color-white">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
                                     </div>
                                 </div>
                             </Panel>
@@ -146,8 +146,8 @@ const Home = () => {
                     <FlexboxGrid.Item className="section-left" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="th-large" size={"lg"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Latest Blocks</p>
+                                <Icon className="gray-highlight" icon="th-large" size={"lg"} />
+                                <p style={{ marginLeft: '12px' }} className="color-white">Latest Blocks</p>
                             </div>
                             <Button onClick={() => { history.push('/blocks') }}>View all</Button>
                         </div>
@@ -156,10 +156,10 @@ const Home = () => {
                     <FlexboxGrid.Item className="section-right" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="exchange" size={"lg"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Latest Transactions</p>
+                                <Icon className="gray-highlight" icon="exchange" size={"lg"} />
+                                <p style={{ marginLeft: '12px' }} className="title color-white">Latest Transactions</p>
                             </div>
-                            <Button onClick={() => { history.push('/txs') }}>View all</Button>
+                            <Button className="kai-button-pink" onClick={() => { history.push('/txs') }}>View all</Button>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

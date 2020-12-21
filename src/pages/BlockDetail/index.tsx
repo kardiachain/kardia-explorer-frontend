@@ -31,11 +31,11 @@ const BlockDetail = () => {
         <div className="container block-detail-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="cube" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Block Details</p>
+                    <Icon className="gray-highlight" icon="cube" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Block Details</p>
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 {
                     loading ? <Paragraph style={{ marginTop: 30 }} rows={20} active={true} /> :
                         <List bordered={false}>
@@ -65,14 +65,14 @@ const BlockDetail = () => {
                                         <div className="property-title">TimeStamp</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content"><Icon className="highlight" icon="clock-o" style={{ marginRight: 5 }} />{millisecondToHMS(blockDetail?.age || 0)} ({blockDetail?.time ? dateToUTCString(blockDetail?.time) : ''})</div>
+                                        <div className="property-content"><Icon className="orange-highlight" icon="clock-o" style={{ marginRight: 5 }} />{millisecondToHMS(blockDetail?.age || 0)} ({blockDetail?.time ? dateToUTCString(blockDetail?.time) : ''})</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Number of Transactions</div>
+                                        <div className="property-title">Number of Tx</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">

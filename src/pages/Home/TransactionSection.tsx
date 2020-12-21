@@ -15,7 +15,7 @@ const TransactionSection = ({ transactionList = [] }: {
     const { isMobile } = useViewport();
     const history = useHistory();
     return (
-        <Panel shaded>
+        <Panel shaded className="panel-bg-gray">
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
@@ -33,7 +33,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                     return (
                                         <div>
                                             <div>
-                                                <Icon className="highlight" icon="exchange" style={{ marginRight: '10px' }} />
+                                                <Icon className="gray-highlight" icon="exchange" style={{ marginRight: '10px' }} />
                                                 {renderHashToRedirect({
                                                     hash: rowData.txHash,
                                                     headCount: isMobile ? 4 : 8,
@@ -67,7 +67,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                                 {
                                                     !rowData.toSmcAddr ? (
                                                         <>
-                                                            <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} /><span style={{marginRight: 5}}> To:</span>
+                                                            <Icon className="gray-highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} /><span style={{marginRight: 5}}> To:</span>
                                                             {renderHashToRedirect({
                                                                 hash: rowData.to,
                                                                 headCount: isMobile ? 4 : 8,
@@ -78,9 +78,9 @@ const TransactionSection = ({ transactionList = [] }: {
                                                         </>
                                                     ) : (
                                                             <>
-                                                                <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />To:
+                                                                <Icon className="gray-highlight" icon="file-text-o" style={{ marginRight: '5px' }} />To:
                                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                    <Link className="color-white" style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                 </Whisper>
                                                             </>
                                                         )

@@ -148,11 +148,11 @@ const TxDetail = () => {
         <div className="container tx-detail-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="th" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Transaction Details</p>
+                    <Icon className="gray-highlight" icon="th" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Transaction Details</p>
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 {
                     loading ? <Paragraph style={{ marginTop: 30 }} rows={20} /> :
                         <List bordered={false}>

@@ -92,8 +92,8 @@ const Validators = () => {
             <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{ marginBottom: isMobile ? '15px' : '0' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon className="highlight" icon="group" size={"2x"} />
-                        <p style={{ marginLeft: '12px', fontWeight: 600 }}>Validators</p>
+                        <Icon className="gray-highlight" icon="group" size={"2x"} />
+                        <p className="color-white" style={{ marginLeft: '12px', fontWeight: 600 }}>Validators</p>
                     </div>
                 </FlexboxGrid.Item>
                 {
@@ -109,19 +109,19 @@ const Validators = () => {
             </FlexboxGrid>
             <FlexboxGrid justify="space-between" align="top" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
-                    <Panel shaded style={{ marginBottom: '10px' }}>
-                        <div style={{fontWeight: 600}}>
+                    <Panel shaded className="panel-bg-gray" style={{ marginBottom: '10px' }}>
+                        <div className="color-white" style={{fontWeight: 600}}>
                             <span>Total Staked Amount: </span>
                             {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI
                         </div>
                         <StakedPieChart dataForChart={dataForStakedPieChart || {}} />
                     </Panel>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }} className="staking-stats">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12} >
                                 <div className="stats-container">
@@ -129,10 +129,10 @@ const Validators = () => {
                                         <StakingIcon character='P' color="proposer"/>
                                     </div>
                                     <div className="content">
-                                        <div className="title">
+                                        <div className="title color-graylight">
                                             Proposers
                                         </div>
-                                        <div className="value">{totalProposer}</div>
+                                        <div className="value color-white">{totalProposer}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -142,10 +142,10 @@ const Validators = () => {
                                         <StakingIcon character='V' color="validator"/>
                                     </div>
                                     <div className="content">
-                                        <div className="title">
+                                        <div className="title color-graylight">
                                             Validators
                                         </div>
-                                        <div className="value">{totalValidator}</div>
+                                        <div className="value color-white">{totalValidator}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -155,10 +155,10 @@ const Validators = () => {
                                         <StakingIcon character='C' color="candidate"/>
                                     </div>
                                     <div className="content">
-                                        <div className="title">
+                                        <div className="title color-graylight">
                                             Candidates
                                         </div>
-                                        <div className="value">{totalCandidate}</div>
+                                        <div className="value color-white">{totalCandidate}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -168,10 +168,10 @@ const Validators = () => {
                                         <StakingIcon character='D' color="delegator"/>
                                     </div>
                                     <div className="content">
-                                        <div className="title">
+                                        <div className="title color-graylight">
                                             Delegators
                                         </div>
-                                        <div className="value">{totalDelegator}</div>
+                                        <div className="value color-white">{totalDelegator}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -181,7 +181,7 @@ const Validators = () => {
             </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <div className="custom-nav">
                             <Nav
                                 appearance="subtle"

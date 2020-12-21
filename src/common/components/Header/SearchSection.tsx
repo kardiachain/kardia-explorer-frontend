@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Input, InputGroup, Button } from 'rsuite';
+import { Input, InputGroup } from 'rsuite';
 import { getTxByHash } from '../../../service/kai-explorer';
 import { getBlockBy } from '../../../service/kai-explorer/block';
 import { onlyInteger } from '../../utils/number';
 import { addressValid, hashValid } from '../../utils/validate';
+import Button from '../Button';
 
 const SearchSection = () => {
     const [searchInput, setSearchInput] = useState('')
@@ -86,7 +87,7 @@ const SearchSection = () => {
                     onChange={(value: string) => {handleOnchange(value) }}
                     onPressEnter={search}
                 />
-                    <Button onClick={search} className="btn-search kai-button" style={{margin:0}}>Search</Button>
+                    <Button onClick={search} className="btn-search kai-button-gray" style={{margin:0}}>Search</Button>
             </InputGroup>
         </div>
     )

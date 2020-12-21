@@ -61,9 +61,9 @@ const CreateByKeystore = () => {
         <div className="show-grid create-container">
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="center">
-                            <div className="title">CREATE WITH KEYSTORED FILE</div>
+                            <div className="title color-white">CREATE WITH KEYSTORED FILE</div>
                         </FlexboxGrid>
                         {
                             !blobUrl ? (
@@ -75,7 +75,7 @@ const CreateByKeystore = () => {
                                                     <FormControl placeholder="Password*" name="password" type="password" value={password} onChange={setPassword} />
                                                     <ErrMessage message={errorMessage} />
                                                 </FormGroup>
-                                                <div>You will need <span className="note">BOTH</span>  your <span className="note">Password + Keystore File</span>  to access your wallet.</div>
+                                                <div className="color-white">You will need <span className="note">BOTH</span>  your <span className="note">Password + Keystore File</span>  to access your wallet.</div>
                                             </Form>
                                         </div>
                                         <div className="button-container">
@@ -89,8 +89,8 @@ const CreateByKeystore = () => {
                             ) : (
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                            <div>Please <span className="note">DOWNLOAD</span> and <span className="note">SAVE</span> the following Keystore File.</div>
-                                            <div> You will need it and your password to access your wallet.</div>
+                                            <div className="color-white">Please <span className="note">DOWNLOAD</span> and <span className="note">SAVE</span> the following Keystore File.</div>
+                                            <div className="color-white"> You will need it and your password to access your wallet.</div>
                                             <div className="download-keystore-file">
                                                 <a href={blobUrl} download={keystoreFilename}>
                                                     Download Keystore File

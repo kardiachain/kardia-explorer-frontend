@@ -46,16 +46,16 @@ const CreateByPrivateKey = () => {
         <div className="show-grid create-container private-key">
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="center">
-                            <div className="title">CREATE WITH PRIVATE KEY</div>
+                            <div className="title color-white">CREATE WITH PRIVATE KEY</div>
                         </FlexboxGrid>
                         {
                             !wallet.privatekey ? (
                                 <FlexboxGrid justify="center">
                                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                        <div> A unique private key will be generate for you </div>
-                                        <div> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span> ! If you <span className="note">lose</span>  your private key, you will <span className="note">not</span>  able to <span className="note">recover</span>  your wallet</div>
+                                        <div className="color-white"> A unique private key will be generate for you </div>
+                                        <div className="color-white"> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span> ! If you <span className="note">lose</span>  your private key, you will <span className="note">not</span>  able to <span className="note">recover</span>  your wallet</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={24} style={{marginTop: '20px'}}>
                                         <div className="button-container">
@@ -72,8 +72,8 @@ const CreateByPrivateKey = () => {
                                 </FlexboxGrid>
                             ) : (
                                     <FlexboxGrid justify="center">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                            <div><b>Please <span className="note">COPY</span>  and <span className="note">SAVE</span>  the following Private key:</b></div>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24} style={{marginBottom: 10}}>
+                                            <div className="color-white"><b>Please <span className="note">COPY</span>  and <span className="note">SAVE</span>  the following Private key:</b></div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                             <div style={{ wordBreak: 'break-all' }}>

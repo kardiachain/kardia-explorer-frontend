@@ -1,5 +1,5 @@
 .kai-button {
-    background: var(--highlight);
+    background: var(--cyan-highlight);
     color: var(--white-color);
     cursor: pointer;
     border-radius: 3px;
@@ -9,7 +9,7 @@
 }
 
 .kai-button:hover{
-    background: var(--highlight-shade1) !important;
+    background: var(--cyan-highlight) !important;
     color: var(--white-color) !important;
     transition-property: none;
 }
@@ -23,17 +23,30 @@
 }
 
 .kai-button.loading {
-    background: linear-gradient(137.34deg,#9c2020 14.41%,#623555 116.67%) !important;
+    background: var(--cyan-highlight) !important;
     color: transparent !important;
 }
 
+/* kai-button-pink style */
+.kai-button-pink {
+    background:  var(--pink-highlight);
+}
+.kai-button-pink:hover{
+    background: var(--pink-highlight) !important;
+}
+
 .kai-button-gray {
-    background:  var(--gray);
+    background: var(--gray-button);
 }
 
 .kai-button-gray:hover{
-    background: var(--gray-shade1) !important;
+    background: var(--gray-button) !important;
 }
+
+.kai-button-gray:focus {
+    outline: none !important;
+}
+
 
 .button-loading {
     position: absolute;

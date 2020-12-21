@@ -49,13 +49,13 @@ const Blocks = () => {
             <SearchSection />
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="cubes" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Blocks</p>
+                    <Icon className="gray-highlight" icon="cubes" size={"2x"} />
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Blocks</p>
                 </div>
             </div>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -73,8 +73,8 @@ const Blocks = () => {
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
-                                                        <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                        <Icon className="gray-highlight" icon="cubes" style={{ marginRight: '5px' }} />
+                                                        <Link className="color-white" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -85,29 +85,11 @@ const Blocks = () => {
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
-                                                    <div><Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} /> {millisecondToHMS(rowData.age || 0)}</div>
+                                                    <div><Icon className="orange-highlight" icon="clock-o" style={{ marginRight: '5px' }} /> {millisecondToHMS(rowData.age || 0)}</div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    {/* <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Block Hash</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAIBlock) => {
-                                                return (
-                                                    <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.blockHash,
-                                                            headCount: isMobile ? 5 : 12,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/block/${rowData.blockHash}`) }
-                                                        })}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column> */}
                                     <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
