@@ -128,7 +128,7 @@ const TxDetail = () => {
                 return
             }
             setInputDataDecode(JSON.parse(JSON.stringify(txDecodeData)));
-            setInputDataActiveKey("result")
+            setInputDataActiveKey("result");
         } catch (error) {
             setDecodeErr("Decode input data failed.")
             return
@@ -136,11 +136,12 @@ const TxDetail = () => {
     }
 
     const originStep = () => {
-        if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === STAKING_SMC_ADDRESS) {
-            decodeABI()
-        } else {
-            setInputDataActiveKey('decode')
+        if (txDetail && txDetail.decodedInputData) {
+            setInputDataDecode(txDetail.decodedInputData);
+            setInputDataActiveKey("result");
+            return;
         }
+        setInputDataActiveKey('decode');
     }
 
     return (
@@ -205,7 +206,12 @@ const TxDetail = () => {
                                         {
                                             txDetail?.status ?
                                                 <div className="property-content"><Tag color="green">SUCCESS</Tag></div> :
-                                                <div className="property-content"><Tag color="red">FAILED</Tag></div>
+                                                <div className="property-content">
+                                                    <Tag color="red">FAILED</Tag>
+                                                    {
+                                                        txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
+                                                    }
+                                                </div>
                                         }
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>

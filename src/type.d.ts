@@ -7,6 +7,7 @@ interface KAITransaction {
     blockNumber: number;
     blockHash: string;
     status: boolean;
+    failedReason: string;
     nonce: number;
     age: number;
     transactionIndex: number;
@@ -21,6 +22,7 @@ interface KAITransaction {
     toSmcAddr: string;
     gasUsedPercent: any;
     txFee: number;
+    decodedInputData?: any;
 }
 
 interface KAIBlock {
