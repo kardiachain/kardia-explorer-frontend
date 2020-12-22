@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Col, FlexboxGrid, Icon, List, Modal, Nav, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Modal, Nav, Panel, Tag } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashString } from '../../../../common/utils/string';
@@ -11,7 +11,7 @@ import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { checkIsValidator, getValidator } from '../../../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../../../config';
-import { startValidator, withdrawCommission } from '../../../../service/smc/staking';
+import { startValidator, unjailValidator, withdrawCommission } from '../../../../service/smc/staking';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
@@ -22,7 +22,6 @@ import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
 import { addressValid } from '../../../../common/utils/validate';
 import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
-import MissingBlock from '../../../Staking/ValidatorDetail/MissingBlock';
 import { useHistory } from 'react-router-dom';
 
 const YourDelegators = () => {
@@ -50,7 +49,10 @@ const YourDelegators = () => {
     const [limitBlockRewards, setLimitBlockRewards] = useState(TABLE_CONFIG.limitDefault);
     const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
     const [totalBlockRewards, setTotalBlockRewards] = useState(0);
-    
+
+    const [unjailLoading, setUnjailLoading] = useState(false);
+    const [showConfirmUnjailModal, setShowConfirmUnjailModal] = useState(false);
+
     const [readyStarting, setReadyStarting] = useState(false);
 
     useEffect(() => {
@@ -152,7 +154,6 @@ const YourDelegators = () => {
     const widthdrawCommission = async () => {
         try {
             setWithdrawLoading(true);
-
             const valSmcAddr = validator?.smcAddress || "";
             if (!valSmcAddr) {
                 setBtnLoading(false);
@@ -187,6 +188,48 @@ const YourDelegators = () => {
         }
         setBtnLoading(false);
         setShowWithdrawCommissionModal(false);
+    }
+
+    // Unjail validator
+    const unJailValidator = async () => {
+        try {
+            setShowConfirmUnjailModal(true);
+            setUnjailLoading(true);
+            const valSmcAddr = validator?.smcAddress || "";
+            if (!valSmcAddr) {
+                setUnjailLoading(false);
+                return false;
+            }
+            const result = await unjailValidator(valSmcAddr, myAccount);
+            if (result && result.status === 1) {
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
+                });
+                fetchData();
+            } else {
+                NotificationError({
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
+                });
+            }
+
+        } catch (error) {
+            try {
+                const errJson = JSON.parse(error?.message);
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                });
+            } catch (error) {
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
+            }
+        }
+        setShowConfirmUnjailModal(false);
+        setUnjailLoading(false);
     }
 
     return !statePending ? (
@@ -225,7 +268,7 @@ const YourDelegators = () => {
                                 </div>
                                 <Panel shaded>
                                     <div style={{ textAlign: 'right' }}>
-                                        <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`)  }}>
+                                        <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`) }}>
                                             Delegate
                                         </Button>
                                         <UpdateValidator validator={validator || {} as Validator} />
@@ -350,6 +393,41 @@ const YourDelegators = () => {
                                                 </FlexboxGrid.Item>
                                             </FlexboxGrid>
                                         </List.Item>
+
+                                        <List.Item>
+                                            <FlexboxGrid justify="start" align="middle">
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                    <div className="property-title">Status</div>
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                    <div className="property-content">
+                                                        {
+                                                            validator?.jailed ? (
+                                                                <>
+                                                                    <Tag color="red">Jailed</Tag>
+                                                                    <Button
+                                                                        style={{ marginLeft: 20 }}
+                                                                        className="kai-button-gray" 
+                                                                        onClick={() => { setShowConfirmUnjailModal(true) }}>UnJail
+                                                                    </Button>
+                                                                </>
+                                                            ) : <Tag color="green">Active</Tag>
+                                                        }
+                                                    </div>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </List.Item>
+
+                                        <List.Item>
+                                            <FlexboxGrid justify="start" align="middle">
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                    <div className="property-title">Missing block</div>
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                    <div className="property-content">{validator?.missedBlocks} Blocks</div>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </List.Item>
                                         {
                                             validator?.isProposer ? (
                                                 <List.Item>
@@ -371,11 +449,11 @@ const YourDelegators = () => {
                                         }
                                     </List>
                                     {
-                                        validator?.isRegister ? (
+                                        validator?.isRegister && !validator.jailed ? (
                                             <>
                                                 <div style={{ marginTop: '30px', marginBottom: '20px' }}>
                                                     {
-                                                        !readyStarting ? <div className="warning-note" style={{marginBottom: 5, fontSize: 14}}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
+                                                        !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
                                                     }
                                                     <Button size="big"
                                                         onClick={startBecomeValidator}
@@ -404,11 +482,7 @@ const YourDelegators = () => {
                                                 {`Delegators (${validator?.totalDelegators || 0})`}
                                             </Nav.Item>
                                             <Nav.Item eventKey="blocksreward">
-                                                {`Block Rewards (${totalBlockRewards || 0})`}
-                                            </Nav.Item>
-
-                                            <Nav.Item eventKey="missingblocks">
-                                                {`Missing Blocks (${validator?.missedBlocks})`}
+                                                {`Block Validated (${totalBlockRewards || 0})`}
                                             </Nav.Item>
                                         </Nav>
                                     </div>
@@ -438,10 +512,6 @@ const YourDelegators = () => {
                                                         loading={loadingBlockRewards}
                                                     />
                                                 );
-                                            case 'missingblocks':
-                                                return (
-                                                    <MissingBlock validator={validator || {} as Validator} />
-                                                )
                                         }
                                     })()}
                                 </Panel>
@@ -484,6 +554,26 @@ const YourDelegators = () => {
                                 Confirm
                             </Button>
                             <Button className="kai-button-gray" onClick={() => { setShowWithdrawCommissionModal(false) }}>
+                                Cancel
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                    {/* Modal confirm when unjail validator */}
+                    <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmUnjailModal} onHide={() => { setShowConfirmUnjailModal(false) }}>
+                        <Modal.Header>
+                            <Modal.Title>Confirm unjail validator</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
+                                Are you sure you want to unjail for your validator
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button loading={unjailLoading} onClick={unJailValidator}>
+                                Confirm
+                            </Button>
+                            <Button className="kai-button-gray" onClick={() => { setShowConfirmUnjailModal(false) }}>
                                 Cancel
                             </Button>
                         </Modal.Footer>

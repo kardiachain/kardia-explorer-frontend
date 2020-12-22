@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Nav, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Nav, Panel, Tag } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { renderHashString } from '../../../common/utils/string';
 import { isLoggedIn } from '../../../service/wallet'
@@ -15,7 +15,6 @@ import { getValidator } from '../../../service/kai-explorer';
 import DelegatorList from './DelegatorList';
 import { getBlocksByProposer } from '../../../service/kai-explorer/block';
 import BlockByProposerList from './BlockByProposerList';
-import MissingBlock from './MissingBlock';
 import { StakingIcon } from '../../../common/components/IconCustom';
 
 const ValidatorDetail = () => {
@@ -205,6 +204,32 @@ const ValidatorDetail = () => {
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Status</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {
+                                                    validator?.jailed ? <Tag color="red">Jailed</Tag> : <Tag color="green">Active</Tag>
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Missing block</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{validator?.missedBlocks} Blocks</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
                             </List>
                             <Button size="big" style={{ marginTop: '30px' }}
                                 onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${valAddr}`) : history.push('/wallet') }}
@@ -227,11 +252,7 @@ const ValidatorDetail = () => {
                                         {`Delegators (${validator?.totalDelegators || 0})`}
                                     </Nav.Item>
                                     <Nav.Item eventKey="blocksreward">
-                                        {`Block Rewards (${totalBlockRewards || 0})`}
-                                    </Nav.Item>
-
-                                    <Nav.Item eventKey="missingblocks">
-                                        {`Missing Blocks (${validator?.missedBlocks})`}
+                                        {`Block Validated (${totalBlockRewards || 0})`}
                                     </Nav.Item>
                                 </Nav>
                             </div>
@@ -261,10 +282,6 @@ const ValidatorDetail = () => {
                                                 loading={loadingBlockRewards}
                                             />
                                         );
-                                    case 'missingblocks':
-                                        return (
-                                            <MissingBlock validator={validator || {} as Validator} />
-                                        )
                                 }
                             })()}
                         </Panel>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Nav, Panel, SelectPicker } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Nav, Panel, SelectPicker, Tag } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -20,7 +20,6 @@ import { delegateAction } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
-import MissingBlock from '../../../Staking/ValidatorDetail/MissingBlock';
 
 const DelegatorCreate = () => {
     const [delegators, setDelegators] = useState([] as Delegator[]);
@@ -326,6 +325,33 @@ const DelegatorCreate = () => {
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
+
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Status</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {
+                                                    validator?.jailed ? <Tag color="red">Jailed</Tag> : <Tag color="green">Active</Tag>
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Missing block</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{validator?.missedBlocks} Blocks</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
                             </List>
                             <div className="del-staking-container">
                                 <Form fluid>
@@ -396,11 +422,7 @@ const DelegatorCreate = () => {
                                         {`Delegators (${validator?.totalDelegators || 0})`}
                                     </Nav.Item>
                                     <Nav.Item eventKey="blocksreward">
-                                        {`Block Rewards (${totalBlockRewards || 0})`}
-                                    </Nav.Item>
-
-                                    <Nav.Item eventKey="missingblocks">
-                                        {`Missing Blocks (${validator?.missedBlocks})`}
+                                        {`Block Validated (${totalBlockRewards || 0})`}
                                     </Nav.Item>
                                 </Nav>
                             </div>
@@ -430,10 +452,6 @@ const DelegatorCreate = () => {
                                                 loading={loadingBlockRewards}
                                             />
                                         );
-                                    case 'missingblocks':
-                                        return (
-                                            <MissingBlock validator={validator || {} as Validator} />
-                                        )
                                 }
                             })()}
                         </Panel>

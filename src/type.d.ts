@@ -144,7 +144,8 @@ interface Validator {
     role: ValidatorRole;
     accumulatedCommission: number;
     missedBlocks: number;
-    updateTime: string;
+    updateTime: number;
+    jailed: boolean;
 }
 
 interface Candidate {
