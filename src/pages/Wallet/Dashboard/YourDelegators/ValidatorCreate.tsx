@@ -20,7 +20,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
     const [maxRate, setMaxRate] = useState('')
     const [maxChangeRate, setMaxChangeRate] = useState('')
     const [valName, setValName] = useState('')
-    const [yourDelAmount, setYourDelAmount] = useState('')
+    const [yourDelAmount, setYourDelAmount] = useState(`${MIN_DELEGATION_AMOUNT}`)
 
     const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
@@ -137,14 +137,19 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             setYourDelAmountErr(ErrorMessage.Require);
             return
         }
+
+        if (Number(value) < MIN_DELEGATION_AMOUNT) {
+            setYourDelAmountErr(ErrorMessage.BelowMinimumDelegationAmount)
+            return false
+        }
         const balance = getStoredBalance();
         if (balance === 0 || balance < MIN_DELEGATION_AMOUNT) {
-            setYourDelAmountErr(ErrorMessage.BelowMinimumDelegationAmount)
+            setYourDelAmountErr(ErrorMessage.BalanceNotEnough)
             return false
         }
 
         setYourDelAmountErr('');
-        return false;
+        return true;
     }
 
     const validateGasPrice = (gasPrice: any): boolean => {

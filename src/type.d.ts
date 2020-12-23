@@ -194,3 +194,10 @@ interface ToSmcAddress {
     toSmcAddr: string;
     toSmcName: string;
 }
+
+interface HolderAccount {
+    address: string;
+    name: string;
+    isContract: boolean;
+    balance: any;
+}

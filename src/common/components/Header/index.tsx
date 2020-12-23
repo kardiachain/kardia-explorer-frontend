@@ -66,6 +66,7 @@ const Header = () => {
                                     <Dropdown eventKey="blockchain" icon={<Icon className="highlight" icon="unlink" />} title="Blockchain">
                                         <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
                                         <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
+                                        <Dropdown.Item href="/accounts">View Accounts</Dropdown.Item>
                                     </Dropdown>
                                     <Nav.Item eventKey="network" icon={<Icon className="highlight" icon="connectdevelop" />} href="/network">Network</Nav.Item>
                                     <Nav.Item eventKey="documentation" icon={<Icon className="highlight" icon="book" />} href="/documentation">Documentation</Nav.Item>
@@ -112,6 +113,7 @@ const Header = () => {
                         <Dropdown title="Blockchain" >
                             <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
                             <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
+                            <Dropdown.Item eventKey="accounts" href="/accounts">View Accounts</Dropdown.Item>
                             {/* Hidden dropdown item */}
                             <Dropdown.Item eventKey="blockchain" style={{display: "none"}}></Dropdown.Item>
                         </Dropdown>

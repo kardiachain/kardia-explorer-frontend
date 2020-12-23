@@ -33,7 +33,7 @@ const AddressDetail = () => {
             setLoading(false)
             setTransactionList(rs.transactions)
             setTotalTxs(rs.totalTxs)
-            setBalance(balance)
+            setBalance(balance.balance)
         })()
     }, [page, size, address])
     return (

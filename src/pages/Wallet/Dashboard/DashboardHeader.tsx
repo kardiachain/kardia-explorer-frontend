@@ -19,12 +19,12 @@ const DashboardHeader = () => {
     useEffect(() => {
         (async() => {
             const balance = await getBalance(account.publickey);
-            setBalance(weiToKAI(balance))
+            setBalance(weiToKAI(balance.balance))
         })();
 
         const fetchBalance = setInterval(async () => {
             const balance = await getBalance(account.publickey);
-            setBalance(weiToKAI(balance))
+            setBalance(weiToKAI(balance.balance))
         }, TIME_INTERVAL_MILISECONDS)
 
         return () => clearInterval(fetchBalance);
@@ -36,7 +36,7 @@ const DashboardHeader = () => {
 
     const reloadBalance = async () => {
         const balance = await getBalance(account.publickey);
-        setBalance(weiToKAI(balance));
+        setBalance(weiToKAI(balance.balance));
     }
 
     const renderCredential = () => {
