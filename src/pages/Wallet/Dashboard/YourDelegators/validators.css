@@ -44,3 +44,9 @@
     font-style: italic;
     color: red;
 }
+
+.edit-val-button {
+    color: #000000;
+    cursor: pointer;
+    margin-left: 10px;
+}

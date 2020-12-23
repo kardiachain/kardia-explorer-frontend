@@ -21,7 +21,7 @@ export const ErrorMessage = {
     ValueNotMoreThanStakedAmount: 'The value not be more than your staked amount.',
     StakedAmountNotEnough: 'Your stake amount not enough 12.5M KAI to start become validator.',
     BelowMinimumDelegationAmount: 'The minimum delegation amoint is 25K KAI',
-    CommissionMoreThanMaximunRateRangeChange: 'Change commission cannot be more than the maximum rate range you can change.'
+    CommissionMoreThanMaximunRateRangeChange: 'Change commission cannot be more than the maximum rate range.'
 }
 
 export const NotifiMessage = {
