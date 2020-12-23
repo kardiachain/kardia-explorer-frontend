@@ -24,6 +24,7 @@ interface CreateValParams {
     commissionRate: number;
     maxRate: number;
     maxChangeRate: number;
+    yourDelegationAmount: number;
 }
 
 interface UpdateValParams {

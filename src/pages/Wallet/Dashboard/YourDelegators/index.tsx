@@ -25,6 +25,7 @@ import UpdateCommissionRate from './UpdateCommissionRate';
 import UnJailValidator from './UnJailValidator';
 import VaidatorStart from './VaidatorStart';
 import WithdrawCommission from './WithdrawCommission';
+import ValidatorStop from './ValidatorStop';
 
 const YourDelegators = () => {
 
@@ -53,6 +54,7 @@ const YourDelegators = () => {
     const [showConfirmUnjailModal, setShowConfirmUnjailModal] = useState(false);
     const [showConfirmStartValidatorModal, setShowConfirmStartValidatorModal] = useState(false);
     const [showWithdrawCommissionModal, setShowWithdrawCommissionModal] = useState(false);
+    const [showConfirmStopValidatorModal, setShowConfirmStopValidatorModal] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -348,6 +350,14 @@ const YourDelegators = () => {
                                             </>
                                         ) : <></>
                                     }
+
+                                    <div style={{ textAlign: 'right' }}>
+                                        <Button 
+                                            onClick={() => {
+                                                setShowConfirmStopValidatorModal(true);
+                                            }}>Stop
+                                        </Button>
+                                    </div>
                                 </Panel>
                             </div>
                         </FlexboxGrid.Item>
@@ -427,6 +437,13 @@ const YourDelegators = () => {
                         validator={validator || {} as Validator}
                         showModel={showWithdrawCommissionModal}
                         setShowModel={setShowWithdrawCommissionModal}
+                        reFetchData={fetchData}
+                    />
+
+                    <ValidatorStop
+                        validator={validator || {} as Validator}
+                        showModel={showConfirmStopValidatorModal}
+                        setShowModel={setShowConfirmStopValidatorModal}
                         reFetchData={fetchData}
                     />
 

@@ -65,7 +65,9 @@ const createValidator = async (params: CreateValParams, account: Account, gasLim
         const maxRateChangeDec = cellValue(params.maxChangeRate / 100);
         // Convert validator name to bytes
         const valName = fromAscii(params.valName);
-        return await invokeSendAction(stakingContract, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, 0, gasLimit, gasPrice);
+        // Convert amount to decimal type
+        const delAmountDec = cellValue(params.yourDelegationAmount);
+        return await invokeSendAction(stakingContract, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, delAmountDec, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }
@@ -161,6 +163,15 @@ const unjailValidator = async (valSmcAddr: string, account: Account) => {
     }
 }
 
+// Stop validator
+const stopValidator = async (valSmcAddr: string, account: Account) => {
+    try {
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "stop", [], account, 0);
+    } catch (error) {
+        throw error;
+    }
+}
+
 export {
     invokeCallData,
     invokeSendAction,
@@ -168,12 +179,12 @@ export {
     createValidator,
     withdrawReward,
     withdrawDelegatedAmount,
-    // updateValidator,
     undelegateWithAmount,
     withdrawCommission,
     undelegateAll,
     startValidator,
     unjailValidator,
     updateValidatorName,
-    updateValidatorCommission
+    updateValidatorCommission,
+    stopValidator
 }

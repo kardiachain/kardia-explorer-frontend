@@ -1,6 +1,66 @@
 [
 	{
 		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_downtimeJailDuration",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_slashFractionDowntime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_unbondingTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_slashFractionDoubleSign",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_signedBlockWindow",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minSignedPerWindow",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minStake",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minValidatorStake",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minAmountChangeName",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minSelfDelegation",
+				"type": "uint256"
+			}
+		],
+		"name": "setValidatorParams",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [],
 		"name": "startValidator",
 		"outputs": [],
@@ -298,8 +358,8 @@
 				"type": "address"
 			}
 		],
-		"payable": false,
-		"stateMutability": "nonpayable",
+		"payable": true,
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -609,61 +669,6 @@
 		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_downtimeJailDuration",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_slashFractionDowntime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_unbondingTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_slashFractionDoubleSign",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_signedBlockWindow",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minSignedPerWindow",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minStake",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minValidatorStake",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minAmountChangeName",
-				"type": "uint256"
-			}
-		],
-		"name": "setValidatorParams",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

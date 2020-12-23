@@ -69,6 +69,11 @@
 				"type": "uint256"
 			},
 			{
+				"internalType": "uint256",
+				"name": "minSelfDelegation",
+				"type": "uint256"
+			},
+			{
 				"internalType": "enum Validator.Status",
 				"name": "status",
 				"type": "uint8"
@@ -455,6 +460,26 @@
 			}
 		],
 		"name": "allocateToken",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "val",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "selfDelegate",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",

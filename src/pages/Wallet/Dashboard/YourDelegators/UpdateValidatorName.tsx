@@ -24,7 +24,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
     const [valNameErr, setValNameErr] = useState('');
     const myAccount = getAccount() as Account;
     const [isLoading, setIsLoading] = useState(false);
-    const updateFee = process.env.REACT_APP_UPDATE_VALIDATOR_NAME_FEE;
+    const updateFee = Number(process.env.REACT_APP_UPDATE_VALIDATOR_NAME_FEE);
 
     const validateGasPrice = (gasPrice: any): boolean => {
         if (!Number(gasPrice)) {
@@ -51,7 +51,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
         }
 
         const balance = getStoredBalance();
-        if (balance === 0 || balance < 10000) {
+        if (balance === 0 || balance < updateFee) {
             setValNameErr(ErrorMessage.BalanceNotEnough)
             return false
         }
@@ -71,7 +71,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
             }
 
             if (!validateValName(valName)) return;
-            let result = await updateValidatorName(valSmcAddr, valName, myAccount, Number(updateFee), gasLimit, gasPrice);
+            let result = await updateValidatorName(valSmcAddr, valName, myAccount, updateFee, gasLimit, gasPrice);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,
