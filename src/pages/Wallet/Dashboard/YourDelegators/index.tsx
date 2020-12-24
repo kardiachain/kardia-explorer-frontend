@@ -95,6 +95,9 @@ const YourDelegators = () => {
             setValidator(val)
             setDelegators(val.delegators)
             setTableLoading(false);
+            if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
+                setReadyStarting(true)
+            }
         }
     }
 
