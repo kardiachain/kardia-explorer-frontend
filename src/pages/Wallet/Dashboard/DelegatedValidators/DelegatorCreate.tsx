@@ -208,7 +208,7 @@ const DelegatorCreate = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Staking Contract</div>
+                                            <div className="property-title">Validator Contract</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
@@ -461,12 +461,65 @@ const DelegatorCreate = () => {
             {/* Modal confirm when delegate */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm your delegate</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{numberFormat(delAmount)} KAI</span></div>
-                    <div style={{ textAlign: 'center' }}>TO</div>
-                    <div style={{ textAlign: 'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
+                    <div className="confirm-letter">Be carefully verify your stats before confirm delegation</div>
+                    <List>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                    <div className="property-title">Validator</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                    <div className="property-content">
+                                        <div className="property-content validator-name">
+                                            {validator?.name}
+                                        </div>
+                                        <div className="property-content">
+                                            {
+                                                renderHashString(
+                                                    validator?.address || '',
+                                                    45,
+                                                    4
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                    <div className="property-title">Smart Contract</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                    <div className="property-content">
+                                        {
+                                            renderHashString(
+                                                validator?.smcAddress || '',
+                                                45,
+                                                4
+                                            )
+                                        }
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                    <div className="property-title">Value</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(delAmount)} KAI
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                    </List>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={confirmDelegate}>

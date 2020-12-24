@@ -59,12 +59,12 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
             {/* Modal confirm when withdraw commission amount */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showModel} onHide={() => { setShowModel(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm withdraw your staked token</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
+                    <div className="confirm-letter" style={{ textAlign: 'center'}}>
                         Are you sure you want to withdraw all your commission reward tokens.
-                            </div>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={widthdrawCommission}>

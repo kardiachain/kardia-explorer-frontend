@@ -296,10 +296,10 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             {/* Modal confirm when withdraw staked token */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmWithdrawModal} onHide={() => { setShowConfirmWithdrawModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm withdraw your staked token</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to withdraw your staked token.</div>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>Are you sure you want to withdraw your staked token.</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={widthdraw}>

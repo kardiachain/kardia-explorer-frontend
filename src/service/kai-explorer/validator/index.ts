@@ -127,7 +127,7 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
                 claimableAmount: v.claimableRewards,
                 unbondedAmount: v.unbondedAmount,
                 withdrawableAmount: v.withdrawableAmount,
-                role: checkValidatorRole(v.validatorStatus),
+                role: checkValidatorRole(v.validatorRole),
             } as YourValidator
         }) : []
     } catch (error) {

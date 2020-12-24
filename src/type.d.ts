@@ -196,6 +196,7 @@ interface ToSmcAddress {
 }
 
 interface HolderAccount {
+    index: number;
     address: string;
     name: string;
     isContract: boolean;

@@ -210,6 +210,13 @@ a:hover {
   color: var(--hyperlink-color);
 }
 
+.confirm-letter {
+  font-weight: 600;
+  color: #36638A;
+  margin-bottom: 10px;
+}
+
+
 @media screen and (max-width: 740px) {
   .rs-header{
     display: flex;

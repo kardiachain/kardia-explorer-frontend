@@ -44,7 +44,7 @@ const AccountList = () => {
     }
 
     return (
-            <div className="container txs-container">
+        <div className="container txs-container">
             <SearchSection />
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -66,7 +66,19 @@ const AccountList = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column width={70} verticalAlign="middle" align="center">
+                                        <HeaderCell>Index</HeaderCell>
+                                        <Cell>
+                                            {(rowData: HolderAccount) => {
+                                                return (
+                                                    <div>
+                                                        {rowData.index}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Address</HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
@@ -101,14 +113,14 @@ const AccountList = () => {
                                         <HeaderCell>
                                             <span className="sort-button" onClick={handleSort}>
                                                 <span>Balance</span>
-                                                <Icon style={{marginLeft: 3}} icon={sortType === SortType.ASC ? "arrow-up-line" : "arrow-down-line"} />
+                                                <Icon style={{ marginLeft: 3 }} icon={sortType === SortType.ASC ? "arrow-up-line" : "arrow-down-line"} />
                                             </span>
                                         </HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
                                                 return (
                                                     <div>
-                                                    {numberFormat(weiToKAI(rowData.balance), 4)} KAI
+                                                        {numberFormat(weiToKAI(rowData.balance), 4)} KAI
                                                     </div>
                                                 );
                                             }}
@@ -130,6 +142,6 @@ const AccountList = () => {
             </FlexboxGrid>
         </div>
     )
-}   
+}
 
 export default AccountList;

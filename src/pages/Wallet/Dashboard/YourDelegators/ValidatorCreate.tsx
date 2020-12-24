@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, Modal, SelectPicker } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, List, Modal, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
@@ -347,14 +347,74 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             {/* Modal confirm when create validator */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm create validator</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to create validator with: </div>
-                    <div>Validator Name: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valName}</span></div>
-                    <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
-                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
-                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
+                    <div className="confirm-letter">
+                        Be carefully verify your stats before confirm create a validator
+                    </div>
+                    <List>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Validator Name</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(commissionRate)}
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Commission Rate</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(commissionRate)} %
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Max Rate</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(maxRate)} %
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Max Rate Change</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(maxChangeRate)} %
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Your Delegation Amount</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(yourDelAmount)} KAI
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>    
+                    </List>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={registerValidator}>
