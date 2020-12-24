@@ -240,6 +240,14 @@ const AddressDetail = () => {
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr || '0x'}</Tooltip>}>
                                                                             <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
+                                                                        {
+                                                                            rowData.isInValidatorsList ? (
+                                                                                <StakingIcon
+                                                                                    color={rowData?.role?.classname}
+                                                                                    character={rowData?.role?.character}
+                                                                                    size='small' style={{ marginLeft: 5 }} />
+                                                                            ) : <></>
+                                                                        }
                                                                     </>
 
                                                                 )
