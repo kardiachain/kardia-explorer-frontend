@@ -7,7 +7,7 @@ import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashString, renderHashToRedirect, renderHashStringAndTooltip } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
-import { getBalance } from '../../service/kai-explorer';
+import { getHolderAccount } from '../../service/kai-explorer';
 import { getTxsByAddress } from '../../service/kai-explorer/transaction';
 import './addressDetail.css'
 
@@ -23,25 +23,39 @@ const AddressDetail = () => {
     const [loading, setLoading] = useState(false)
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { address }: any = useParams()
-    const [balance, setBalance] = useState(0)
+    const [holderAccount, setHolderAccount] = useState<HolderAccount>();
+
 
     useEffect(() => {
         (async () => {
-            setLoading(true)
-            const rs = await getTxsByAddress(address, page, size);
-            const balance = await getBalance(address)
-            setLoading(false)
-            setTransactionList(rs.transactions)
-            setTotalTxs(rs.totalTxs)
-            setBalance(balance.balance)
+            setLoading(true);
+            const rs = await Promise.all([
+                getTxsByAddress(address, page, size),
+                getHolderAccount(address)
+            ]);
+            setLoading(false);
+            setTransactionList(rs[0].transactions);
+            setTotalTxs(rs[0].totalTxs);
+            setHolderAccount(rs[1]);
         })()
     }, [page, size, address])
     return (
         <div className="container address-detail-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="user" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Address Detail</p>
+                    {
+                        holderAccount?.isContract ? (
+                            <>
+                                <Icon className="highlight" icon="file-text-o" size={"2x"} />
+                                <p style={{ marginLeft: '12px' }} className="title">Contract Detail</p>
+                            </>
+                        ) : (
+                            <>
+                                <Icon className="highlight" icon="vcard" size={"2x"} />
+                                <p style={{ marginLeft: '12px' }} className="title">Address Detail</p>
+                            </>
+                        )
+                    }
                 </div>
             </div>
             <FlexboxGrid justify="space-between">
@@ -66,7 +80,7 @@ const AddressDetail = () => {
                                         <div className="property-title">Balance: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="property-content">{numberFormat(weiToKAI(balance))} KAI</div>
+                                        <div className="property-content">{numberFormat(weiToKAI(holderAccount?.balance))} KAI</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -168,18 +182,18 @@ const AddressDetail = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={1}>
-                                    <HeaderCell></HeaderCell>
-                                    <Cell style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                                        {(rowData: KAITransaction) => {
-                                            return (
-                                                <div>
-                                                    {
-                                                        address === rowData.from ?  <Tag color="yellow" className="tab-in-out">OUT</Tag> :  <Tag color="green" className="tab-in-out">IN</Tag>
-                                                    }
-                                                </div>
-                                            )
-                                        }}
-                                    </Cell>
+                                        <HeaderCell></HeaderCell>
+                                        <Cell style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            {(rowData: KAITransaction) => {
+                                                return (
+                                                    <div>
+                                                        {
+                                                            address === rowData.from ? <Tag color="yellow" className="tab-in-out">OUT</Tag> : <Tag color="green" className="tab-in-out">IN</Tag>
+                                                        }
+                                                    </div>
+                                                )
+                                            }}
+                                        </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
@@ -192,13 +206,13 @@ const AddressDetail = () => {
                                                                 <>
                                                                     {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                     {
-                                                                    address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
-                                                                        hash: rowData.to,
-                                                                        headCount: isMobile ? 5 : 12,
-                                                                        tailCount: 4,
-                                                                        showTooltip: true,
-                                                                        callback: () => { history.push(`/address/${rowData.to}`) }
-                                                                    })}
+                                                                        address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
+                                                                            hash: rowData.to,
+                                                                            headCount: isMobile ? 5 : 12,
+                                                                            tailCount: 4,
+                                                                            showTooltip: true,
+                                                                            callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                        })}
                                                                 </>
                                                             ) : (
                                                                     <>
