@@ -70,6 +70,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             jailed: val.jailed, 
             delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
                 return {
+                    owner: del?.address?.toLowerCase() === val?.address?.toLowerCase(),
                     address: toChecksum(del.address),
                     stakeAmount: del.stakedAmount,
                     rewardsAmount: del.reward

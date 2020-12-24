@@ -2,6 +2,7 @@ import { numberFormat } from "../../../common/utils/number";
 import { STAKING_SMC_ADDRESS } from "../../../config/api";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { toChecksum } from 'kardia-tool/lib/common/lib/account'
+import { checkValidatorRole } from "..";
 
 interface TransactionsResponse {
     totalTxs: number;
@@ -40,7 +41,9 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 logs:  o.logs,
                 toSmcName:  o.toName ? o.toName : toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
+                role: checkValidatorRole(o.role),
+                isInValidatorsList: o.isInValidatorsList
             }
         })
     }
@@ -78,7 +81,9 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 logs:  o.logs,
                 toSmcName:  o.toName ? o.toName : toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
+                role: checkValidatorRole(o.role),
+                isInValidatorsList: o.isInValidatorsList
             }
         })
     }
@@ -120,7 +125,9 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         toSmcAddr: toSmcAddress.toSmcAddr,
         gasUsedPercent: gasUsedPercent,
         txFee: tx.txFee ? tx.txFee : (tx.gasUsed * tx.gasPrice * 10**9),
-        decodedInputData: tx.decodedInputData
+        decodedInputData: tx.decodedInputData,
+        role: checkValidatorRole(tx.role),
+        isInValidatorsList: tx.isInValidatorsList
     }
 }
 
@@ -157,7 +164,9 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                 logs:  o.logs,
                 toSmcName: o.toName ? o.toName : toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
+                role: checkValidatorRole(o.role),
+                isInValidatorsList: o.isInValidatorsList
             }
         })
     }

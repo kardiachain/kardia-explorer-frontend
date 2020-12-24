@@ -389,7 +389,7 @@ const DelegatorCreate = () => {
                                                         <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
                                                         <NumberInputFormat
                                                             value={delAmount}
-                                                            placeholder="Delegation amount"
+                                                            placeholder="Ex. 25,000"
                                                             onChange={(event) => {
                                                                 setDelAmount(event.value);
                                                                 validateDelAmount(event.value)

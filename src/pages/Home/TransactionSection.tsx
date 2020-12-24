@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
+import { StakingIcon } from '../../common/components/IconCustom';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -82,6 +83,15 @@ const TransactionSection = ({ transactionList = [] }: {
                                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
                                                                     <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                 </Whisper>
+                                                                {
+                                                                    rowData.isInValidatorsList ? (
+                                                                        <StakingIcon
+                                                                            color={rowData?.role?.classname}
+                                                                            character={rowData?.role?.character}
+                                                                            size='small' style={{ marginLeft: 5 }} />
+
+                                                                    ) : <></>
+                                                                }
                                                             </>
                                                         )
                                                 }

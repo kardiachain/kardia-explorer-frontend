@@ -11,6 +11,7 @@ import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer
 import './txList.css'
 import SearchSection from '../../common/components/Header/SearchSection';
 import { numberFormat } from '../../common/utils/number';
+import { StakingIcon } from '../../common/components/IconCustom';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -35,13 +36,13 @@ const TxList = () => {
     }, [page, size, block])
 
     useEffect(() => {
-        if(!block) {
+        if (!block) {
             const loop = setInterval(async () => {
                 const rs = await getTransactions(page, size);
                 setTransactionList(rs.transactions)
                 setTotalTxs(rs.totalTxs)
             }, TIME_INTERVAL_MILISECONDS)
-    
+
             return () => clearInterval(loop)
         }
     }, [page, size, block])
@@ -93,9 +94,16 @@ const TxList = () => {
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
-                                                            showTooltip: true,
+                                                            showTooltip: false,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                         })}
+                                                        {
+                                                            !rowData.status ? (
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">Transaction error</Tooltip>}>
+                                                                    <Icon style={{ marginRight: '5px' }} className="tx-error-icon" icon="warning" />
+                                                                </Whisper>
+                                                            ) : <></>
+                                                        }
                                                     </div>
                                                 );
                                             }}
@@ -154,31 +162,39 @@ const TxList = () => {
                                                         {
                                                             !rowData.toSmcAddr ? (
                                                                 <>
-                                                                {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
-                                                                {renderHashToRedirect({
-                                                                    hash: rowData.to,
-                                                                    headCount: isMobile ? 5 : 12,
-                                                                    tailCount: 4,
-                                                                    showTooltip: true,
-                                                                    callback: () => { history.push(`/address/${rowData.to}`) }
-                                                                })}
+                                                                    {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
+                                                                    {renderHashToRedirect({
+                                                                        hash: rowData.to,
+                                                                        headCount: isMobile ? 5 : 12,
+                                                                        tailCount: 4,
+                                                                        showTooltip: true,
+                                                                        callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                    })}
                                                                 </>
                                                             ) : (
-                                                                <>
-                                                                {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
-                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link style={{fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
-                                                                </Whisper>
-                                                                </>
+                                                                    <>
+                                                                        {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
+                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                        </Whisper>
+                                                                        {
+                                                                            rowData.isInValidatorsList ? (
+                                                                                <StakingIcon
+                                                                                    color={rowData?.role?.classname}
+                                                                                    character={rowData?.role?.character}
+                                                                                    size='small' style={{ marginLeft: 5 }} />
+                                                                            ) : <></>
+                                                                        }
+                                                                    </>
 
-                                                            )
+                                                                )
                                                         }
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -190,7 +206,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Tx Fee</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

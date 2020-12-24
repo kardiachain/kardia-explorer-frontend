@@ -260,3 +260,7 @@ a:hover {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
+
+.tx-error-icon {
+  color: rgb(250, 3, 3);
+}

@@ -23,6 +23,8 @@ interface KAITransaction {
     gasUsedPercent: any;
     txFee: number;
     decodedInputData?: any;
+    role: ValidatorRole;
+    isInValidatorsList: boolean;
 }
 
 interface KAIBlock {
@@ -96,6 +98,7 @@ interface YourValidator {
     role: ValidatorRole;
 }
 interface Delegator {
+    owner: boolean;
     address: string;
     delegationsShares?: number;
     stakeAmount: number;
@@ -201,4 +204,6 @@ interface HolderAccount {
     name: string;
     isContract: boolean;
     balance: any;
+    role: ValidatorRole;
+    isInValidatorsList: boolean;
 }

@@ -59,10 +59,10 @@ const ValidatorStop = ({ validator = {} as Validator, showModel, setShowModel, r
     return (
         <Modal backdrop="static" size="sm" enforceFocus={true} show={showModel} onHide={() => { setShowModel(false) }}>
             <Modal.Header>
-                <Modal.Title>Confirm</Modal.Title>
+                <Modal.Title>Confirmation</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
+                <div className="confirm-letter" style={{ textAlign: 'center'}}>
                     Are you sure you want to STOP your validation?
                 </div>
             </Modal.Body>

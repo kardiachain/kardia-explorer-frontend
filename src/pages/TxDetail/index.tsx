@@ -16,6 +16,7 @@ import ReactJson from 'react-json-view';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { hashValid, jsonValid } from '../../common/utils/validate';
 import { ErrorMessage } from '../../common/constant/Message';
+import { StakingIcon } from '../../common/components/IconCustom';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -269,11 +270,21 @@ const TxDetail = () => {
                                                         showTooltip: false,
                                                         callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
                                                         showCopy: false
-                                                    })} {txDetail.toSmcName} <IconButton
+                                                    })} {txDetail.toSmcName}
+                                                        {
+                                                            txDetail.isInValidatorsList ? (
+                                                                <StakingIcon
+                                                                    color={txDetail?.role?.classname}
+                                                                    character={txDetail?.role?.character}
+                                                                    size='small' style={{ marginLeft: 5 }} />
+                                                            ) : <></>
+                                                        }
+                                                        <IconButton
                                                             size="xs"
                                                             onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
                                                             icon={<Icon icon="copy" />}
-                                                        /></div>
+                                                        />
+                                                    </div>
                                                 )
                                         }
                                     </FlexboxGrid.Item>

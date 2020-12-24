@@ -274,7 +274,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ControlLabel>
                             Name <span className="required-mask">(*)</span>
                         </ControlLabel>
-                        <FormControl placeholder="Name"
+                        <FormControl placeholder="Ex. My Validator"
                             name="valName"
                             value={valName}
                             onChange={(value) => {
@@ -290,7 +290,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={commissionRate}
-                            placeholder="Commission Rate"
+                            placeholder="Ex. 10"
                             onChange={(event) => {
                                 setCommissionRate(event.value);
                                 validateCommissionRate(event.value)
@@ -304,7 +304,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={maxRate}
-                            placeholder="Max Rate"
+                            placeholder="Ex. 20"
                             onChange={(event) => {
                                 setMaxRate(event.value);
                                 validateMaxRate(event.value)
@@ -318,7 +318,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={maxChangeRate}
-                            placeholder="Max Change Rate"
+                            placeholder="Ex. 2"
                             onChange={(event) => {
                                 setMaxChangeRate(event.value);
                                 validateMaxChangeRate(event.value)
@@ -332,7 +332,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={yourDelAmount}
-                            placeholder="Your delegation amount"
+                            placeholder="Ex. 25,000"
                             onChange={(event) => {
                                 setYourDelAmount(event.value);
                                 validateYourDelegationAmount(event.value)

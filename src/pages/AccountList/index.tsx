@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import SearchSection from '../../common/components/Header/SearchSection';
+import { StakingIcon } from '../../common/components/IconCustom';
 import { SortType } from '../../common/constant';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -29,8 +30,8 @@ const AccountList = () => {
         (async () => {
             setLoading(true);
             const rs = await getAccounts(page, size, sortType);
-            setHolderAccounts(rs.holderAccounts);
-            setTotalAccount(rs.totalAccount);
+            setHolderAccounts(rs?.holderAccounts);
+            setTotalAccount(rs?.totalAccount);
             setLoading(false);
         })()
     }, [page, size, sortType])
@@ -78,7 +79,7 @@ const AccountList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Address</HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
@@ -97,18 +98,26 @@ const AccountList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    {/* <Column flexGrow={2} minWidth={isMobile ? 70 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 70 : 0} verticalAlign="middle">
                                         <HeaderCell>Name</HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
                                                 return (
                                                     <div>
                                                         {rowData.name}
+                                                        {
+                                                            rowData.isInValidatorsList ? (
+                                                                <StakingIcon
+                                                                    color={rowData?.role?.classname}
+                                                                    character={rowData?.role?.character}
+                                                                    size='small' style={{ marginLeft: 5 }} />
+                                                            ) : <></>
+                                                        }
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
-                                    </Column> */}
+                                    </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>
                                             <span className="sort-button" onClick={handleSort}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper, Tag } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
+import { StakingIcon } from '../../common/components/IconCustom';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashString, renderHashToRedirect, renderHashStringAndTooltip } from '../../common/utils/string';
@@ -50,11 +51,11 @@ const AddressDetail = () => {
                                 <p style={{ marginLeft: '12px' }} className="title">Contract Detail</p>
                             </>
                         ) : (
-                            <>
-                                <Icon className="highlight" icon="vcard" size={"2x"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Address Detail</p>
-                            </>
-                        )
+                                <>
+                                    <Icon className="highlight" icon="vcard" size={"2x"} />
+                                    <p style={{ marginLeft: '12px' }} className="title">Address Detail</p>
+                                </>
+                            )
                     }
                 </div>
             </div>
@@ -62,6 +63,28 @@ const AddressDetail = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
                     <Panel className="overview" shaded>
                         <List bordered={false}>
+                            {
+                                holderAccount?.name ? (
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
+                                                <div className="property-title">Name: </div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
+                                                <div className="property-content">
+                                                    {holderAccount?.name}
+                                                    {
+                                                        holderAccount?.isInValidatorsList ? <StakingIcon
+                                                            color={holderAccount?.role?.classname}
+                                                            character={holderAccount?.role?.character || ''}
+                                                            size='small' style={{ marginLeft: 5 }} /> : <></>
+                                                    }
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                ) : <></>
+                            }
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
@@ -84,16 +107,6 @@ const AddressDetail = () => {
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
-                            {/* <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="title">Token: </div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="content"></div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item> */}
                         </List>
                     </Panel>
                 </FlexboxGrid.Item>
@@ -127,9 +140,16 @@ const AddressDetail = () => {
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
-                                                            showTooltip: true,
+                                                            showTooltip: false,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                         })}
+                                                        {
+                                                            !rowData.status ? (
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">Transaction error</Tooltip>}>
+                                                                    <Icon style={{ marginRight: '5px' }} className="tx-error-icon" icon="warning" />
+                                                                </Whisper>
+                                                            ) : <></>
+                                                        }
                                                     </div>
                                                 );
                                             }}
@@ -229,7 +249,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -241,7 +261,7 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Tx Fee</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

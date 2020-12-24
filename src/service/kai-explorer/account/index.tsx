@@ -1,3 +1,4 @@
+import { checkValidatorRole } from "..";
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 
 export const getHolderAccount = async (address: string): Promise<HolderAccount> => {
@@ -8,7 +9,9 @@ export const getHolderAccount = async (address: string): Promise<HolderAccount> 
         address: raw.address || '',
         name: raw.name || '',
         isContract: raw.isContract || '',
-        balance: raw.balance || '0'
+        balance: raw.balance || '0',
+        isInValidatorsList: raw.isInValidatorsList,
+        role: checkValidatorRole(raw.role)
     } as HolderAccount
 }
 
@@ -35,7 +38,9 @@ export const getAccounts = async (page: number, size: number, sort: any): Promis
                 address: item.address || '',
                 name: item.name || '',
                 isContract: item.isContract || false,
-                balance: item.balance || '0'
+                balance: item.balance || '0',
+                isInValidatorsList: item.isInValidatorsList,
+                role: checkValidatorRole(item.role)
             } as HolderAccount
         })
     } as HolderAccountResponse
