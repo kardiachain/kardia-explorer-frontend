@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, FlexboxGrid, Icon, IconButton, List, Nav, Panel, Tag } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashString } from '../../../../common/utils/string';
+import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
@@ -54,6 +54,8 @@ const YourDelegators = () => {
     const [showConfirmStartValidatorModal, setShowConfirmStartValidatorModal] = useState(false);
     const [showWithdrawCommissionModal, setShowWithdrawCommissionModal] = useState(false);
 
+    const [canUnjail, setCanUnjail] = useState(false);
+
     useEffect(() => {
         (async () => {
             setTableLoading(true);
@@ -67,6 +69,11 @@ const YourDelegators = () => {
                 setTableLoading(false);
                 if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
                     setReadyStarting(true)
+                }
+                // Check avaiable time to unjail
+                const nowTime = (new Date()).getTime();
+                if (nowTime > val.signingInfo.jailedUntil) {
+                    setCanUnjail(true);
                 }
             }
         })();
@@ -97,6 +104,11 @@ const YourDelegators = () => {
             setTableLoading(false);
             if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
                 setReadyStarting(true)
+            }
+            // Check avaiable time to unjail
+            const nowTime = (new Date()).getTime();
+            if (nowTime > val.signingInfo.jailedUntil) {
+                setCanUnjail(true);
             }
         }
     }
@@ -295,10 +307,22 @@ const YourDelegators = () => {
                                                                 <>
                                                                     <Tag color="red">Jailed</Tag>
                                                                     <Button
+                                                                        disable={!canUnjail}
                                                                         style={{ marginLeft: 20 }}
                                                                         className="kai-button-gray"
-                                                                        onClick={() => { setShowConfirmUnjailModal(true) }}>UnJail
+                                                                        onClick={() => {
+                                                                            if (canUnjail) {
+                                                                                setShowConfirmUnjailModal(true);
+                                                                            }
+                                                                        }}>UnJail
                                                                     </Button>
+                                                                    {
+                                                                        !canUnjail ? (
+                                                                            <span className="unjail-note">
+                                                                                ( Only can unjail after the time: {dateToUTCString(validator?.signingInfo?.jailedUntil || '')})
+                                                                            </span>
+                                                                        ) : <></>
+                                                                    }
                                                                 </>
                                                             ) : <Tag color="green">Active</Tag>
                                                         }

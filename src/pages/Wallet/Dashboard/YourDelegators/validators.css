@@ -50,3 +50,10 @@
     cursor: pointer;
     margin-left: 10px;
 }
+
+.unjail-note {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: normal;
+    color: red;
+}

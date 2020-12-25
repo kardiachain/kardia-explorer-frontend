@@ -84,7 +84,7 @@ interface ValidatorFromSMC {
     totalDels?: number;
     totalStakedAmount?: number;
     maxRate: number;
-    maxChangeRate: number; 
+    maxChangeRate: number;
 }
 
 interface YourValidator {
@@ -147,8 +147,18 @@ interface Validator {
     role: ValidatorRole;
     accumulatedCommission: number;
     missedBlocks: number;
-    updateTime: number;
     jailed: boolean;
+    updateTime: number;
+    signingInfo: SigningInfo
+}
+
+interface SigningInfo {
+    indexOffset: number;
+    indicatorRate: number;
+    jailedUntil: number;
+    missedBlockCounter: number;
+    startHeight: number;
+    tombstoned: boolean;
 }
 
 interface Candidate {

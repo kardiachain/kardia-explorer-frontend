@@ -67,7 +67,15 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             accumulatedCommission: val.accumulatedCommission,
             missedBlocks: val?.signingInfo?.missedBlockCounter || 0,
             updateTime: val.updateTime * 1000,
-            jailed: val.jailed, 
+            jailed: val.jailed,
+            signingInfo: {
+                indexOffset: val?.signingInfo?.indexOffset || 0,
+                indicatorRate: val?.signingInfo?.indicatorRate || 0,
+                jailedUntil: val?.signingInfo?.jailedUntil * 1000 || 0,
+                missedBlockCounter: val?.signingInfo?.missedBlockCounter || 0,
+                startHeight: val?.signingInfo?.startHeight || 0,
+                tombstoned: val?.signingInfo?.tombstoned || false
+            },
             delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
                 return {
                     owner: del?.address?.toLowerCase() === val?.address?.toLowerCase(),
