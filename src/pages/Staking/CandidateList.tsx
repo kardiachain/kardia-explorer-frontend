@@ -24,7 +24,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                 hover={false}
                 autoHeight
                 data={candidates}
-                rowHeight={() => 80}
+                rowHeight={() => 90}
                 loading={loading}
             >
                 <Column width={60} verticalAlign="middle">
@@ -39,7 +39,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                     <HeaderCell>Validator</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -54,7 +54,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                                         <div className="validator-address">
                                             {renderHashStringAndTooltip(
                                                 rowData.address,
-                                                isMobile ? 10 : 15,
+                                                isMobile ? 5 : 15,
                                                 4,
                                                 true
                                             )}

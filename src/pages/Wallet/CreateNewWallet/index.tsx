@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel } from 'rsuite';
 import './createWallet.css'
 
@@ -46,6 +46,9 @@ const CreateNewWallet = () => {
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
+            <div style={{textAlign: 'center'}}>
+                You already have a wallet. <Link to="/access-wallet" style={{ color: 'rgb(158, 49, 68)', fontWeight: 600 }}> Access Now.</Link>
+            </div>
         </div>
     );
 }

@@ -93,7 +93,7 @@ const CreateByPrivateKey = () => {
                                                 <Link to="/create-wallet">
                                                     <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
-                                                <Button size="big" className="submit-buttom" onClick={accessWalletNow}>Access Now</Button>
+                                                <Button size="big" onClick={accessWalletNow}>Access Now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

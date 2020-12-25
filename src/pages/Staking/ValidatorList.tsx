@@ -25,7 +25,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                 wordWrap
                 hover={false}
                 autoHeight
-                rowHeight={() => 80}
+                rowHeight={() => 90}
                 data={validators}
                 loading={loading}
             >
@@ -41,7 +41,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                     <HeaderCell>Validator</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {

@@ -9,6 +9,7 @@ import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessa
 import { ErrorMessage } from '../../../common/constant/Message';
 import { privateKeyValid } from '../../../common/utils/validate';
 import Button from '../../../common/components/Button';
+import { ControlLabel } from 'rsuite';
 
 const AccessByPrivateKey = () => {
     let history = useHistory();
@@ -65,7 +66,8 @@ const AccessByPrivateKey = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                 <Form fluid>
                                     <FormGroup>
-                                        <FormControl placeholder="Private key*"
+                                        <ControlLabel>Enter your Private Key <span className="required-mask">(*)</span></ControlLabel>
+                                        <FormControl placeholder="Ex. 0x..."
                                             name="password"
                                             type="password"
                                             value={privateKey}
@@ -80,7 +82,7 @@ const AccessByPrivateKey = () => {
                                     <Link to="/access-wallet">
                                         <Button size="big" className="kai-button-gray" >Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                    <Button loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
