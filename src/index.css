@@ -217,7 +217,7 @@ a:hover {
 }
 
 
-@media screen and (max-width: 740px) {
+@media screen and (max-width: 992px) {
   .rs-header{
     display: flex;
     align-items: center;
@@ -246,6 +246,7 @@ a:hover {
     width:100% !important;
   }
 }
+
 .custom-tooltip .rs-tooltip-inner {
   background: #5f7689 !important;
   font-weight: 600;
