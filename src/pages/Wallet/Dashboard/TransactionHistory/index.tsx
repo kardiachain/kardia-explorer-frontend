@@ -9,6 +9,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { getTxsByAddress } from '../../../../service/kai-explorer/transaction';
 import { getAccount } from '../../../../service/wallet';
 import { numberFormat } from '../../../../common/utils/number';
+import { StakingIcon } from '../../../../common/components/IconCustom';
 const { Column, HeaderCell, Cell } = Table;
 
 const TransactionHistory = () => {
@@ -67,6 +68,13 @@ const TransactionHistory = () => {
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/tx/${rowData.txHash}`)}
                                                         })}
+                                                        {
+                                                            !rowData.status ? (
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">Transaction error</Tooltip>}>
+                                                                    <Icon style={{ marginRight: '5px' }} className="tx-error-icon" icon="warning" />
+                                                                </Whisper>
+                                                            ) : <></>
+                                                        }
                                                     </div>
                                                 );
                                             }}
@@ -154,6 +162,14 @@ const TransactionHistory = () => {
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
                                                                             <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
+                                                                        {
+                                                                            rowData.isInValidatorsList ? (
+                                                                                <StakingIcon
+                                                                                    color={rowData?.role?.classname}
+                                                                                    character={rowData?.role?.character}
+                                                                                    size='small' style={{ marginLeft: 5 }} />
+                                                                            ) : <></>
+                                                                        }
                                                                     </>
 
                                                                 )
@@ -163,7 +179,7 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0}>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                                         <HeaderCell>Value</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -175,7 +191,7 @@ const TransactionHistory = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 100 : 0}>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                                         <HeaderCell>Tx Fee</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {

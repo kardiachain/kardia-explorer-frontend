@@ -82,7 +82,7 @@ const CreateByKeystore = () => {
                                             <Link to="/create-wallet">
                                                 <Button size="big" className="kai-button-gray">Back</Button>
                                             </Link>
-                                            <Button size="big" className="submit-buttom" loading={isLoading} onClick={createWallet}>Create wallet</Button>
+                                            <Button size="big" loading={isLoading} onClick={createWallet}>Create wallet</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -100,7 +100,7 @@ const CreateByKeystore = () => {
                                                 <Link to="/create-wallet">
                                                     <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
-                                                <Button size="big" className="submit-buttom" onClick={accessWallet}>Access now</Button>
+                                                <Button size="big" onClick={accessWallet}>Access now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

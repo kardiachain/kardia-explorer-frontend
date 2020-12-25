@@ -28,11 +28,15 @@ body {
 
 .hex {
   font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
 }
 
 .hex-link {
   font-weight: 600;
   color: var(--hyperlink-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
 }
 
 a:active,
@@ -108,9 +112,12 @@ a:hover {
 .rs-table-cell-header .rs-table-cell-content{
   font-size: 14px !important;
   font-weight:600 !important;
-  color:#575757 !important;
+  color:#000000 !important;
 }
-
+.rs-table-row-header,
+.rs-table-row-header .rs-table-cell {
+  background: #f0f0f0 !important
+}
 
 /* end override rsuite */
 
@@ -125,7 +132,7 @@ a:hover {
 
 .container {
   max-width:1920px;
-  width:70%;
+  width:75%;
   padding:40px 0px;
 }
 
@@ -179,7 +186,38 @@ a:hover {
   text-align: center;
 }
 
-@media screen and (max-width: 740px) {
+.verify-proposer-icon {
+  display: inline-block;
+  width: 25px;
+  color: #0a940a;
+  margin-left: 5px;
+}
+
+.validator-name {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--hyperlink-color);
+}
+
+.custom-nav .rs-nav-subtle.rs-nav-horizontal .rs-nav-item > .rs-nav-item-content::before {
+  height: 4px;
+  background: var(--highlight);
+}
+.custom-nav .rs-nav .rs-nav-item-content {
+  font-weight: 600;
+}
+.custom-nav .rs-nav .rs-nav-item-active > .rs-nav-item-content {
+  color: var(--hyperlink-color);
+}
+
+.confirm-letter {
+  font-weight: 600;
+  color: #36638A;
+  margin-bottom: 10px;
+}
+
+
+@media screen and (max-width: 992px) {
   .rs-header{
     display: flex;
     align-items: center;
@@ -208,6 +246,7 @@ a:hover {
     width:100% !important;
   }
 }
+
 .custom-tooltip .rs-tooltip-inner {
   background: #5f7689 !important;
   font-weight: 600;
@@ -221,4 +260,8 @@ a:hover {
 .rs-list {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
+}
+
+.tx-error-icon {
+  color: rgb(250, 3, 3);
 }

@@ -16,6 +16,7 @@ import ReactJson from 'react-json-view';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { hashValid, jsonValid } from '../../common/utils/validate';
 import { ErrorMessage } from '../../common/constant/Message';
+import { StakingIcon } from '../../common/components/IconCustom';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -128,7 +129,7 @@ const TxDetail = () => {
                 return
             }
             setInputDataDecode(JSON.parse(JSON.stringify(txDecodeData)));
-            setInputDataActiveKey("result")
+            setInputDataActiveKey("result");
         } catch (error) {
             setDecodeErr("Decode input data failed.")
             return
@@ -136,11 +137,12 @@ const TxDetail = () => {
     }
 
     const originStep = () => {
-        if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === STAKING_SMC_ADDRESS) {
-            decodeABI()
-        } else {
-            setInputDataActiveKey('decode')
+        if (txDetail && txDetail.decodedInputData) {
+            setInputDataDecode(txDetail.decodedInputData);
+            setInputDataActiveKey("result");
+            return;
         }
+        setInputDataActiveKey('decode');
     }
 
     return (
@@ -205,7 +207,12 @@ const TxDetail = () => {
                                         {
                                             txDetail?.status ?
                                                 <div className="property-content"><Tag color="green">SUCCESS</Tag></div> :
-                                                <div className="property-content"><Tag color="red">FAILED</Tag></div>
+                                                <div className="property-content">
+                                                    <Tag color="red">FAILED</Tag>
+                                                    {
+                                                        txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
+                                                    }
+                                                </div>
                                         }
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -263,11 +270,21 @@ const TxDetail = () => {
                                                         showTooltip: false,
                                                         callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
                                                         showCopy: false
-                                                    })} {txDetail.toSmcName} <IconButton
+                                                    })} {txDetail.toSmcName}
+                                                        {
+                                                            txDetail.isInValidatorsList ? (
+                                                                <StakingIcon
+                                                                    color={txDetail?.role?.classname}
+                                                                    character={txDetail?.role?.character}
+                                                                    size='small' style={{ marginLeft: 5 }} />
+                                                            ) : <></>
+                                                        }
+                                                        <IconButton
                                                             size="xs"
                                                             onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
                                                             icon={<Icon icon="copy" />}
-                                                        /></div>
+                                                        />
+                                                    </div>
                                                 )
                                         }
                                     </FlexboxGrid.Item>

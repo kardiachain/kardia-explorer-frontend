@@ -85,4 +85,35 @@ export const getLatestBlockNumber = async (): Promise<number> => {
 
     if (rawBlockList.length === 0) return 0
     return rawBlockList[0].height
-} 
+}
+
+export const getBlocksByProposer = async (proposerAddr: string, page: number, size: number): Promise<BlocksResponse> => {
+    try {
+        const response = await fetch(`${END_POINT}blocks/proposer/${proposerAddr}?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+        const responseJSON = await response.json();
+        const rawBlockList = responseJSON?.data?.data || [];
+        const nowTime = (new Date()).getTime();
+        return {
+            totalBlocks: responseJSON?.data?.total || 0,
+            blocks: rawBlockList.map((o: any) => {
+                const createdTime = (new Date(o.time)).getTime()
+                return {
+                    blockHash: o.hash,
+                    blockHeight: o.height,
+                    transactions: o.numTxs,
+                    time: new Date(o.time),
+                    age: (nowTime - createdTime),
+                    gasUsed: o.gasUsed,
+                    gasLimit: o.gasLimit,
+                    rewards: o.rewards
+                }
+            })
+        }
+    } catch (error) {
+        return {} as BlocksResponse
+    }
+}
+
+// export const getMissingBlock = async (proposerAddr: string, page: number, size: number): Promise<BlocksResponse> => {
+//     return null;
+// }

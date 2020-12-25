@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, Alert, ControlLabel, Modal, SelectPicker } from 'rsuite'
-import { ErrorMessage } from '../../../../common/constant/Message'
-import { numberFormat, onlyInteger, onlyNumber } from '../../../../common/utils/number'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List } from 'rsuite'
+import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message'
+import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx, getStoredBalance } from '../../../../service/wallet'
-import { renderHashToRedirect } from '../../../../common/utils/string'
 import Button from '../../../../common/components/Button'
 import { gasPriceOption } from '../../../../common/constant'
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
+import NumberInputFormat from '../../../../common/components/FormInput'
+import { renderHashString } from '../../../../common/utils/string'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -19,9 +21,7 @@ const SendTransaction = () => {
     const [gasLimitErr, serGasLimitErr] = useState('')
     const myAccount = getAccount() as Account
     const [sendBntLoading, setSendBntLoading] = useState(false)
-    const [txHash, setTxHash] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const [sendTxErrMs, setSendTxErrMsg] = useState('')
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
@@ -33,7 +33,7 @@ const SendTransaction = () => {
             return false
         }
         const balance = getStoredBalance();
-        
+
         if (balance === 0 || balance < Number(amount)) {
             setAmountErr(ErrorMessage.BalanceNotEnough)
             return false
@@ -84,8 +84,9 @@ const SendTransaction = () => {
     const resetFrom = () => {
         setAmount('');
         setToAddress('');
-        setGasLimit(21000)
-        setGasPrice(1)
+        setGasLimit(21000);
+        setGasPrice(1);
+        setAmountErr('');
     }
 
     const submitSend = () => {
@@ -100,17 +101,28 @@ const SendTransaction = () => {
         try {
             const txHash = await generateTx(myAccount, toAddress, Number(amount), gasLimit, gasPrice)
             if (txHash) {
-                setTxHash(txHash);
-                Alert.success('Send transaction success.')
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${txHash}`) },
+                    seeTxdetail: true
+                });
             } else {
-                setSendTxErrMsg('Send transaction failed.')
+                NotificationError({
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${txHash}`) },
+                    seeTxdetail: true
+                });
             }
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setSendTxErrMsg(`Send transaction failed: ${errJson?.error?.message}`)
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                })
             } catch (error) {
-                setSendTxErrMsg('Send transaction failed.')
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
             }
         }
 
@@ -132,18 +144,14 @@ const SendTransaction = () => {
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel>Amount  <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl
-                                    placeholder="Amount"
-                                    name="amount"
+                                <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
+                                <NumberInputFormat
                                     value={amount}
-                                    onChange={(value) => {
-                                        if (onlyNumber(value)) {
-                                            setAmount(value)
-                                            validateAmount(value)
-                                        }
-                                    }}
-                                />
+                                    placeholder="Amount"
+                                    onChange={(event) => {
+                                        setAmount(event.value);
+                                        validateAmount(event.value)
+                                    }} />
                                 <ErrMessage message={amountErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
@@ -161,17 +169,13 @@ const SendTransaction = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
                                 <ControlLabel>Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl
-                                    placeholder="Gas limit"
-                                    name="gasLimit"
+                                <NumberInputFormat
                                     value={gasLimit}
-                                    onChange={(value) => {
-                                        if (onlyInteger(value)) {
-                                            setGasLimit(value)
-                                            validateGasLimit(value)
-                                        }
-                                    }}
-                                />
+                                    placeholder="Gas limit"
+                                    onChange={(event) => {
+                                        setGasLimit(event.value);
+                                        validateGasLimit(event.value)
+                                    }} />
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
@@ -190,24 +194,68 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasPriceErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button size="big" style={{margin: 0}} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                             </FlexboxGrid.Item>
-                            <ErrMessage message={sendTxErrMs} />
-                            {
-                                txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}> Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}</div> : <></>
-                            }
                         </FlexboxGrid>
                     </FormGroup>
                 </Form>
             </Panel>
-            <Modal backdrop="static" size="xs" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm send transaction</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>Are you sure you want to transfer <span style={{ fontWeight: 'bold', color: '#36638A' }}>{numberFormat(amount)} KAI</span></div>
-                    <div style={{ textAlign: 'center' }}>TO</div>
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A' }}>{toAddress}</div>
+                    <div className="confirm-letter">Be carefully verify your transaction before sending the transaction</div>
+                    <List>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                    <div className="property-title">From</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                    <div className="property-content">
+                                        {
+                                            renderHashString(
+                                                myAccount?.publickey || '',
+                                                45,
+                                                4
+                                            )
+                                        }
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                    <div className="property-title">To</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                    <div className="property-content">
+                                        {
+                                            renderHashString(
+                                                toAddress || '',
+                                                45,
+                                                4
+                                            )
+                                        }
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                    <div className="property-title">Value</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(amount)} KAI
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                    </List>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={sendBntLoading} onClick={confirmSend}>

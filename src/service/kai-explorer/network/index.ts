@@ -5,17 +5,10 @@ export const getNodes = async (): Promise<KAINode[]> => {
         const rsJSON = await rs.json()
         return rsJSON.data.map((item: any) => {
             return {
-                id: item.moniker,
-                color: '#4287f5',
+                nodeName: item.moniker,
                 address: `0x${item.id}`,
-                peers: item.peers,
-                protocol: 'KAI',
-                votingPower: 100,
-                status: "online",
-                listen_addr: item.listen_addr,
-                rpcURL: "",
-                isValidator: true,
-                peerCount: item.peers ? item.peers.length : 0
+                status: true,
+                peerCount: item.peersCount || 0
             }
         })
     } catch (error) {

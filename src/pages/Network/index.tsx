@@ -45,9 +45,9 @@ const Network = () => {
             result.forEach((r) => {
                 for (let i = 0; i < peerSimolation; i++) {
                     const nodeRandom = Math.floor(Math.random() * (result?.length - 1));
-                    const targetValue = result[nodeRandom]?.id;
-                    if (targetValue !== r.id) {
-                        linkArr.push({ source: r.id, target: targetValue })
+                    const targetValue = result[nodeRandom]?.nodeName;
+                    if (targetValue !== r.nodeName) {
+                        linkArr.push({ source: r.nodeName, target: targetValue })
                     }
                 }
             });
@@ -56,7 +56,7 @@ const Network = () => {
                 nodes: result.map((item, index) => {
                     const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
                     return {
-                        id: item.id,
+                        id: item.nodeName,
                         color: colors[index] || colors[colorIndexRandom]
                     }
                 }),
@@ -110,7 +110,7 @@ const Network = () => {
                                             <HeaderCell></HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
-                                                    if (rowData.status === "online") {
+                                                    if (rowData.status) {
                                                         return <div className="dot-status online"></div>
                                                     }
                                                     return <div className="dot-status offline"></div>
@@ -124,13 +124,13 @@ const Network = () => {
                                                     return (
                                                         <div>
                                                             {isMobile ? <></> : <Icon className="highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
-                                                            {rowData.id}
+                                                            {rowData.nodeName}
                                                         </div>
                                                     )
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle" align="center">
+                                        <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Address</HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
@@ -147,10 +147,6 @@ const Network = () => {
                                                     );
                                                 }}
                                             </Cell>
-                                        </Column>
-                                        <Column flexGrow={2} verticalAlign="middle" align="center">
-                                            <HeaderCell>Protocol</HeaderCell>
-                                            <Cell dataKey="protocol" />
                                         </Column>
                                         <Column flexGrow={1} verticalAlign="middle" align="center">
                                             <HeaderCell>Peer count</HeaderCell>

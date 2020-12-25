@@ -66,7 +66,7 @@ const AccessByMnemonicPhrase = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                 <Form fluid>
                                     <FormGroup>
-                                        <ControlLabel>Enter your secret twenty-four word phrase here to access your wallet.</ControlLabel>
+                                        <ControlLabel>Enter your secret twenty-four word phrase here to access your wallet <span className="required-mask">(*)</span></ControlLabel>
                                         <FormControl
                                             rows={5}
                                             name="textarea"
@@ -85,7 +85,7 @@ const AccessByMnemonicPhrase = () => {
                                     <Link to="/access-wallet">
                                         <Button size="big" className="kai-button-gray" >Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                    <Button loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

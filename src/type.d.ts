@@ -7,6 +7,7 @@ interface KAITransaction {
     blockNumber: number;
     blockHash: string;
     status: boolean;
+    failedReason: string;
     nonce: number;
     age: number;
     transactionIndex: number;
@@ -21,6 +22,9 @@ interface KAITransaction {
     toSmcAddr: string;
     gasUsedPercent: any;
     txFee: number;
+    decodedInputData?: any;
+    role: ValidatorRole;
+    isInValidatorsList: boolean;
 }
 
 interface KAIBlock {
@@ -80,18 +84,21 @@ interface ValidatorFromSMC {
     totalDels?: number;
     totalStakedAmount?: number;
     maxRate: number;
-    maxChangeRate: number; 
+    maxChangeRate: number;
 }
 
 interface YourValidator {
+    validatorName: string;
     validatorAddr: string;
+    validatorSmcAddr: string;
     yourStakeAmount: number;
     claimableAmount: number;
     withdrawableAmount: number;
     unbondedAmount: number;
-    withdrawable: UBDEntries[];
+    role: ValidatorRole;
 }
 interface Delegator {
+    owner: boolean;
     address: string;
     delegationsShares?: number;
     stakeAmount: number;
@@ -117,6 +124,7 @@ interface Validators {
     totalValidatorStakedAmount: number;
     totalDelegatorStakedAmount: number;
     totalProposer: number;
+    totalCandidates: number;
     validators: Validator[]
 }
 
@@ -131,6 +139,49 @@ interface Validator {
     maxChangeRate: any;
     name: string;
     delegators: Delegator[]
+    color?: string;
+    smcAddress: string;
+    isProposer: boolean;
+    isValidator: boolean;
+    isRegister: boolean;
+    role: ValidatorRole;
+    accumulatedCommission: number;
+    missedBlocks: number;
+    jailed: boolean;
+    updateTime: number;
+    signingInfo: SigningInfo
+}
+
+interface SigningInfo {
+    indexOffset: number;
+    indicatorRate: number;
+    jailedUntil: number;
+    missedBlockCounter: number;
+    startHeight: number;
+    tombstoned: boolean;
+}
+
+interface Candidate {
+    rank?: number;
+    address: string;
+    votingPower: any;
+    stakedAmount: number;
+    commissionRate: any;
+    totalDelegators: any;
+    maxRate: any;
+    maxChangeRate: any;
+    name: string;
+    smcAddress: string;
+    isProposer: boolean;
+    isValidator: boolean;
+    isRegister: boolean;
+    role: ValidatorRole
+}
+
+interface ValidatorRole {
+    name: string;
+    classname: string;
+    character: string;
 }
 
 interface KaiToken {
@@ -157,8 +208,12 @@ interface ToSmcAddress {
     toSmcName: string;
 }
 
-interface UBDEntries {
-    withdrawableAmount: number;
-    withdrawableTime: any;
-    enableWithdraw: boolean;
+interface HolderAccount {
+    index: number;
+    address: string;
+    name: string;
+    isContract: boolean;
+    balance: any;
+    role: ValidatorRole;
+    isInValidatorsList: boolean;
 }

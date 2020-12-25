@@ -6,7 +6,6 @@
     line-height: 35px;
     border-radius: 50%;
     color: var(--white-color);
-    font-family: 600;
 }
 
 .validators-container .staking-stats .stats-container {
@@ -30,4 +29,17 @@
 .validators-container .staking-stats .stats-container .value {
     font-size: 25px;
     font-weight: 600;
+}
+
+.validator-address {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+}
+.validator-title {
+    display: inline-block;
+    margin-bottom: 2px;
+}
+.validator-name {
+    margin-bottom: 2px;
 }

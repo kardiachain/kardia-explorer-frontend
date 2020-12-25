@@ -103,7 +103,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Market Cap:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(2033200000 * tokenInfor.price, 3) : ''}</p>
+                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -121,7 +121,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Circulating Supply:</p>
-                                        <p className="mt0 fw700">{tokenInfor.circulating_supply ? numberFormat(2033200000) : ''}</p>
+                                        <p className="mt0 fw700">{tokenInfor.circulating_supply ? numberFormat(tokenInfor.circulating_supply) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">

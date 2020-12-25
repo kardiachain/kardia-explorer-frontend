@@ -1,0 +1,46 @@
+.staking-icon {
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.normal {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+}
+
+.big {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+}
+
+.small {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 10px;
+}
+
+.common {
+    background: var(--highlight);
+}
+
+.proposer {
+    background: #cf1578;
+}
+
+.validator {
+    background: #039fbe;
+}
+.candidate {
+    background: #e8d21d;
+}
+.delegator {
+    background: #676767;
+}
