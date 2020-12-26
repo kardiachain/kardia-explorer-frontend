@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Panel, Table, Tag } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import SearchSection from '../../common/components/Header/SearchSection';
 import { StakingIcon } from '../../common/components/IconCustom';
@@ -47,12 +47,21 @@ const AccountList = () => {
     return (
         <div className="container txs-container">
             <SearchSection />
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="vcard" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Accounts</p>
-                </div>
-            </div>
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="block-title" style={{ padding: '0px 5px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Icon className="highlight" icon="vcard" size={"2x"} />
+                            <p style={{ marginLeft: '12px' }} className="title">Accounts</p>
+                        </div>
+                    </div>
+                </FlexboxGrid.Item>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="transaction-summary">
+                        <Tag className="gray-tab-custom">A total of {numberFormat(totalAccount)} account found</Tag>
+                    </div>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>

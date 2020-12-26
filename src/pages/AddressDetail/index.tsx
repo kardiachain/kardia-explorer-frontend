@@ -111,12 +111,21 @@ const AddressDetail = () => {
                     </Panel>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <div className="block-title" style={{ padding: '0px 5px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="exchange" size={"2x"} />
-                            <p style={{ marginLeft: '12px' }} className="title">Transaction History</p>
-                        </div>
-                    </div>
+                    <FlexboxGrid justify="space-between">
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{padding: 0}}>
+                            <div className="block-title">
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Icon className="highlight" icon="exchange" size={"2x"} />
+                                    <p style={{ marginLeft: '12px' }} className="title">Transaction History</p>
+                                </div>
+                            </div>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{padding: 0}}>
+                            <div className="transaction-summary">
+                                <Tag className="gray-tab-custom">A total of {numberFormat(totalTxs)} transactions found</Tag>
+                            </div>
+                        </FlexboxGrid.Item>
+                    </FlexboxGrid>
                     <Panel shaded>
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>

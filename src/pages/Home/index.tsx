@@ -72,8 +72,12 @@ const Home = () => {
                 <SearchSection />
 
                 <div className="home-top-section">
-                    <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ background: 'white', height: 356, paddingTop: 30 }}>
+                    <FlexboxGrid justify="space-between" style={{ flexFlow: 'row', alignItems: 'normal' }}>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}
+                            style={{
+                                background: 'white',
+                                padding: 20
+                            }}>
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
 

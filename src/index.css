@@ -132,7 +132,7 @@ a:hover {
 
 .container {
   max-width:1920px;
-  width:75%;
+  width:80%;
   padding:40px 0px;
 }
 
@@ -264,4 +264,10 @@ a:hover {
 
 .tx-error-icon {
   color: rgb(250, 3, 3);
+}
+
+.gray-tab-custom {
+  color: #000 !important;
+  padding: 5px 20px !important;
+  background-color: #c1c1c1 !important;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Panel, Table, Tag, Tooltip, Whisper } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -62,13 +62,22 @@ const TxList = () => {
     return (
         <div className="container txs-container">
             <SearchSection />
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
-                </div>
-            </div>
-            <div>{block ? `Block number: #${block}` : ''}</div>
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="block-title" style={{ padding: '0px 5px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Icon className="highlight" icon="exchange" size={"2x"} />
+                            <p style={{ marginLeft: 12, marginRight: 12 }} className="title">Transactions</p>
+                            <span>{block ? `(For Block: #${block})` : ''}</span>
+                        </div>
+                    </div>
+                </FlexboxGrid.Item>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="transaction-summary">
+                        <Tag className="gray-tab-custom">A total of {numberFormat(totalTxs)} transactions found</Tag>
+                    </div>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>

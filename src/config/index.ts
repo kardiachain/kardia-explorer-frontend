@@ -1,6 +1,6 @@
 export const TABLE_CONFIG = {
     page: 1,
-    limitDefault: 10,
+    limitDefault: 25,
     pagination: {
         lengthMenu: [
             {
@@ -8,8 +8,8 @@ export const TABLE_CONFIG = {
                 label: 10
             },
             {
-                value: 20,
-                label: 20
+                value: 25,
+                label: 25
             },
             {
                 value: 50,

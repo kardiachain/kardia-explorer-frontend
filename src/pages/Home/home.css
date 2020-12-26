@@ -48,6 +48,17 @@ font-weight:600;
     font-weight: 700;
 }
 
+
+.wrap-token{
+    background: white;
+    padding: 0;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.wrap-token ._wrap {
+    height: 100%;
+}
+
 @media screen and (min-width: 1300px){
     .section-left, .section-right {
         width: calc(50% - 5px);

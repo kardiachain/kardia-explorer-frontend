@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Panel, FlexboxGrid, Table, Icon, Col } from 'rsuite';
+import { Panel, FlexboxGrid, Table, Icon, Col, Tag } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -47,12 +47,21 @@ const Blocks = () => {
     return (
         <div className="container block-container">
             <SearchSection />
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="cubes" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Blocks</p>
-                </div>
-            </div>
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="block-title" style={{ padding: '0px 5px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Icon className="highlight" icon="cubes" size={"2x"} />
+                            <p style={{ marginLeft: '12px' }} className="title">Blocks</p>
+                        </div>
+                    </div>
+                </FlexboxGrid.Item>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="block-summary">
+                       <Tag className="gray-tab-custom">Block #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} to #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)</Tag>
+                    </div>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>
@@ -90,24 +99,6 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    {/* <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Block Hash</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAIBlock) => {
-                                                return (
-                                                    <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.blockHash,
-                                                            headCount: isMobile ? 5 : 12,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/block/${rowData.blockHash}`) }
-                                                        })}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column> */}
                                     <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
@@ -171,7 +162,7 @@ const Blocks = () => {
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.rewards), 3)} KAI
+                                                        {numberFormat(weiToKAI(rowData.rewards), 8)} KAI
                                                     </div>
                                                 );
                                             }}

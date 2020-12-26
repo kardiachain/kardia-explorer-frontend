@@ -34,12 +34,21 @@ const TransactionHistory = () => {
 
     return (
         <div>
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Transaction history</p>
-                </div>
-            </div>
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="block-title" style={{ padding: '0px 5px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Icon className="highlight" icon="exchange" size={"lg"} />
+                            <p style={{ marginLeft: '12px' }} className="title">Transaction history</p>
+                        </div>
+                    </div>
+                </FlexboxGrid.Item>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
+                    <div className="transaction-summary" style={{marginBottom: 5}}>
+                        <Tag className="gray-tab-custom">A total of {numberFormat(totalTxs)} transactions found</Tag>
+                    </div>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded>
@@ -60,13 +69,13 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }} />}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
-                                                            callback: () => { history.push(`/tx/${rowData.txHash}`)}
+                                                            callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                         })}
                                                         {
                                                             !rowData.status ? (
@@ -86,7 +95,7 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
                                                         <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
@@ -99,7 +108,7 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }}/>}
+                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
                                                         {millisecondToHMS(rowData.age || 0)}
                                                     </div>
                                                 );
@@ -125,18 +134,18 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={1}>
-                                    <HeaderCell></HeaderCell>
-                                    <Cell style={{display:'flex', justifyContent:'center'}}>
-                                        {(rowData: KAITransaction) => {
-                                            return (
-                                                <div>
-                                                    {
-                                                        myAccount.publickey === rowData.from ?  <Tag color="yellow" className="tab-in-out">OUT</Tag> :  <Tag color="green" className="tab-in-out">IN</Tag>
-                                                    }
-                                                </div>
-                                            )
-                                        }}
-                                    </Cell>
+                                        <HeaderCell></HeaderCell>
+                                        <Cell style={{ display: 'flex', justifyContent: 'center' }}>
+                                            {(rowData: KAITransaction) => {
+                                                return (
+                                                    <div>
+                                                        {
+                                                            myAccount.publickey === rowData.from ? <Tag color="yellow" className="tab-in-out">OUT</Tag> : <Tag color="green" className="tab-in-out">IN</Tag>
+                                                        }
+                                                    </div>
+                                                )
+                                            }}
+                                        </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
                                         <HeaderCell>To</HeaderCell>
@@ -145,7 +154,7 @@ const TransactionHistory = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            !rowData.toSmcAddr? (
+                                                            !rowData.toSmcAddr ? (
                                                                 <>
                                                                     {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                     {renderHashToRedirect({

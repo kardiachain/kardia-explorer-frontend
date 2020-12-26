@@ -391,7 +391,7 @@ const YourDelegators = () => {
                                                 {`Delegators (${validator?.totalDelegators || 0})`}
                                             </Nav.Item>
                                             <Nav.Item eventKey="blocksreward">
-                                                {`Block Validated (${totalBlockRewards || 0})`}
+                                                {`Block Proposed (${totalBlockRewards || 0})`}
                                             </Nav.Item>
                                         </Nav>
                                     </div>

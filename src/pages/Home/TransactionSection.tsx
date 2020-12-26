@@ -101,7 +101,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="right" minWidth={isMobile ? 100 : 0} flexGrow={1}>
+                        <Column align="right" verticalAlign="middle" minWidth={isMobile ? 100 : 0} flexGrow={1}>
                             <HeaderCell>Value</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
