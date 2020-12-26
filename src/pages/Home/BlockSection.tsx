@@ -60,10 +60,10 @@ const BlockSection = ({ blockList = [] }: {
                                             </div>
                                             <div>
                                             {
-                                                !rowData.transactions ? '0 Txns' :
-                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)} Txns</Link>
+                                                !rowData.transactions ? <span className="color-white">0 Txns</span>  :
+                                                <Link className="color-white" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)} Txns</Link>
                                             }
-                                        </div>
+                                            </div>
                                         </>
                                     );
                                 }}

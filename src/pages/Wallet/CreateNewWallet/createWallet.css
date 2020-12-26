@@ -17,15 +17,15 @@
 }
 
 .create-wallet-container .panel-container.private-key .rs-panel {
-    background: linear-gradient(137.34deg,#812ce6 14.41%,#623555 116.67%);
+    background: var(--cyan-highlight);
 }
 
 .create-wallet-container .panel-container.keystore-file .rs-panel {
-    background: linear-gradient(137.34deg,#2c69e6 14.41%,#623555 116.67%);
+    background: var(--pink-highlight);
 }
 
 .create-wallet-container .panel-container.mnemonic-phrase .rs-panel {
-    background: linear-gradient(137.34deg,#e6982c 14.41%,#623555 116.67%);
+    background: var(--orange-highlight);
 }
 
 .create-wallet-container .panel-container .rs-panel-body {

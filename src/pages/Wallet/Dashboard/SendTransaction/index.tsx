@@ -139,12 +139,12 @@ const SendTransaction = () => {
                     <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="color-white">Amount <span className="required-mask">(*)</span></ControlLabel>
                                 <NumberInputFormat
                                     value={amount}
                                     placeholder="Amount"
@@ -155,7 +155,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={amountErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                <ControlLabel>To Address  <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="color-white">To Address  <span className="required-mask">(*)</span></ControlLabel>
                                 <FormControl
                                     placeholder="Please enter the address"
                                     name="toAddress"
@@ -168,7 +168,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={toAddressErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="color-white">Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
                                 <NumberInputFormat
                                     value={gasLimit}
                                     placeholder="Gas limit"
@@ -179,7 +179,7 @@ const SendTransaction = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                 <SelectPicker
                                     className="dropdown-custom"
                                     data={gasPriceOption}

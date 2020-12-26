@@ -76,7 +76,7 @@ const Home = () => {
                         </FlexboxGrid.Item>
 
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginLeft: !isMobile ? 5 : 0}} className="wrap-token">
-                            <Panel shaded className="_wrap">
+                            <Panel shaded className="_wrap panel-bg-gray">
                                 <div className="token-infor">
                                     <div className="left">
                                         <Icon className="gray-highlight" icon="rocket" size={"2x"} />
@@ -101,7 +101,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Market Cap:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
+                                        <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -119,7 +119,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p>Circulating Supply:</p>
-                                        <p className="mt0 fw700">{tokenInfor.circulating_supply ? numberFormat(tokenInfor.circulating_supply) : ''}</p>
+                                        <p className="mt0 fw700 color-white">{tokenInfor.circulating_supply ? numberFormat(tokenInfor.circulating_supply) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -145,7 +145,7 @@ const Home = () => {
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <Icon className="gray-highlight" icon="th-large" size={"lg"} />
-                                <p style={{ marginLeft: '12px' }} className="color-white">Latest Blocks</p>
+                                <p style={{ marginLeft: '12px' }} className="title color-white">Latest Blocks</p>
                             </div>
                             <Button onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
                         </div>

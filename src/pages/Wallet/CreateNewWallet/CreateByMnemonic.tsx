@@ -90,7 +90,7 @@ const CreateByMnemonic = () => {
                                     <>
                                         <FlexboxGrid justify="center">
                                             <FlexboxGrid.Item componentClass={Col} colspan={22} xs={14}>
-                                                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
+                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={22} xs={10}>
                                                 <div style={{ textAlign: 'right' }} className="switch-phrase-option">
@@ -100,7 +100,7 @@ const CreateByMnemonic = () => {
                                                         checkedChildren="12"
                                                         unCheckedChildren="24"
                                                         onChange={handleSwitchOption}
-                                                    /> Value
+                                                    /> <span className="color-white">Value</span>
                                                 </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
@@ -112,10 +112,6 @@ const CreateByMnemonic = () => {
                                                         componentClass="textarea"
                                                         value={mnemonic}
                                                         readOnly
-                                                        style={{
-                                                            fontWeight: 600,
-                                                            color: '#9e3144'
-                                                        }}
                                                     />
                                                     <div style={{ textAlign: 'right', marginTop: 10 }}>
                                                         <Button className="kai-button-gray"
@@ -133,7 +129,7 @@ const CreateByMnemonic = () => {
                                                 </FormGroup>
                                             </Form>
                                         </div>
-                                        <div>Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
+                                        <div className="color-white">Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
                                                 <Button size="big" className="kai-button-gray">Back</Button>

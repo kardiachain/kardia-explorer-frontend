@@ -47,7 +47,8 @@ const CreateNewWallet = () => {
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <div style={{textAlign: 'center'}}>
-                You already have a wallet. <Link to="/access-wallet" style={{ color: 'rgb(158, 49, 68)', fontWeight: 600 }}> Access Now.</Link>
+                <span className="color-white">You already have a wallet. </span>
+                <Link to="/access-wallet" className="orange-highlight" style={{ fontWeight: 600 }}> Access Now.</Link>
             </div>
         </div>
     );

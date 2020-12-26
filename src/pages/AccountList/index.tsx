@@ -51,8 +51,8 @@ const AccountList = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                     <div className="block-title" style={{ padding: '0px 5px' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="vcard" size={"2x"} />
-                            <p style={{ marginLeft: '12px' }} className="title">Accounts</p>
+                            <Icon className="gray-highlight" icon="vcard" size={"2x"} />
+                            <p style={{ marginLeft: '12px' }} className="title color-white">Accounts</p>
                         </div>
                     </div>
                 </FlexboxGrid.Item>
@@ -64,7 +64,7 @@ const AccountList = () => {
             </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table

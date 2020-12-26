@@ -66,8 +66,8 @@ const TxList = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                     <div className="block-title" style={{ padding: '0px 5px' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="exchange" size={"2x"} />
-                            <p style={{ marginLeft: 12, marginRight: 12 }} className="title">Transactions</p>
+                            <Icon className="gray-highlight" icon="exchange" size={"2x"} />
+                            <p style={{ marginLeft: 12, marginRight: 12 }} className="title color-white">Transactions</p>
                             <span>{block ? `(For Block: #${block})` : ''}</span>
                         </div>
                     </div>

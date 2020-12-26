@@ -43,9 +43,12 @@
 
 .left-container {
     width: 300px;
-    background-color: #f7f7fa;
+    background: var(--panel-bg-color);
     padding-top: 35px;
     min-height: calc(100vh - 115px);
+}
+.left-container .rs-sidenav-default {
+    background: var(--panel-bg-color);
 }
 
 .right-container {
@@ -75,6 +78,19 @@
 .dashboard-container .rs-nav-item-active .rs-nav-item-content,
 .dashboard-container .rs-dropdown-menu-active ~ .rs-btn-subtle,
 .dashboard-container .rs-dropdown-menu-active ~ .rs-btn-subtle > .rs-icon {
-    color: #a90824 !important;
+    color: var(--blue-color) !important;
     font-weight: 600;
+}
+
+.dashboard-container a {
+    color: var(--text-white-color) !important;
+}
+
+.dashboard-container .rs-nav-default .rs-nav-item:not(.rs-nav-item-active):not(.rs-nav-item-disabled) > .rs-nav-item-content:active,
+.dashboard-container .rs-btn-subtle:hover,
+.dashboard-container .rs-sidenav-default.rs-sidenav-collapse-in .rs-dropdown-menu > li > .rs-dropdown-item-content:hover,
+.dashboard-container .rs-sidenav-default.rs-sidenav-collapse-in .rs-dropdown-menu.rs-dropdown-menu-active ~ .rs-dropdown-toggle:hover,
+.dashboard-container .rs-nav-default .rs-nav-item:not(.rs-nav-item-active):not(.rs-nav-item-disabled) > .rs-nav-item-content:hover,
+.dashboard-container .rs-sidenav-default.rs-sidenav-collapse-in .rs-dropdown-menu > li.rs-dropdown-item-active > .rs-dropdown-item-content {
+    background: transparent !important;
 }

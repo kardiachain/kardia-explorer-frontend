@@ -123,7 +123,7 @@ const Network = () => {
                                                 {(rowData: KAINode) => {
                                                     return (
                                                         <div>
-                                                            {isMobile ? <></> : <Icon className="highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
+                                                            {isMobile ? <></> : <Icon className="gray-highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
                                                             {rowData.nodeName}
                                                         </div>
                                                     )

@@ -38,8 +38,8 @@ const TransactionHistory = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                     <div className="block-title" style={{ padding: '0px 5px' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="exchange" size={"lg"} />
-                            <p style={{ marginLeft: '12px' }} className="title">Transaction history</p>
+                            <Icon className="gray-highlight" icon="exchange" size={"lg"} />
+                            <p style={{ marginLeft: '12px' }} className="title color-white">Transaction history</p>
                         </div>
                     </div>
                 </FlexboxGrid.Item>
@@ -51,7 +51,7 @@ const TransactionHistory = () => {
             </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -69,7 +69,7 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }} />}
+                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="exchange" style={{ marginRight: '5px' }} />}
                                                         {renderHashToRedirect({
                                                             hash: rowData.txHash,
                                                             headCount: isMobile ? 5 : 12,
@@ -95,8 +95,8 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
+                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="cubes" style={{ marginRight: '5px' }} />}
+                                                        <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -108,7 +108,7 @@ const TransactionHistory = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
+                                                        {isMobile ? <></> : <Icon className="orange-highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
                                                         {millisecondToHMS(rowData.age || 0)}
                                                     </div>
                                                 );

@@ -50,7 +50,7 @@ font-weight:600;
 
 
 .wrap-token{
-    background: white;
+    background: var(--panel-bg-color);
     padding: 0;
     margin-bottom:30px;
 }

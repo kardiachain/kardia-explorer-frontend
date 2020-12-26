@@ -55,13 +55,13 @@ const TransactionSection = ({ transactionList = [] }: {
                                     return (
                                         <div>
                                             <div style={{ marginBottom: '5px' }}>
-                                                From:
+                                                <span style={{marginRight: 5}}>From:</span>
                                                 {renderHashToRedirect({
-                                                hash: rowData.from,
-                                                headCount: isMobile ? 4 : 8,
-                                                tailCount: 4,
-                                                showTooltip: false,
-                                                callback: () => { history.push(`/address/${rowData.from}`) }
+                                                    hash: rowData.from,
+                                                    headCount: isMobile ? 4 : 8,
+                                                    tailCount: 4,
+                                                    showTooltip: false,
+                                                    callback: () => { history.push(`/address/${rowData.from}`) }
                                             })}
                                             </div>
                                             <div>

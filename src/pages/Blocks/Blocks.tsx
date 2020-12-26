@@ -51,8 +51,8 @@ const Blocks = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                     <div className="block-title" style={{ padding: '0px 5px' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="cubes" size={"2x"} />
-                            <p style={{ marginLeft: '12px' }} className="title">Blocks</p>
+                            <Icon className="gray-highlight" icon="cubes" size={"2x"} />
+                            <p style={{ marginLeft: '12px' }} className="title color-white">Blocks</p>
                         </div>
                     </div>
                 </FlexboxGrid.Item>

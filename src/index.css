@@ -167,12 +167,16 @@ a:hover {
   border-bottom: var(--border) !important;
 }
 
+.rs-picker-menu,
+.panel-bg-gray .rs-picker-default .rs-btn,
+.panel-bg-gray .rs-picker-default .rs-picker-toggle,
+.panel-bg-gray .kai-number-input,
 .panel-bg-gray .rs-input,
 .panel-bg-gray .rs-input-group-btn,
 .panel-bg-gray .rs-input-group-btn:focus,
 .panel-bg-gray .rs-input-group-btn:hover {
-  background: var(--input-black-color);
-  color: var(--white-color);
+  background: var(--input-black-color) !important;
+  color: var(--white-color) !important;
   border: 1px solid var(--input-black-color) !important;
 }
 .panel-bg-gray .rs-input-group:not(.rs-input-group-inside) {
