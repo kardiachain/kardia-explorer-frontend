@@ -244,7 +244,7 @@ a:hover {
 
 .container {
   max-width:1920px;
-  width:70%;
+  width:80%;
   padding:40px 0px;
 }
 
@@ -339,7 +339,14 @@ a:hover {
   color: white;
 }
 
-@media screen and (max-width: 740px) {
+.confirm-letter {
+  font-weight: 600;
+  color: #36638A;
+  margin-bottom: 10px;
+}
+
+
+@media screen and (max-width: 992px) {
   .rs-header{
     display: flex;
     align-items: center;
@@ -368,6 +375,7 @@ a:hover {
     width:100% !important;
   }
 }
+
 .custom-tooltip .rs-tooltip-inner {
   background: #5f7689 !important;
   font-weight: 600;
@@ -381,4 +389,14 @@ a:hover {
 .rs-list {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
+}
+
+.tx-error-icon {
+  color: rgb(250, 3, 3);
+}
+
+.gray-tab-custom {
+  color: #000 !important;
+  padding: 5px 20px !important;
+  background-color: #c1c1c1 !important;
 }

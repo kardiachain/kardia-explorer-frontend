@@ -65,22 +65,33 @@ const createValidator = async (params: CreateValParams, account: Account, gasLim
         const maxRateChangeDec = cellValue(params.maxChangeRate / 100);
         // Convert validator name to bytes
         const valName = fromAscii(params.valName);
-        return await invokeSendAction(stakingContract, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, 0, gasLimit, gasPrice);
+        // Convert amount to decimal type
+        const delAmountDec = cellValue(params.yourDelegationAmount);
+        return await invokeSendAction(stakingContract, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, delAmountDec, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }
 }
 
-// @Function: update validator
-const updateValidator = async (params: UpdateValParams, account: Account, gasLimit: number, gasPrice: number) => {
+
+// @Function: update validator name
+const updateValidatorName = async (valSmcAddr: string, name: string, account: Account, amountFee: number, gasLimit: number, gasPrice: number) => {
+    try {
+        // Convert amount to decimal type
+        const amountFeeDec = cellValue(amountFee);
+        // Convert new validator name to bytes
+        const valName = fromAscii(name);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "updateName", [valName], account, amountFeeDec, gasLimit, gasPrice);
+    } catch (error) {
+        throw error;
+    }
+}
+
+const updateValidatorCommission = async (valSmcAddr: string, newCommissionRate: number, account: Account, gasLimit: number, gasPrice: number) => {
     try {
         // convert value percent type to decimal type
-        const commissionRateDec = cellValue(params.newCommissionRate / 100);
-        // Convert new validator name to bytes
-        const valName = fromAscii(params.newValName);
-        // Checksum validator's smart contract address
-        const valSmcAddr = toChecksum(params.valSmcAddr);
-        return await invokeSendAction(validatorContract, valSmcAddr, "updateValidator", [valName, commissionRateDec], account, 0, gasLimit, gasPrice);
+        const newCommissionRateDec = cellValue(newCommissionRate / 100);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "updateCommissionRate", [newCommissionRateDec], account, 0, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }
@@ -143,6 +154,24 @@ const undelegateAll = async (valSmcAddr: string, account: Account) => {
     }
 }
 
+// Validator unjailed
+const unjailValidator = async (valSmcAddr: string, account: Account) => {
+    try {
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "unjail", [], account, 0);
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Stop validator
+const stopValidator = async (valSmcAddr: string, account: Account) => {
+    try {
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "stop", [], account, 0);
+    } catch (error) {
+        throw error;
+    }
+}
+
 export {
     invokeCallData,
     invokeSendAction,
@@ -150,9 +179,12 @@ export {
     createValidator,
     withdrawReward,
     withdrawDelegatedAmount,
-    updateValidator,
     undelegateWithAmount,
     withdrawCommission,
     undelegateAll,
-    startValidator
+    startValidator,
+    unjailValidator,
+    updateValidatorName,
+    updateValidatorCommission,
+    stopValidator
 }

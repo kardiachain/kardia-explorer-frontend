@@ -68,17 +68,15 @@ const Home = () => {
     return (
         <React.Fragment>
             <div className="container home-container">
-
                 <SearchSection />
-
-                <div className="home-top-section">
-                    <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} className="bg-panel-gray" style={{ height: 356, paddingTop: 30 }}>
+                <div>
+                    <FlexboxGrid className="home-top-section" justify="space-between" style={{ alignItems: 'normal' }}>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginRight: !isMobile ? 5 : 0}} className="wrap-token bocktime-chart-container">
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
 
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} className="wrap-token">
-                            <Panel shaded className="_wrap panel-bg-gray">
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginLeft: !isMobile ? 5 : 0}} className="wrap-token">
+                            <Panel shaded className="_wrap">
                                 <div className="token-infor">
                                     <div className="left">
                                         <Icon className="gray-highlight" icon="rocket" size={"2x"} />
@@ -102,8 +100,8 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight">Market Cap:</p>
-                                        <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(2033200000 * tokenInfor.price, 3) : ''}</p>
+                                        <p>Market Cap:</p>
+                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -120,8 +118,8 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="refresh" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight">Circulating Supply:</p>
-                                        <p className="mt0 fw700 color-white">{tokenInfor.circulating_supply ? numberFormat(2033200000) : ''}</p>
+                                        <p>Circulating Supply:</p>
+                                        <p className="mt0 fw700">{tokenInfor.circulating_supply ? numberFormat(tokenInfor.circulating_supply) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -142,14 +140,14 @@ const Home = () => {
                     <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
                 </FlexboxGrid>
 
-                <FlexboxGrid justify="space-between" style={{ marginTop: !isMobile ? '30px' : '0' }}>
+                <FlexboxGrid justify="space-between">
                     <FlexboxGrid.Item className="section-left" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <Icon className="gray-highlight" icon="th-large" size={"lg"} />
                                 <p style={{ marginLeft: '12px' }} className="color-white">Latest Blocks</p>
                             </div>
-                            <Button onClick={() => { history.push('/blocks') }}>View all</Button>
+                            <Button onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
@@ -159,7 +157,7 @@ const Home = () => {
                                 <Icon className="gray-highlight" icon="exchange" size={"lg"} />
                                 <p style={{ marginLeft: '12px' }} className="title color-white">Latest Transactions</p>
                             </div>
-                            <Button className="kai-button-pink" onClick={() => { history.push('/txs') }}>View all</Button>
+                            <Button onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>View all</Button>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

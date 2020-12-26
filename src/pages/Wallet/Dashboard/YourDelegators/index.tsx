@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Col, FlexboxGrid, Icon, List, Modal, Nav, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Icon, IconButton, List, Nav, Panel, Tag } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashString } from '../../../../common/utils/string';
+import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
 import { getAccount } from '../../../../service/wallet';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
@@ -11,19 +11,20 @@ import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { checkIsValidator, getValidator } from '../../../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../../../config';
-import { startValidator, withdrawCommission } from '../../../../service/smc/staking';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
+import { ErrorMessage } from '../../../../common/constant/Message';
 import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import UpdateValidator from './UpdateValidator';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
 import { addressValid } from '../../../../common/utils/validate';
 import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
-import MissingBlock from '../../../Staking/ValidatorDetail/MissingBlock';
 import { useHistory } from 'react-router-dom';
+import UpdateValidatorName from './UpdateValidatorName';
+import UpdateCommissionRate from './UpdateCommissionRate';
+import UnJailValidator from './UnJailValidator';
+import VaidatorStart from './VaidatorStart';
+import WithdrawCommission from './WithdrawCommission';
 
 const YourDelegators = () => {
 
@@ -32,17 +33,11 @@ const YourDelegators = () => {
     const [delegators, setDelegators] = useState([] as Delegator[]);
     const [validator, setValidator] = useState<Validator>();
     const myAccount = getAccount() as Account;
-
     const [statePending, setStatePending] = useState(true)
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
     const [tableLoading, setTableLoading] = useState(true);
     const [startValErr, setStartValErr] = useState('');
-    const [btnLoading, setBtnLoading] = useState(false);
-    const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const [showWithdrawCommissionModal, setShowWithdrawCommissionModal] = useState(false);
-    const [withdrawLoading, setWithdrawLoading] = useState(false);
-
     const [activeKey, setActiveKey] = useState("delegators");
 
     const [blockRewards, setBlockRewards] = useState([] as KAIBlock[]);
@@ -50,8 +45,16 @@ const YourDelegators = () => {
     const [limitBlockRewards, setLimitBlockRewards] = useState(TABLE_CONFIG.limitDefault);
     const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
     const [totalBlockRewards, setTotalBlockRewards] = useState(0);
-    
+
     const [readyStarting, setReadyStarting] = useState(false);
+
+    const [showUpdateValidatorName, setShowUpdateValidatorName] = useState(false);
+    const [showUpdateCommission, setShowUpdateCommission] = useState(false);
+    const [showConfirmUnjailModal, setShowConfirmUnjailModal] = useState(false);
+    const [showConfirmStartValidatorModal, setShowConfirmStartValidatorModal] = useState(false);
+    const [showWithdrawCommissionModal, setShowWithdrawCommissionModal] = useState(false);
+
+    const [canUnjail, setCanUnjail] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -66,6 +69,11 @@ const YourDelegators = () => {
                 setTableLoading(false);
                 if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
                     setReadyStarting(true)
+                }
+                // Check avaiable time to unjail
+                const nowTime = (new Date()).getTime();
+                if (nowTime > val.signingInfo.jailedUntil) {
+                    setCanUnjail(true);
                 }
             }
         })();
@@ -94,99 +102,24 @@ const YourDelegators = () => {
             setValidator(val)
             setDelegators(val.delegators)
             setTableLoading(false);
+            if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
+                setReadyStarting(true)
+            }
+            // Check avaiable time to unjail
+            const nowTime = (new Date()).getTime();
+            if (nowTime > val.signingInfo.jailedUntil) {
+                setCanUnjail(true);
+            }
         }
     }
-
 
     const startBecomeValidator = async () => {
         if (Number(weiToKAI(validator?.stakedAmount)) < MIN_STAKED_AMOUNT_START_VALIDATOR) {
             setStartValErr(ErrorMessage.StakedAmountNotEnough);
             return false;
         }
-        setShowConfirmModal(true)
+        setShowConfirmStartValidatorModal(true)
         setStartValErr('');
-    }
-
-    // @Function using for starting become validator
-    const confirmStart = async () => {
-        try {
-            setBtnLoading(true);
-            const valSmcAddr = validator?.smcAddress || "";
-            if (!valSmcAddr) {
-                setBtnLoading(false);
-                return false;
-            }
-
-            const result = await startValidator(valSmcAddr, myAccount);
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-                fetchData();
-
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
-        } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
-        }
-        setBtnLoading(false);
-        setShowConfirmModal(false);
-    }
-
-    const widthdrawCommission = async () => {
-        try {
-            setWithdrawLoading(true);
-
-            const valSmcAddr = validator?.smcAddress || "";
-            if (!valSmcAddr) {
-                setBtnLoading(false);
-                return false;
-            }
-            const result = await withdrawCommission(valSmcAddr, myAccount);
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-                fetchData();
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
-        } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
-        }
-        setBtnLoading(false);
-        setShowWithdrawCommissionModal(false);
     }
 
     return !statePending ? (
@@ -225,10 +158,9 @@ const YourDelegators = () => {
                                 </div>
                                 <Panel shaded>
                                     <div style={{ textAlign: 'right' }}>
-                                        <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`)  }}>
+                                        <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`) }}>
                                             Delegate
                                         </Button>
-                                        <UpdateValidator validator={validator || {} as Validator} />
                                     </div>
                                     <List>
                                         <List.Item>
@@ -239,6 +171,12 @@ const YourDelegators = () => {
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content validator-name">
                                                         {validator?.name}
+                                                        <IconButton
+                                                            className="edit-val-button"
+                                                            size="xs"
+                                                            onClick={() => { setShowUpdateValidatorName(true) }}
+                                                            icon={<Icon icon="edit" />}
+                                                        />
                                                     </div>
                                                     <div className="property-content">
                                                         {
@@ -255,7 +193,7 @@ const YourDelegators = () => {
                                         <List.Item>
                                             <FlexboxGrid justify="start" align="middle">
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Staking Contract</div>
+                                                    <div className="property-title">Validator Contract</div>
                                                 </FlexboxGrid.Item>
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content">
@@ -299,7 +237,13 @@ const YourDelegators = () => {
                                                 </FlexboxGrid.Item>
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                     <div className="property-content">
-                                                        {numberFormat(validator?.commissionRate || 0, 2)} %
+                                                        <span>{numberFormat(validator?.commissionRate || 0, 2)} %</span>
+                                                        <IconButton
+                                                            className="edit-val-button"
+                                                            size="xs"
+                                                            onClick={() => { setShowUpdateCommission(true) }}
+                                                            icon={<Icon icon="edit" />}
+                                                        />
                                                     </div>
                                                 </FlexboxGrid.Item>
                                             </FlexboxGrid>
@@ -350,32 +294,75 @@ const YourDelegators = () => {
                                                 </FlexboxGrid.Item>
                                             </FlexboxGrid>
                                         </List.Item>
-                                        {
-                                            validator?.isProposer ? (
-                                                <List.Item>
-                                                    <FlexboxGrid justify="start" align="middle">
-                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                            <div className="property-title">Claimable Commission Rewards</div>
-                                                        </FlexboxGrid.Item>
-                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                            <div className="property-content">
-                                                                <span style={{ marginRight: 10 }}>{numberFormat(weiToKAI(validator?.accumulatedCommission), 4)} KAI </span>
-                                                                <Button className="kai-button-gray" onClick={() => setShowWithdrawCommissionModal(true)}>
-                                                                    Withdraw
-                                                                </Button>
-                                                            </div>
-                                                        </FlexboxGrid.Item>
-                                                    </FlexboxGrid>
-                                                </List.Item>
-                                            ) : <></>
-                                        }
+
+                                        <List.Item>
+                                            <FlexboxGrid justify="start" align="middle">
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                    <div className="property-title">Status</div>
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                    <div className="property-content">
+                                                        {
+                                                            validator?.jailed ? (
+                                                                <>
+                                                                    <Tag color="red">Jailed</Tag>
+                                                                    <Button
+                                                                        disable={!canUnjail}
+                                                                        style={{ marginLeft: 20 }}
+                                                                        className="kai-button-gray"
+                                                                        onClick={() => {
+                                                                            if (canUnjail) {
+                                                                                setShowConfirmUnjailModal(true);
+                                                                            }
+                                                                        }}>UnJail
+                                                                    </Button>
+                                                                    {
+                                                                        !canUnjail ? (
+                                                                            <span className="unjail-note">
+                                                                                ( Only can unjail after the time: {dateToUTCString(validator?.signingInfo?.jailedUntil || '')})
+                                                                            </span>
+                                                                        ) : <></>
+                                                                    }
+                                                                </>
+                                                            ) : <Tag color="green">Active</Tag>
+                                                        }
+                                                    </div>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </List.Item>
+
+                                        <List.Item>
+                                            <FlexboxGrid justify="start" align="middle">
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                    <div className="property-title">Missing block</div>
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                    <div className="property-content">{validator?.missedBlocks} Blocks</div>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </List.Item>
+                                        <List.Item>
+                                            <FlexboxGrid justify="start" align="middle">
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                    <div className="property-title">Claimable Commission Rewards</div>
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                    <div className="property-content">
+                                                        <span style={{ marginRight: 10 }}>{numberFormat(weiToKAI(validator?.accumulatedCommission), 4)} KAI </span>
+                                                        <Button className="kai-button-gray" onClick={() => setShowWithdrawCommissionModal(true)}>
+                                                            Withdraw
+                                                            </Button>
+                                                    </div>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </List.Item>
                                     </List>
                                     {
-                                        validator?.isRegister ? (
+                                        validator?.isRegister && !validator.jailed ? (
                                             <>
                                                 <div style={{ marginTop: '30px', marginBottom: '20px' }}>
                                                     {
-                                                        !readyStarting ? <div className="warning-note" style={{marginBottom: 5, fontSize: 14}}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
+                                                        !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
                                                     }
                                                     <Button size="big"
                                                         onClick={startBecomeValidator}
@@ -404,11 +391,7 @@ const YourDelegators = () => {
                                                 {`Delegators (${validator?.totalDelegators || 0})`}
                                             </Nav.Item>
                                             <Nav.Item eventKey="blocksreward">
-                                                {`Block Rewards (${totalBlockRewards || 0})`}
-                                            </Nav.Item>
-
-                                            <Nav.Item eventKey="missingblocks">
-                                                {`Missing Blocks (${validator?.missedBlocks})`}
+                                                {`Block Proposed (${totalBlockRewards || 0})`}
                                             </Nav.Item>
                                         </Nav>
                                     </div>
@@ -438,56 +421,42 @@ const YourDelegators = () => {
                                                         loading={loadingBlockRewards}
                                                     />
                                                 );
-                                            case 'missingblocks':
-                                                return (
-                                                    <MissingBlock validator={validator || {} as Validator} />
-                                                )
                                         }
                                     })()}
                                 </Panel>
                             </div>
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
+                    <UpdateValidatorName
+                        validator={validator || {} as Validator}
+                        showModel={showUpdateValidatorName}
+                        setShowModel={setShowUpdateValidatorName}
+                        reFetchData={fetchData} />
 
-                    {/* Modal confirm when withdraw staked token */}
-                    <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
-                        <Modal.Header>
-                            <Modal.Title>Confirm starting to become validator</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
-                                Are you sure you want to starting to become validator.
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button loading={btnLoading} onClick={confirmStart}>
-                                Confirm
-                            </Button>
-                            <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
-                                Cancel
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
+                    <UpdateCommissionRate
+                        validator={validator || {} as Validator}
+                        showModel={showUpdateCommission}
+                        setShowModel={setShowUpdateCommission}
+                        reFetchData={fetchData} />
+                    <UnJailValidator
+                        validator={validator || {} as Validator}
+                        showModel={showConfirmUnjailModal}
+                        setShowModel={setShowConfirmUnjailModal}
+                        reFetchData={fetchData}
+                    />
+                    <VaidatorStart
+                        validator={validator || {} as Validator}
+                        showModel={showConfirmStartValidatorModal}
+                        setShowModel={setShowConfirmStartValidatorModal}
+                        reFetchData={fetchData}
+                    />
+                    <WithdrawCommission
+                        validator={validator || {} as Validator}
+                        showModel={showWithdrawCommissionModal}
+                        setShowModel={setShowWithdrawCommissionModal}
+                        reFetchData={fetchData}
+                    />
 
-                    {/* Modal confirm when withdraw commission amount */}
-                    <Modal backdrop="static" size="sm" enforceFocus={true} show={showWithdrawCommissionModal} onHide={() => { setShowWithdrawCommissionModal(false) }}>
-                        <Modal.Header>
-                            <Modal.Title>Confirm withdraw your staked token</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
-                                Are you sure you want to withdraw all your commission reward tokens.
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button loading={withdrawLoading} onClick={widthdrawCommission}>
-                                Confirm
-                            </Button>
-                            <Button className="kai-button-gray" onClick={() => { setShowWithdrawCommissionModal(false) }}>
-                                Cancel
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
                 </>
             )
     ) : (<></>)

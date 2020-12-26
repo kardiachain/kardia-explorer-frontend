@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, Modal, SelectPicker } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, List, Modal, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { gasPriceOption } from '../../../../common/constant';
+import { gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { numberFormat } from '../../../../common/utils/number';
 import { createValidator } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { getAccount, getStoredBalance } from '../../../../service/wallet';
 import './validators.css'
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
@@ -20,11 +20,13 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
     const [maxRate, setMaxRate] = useState('')
     const [maxChangeRate, setMaxChangeRate] = useState('')
     const [valName, setValName] = useState('')
+    const [yourDelAmount, setYourDelAmount] = useState(`${MIN_DELEGATION_AMOUNT}`)
 
     const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
     const [maxChangeRateErr, setMaxChangeRateErr] = useState('')
     const [valNameErr, setValNameErr] = useState('')
+    const [yourDelAmountErr, setYourDelAmountErr] = useState('')
 
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -129,6 +131,27 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
         return true
     }
 
+    const validateYourDelegationAmount = (value: any) => {
+
+        if (!Number(value)) {
+            setYourDelAmountErr(ErrorMessage.Require);
+            return
+        }
+
+        if (Number(value) < MIN_DELEGATION_AMOUNT) {
+            setYourDelAmountErr(ErrorMessage.BelowMinimumDelegationAmount)
+            return false
+        }
+        const balance = getStoredBalance();
+        if (balance === 0 || balance < MIN_DELEGATION_AMOUNT) {
+            setYourDelAmountErr(ErrorMessage.BalanceNotEnough)
+            return false
+        }
+
+        setYourDelAmountErr('');
+        return true;
+    }
+
     const validateGasPrice = (gasPrice: any): boolean => {
         if (!Number(gasPrice)) {
             setGasPriceErr(ErrorMessage.Require)
@@ -163,7 +186,8 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             !validateGasLimit(gasLimit) ||
             !validateCommissionRate(commissionRate) ||
             !validateMaxRate(maxRate) ||
-            !validateMaxChangeRate(maxChangeRate)) {
+            !validateMaxChangeRate(maxChangeRate) ||
+            !validateYourDelegationAmount(yourDelAmount)) {
             return
         }
         setShowConfirmModal(true)
@@ -178,7 +202,8 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                 valName: valName,
                 commissionRate: Number(commissionRate),
                 maxRate: Number(maxRate),
-                maxChangeRate: Number(maxChangeRate)
+                maxChangeRate: Number(maxChangeRate),
+                yourDelegationAmount: Number(yourDelAmount)
             } as CreateValParams;
 
             let validator = await createValidator(params, account, gasLimit, gasPrice);
@@ -249,7 +274,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ControlLabel>
                             Name <span className="required-mask">(*)</span>
                         </ControlLabel>
-                        <FormControl placeholder="Name"
+                        <FormControl placeholder="Ex. My Validator"
                             name="valName"
                             value={valName}
                             onChange={(value) => {
@@ -265,7 +290,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={commissionRate}
-                            placeholder="Commission Rate"
+                            placeholder="Ex. 10"
                             onChange={(event) => {
                                 setCommissionRate(event.value);
                                 validateCommissionRate(event.value)
@@ -279,7 +304,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={maxRate}
-                            placeholder="Max Rate"
+                            placeholder="Ex. 20"
                             onChange={(event) => {
                                 setMaxRate(event.value);
                                 validateMaxRate(event.value)
@@ -293,13 +318,28 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={maxChangeRate}
-                            placeholder="Max Change Rate"
+                            placeholder="Ex. 2"
                             onChange={(event) => {
                                 setMaxChangeRate(event.value);
                                 validateMaxChangeRate(event.value)
                             }} />
                         <ErrMessage message={maxChangeRateErr} />
                     </FlexboxGrid.Item>
+                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
+                        <ControlLabel>
+                            <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
+                            Your Delegation Amount (KAI) <span className="required-mask">(*)</span>
+                        </ControlLabel>
+                        <NumberInputFormat
+                            value={yourDelAmount}
+                            placeholder="Ex. 25,000"
+                            onChange={(event) => {
+                                setYourDelAmount(event.value);
+                                validateYourDelegationAmount(event.value)
+                            }} />
+                        <ErrMessage message={yourDelAmountErr} />
+                    </FlexboxGrid.Item>
+
                 </FlexboxGrid>
                 <Button size="big" style={{ minWidth: 200 }} onClick={submitValidator}>Register</Button>
             </Form>
@@ -307,14 +347,74 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             {/* Modal confirm when create validator */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm create validator</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to create validator with: </div>
-                    <div>Validator Name: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valName}</span></div>
-                    <div>Commission Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(commissionRate)} %</span></div>
-                    <div>Max Rate: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxRate)} %</span></div>
-                    <div>Max Rate Change: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {numberFormat(maxChangeRate)} %</span></div>
+                    <div className="confirm-letter">
+                        Be carefully verify your stats before confirm create a validator
+                    </div>
+                    <List>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Validator Name</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(commissionRate)}
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Commission Rate</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(commissionRate)} %
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Max Rate</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(maxRate)} %
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Max Rate Change</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(maxChangeRate)} %
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-title">Your Delegation Amount</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(yourDelAmount)} KAI
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>    
+                    </List>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={registerValidator}>

@@ -54,8 +54,8 @@ const Validators = () => {
             
             setCandidates(fetchData[1]);
             const stakingData = fetchData[0];
-            const valDetails = stakingData.validators;
-            setValidators(stakingData.validators);
+            const valDetails = stakingData?.validators || [] as Validator[];
+            setValidators(stakingData?.validators || [] as Validator[]);
 
             // Calculate data for chart
             const dataForValidatorsChart = [] as any[];

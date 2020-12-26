@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
+import { StakingIcon } from '../../../common/components/IconCustom';
 import { weiToKAI } from '../../../common/utils/amount';
 import { numberFormat } from '../../../common/utils/number';
 import { renderHashToRedirect } from '../../../common/utils/string';
@@ -37,14 +38,25 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                         {(rowData: Delegator) => {
                             return (
                                 <div>
-                                    {
+                                    {   
                                         renderHashToRedirect({
                                             hash: rowData.address,
-                                            headCount: isMobile ? 5 : 20,
+                                            headCount: isMobile ? 5 : 45,
                                             tailCount: 4,
-                                            showTooltip: true,
+                                            showTooltip: false,
                                             callback: () => { window.open(`/address/${rowData.address}`) }
                                         })
+                                    }
+                                    {
+                                        rowData.owner ? (
+                                            <StakingIcon
+                                                character="owner"
+                                                style = {{
+                                                    width: 50
+                                                }}
+                                                className="common"
+                                                size='small'/>
+                                        ) : <></>
                                     }
                                 </div>
                             );

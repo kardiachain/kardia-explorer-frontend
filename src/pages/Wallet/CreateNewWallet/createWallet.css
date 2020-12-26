@@ -68,11 +68,11 @@
 
 .button-container {
     display: flex;
+    margin-top: 30px;
     align-items: center;
     justify-content: center;
 }
 .button-container .submit-buttom {
-    margin: 30px 20px;
     background-color: #0f198e;
     color: white;
 }
@@ -133,4 +133,13 @@
 
 .icon-check{
     color: var(--success-color);
+}
+
+.switch-phrase-option {
+    font-weight: 600;
+}
+
+.switch-phrase-option .rs-btn-toggle-checked,
+.switch-phrase-option .rs-btn-toggle{
+    background: var(--highlight);
 }

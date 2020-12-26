@@ -30,10 +30,10 @@ export const getValidators = async (): Promise<Validators> => {
                     maxChangeRate: v.maxChangeRate,
                     name: v.name,
                     smcAddress: toChecksum(v.smcAddress) || '',
-                    isProposer: v.status === 2,
-                    isValidator: v.status === 1,
-                    isRegister: v.status === 0,
-                    role: checkValidatorRole(v.status),
+                    isProposer: v.role === 2,
+                    isValidator: v.role === 1,
+                    isRegister: v.role === 0,
+                    role: checkValidatorRole(v.role),
                 }
             }) : []
         } as Validators
@@ -60,15 +60,25 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             maxChangeRate: val.maxChangeRate,
             name: val.name || '',
             smcAddress: toChecksum(val.smcAddress) || '',
-            role: checkValidatorRole(val.status),
-            isProposer: val.status === 2,
-            isValidator: val.status === 1,
-            isRegister: val.status === 0,
+            role: checkValidatorRole(val.role),
+            isProposer: val.role === 2,
+            isValidator: val.role === 1,
+            isRegister: val.role === 0,
             accumulatedCommission: val.accumulatedCommission,
-            missedBlocks: val.missedBlocks,
-            updateTime: val.updateTime,
+            missedBlocks: val?.signingInfo?.missedBlockCounter || 0,
+            updateTime: val.updateTime * 1000,
+            jailed: val.jailed,
+            signingInfo: {
+                indexOffset: val?.signingInfo?.indexOffset || 0,
+                indicatorRate: val?.signingInfo?.indicatorRate || 0,
+                jailedUntil: val?.signingInfo?.jailedUntil * 1000 || 0,
+                missedBlockCounter: val?.signingInfo?.missedBlockCounter || 0,
+                startHeight: val?.signingInfo?.startHeight || 0,
+                tombstoned: val?.signingInfo?.tombstoned || false
+            },
             delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
                 return {
+                    owner: del?.address?.toLowerCase() === val?.address?.toLowerCase(),
                     address: toChecksum(del.address),
                     stakeAmount: del.stakedAmount,
                     rewardsAmount: del.reward
@@ -92,10 +102,10 @@ export const getCandidates = async (): Promise<Candidate[]> => {
                 name: v.name,
                 address: toChecksum(v.address),
                 smcAddress: toChecksum(v.smcAddress),
-                role: checkValidatorRole(v.status),
-                isProposer: v.status === 2,
-                isValidator: v.status === 1,
-                isRegister: v.status === 0,
+                role: checkValidatorRole(v.role),
+                isProposer: v.role === 2,
+                isValidator: v.role === 1,
+                isRegister: v.role === 0,
                 votingPower: v.votingPowerPercentage,
                 stakedAmount: v.stakedAmount,
                 commissionRate: v.commissionRate,
@@ -126,7 +136,7 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
                 claimableAmount: v.claimableRewards,
                 unbondedAmount: v.unbondedAmount,
                 withdrawableAmount: v.withdrawableAmount,
-                role: checkValidatorRole(v.validatorStatus),
+                role: checkValidatorRole(v.validatorRole),
             } as YourValidator
         }) : []
     } catch (error) {
@@ -149,13 +159,13 @@ export const checkIsValidator = async (valAddr: string): Promise<boolean> => {
 }
 
 
-export const checkValidatorRole = (status: number): ValidatorRole => {
+export const checkValidatorRole = (role: number): ValidatorRole => {
     let result: ValidatorRole = {
         name: "",
         classname: "",
         character: ""
     };
-    switch (status) {
+    switch (role) {
         case 0:
             result = {
                 name: "Candidate",

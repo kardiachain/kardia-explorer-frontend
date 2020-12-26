@@ -1,52 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Modal, SelectPicker } from "rsuite";
+import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Modal, SelectPicker } from "rsuite";
 import Button from "../../../../common/components/Button";
 import NumberInputFormat from "../../../../common/components/FormInput";
 import ErrMessage from "../../../../common/components/InputErrMessage/InputErrMessage";
 import { NotificationError, NotificationSuccess } from "../../../../common/components/Notification";
 import { gasLimitDefault, gasPriceOption } from "../../../../common/constant";
 import { ErrorMessage, NotifiMessage } from "../../../../common/constant/Message";
-import { onlyInteger } from "../../../../common/utils/number";
 import { dateToUTCString } from "../../../../common/utils/string";
-import { updateValidator } from "../../../../service/smc/staking";
+import { updateValidatorCommission } from "../../../../service/smc/staking";
 import { getAccount } from "../../../../service/wallet";
 import './validators.css'
 
-const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) => {
+const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
+    validator: Validator;
+    showModel: boolean;
+    setShowModel: (isShow: boolean) => void;
+    reFetchData: () => void;
+}) => {
 
     const [isLoading, setIsLoading] = useState(false);
-    const [commissionRate, setCommissionRate] = useState('')
-    const [valName, setValName] = useState('')
-    const [commissionRateErr, setCommissionRateErr] = useState('')
-    const [valNameErr, setValNameErr] = useState('')
+    const [commissionRate, setCommissionRate] = useState('');
+    const [commissionRateErr, setCommissionRateErr] = useState('');
     const myAccount = getAccount() as Account;
 
-    const [gasPrice, setGasPrice] = useState(1)
-    const [gasPriceErr, setGasPriceErr] = useState('')
-    const [gasLimit, setGasLimit] = useState(gasLimitDefault)
-    const [gasLimitErr, setGasLimitErr] = useState('')
+    const [gasPrice, setGasPrice] = useState(1);
+    const [gasPriceErr, setGasPriceErr] = useState('');
+    const [gasLimit, setGasLimit] = useState(gasLimitDefault);
+    const [gasLimitErr, setGasLimitErr] = useState('');
     const [canUpdate, setCanUpdate] = useState(false);
-    
-    const [showEditModel, setShowEditModel] = useState(false);
 
     useEffect(() => {
         const updateTime = (new Date(validator.updateTime)).getTime()
         const nowTime = (new Date()).getTime();
-        if (nowTime > updateTime + 86400000) {
+        const lockTime = Number(process.env.REACT_APP_TIME_UPDATE_COMMISSION_LOCK_TIME || 0)
+        if (nowTime > updateTime + lockTime) {
             setCanUpdate(true);
         }
-        
-    }, [validator])
+    }, [validator]);
 
-
-    const validateValName = (value: any) => {
-        if (!value) {
-            setValNameErr(ErrorMessage.Require);
-            return false;
-        }
-        setValNameErr('');
-        return true;
-    }
 
     const validateCommissionRate = (value: any) => {
         if (!value) {
@@ -63,6 +54,14 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
             setCommissionRateErr(ErrorMessage.CommissionRateMoreThanHundred)
             return false
         }
+
+        const commissionChange = Math.abs(Number(value) - Number(validator.commissionRate));
+
+        if (commissionChange > Number(validator.maxChangeRate)) {
+            setCommissionRateErr(ErrorMessage.CommissionMoreThanMaximunRateRangeChange);
+            return;
+        }
+
         setCommissionRateErr('')
         return true
     }
@@ -88,7 +87,7 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
 
     const update = async () => {
         if (!canUpdate) return;
-        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateValName(valName) || !validateCommissionRate(commissionRate)) {
+        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateCommissionRate(commissionRate)) {
             return
         }
         try {
@@ -97,19 +96,14 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
             if (!valSmcAddr) {
                 return
             }
-            const params: UpdateValParams = {
-                valSmcAddr: valSmcAddr,
-                newValName: valName,
-                newCommissionRate: Number(commissionRate)
-            }
-
-            let result = await updateValidator(params, myAccount, gasLimit, gasPrice);
+            let result = await updateValidatorCommission(valSmcAddr, Number(commissionRate), myAccount, gasLimit, gasPrice);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,
                     callback: () => { window.open(`/tx/${result.transactionHash}`) },
                     seeTxdetail: true
                 });
+                reFetchData();
             } else {
                 NotificationError({
                     description: NotifiMessage.TransactionError,
@@ -134,33 +128,20 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
     }
 
     const resetForm = () => {
-        setValName('');
-        setValNameErr('');
         setCommissionRate('');
         setCommissionRateErr('');
     }
 
     const cancelEdit = () => {
-        setShowEditModel(false);
+        setShowModel(false);
         resetForm();
     }
 
     return (
         <>
-            <Button className="kai-button-gray" onClick={() => { setShowEditModel(true) }}>
-                <Icon icon="edit" /> Edit
-            </Button>
-            {/* Modal edit validator infomation */}
-            <Modal backdrop="static" size="sm" enforceFocus={true} show={showEditModel} onHide={cancelEdit}>
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showModel} onHide={cancelEdit}>
                 <Modal.Header>
-                    <Modal.Title>Edit Validator
-                        <div className="latest-update-validator">
-                            <span>Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
-                        </div>
-                        {
-                            !canUpdate ? <div className="warning-note">* The next update only can perform after 24 hours since the last update.</div> : <></>
-                        }
-                    </Modal.Title>
+                    <Modal.Title>Update Validator Commmission</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form fluid>
@@ -168,17 +149,13 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
                                     <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
-                                    <FormControl name="gaslimit"
-                                        placeholder="Gas Limit"
+                                    <NumberInputFormat
                                         value={gasLimit}
-                                        onChange={(value) => {
-                                            if (onlyInteger(value)) {
-                                                setGasLimit(value);
-                                                validateGasLimit(value)
-                                            }
-                                        }}
-                                        style={{ width: '100%' }}
-                                    />
+                                        placeholder="Gas Limit"
+                                        onChange={(event) => {
+                                            setGasLimit(event.value);
+                                            validateGasLimit(event.value)
+                                        }} />
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
@@ -197,25 +174,20 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>New Validator Name <span className="required-mask">(*)</span></ControlLabel>
-                                    <FormControl placeholder="Validator Name"
-                                        name="valName"
-                                        value={valName}
-                                        onChange={(value) => {
-                                            setValName(value)
-                                            validateValName(value)
-                                        }} />
-                                    <ErrMessage message={valNameErr} />
-                                </FlexboxGrid.Item>
-                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                     <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
-                                        <NumberInputFormat
-                                            value={commissionRate}
-                                            placeholder="Commission Rate"
-                                            onChange={(event) => {
-                                                setCommissionRate(event.value);
-                                                validateCommissionRate(event.value)
-                                            }} />
+                                    <div className="latest-update-validator">
+                                        <span>Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
+                                    </div>
+                                    {
+                                        !canUpdate ? <div className="warning-note">* The next update only can perform after 24 hours since the last update.</div> : <></>
+                                    }
+                                    <NumberInputFormat
+                                        value={commissionRate}
+                                        placeholder="Commission Rate"
+                                        onChange={(event) => {
+                                            setCommissionRate(event.value);
+                                            validateCommissionRate(event.value)
+                                        }} />
                                     <ErrMessage message={commissionRateErr} />
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
@@ -235,4 +207,4 @@ const UpdateValidator = ({validator = {} as Validator}:{validator: Validator}) =
     )
 }
 
-export default UpdateValidator;
+export default UpdateCommissionRate;

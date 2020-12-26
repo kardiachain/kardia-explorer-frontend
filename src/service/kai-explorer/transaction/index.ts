@@ -2,6 +2,7 @@ import { numberFormat } from "../../../common/utils/number";
 import { STAKING_SMC_ADDRESS } from "../../../config/api";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { toChecksum } from 'kardia-tool/lib/common/lib/account'
+import { checkValidatorRole } from "..";
 
 interface TransactionsResponse {
     totalTxs: number;
@@ -38,9 +39,11 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 gasLimit: o.gas,
                 input:  o.input,
                 logs:  o.logs,
-                toSmcName: toSmcAddress.toSmcName,
+                toSmcName:  o.toName ? o.toName : toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
+                role: checkValidatorRole(o.role),
+                isInValidatorsList: o.isInValidatorsList
             }
         })
     }
@@ -76,9 +79,11 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 gasLimit: o.gas,
                 input:  o.input,
                 logs:  o.logs,
-                toSmcName: toSmcAddress.toSmcName,
+                toSmcName:  o.toName ? o.toName : toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
+                role: checkValidatorRole(o.role),
+                isInValidatorsList: o.isInValidatorsList
             }
         })
     }
@@ -116,11 +121,13 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         gasLimit: tx.gas,
         input: tx.input,
         logs: tx.logs,
-        toSmcName: toSmcAddress.toSmcName,
+        toSmcName: tx.toName ? tx.toName : toSmcAddress.toSmcName,
         toSmcAddr: toSmcAddress.toSmcAddr,
         gasUsedPercent: gasUsedPercent,
         txFee: tx.txFee ? tx.txFee : (tx.gasUsed * tx.gasPrice * 10**9),
-        decodedInputData: tx.decodedInputData
+        decodedInputData: tx.decodedInputData,
+        role: checkValidatorRole(tx.role),
+        isInValidatorsList: tx.isInValidatorsList
     }
 }
 
@@ -155,24 +162,19 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                 gasLimit: o.gas,
                 input:  o.input,
                 logs:  o.logs,
-                toSmcName: toSmcAddress.toSmcName,
+                toSmcName: o.toName ? o.toName : toSmcAddress.toSmcName,
                 toSmcAddr: toSmcAddress.toSmcAddr,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9)
+                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
+                role: checkValidatorRole(o.role),
+                isInValidatorsList: o.isInValidatorsList
             }
         })
     }
 }
 
 const defineFailedReason = (status: boolean, gasUsed: number, gasLimit: number): string => {
-    if (!status) {
-        console.log("gasUsed", gasUsed);
-        console.log("gasLimit", gasLimit);
-        
-        
-        if (gasUsed === gasLimit) {
-            return 'Transacsion error: Out of gas.'
-        }
-        return 'Transaction error'
+    if (!status && gasUsed === gasLimit) {
+        return 'Transacsion error: Out of gas.'
     }
     return '';
 }

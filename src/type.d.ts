@@ -23,6 +23,8 @@ interface KAITransaction {
     gasUsedPercent: any;
     txFee: number;
     decodedInputData?: any;
+    role: ValidatorRole;
+    isInValidatorsList: boolean;
 }
 
 interface KAIBlock {
@@ -82,7 +84,7 @@ interface ValidatorFromSMC {
     totalDels?: number;
     totalStakedAmount?: number;
     maxRate: number;
-    maxChangeRate: number; 
+    maxChangeRate: number;
 }
 
 interface YourValidator {
@@ -96,6 +98,7 @@ interface YourValidator {
     role: ValidatorRole;
 }
 interface Delegator {
+    owner: boolean;
     address: string;
     delegationsShares?: number;
     stakeAmount: number;
@@ -144,7 +147,18 @@ interface Validator {
     role: ValidatorRole;
     accumulatedCommission: number;
     missedBlocks: number;
-    updateTime: string;
+    jailed: boolean;
+    updateTime: number;
+    signingInfo: SigningInfo
+}
+
+interface SigningInfo {
+    indexOffset: number;
+    indicatorRate: number;
+    jailedUntil: number;
+    missedBlockCounter: number;
+    startHeight: number;
+    tombstoned: boolean;
 }
 
 interface Candidate {
@@ -192,4 +206,14 @@ interface TotalStats {
 interface ToSmcAddress {
     toSmcAddr: string;
     toSmcName: string;
+}
+
+interface HolderAccount {
+    index: number;
+    address: string;
+    name: string;
+    isContract: boolean;
+    balance: any;
+    role: ValidatorRole;
+    isInValidatorsList: boolean;
 }

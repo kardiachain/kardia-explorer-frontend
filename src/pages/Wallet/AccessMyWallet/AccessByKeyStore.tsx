@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlexboxGrid, Panel, Col, Form, FormGroup, FormControl, Uploader, Alert } from 'rsuite';
+import { FlexboxGrid, Panel, Col, Form, FormGroup, FormControl, Uploader, Alert, ControlLabel } from 'rsuite';
 import { Link, useHistory } from 'react-router-dom';
 import { useWalletStorage } from '../../../service/wallet';
 import Wallet from 'ethereumjs-wallet'
@@ -90,6 +90,7 @@ const AccessByKeyStore = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                                 <Form fluid>
                                     <FormGroup>
+                                        <ControlLabel>Enter your Password <span className="required-mask">(*)</span></ControlLabel>
                                         <FormControl placeholder="Password*"
                                             name="password"
                                             type="password"
@@ -116,7 +117,7 @@ const AccessByKeyStore = () => {
                                     <Link to="/access-wallet">
                                         <Button size="big" className="kai-button-gray">Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                    <Button loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

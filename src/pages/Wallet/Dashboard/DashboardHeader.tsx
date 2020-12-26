@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert, ButtonGroup, Col, Icon, IconButton, Modal, Panel, Row } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
-import { getBalance } from '../../../service/kai-explorer';
+import { getHolderAccount } from '../../../service/kai-explorer';
 import { getAccount, useBalanceStorage } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
@@ -18,13 +18,13 @@ const DashboardHeader = () => {
 
     useEffect(() => {
         (async() => {
-            const balance = await getBalance(account.publickey);
-            setBalance(weiToKAI(balance))
+            const holder = await getHolderAccount(account.publickey);
+            setBalance(weiToKAI(holder.balance))
         })();
 
         const fetchBalance = setInterval(async () => {
-            const balance = await getBalance(account.publickey);
-            setBalance(weiToKAI(balance))
+            const holder = await getHolderAccount(account.publickey);
+            setBalance(weiToKAI(holder.balance))
         }, TIME_INTERVAL_MILISECONDS)
 
         return () => clearInterval(fetchBalance);
@@ -35,8 +35,8 @@ const DashboardHeader = () => {
     }
 
     const reloadBalance = async () => {
-        const balance = await getBalance(account.publickey);
-        setBalance(weiToKAI(balance));
+        const holder = await getHolderAccount(account.publickey);
+        setBalance(weiToKAI(holder.balance));
     }
 
     const renderCredential = () => {

@@ -100,7 +100,7 @@ const BlockByProposerList = ({
                         {(rowData: KAIBlock) => {
                             return (
                                 <div>
-                                    {numberFormat(weiToKAI(rowData.rewards), 3)} KAI
+                                    {numberFormat(weiToKAI(rowData.rewards), 8)} KAI
                                 </div>
                             );
                         }}

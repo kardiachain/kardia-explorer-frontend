@@ -46,7 +46,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
 
                     <div className="stat">
                         <div className="icon">
-                            <Icon className="gray-highlight" icon="peoples" size={"lg"} />
+                            <Icon className="highlight" icon="vcard" size={"lg"} />
                         </div>
                         <div className="title color-graylight">Addresses</div>
                         <div className="value color-white">{numberFormat(totalStats.totalHolders)}</div>

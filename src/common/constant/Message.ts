@@ -20,7 +20,8 @@ export const ErrorMessage = {
     MinSelfDelegationBelowMinimum: 'The minimum self delegation amount is 10M',
     ValueNotMoreThanStakedAmount: 'The value not be more than your staked amount.',
     StakedAmountNotEnough: 'Your stake amount not enough 12.5M KAI to start become validator.',
-    BelowMinimumDelegationAmount: 'The minimum delegation amoint is 25K KAI'
+    BelowMinimumDelegationAmount: 'The minimum delegation amount is 25K KAI',
+    CommissionMoreThanMaximunRateRangeChange: 'Change commission cannot be more than the maximum rate range.'
 }
 
 export const NotifiMessage = {

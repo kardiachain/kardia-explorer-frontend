@@ -128,10 +128,12 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
             {/* Modal confirm when withdraw rewards */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmWithdrawRewardsModal} onHide={() => { setShowConfirmWithdrawRewardsModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm Withdraw Rewards</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>Are you sure you want to withdraw all your rewarded token.</div>
+                    <div className="confirm-letter" style={{ textAlign: 'center'}}>
+                        Are you sure you want to withdraw all your rewarded token.
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={withdrawRewards} >

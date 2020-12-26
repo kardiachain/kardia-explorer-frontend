@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Nav, Panel, SelectPicker } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Nav, Panel, SelectPicker, Tag } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -20,7 +20,6 @@ import { delegateAction } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
-import MissingBlock from '../../../Staking/ValidatorDetail/MissingBlock';
 
 const DelegatorCreate = () => {
     const [delegators, setDelegators] = useState([] as Delegator[]);
@@ -209,7 +208,7 @@ const DelegatorCreate = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                            <div className="property-title">Staking Contract</div>
+                                            <div className="property-title">Validator Contract</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
@@ -326,6 +325,33 @@ const DelegatorCreate = () => {
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
+
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Status</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {
+                                                    validator?.jailed ? <Tag color="red">Jailed</Tag> : <Tag color="green">Active</Tag>
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Missing block</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{validator?.missedBlocks} Blocks</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
                             </List>
                             <div className="del-staking-container">
                                 <Form fluid>
@@ -363,7 +389,7 @@ const DelegatorCreate = () => {
                                                         <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
                                                         <NumberInputFormat
                                                             value={delAmount}
-                                                            placeholder="Delegation amount"
+                                                            placeholder="Ex. 25,000"
                                                             onChange={(event) => {
                                                                 setDelAmount(event.value);
                                                                 validateDelAmount(event.value)
@@ -396,11 +422,7 @@ const DelegatorCreate = () => {
                                         {`Delegators (${validator?.totalDelegators || 0})`}
                                     </Nav.Item>
                                     <Nav.Item eventKey="blocksreward">
-                                        {`Block Rewards (${totalBlockRewards || 0})`}
-                                    </Nav.Item>
-
-                                    <Nav.Item eventKey="missingblocks">
-                                        {`Missing Blocks (${validator?.missedBlocks})`}
+                                        {`Block Proposed (${totalBlockRewards || 0})`}
                                     </Nav.Item>
                                 </Nav>
                             </div>
@@ -430,10 +452,6 @@ const DelegatorCreate = () => {
                                                 loading={loadingBlockRewards}
                                             />
                                         );
-                                    case 'missingblocks':
-                                        return (
-                                            <MissingBlock validator={validator || {} as Validator} />
-                                        )
                                 }
                             })()}
                         </Panel>
@@ -443,12 +461,65 @@ const DelegatorCreate = () => {
             {/* Modal confirm when delegate */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm your delegate</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>Are you sure you want to delegate <span style={{ fontWeight: 'bold', color: '#36638A' }}>{numberFormat(delAmount)} KAI</span></div>
-                    <div style={{ textAlign: 'center' }}>TO</div>
-                    <div style={{ textAlign: 'center' }}>Validator: <span style={{ fontWeight: 'bold', color: '#36638A' }}> {valAddr} </span></div>
+                    <div className="confirm-letter">Be carefully verify your stats before confirm delegation</div>
+                    <List>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                    <div className="property-title">Validator</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                    <div className="property-content">
+                                        <div className="property-content validator-name">
+                                            {validator?.name}
+                                        </div>
+                                        <div className="property-content">
+                                            {
+                                                renderHashString(
+                                                    validator?.address || '',
+                                                    45,
+                                                    4
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                    <div className="property-title">Smart Contract</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                    <div className="property-content">
+                                        {
+                                            renderHashString(
+                                                validator?.smcAddress || '',
+                                                45,
+                                                4
+                                            )
+                                        }
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                    <div className="property-title">Value</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(delAmount)} KAI
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                    </List>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={isLoading} onClick={confirmDelegate}>

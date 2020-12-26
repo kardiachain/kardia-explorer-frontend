@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker } from 'rsuite'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List } from 'rsuite'
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message'
 import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
@@ -10,6 +10,7 @@ import Button from '../../../../common/components/Button'
 import { gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
 import NumberInputFormat from '../../../../common/components/FormInput'
+import { renderHashString } from '../../../../common/utils/string'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -168,7 +169,7 @@ const SendTransaction = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
                                 <ControlLabel>Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
-                                 <NumberInputFormat
+                                <NumberInputFormat
                                     value={gasLimit}
                                     placeholder="Gas limit"
                                     onChange={(event) => {
@@ -199,14 +200,62 @@ const SendTransaction = () => {
                     </FormGroup>
                 </Form>
             </Panel>
-            <Modal backdrop="static" size="xs" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirm send transaction</Modal.Title>
+                    <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center' }}>Are you sure you want to transfer <span style={{ fontWeight: 'bold', color: '#36638A' }}>{numberFormat(amount)} KAI</span></div>
-                    <div style={{ textAlign: 'center' }}>TO</div>
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A' }}>{toAddress}</div>
+                    <div className="confirm-letter">Be carefully verify your transaction before sending the transaction</div>
+                    <List>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                    <div className="property-title">From</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                    <div className="property-content">
+                                        {
+                                            renderHashString(
+                                                myAccount?.publickey || '',
+                                                45,
+                                                4
+                                            )
+                                        }
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                    <div className="property-title">To</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                    <div className="property-content">
+                                        {
+                                            renderHashString(
+                                                toAddress || '',
+                                                45,
+                                                4
+                                            )
+                                        }
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                        <List.Item>
+                            <FlexboxGrid justify="start" align="middle">
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                    <div className="property-title">Value</div>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                    <div className="property-content">
+                                        {numberFormat(amount)} KAI
+                                    </div>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                    </List>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button loading={sendBntLoading} onClick={confirmSend}>

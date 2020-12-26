@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -25,7 +26,7 @@ const BlockSection = ({ blockList = [] }: {
                         wordWrap
                         autoHeight={isMobile ? true : false}
                     >
-                        <Column flexGrow={2} minWidth={isMobile ? 100 : 0}>
+                        <Column flexGrow={1} minWidth={isMobile ? 100 : 0}>
                             <HeaderCell>Block Height</HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
@@ -46,30 +47,38 @@ const BlockSection = ({ blockList = [] }: {
                             <Cell>
                                 {(rowData: KAIBlock) => {
                                     return (
-                                        <div>
+                                        <>
+                                            <div>
+                                                {
+                                                    renderHashToRedirect({
+                                                        headCount: isMobile ? 5 : 12,
+                                                        showTooltip: false,
+                                                        hash: rowData.validator.hash,
+                                                        callback: () => { history.push(`/address/${rowData.validator.hash}`) }
+                                                    })
+                                                }
+                                            </div>
+                                            <div>
                                             {
-                                                renderHashToRedirect({
-                                                    headCount: isMobile ? 5 : 12,
-                                                    showTooltip: false,
-                                                    hash: rowData.validator.hash,
-                                                    callback: () => { history.push(`/address/${rowData.validator.hash}`) }
-                                                })
+                                                !rowData.transactions ? '0 Txns' :
+                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)} Txns</Link>
                                             }
                                         </div>
+                                        </>
                                     );
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={1} align="right">
-                            <HeaderCell>Txs</HeaderCell>
+                        <Column flexGrow={1} align="right" verticalAlign="middle">
+                            <HeaderCell>Rewards</HeaderCell>
                             <Cell dataKey="transactions">
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
                                             {
-                                                !rowData.transactions ? '0' :
-                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
-                                            }
+                                                !rowData.rewards ? '0' :
+                                                numberFormat(weiToKAI(rowData.rewards), 8)
+                                            } KAI
                                         </div>
                                     );
                                 }}
