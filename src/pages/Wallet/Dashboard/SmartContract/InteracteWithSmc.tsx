@@ -256,11 +256,11 @@ const InteracteWithSmc = () => {
         <div className="interact-smc-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="related-map" size={"lg"} />
+                    <Icon className="gray-highlight" icon="related-map" size={"lg"} />
                     <p style={{ marginLeft: '12px' }} className="title">Interact With Smart Contract</p>
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>

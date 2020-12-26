@@ -170,9 +170,12 @@ a:hover {
   border-bottom: var(--border) !important;
 }
 
+.rs-picker-toggle-value,
+.rs-picker-select-menu-item,
+.rs-picker-select-menu-item.rs-picker-select-menu-item-active,
 .rs-picker-menu,
 .panel-bg-gray .rs-picker-default .rs-btn,
-.panel-bg-gray .rs-picker-default .rs-picker-toggle,
+.rs-picker-toggle,
 .panel-bg-gray .kai-number-input,
 .panel-bg-gray .rs-input,
 .panel-bg-gray .rs-input-group-btn,

@@ -128,13 +128,13 @@ const YourDelegators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div className="block-title" style={{ padding: '0px 5px' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="user-plus" />
-                            <p style={{ marginLeft: '12px' }} className="title">Register to become a validator</p>
+                            <Icon className="gray-highlight" icon="user-plus" />
+                            <p style={{ marginLeft: '12px' }} className="title color-white">Register to become a validator</p>
                         </div>
                     </div>
                     <div className="register-container">
                         <div className="register-form">
-                            <Panel shaded>
+                            <Panel shaded className="panel-bg-gray">
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
                                         <ValidatorCreate reFetchData={fetchData} />

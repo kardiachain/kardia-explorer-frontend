@@ -135,8 +135,8 @@ const SendTransaction = () => {
         <div className="send-txs-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
+                    <Icon className="gray-highlight" icon="exchange" size={"lg"} />
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Transactions</p>
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">

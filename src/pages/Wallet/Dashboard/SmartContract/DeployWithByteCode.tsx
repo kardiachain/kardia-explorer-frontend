@@ -192,11 +192,11 @@ const DeployWithByteCode = () => {
         <div className="deploy-bytecode-container">
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="logo-dmp" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Deploy Smart Contract By ByteCode</p>
+                    <Icon className="gray-highlight" icon="logo-dmp" size={"lg"} />
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Deploy Smart Contract By ByteCode</p>
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>

@@ -27,11 +27,11 @@ const Delegator = () => {
         <div>
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="group" />
+                    <Icon className="gray-highlight" icon="group" />
                     <p style={{ marginLeft: '12px' }} className="title">Your validators</p>
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <div className="custom-nav">
                     <Nav
                         appearance="subtle"
