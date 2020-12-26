@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
-import logo from '../../../resources/kardia-logo.png';
+import logo from '../../../resources/Logo-dark.svg';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';

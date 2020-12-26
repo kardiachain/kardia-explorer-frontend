@@ -37,6 +37,9 @@
   --text-graylight-color: #CACACA;
   --input-gray-color: #27282A;
   --input-black-color: #101010;
+
+  /* dark mode */
+  --bg-color-dark: #191A1C;
 }
 
 body {
@@ -184,11 +187,11 @@ a:hover {
 }
 
 .rs-header{
-  background-color: var(--nav-color);
+  background-color: var(--white-color);
   height:56px;
 }
 .rs-navbar.rs-navbar-inverse {
-  background-color: var(--nav-color) !important;
+  background-color: var(--white-color) !important;
 }
 
 .rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item-active a,
@@ -199,7 +202,8 @@ a:hover {
 .rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:active,
 .rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:hover,
 .rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:focus {
-  background-color: var(--nav-color-active) !important;
+  background-color: var(--bg-color) !important;
+  color: white !important;
 }
 
  /* Style table */

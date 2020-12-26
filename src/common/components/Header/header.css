@@ -22,7 +22,7 @@
 
 
 .kai-header-container-mobile {
-    background-color: var(--nav-color);
+    /* background-color: var(--nav-color); */
     display: flex;
 }
 
@@ -51,7 +51,17 @@
     width: 100%;
 }
 
+.rs-dropdown > a {
+    color: rgba(0, 0, 0, 0.54) !important;
+}
 
+.rs-nav-item > a {
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.rs-icon-inverse{
+    color:var(--bg-color-dark);
+}
 
 /* ------------------- Search section style --------------*/
 .search-wrapper {
