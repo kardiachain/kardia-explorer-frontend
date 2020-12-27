@@ -51,17 +51,22 @@
     width: 100%;
 }
 
-.rs-dropdown > a {
+.rs-dropdown > a , .rs-nav-item > a {
     color: rgba(0, 0, 0, 0.54) !important;
 }
 
-.rs-nav-item > a {
-    color: rgba(0, 0, 0, 0.54) !important;
+.kai-header-container-mobile-menu .rs-icon-inverse{
+    color: var(--bg-color-dark);
 }
 
-.rs-icon-inverse{
-    color:var(--bg-color-dark);
+
+/* drawer */
+.rs-drawer-content, .rs-drawer-body , .rs-sidenav-subtle{
+    background: var(--bg-color-dark);
 }
+
+/* end drawer */
+
 
 /* ------------------- Search section style --------------*/
 .search-wrapper {
@@ -93,5 +98,9 @@
     .search-wrapper{
         width: 100%;
         margin-bottom:30px;
+    }
+
+    .rs-dropdown > a , .rs-nav-item > a {
+        color: white !important;
     }
 }

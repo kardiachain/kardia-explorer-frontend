@@ -39,7 +39,7 @@ const NetworkSelect = () => {
 
     return (
         <div className="network-select-wrapper">
-            <Dropdown  icon={<Icon className={isMobile ? "highlight" : ""} icon="cubes" />} activeKey={network} title={getNetworkLabel(network)}>
+            <Dropdown  icon={<Icon className={isMobile ? "gray-highlight" : ""} icon="cubes" />} activeKey={network} title={getNetworkLabel(network)}>
                 {
                     networkList.map((networkItem) => {
                         return <Dropdown.Item
