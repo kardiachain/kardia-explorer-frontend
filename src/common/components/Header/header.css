@@ -103,4 +103,8 @@
     .rs-dropdown > a , .rs-nav-item > a {
         color: white !important;
     }
+
+    .rs-btn-subtle:focus, .rs-btn-subtle.rs-btn-focus, .rs-btn-subtle:hover{
+        background: transparent;
+    }
 }
