@@ -150,63 +150,65 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 rowHeight={() => 60}
             >
                 <Column flexGrow={2} minWidth={isMobile ? 110 : 150} verticalAlign="middle">
-                    <HeaderCell>Validator</HeaderCell>
+                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <Link to={`/validator/${rowData?.validatorAddr}`}>
-                                    <div>
+                                <div>
+                                    <div style={{ display: 'inline-block', width: 50 }}>
                                         <StakingIcon
                                             color={rowData?.role?.classname}
                                             character={rowData?.role?.character}
-                                            size='small' style={{ marginRight: 5 }} />
-                                        <span className="validator-name">{rowData.validatorName}</span>
-                                        <div className="validator-address">
-                                            {renderHashStringAndTooltip(
-                                                rowData.validatorAddr,
-                                                isMobile ? 10 : 30,
-                                                4,
-                                                true
-                                            )}
-                                        </div>
+                                            size='normal' style={{ marginRight: 5 }} />
                                     </div>
-                                </Link>
+                                    <div className="validator-info color-white">
+                                        <div className="validator-name color-white">{rowData.validatorName}</div>
+                                        {renderHashStringAndTooltip(
+                                            rowData.validatorAddr,
+                                            isMobile ? 10 : 15,
+                                            4,
+                                            true
+                                        )}
+                                    </div>
+                                </div>
+                            </Link>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Staked</HeaderCell>
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Staked (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={110} verticalAlign="middle" align="center">
-                    <HeaderCell>Unbonded</HeaderCell>
+                <Column flexGrow={1} minWidth={110} verticalAlign="middle">
+                    <HeaderCell>Unbonded (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={110} verticalAlign="middle" align="center">
-                    <HeaderCell>Withdrawable</HeaderCell>
+                <Column flexGrow={1} minWidth={110} verticalAlign="middle">
+                    <HeaderCell>Withdrawable (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.withdrawableAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.withdrawableAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={300} verticalAlign="middle">
-                    <HeaderCell>Action</HeaderCell>
+                    <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (

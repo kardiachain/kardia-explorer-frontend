@@ -92,28 +92,28 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Staked Amount</HeaderCell>
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Claimable Rewards</HeaderCell>
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Claimable Rewards (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.claimableAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.claimableAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={200} verticalAlign="middle">
-                    <HeaderCell>Action</HeaderCell>
+                    <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (

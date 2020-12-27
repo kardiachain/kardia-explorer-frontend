@@ -29,10 +29,9 @@ const BlockDetail = () => {
 
     return (
         <div className="container block-detail-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="gray-highlight" icon="cube" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title color-white">Block Details</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Block Details
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
