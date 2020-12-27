@@ -62,8 +62,10 @@
 
 /* Style for crate wallet with private key */
 .create-container {
-    margin-top: 50px;
     width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 
 .button-container {
@@ -75,14 +77,6 @@
 .button-container .submit-buttom {
     background-color: #0f198e;
     color: white;
-}
-
-.create-container .title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    margin-top: 20px;
-    /* color: #0f198e; */
 }
 
 /* Style dowload with keystore */
@@ -143,3 +137,11 @@
 .switch-phrase-option .rs-btn-toggle{
     background: var(--highlight);
 }
+
+/* mobile screen */
+@media screen and (max-width: 740px) {
+    .create-container{
+        padding:0px 20px;
+    }
+}
+/* end mobile screen */
