@@ -175,10 +175,9 @@ const DelegatorCreate = () => {
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                     <div className="val-info-container">
-                        <div className="block-title" style={{ padding: '0px 5px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="gray-highlight" icon="gear-circle" />
-                                <p style={{ marginLeft: '12px' }} className="title color-white">Delegate</p>
+                        <div style={{ marginBottom: 16 }}>
+                            <div className="title header-title">
+                                Delegate
                             </div>
                         </div>
                         <Panel shaded className="panel-bg-gray">
@@ -245,8 +244,8 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                                 <span>Commission</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -258,8 +257,8 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                                                 <span>Max Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -271,8 +270,8 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                                                 <span>Max Change Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxChangeRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>

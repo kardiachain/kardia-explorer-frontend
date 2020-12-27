@@ -61,6 +61,18 @@ const AddressDetail = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
                     <Panel className="overview panel-bg-gray" shaded>
                         <List bordered={false}>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
+                                        <div className="property-title">Address: </div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
+                                        <div className="property-content">
+                                            {renderHashString(address, 45)}
+                                        </div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
                             {
                                 holderAccount?.name ? (
                                     <List.Item>
@@ -83,18 +95,6 @@ const AddressDetail = () => {
                                     </List.Item>
                                 ) : <></>
                             }
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="property-title">Address: </div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="property-content">
-                                            {renderHashString(address, 45)}
-                                        </div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>

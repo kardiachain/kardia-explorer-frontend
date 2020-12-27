@@ -380,7 +380,6 @@ a:hover {
 }
 
 .validator-name {
-  text-transform: uppercase;
   font-weight: 600;
   color: var(--link-color);
 }

@@ -88,7 +88,7 @@ const TxList = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                         <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
