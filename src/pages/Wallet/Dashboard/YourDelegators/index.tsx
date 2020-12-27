@@ -149,234 +149,231 @@ const YourDelegators = () => {
                 <>
                     <FlexboxGrid>
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                            <div className="val-info-container">
-                                <div className="block-title" style={{ padding: '0px 5px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <Icon className="gray-highlight" icon="user-info" size={"2x"} />
-                                        <p style={{ marginLeft: '12px' }} className="title color-white">Validator information</p>
-                                    </div>
+                            <div style={{ marginBottom: 16 }}>
+                                <div className="title header-title">
+                                    Your Validator
                                 </div>
-                                <Panel shaded className="panel-bg-gray">
-                                    <div style={{ textAlign: 'right' }}>
-                                        <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`) }}>
-                                            Delegate
-                                        </Button>
-                                    </div>
-                                    <List>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Validator</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content validator-name">
-                                                        {validator?.name}
-                                                        <IconButton
-                                                            className="edit-val-button"
-                                                            size="xs"
-                                                            onClick={() => { setShowUpdateValidatorName(true) }}
-                                                            icon={<Icon icon="edit" />}
-                                                        />
-                                                    </div>
-                                                    <div className="property-content">
-                                                        {
-                                                            renderHashString(
-                                                                validator?.address || '',
-                                                                45,
-                                                                4
-                                                            )
-                                                        }
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Validator Contract</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">
-                                                        {
-                                                            renderHashString(
-                                                                validator?.smcAddress || '',
-                                                                45,
-                                                                4
-                                                            )
-                                                        }
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">
-                                                        <span className="property-title">Role </span>
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">
-                                                        <StakingIcon
-                                                            size="small"
-                                                            color={validator?.role?.classname}
-                                                            character={validator?.role?.character || ''}
-                                                            style={{ marginRight: 5 }} />
-                                                        <span>{validator?.role?.name}</span>
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">
-                                                        <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                                                        <span className="property-title">Commission Rate </span>
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">
-                                                        <span>{numberFormat(validator?.commissionRate || 0, 2)} %</span>
-                                                        <IconButton
-                                                            className="edit-val-button"
-                                                            size="xs"
-                                                            onClick={() => { setShowUpdateCommission(true) }}
-                                                            icon={<Icon icon="edit" />}
-                                                        />
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item bordered={false}>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">
-                                                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                                                        <span className="property-title">Max Commission Rate</span>
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">{numberFormat(validator?.maxRate || 0, 2)} %</div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item bordered={false}>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">
-                                                        <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
-                                                        <span className="property-title">Max Change Commission Rate</span>
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">{numberFormat(validator?.maxChangeRate || 0, 2)} %</div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Total Delegator</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">{numberFormat(validator?.totalDelegators || 0)}</div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Total staked amount</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">{numberFormat(weiToKAI(validator?.stakedAmount), 4)} KAI</div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Status</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">
-                                                        {
-                                                            validator?.jailed ? (
-                                                                <>
-                                                                    <Tag color="red">Jailed</Tag>
-                                                                    <Button
-                                                                        disable={!canUnjail}
-                                                                        style={{ marginLeft: 20 }}
-                                                                        className="kai-button-gray"
-                                                                        onClick={() => {
-                                                                            if (canUnjail) {
-                                                                                setShowConfirmUnjailModal(true);
-                                                                            }
-                                                                        }}>UnJail
-                                                                    </Button>
-                                                                    {
-                                                                        !canUnjail ? (
-                                                                            <span className="unjail-note">
-                                                                                ( Only can unjail after the time: {dateToUTCString(validator?.signingInfo?.jailedUntil || '')})
-                                                                            </span>
-                                                                        ) : <></>
-                                                                    }
-                                                                </>
-                                                            ) : <Tag color="green">Active</Tag>
-                                                        }
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Missing block</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">{validator?.missedBlocks} Blocks</div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                    <div className="property-title">Claimable Commission Rewards</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
-                                                    <div className="property-content">
-                                                        <span style={{ marginRight: 10 }}>{numberFormat(weiToKAI(validator?.accumulatedCommission), 4)} KAI </span>
-                                                        <Button className="kai-button-gray" onClick={() => setShowWithdrawCommissionModal(true)}>
-                                                            Withdraw
-                                                            </Button>
-                                                    </div>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                    </List>
-                                    {
-                                        validator?.isRegister && !validator.jailed ? (
-                                            <>
-                                                <div style={{ marginTop: '30px', marginBottom: '20px' }}>
-                                                    {
-                                                        !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
-                                                    }
-                                                    <Button size="big"
-                                                        onClick={startBecomeValidator}
-                                                        disable={!readyStarting}
-                                                    >
-                                                        Start To Become Validator
-                                                    </Button>
-                                                    <ErrMessage message={startValErr} />
-                                                </div>
-                                            </>
-                                        ) : <></>
-                                    }
-                                </Panel>
                             </div>
+                            <Panel shaded className="panel-bg-gray">
+                                <div style={{ textAlign: 'right' }}>
+                                    <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`) }}>
+                                        Delegate
+                                    </Button>
+                                </div>
+                                <List>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Validator</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content validator-name">
+                                                    {validator?.name}
+                                                    <IconButton
+                                                        className="edit-val-button"
+                                                        size="xs"
+                                                        onClick={() => { setShowUpdateValidatorName(true) }}
+                                                        icon={<Icon icon="edit" />}
+                                                    />
+                                                </div>
+                                                <div className="property-content">
+                                                    {
+                                                        renderHashString(
+                                                            validator?.address || '',
+                                                            45,
+                                                            4
+                                                        )
+                                                    }
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Validator Contract</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">
+                                                    {
+                                                        renderHashString(
+                                                            validator?.smcAddress || '',
+                                                            45,
+                                                            4
+                                                        )
+                                                    }
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">
+                                                    <span className="property-title">Role </span>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">
+                                                    <StakingIcon
+                                                        size="small"
+                                                        color={validator?.role?.classname}
+                                                        character={validator?.role?.character || ''}
+                                                        style={{ marginRight: 5 }} />
+                                                    <span>{validator?.role?.name}</span>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">
+                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
+                                                    <span className="property-title">Commission Rate </span>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">
+                                                    <span>{numberFormat(validator?.commissionRate || 0, 2)} %</span>
+                                                    <IconButton
+                                                        className="edit-val-button"
+                                                        size="xs"
+                                                        onClick={() => { setShowUpdateCommission(true) }}
+                                                        icon={<Icon icon="edit" />}
+                                                    />
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item bordered={false}>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">
+                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
+                                                    <span className="property-title">Max Commission Rate</span>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">{numberFormat(validator?.maxRate || 0, 2)} %</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item bordered={false}>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">
+                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
+                                                    <span className="property-title">Max Change Commission Rate</span>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">{numberFormat(validator?.maxChangeRate || 0, 2)} %</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Total Delegator</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">{numberFormat(validator?.totalDelegators || 0)}</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Total staked amount</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">{numberFormat(weiToKAI(validator?.stakedAmount), 4)} KAI</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Status</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">
+                                                    {
+                                                        validator?.jailed ? (
+                                                            <>
+                                                                <Tag color="red">Jailed</Tag>
+                                                                <Button
+                                                                    disable={!canUnjail}
+                                                                    style={{ marginLeft: 20 }}
+                                                                    className="kai-button-gray"
+                                                                    onClick={() => {
+                                                                        if (canUnjail) {
+                                                                            setShowConfirmUnjailModal(true);
+                                                                        }
+                                                                    }}>UnJail
+                                                                    </Button>
+                                                                {
+                                                                    !canUnjail ? (
+                                                                        <span className="unjail-note">
+                                                                            ( Only can unjail after the time: {dateToUTCString(validator?.signingInfo?.jailedUntil || '')})
+                                                                        </span>
+                                                                    ) : <></>
+                                                                }
+                                                            </>
+                                                        ) : <Tag color="green">Active</Tag>
+                                                    }
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Missing block</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">{validator?.missedBlocks} Blocks</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Claimable Commission Rewards</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content">
+                                                    <span style={{ marginRight: 10 }}>{numberFormat(weiToKAI(validator?.accumulatedCommission), 4)} KAI </span>
+                                                    <Button className="kai-button-gray" onClick={() => setShowWithdrawCommissionModal(true)}>
+                                                        Withdraw
+                                                            </Button>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                </List>
+                                {
+                                    validator?.isRegister && !validator.jailed ? (
+                                        <>
+                                            <div style={{ marginTop: '30px', marginBottom: '20px' }}>
+                                                {
+                                                    !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
+                                                }
+                                                <Button size="big"
+                                                    onClick={startBecomeValidator}
+                                                    disable={!readyStarting}
+                                                >
+                                                    Start To Become Validator
+                                                    </Button>
+                                                <ErrMessage message={startValErr} />
+                                            </div>
+                                        </>
+                                    ) : <></>
+                                }
+                            </Panel>
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                             <div className="del-list-container">

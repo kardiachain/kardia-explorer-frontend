@@ -6,7 +6,6 @@ import { truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { getAccount, isLoggedIn } from '../../service/wallet';
 import './staking.css'
-import { Icon } from 'rsuite'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
 import Button from '../../common/components/Button';
@@ -51,7 +50,7 @@ const Validators = () => {
                 getValidators(),
                 getCandidates()
             ]);
-            
+
             setCandidates(fetchData[1]);
             const stakingData = fetchData[0];
             const valDetails = stakingData?.validators || [] as Validator[];
@@ -91,9 +90,10 @@ const Validators = () => {
         <div className="container validators-container">
             <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{ marginBottom: isMobile ? '15px' : '0' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon className="gray-highlight" icon="group" size={"2x"} />
-                        <p className="color-white" style={{ marginLeft: '12px', fontWeight: 600 }}>Validators</p>
+                    <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Staking
+                        </div>
                     </div>
                 </FlexboxGrid.Item>
                 {
@@ -110,18 +110,18 @@ const Validators = () => {
             <FlexboxGrid justify="space-between" align="top" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray">
-                        <div className="color-white" style={{fontWeight: 600}}>
-                            <span style={{fontSize: 24}}>Proposer </span>
-                            <div style={{opacity: 0.6}}>Number: {totalProposer}</div>
+                        <div className="color-white" style={{ fontWeight: 600 }}>
+                            <span style={{ fontSize: 24 }}>Proposer </span>
+                            <div style={{ opacity: 0.6 }}>Total: {totalProposer}</div>
                         </div>
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray" style={{ marginBottom: '10px' }}>
-                        <div className="color-white" style={{fontWeight: 600}}>
-                            <span style={{fontSize: 24}}>Total Staked </span>
-                            <div style={{opacity: 0.6}}>Amount: {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
+                        <div className="color-white" style={{ fontWeight: 600 }}>
+                            <span style={{ fontSize: 24 }}>Total Staked </span>
+                            <div style={{ opacity: 0.6 }}>Amount: {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
                         </div>
                         <StakedPieChart dataForChart={dataForStakedPieChart || {}} />
                     </Panel>
@@ -130,7 +130,7 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12} >
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <StakingIcon character='P' color="proposer"/>
+                                        <StakingIcon character='P' color="proposer" />
                                     </div>
                                     <div className="content">
                                         <div className="value color-white">{totalProposer}</div>
@@ -143,7 +143,7 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12} >
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <StakingIcon character='V' color="validator"/>
+                                        <StakingIcon character='V' color="validator" />
                                     </div>
                                     <div className="content">
                                         <div className="value color-white">{totalValidator}</div>
@@ -156,7 +156,7 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <StakingIcon character='C' color="candidate"/>
+                                        <StakingIcon character='C' color="candidate" />
                                     </div>
                                     <div className="content">
                                         <div className="value color-white">{totalCandidate}</div>
@@ -169,7 +169,7 @@ const Validators = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={12}>
                                 <div className="stats-container">
                                     <div className="icon">
-                                        <StakingIcon character='D' color="delegator"/>
+                                        <StakingIcon character='D' color="delegator" />
                                     </div>
                                     <div className="content">
                                         <div className="value color-white">{totalDelegator}</div>
@@ -191,7 +191,7 @@ const Validators = () => {
                                 appearance="subtle"
                                 activeKey={activeKey}
                                 onSelect={setActiveKey}
-                                style={{marginBottom: 20}}>
+                                style={{ marginBottom: 20 }}>
                                 <Nav.Item eventKey="validators">
                                     {`Validators (${validators.length})`}
                                 </Nav.Item>

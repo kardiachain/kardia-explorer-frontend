@@ -146,7 +146,7 @@ const Home = () => {
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <p className="title color-white fs-24">Latest Blocks</p>
                             </div>
-                            <Button onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
@@ -155,7 +155,7 @@ const Home = () => {
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <p className="title color-white fs-24">Latest Transactions</p>
                             </div>
-                            <Button onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>View all</Button>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

@@ -39,14 +39,20 @@ const BlockByProposerList = ({
                 loading={loading}
             >
                 <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                    <HeaderCell>Block</HeaderCell>
+                    <HeaderCell><span style={{marginLeft: 40}}>Block</span></HeaderCell>
                     <Cell>
                         {(rowData: KAIBlock) => {
                             return (
                                 <div>
-                                    <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
-                                    {numberFormat(rowData.blockHeight)}
+                                    <span className="container-icon-left" style={{lineHeight: '28px'}}>
+                                        <Icon icon="cubes" className="gray-highlight"/>
+                                    </span>
+                                    <span className="container-content-right">
+                                        <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                        <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
+                                    </span>
                                 </div>
+                                
                             );
                         }}
                     </Cell>
@@ -69,16 +75,6 @@ const BlockByProposerList = ({
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                    <HeaderCell>Age</HeaderCell>
-                    <Cell>
-                        {(rowData: KAIBlock) => {
-                            return (
-                                <div><Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} /> {millisecondToHMS(rowData.age || 0)}</div>
-                            );
-                        }}
-                    </Cell>
-                </Column>
                 <Column flexGrow={1} verticalAlign="middle">
                     <HeaderCell>Txs</HeaderCell>
                     <Cell>
@@ -95,12 +91,12 @@ const BlockByProposerList = ({
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                    <HeaderCell>Rewards</HeaderCell>
+                    <HeaderCell>Rewards (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: KAIBlock) => {
                             return (
                                 <div>
-                                    {numberFormat(weiToKAI(rowData.rewards), 8)} KAI
+                                    {numberFormat(weiToKAI(rowData.rewards), 8)}
                                 </div>
                             );
                         }}

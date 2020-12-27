@@ -82,3 +82,11 @@
 .disable:hover{
     background:  var(--gray) !important;
 }
+
+.transparent-btn {
+    background: transparent;
+    border: 1px solid white;
+}
+.transparent-btn:hover{
+    background: var(--gray-button-hover) !important;
+}

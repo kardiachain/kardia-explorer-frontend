@@ -20,7 +20,7 @@ const BlockSection = ({ blockList = [] }: {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
                         rowHeight={70}
-                        height={390}
+                        height={400}
                         data={blockList}
                         hover={false}
                         wordWrap

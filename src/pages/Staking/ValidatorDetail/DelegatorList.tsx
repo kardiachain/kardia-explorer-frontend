@@ -37,11 +37,11 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                     <Cell>
                         {(rowData: Delegator) => {
                             return (
-                                <div style={{display:'flex', flexDirection:'column'}}>
+                                <div>
                                     {   
                                         renderHashToRedirect({
                                             hash: rowData.address,
-                                            headCount: isMobile ? 5 : 45,
+                                            headCount: isMobile ? 5 : 20,
                                             tailCount: 4,
                                             showTooltip: false,
                                             callback: () => { window.open(`/address/${rowData.address}`) }
@@ -66,21 +66,21 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                    <HeaderCell>Staked Amount</HeaderCell>
+                    <HeaderCell>Staked (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
                             return (
-                                <div> {numberFormat(weiToKAI(rowData.stakeAmount), 4)} KAI</div>
+                                <div> {numberFormat(weiToKAI(rowData.stakeAmount), 4)}</div>
                             );
                         }}
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                    <HeaderCell >Claimable Rewards</HeaderCell>
+                    <HeaderCell >Claimable Rewards (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
                             return (
-                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount), 4)} KAI</div>
+                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount), 4)}</div>
                             );
                         }}
                     </Cell>

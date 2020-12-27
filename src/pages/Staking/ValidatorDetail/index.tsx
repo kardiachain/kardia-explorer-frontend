@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Nav, Panel, Tag } from 'rsuite';
+import { Col, FlexboxGrid, List, Nav, Panel, Tag } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { renderHashString } from '../../../common/utils/string';
 import { isLoggedIn } from '../../../service/wallet'
@@ -66,10 +66,9 @@ const ValidatorDetail = () => {
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: '30px' }}>
                     <div>
-                        <div className="block-title" style={{ padding: '0px 5px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="gray-highlight" icon="user-info" size={"2x"} />
-                                <p style={{ marginLeft: '12px' }} className="title color-white">Validator information</p>
+                        <div style={{ marginBottom: 16 }}>
+                            <div className="title header-title">
+                                Validator information
                             </div>
                         </div>
                         <Panel shaded className="panel-bg-gray">
@@ -137,8 +136,8 @@ const ValidatorDetail = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                                 <span className="property-title">Commission Rate </span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -152,8 +151,8 @@ const ValidatorDetail = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                                                 <span className="property-title">Max Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -165,8 +164,8 @@ const ValidatorDetail = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                                                 <span className="property-title">Max Change Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxChangeRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>

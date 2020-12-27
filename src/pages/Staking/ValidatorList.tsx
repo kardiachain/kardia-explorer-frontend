@@ -30,7 +30,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                 loading={loading}
             >
                 <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                    <HeaderCell>Validator</HeaderCell>
+                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (

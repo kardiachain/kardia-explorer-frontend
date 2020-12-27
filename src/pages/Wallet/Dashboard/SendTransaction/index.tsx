@@ -133,68 +133,71 @@ const SendTransaction = () => {
 
     return (
         <div className="send-txs-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="gray-highlight" icon="exchange" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title color-white">Transactions</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Transactions
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel className="color-white">Amount <span className="required-mask">(*)</span></ControlLabel>
-                                <NumberInputFormat
-                                    value={amount}
-                                    placeholder="Amount"
-                                    onChange={(event) => {
-                                        setAmount(event.value);
-                                        validateAmount(event.value)
-                                    }} />
-                                <ErrMessage message={amountErr} />
-                            </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                <ControlLabel className="color-white">To Address  <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl
-                                    placeholder="Please enter the address"
-                                    name="toAddress"
-                                    value={toAddress}
-                                    onChange={(value) => {
-                                        validateToAddress(value)
-                                        setToAddress(value)
-                                    }}
-                                />
-                                <ErrMessage message={toAddressErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="color-white">Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
-                                <NumberInputFormat
-                                    value={gasLimit}
-                                    placeholder="Gas limit"
-                                    onChange={(event) => {
-                                        setGasLimit(event.value);
-                                        validateGasLimit(event.value)
-                                    }} />
-                                <ErrMessage message={gasLimitErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
-                                <SelectPicker
-                                    className="dropdown-custom"
-                                    data={gasPriceOption}
-                                    searchable={false}
-                                    value={gasPrice}
-                                    onChange={(value) => {
-                                        setGasPrice(value)
-                                        validateGasPrice(value)
-                                    }}
-                                    style={{ width: '100%' }}
-                                />
-                                <ErrMessage message={gasPriceErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                <FlexboxGrid>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                        <ControlLabel className="color-white">To Address  <span className="required-mask">(*)</span></ControlLabel>
+                                        <FormControl
+                                            placeholder="Please enter the address"
+                                            name="toAddress"
+                                            value={toAddress}
+                                            onChange={(value) => {
+                                                validateToAddress(value)
+                                                setToAddress(value)
+                                            }}
+                                        />
+                                        <ErrMessage message={toAddressErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                        <ControlLabel className="color-white">Amount <span className="required-mask">(*)</span></ControlLabel>
+                                        <NumberInputFormat
+                                            value={amount}
+                                            placeholder="Amount"
+                                            onChange={(event) => {
+                                                setAmount(event.value);
+                                                validateAmount(event.value)
+                                            }} />
+                                        <ErrMessage message={amountErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                        <ControlLabel className="color-white">Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
+                                        <NumberInputFormat
+                                            value={gasLimit}
+                                            placeholder="Gas limit"
+                                            onChange={(event) => {
+                                                setGasLimit(event.value);
+                                                validateGasLimit(event.value)
+                                            }} />
+                                        <ErrMessage message={gasLimitErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                        <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                        <SelectPicker
+                                            className="dropdown-custom"
+                                            data={gasPriceOption}
+                                            searchable={false}
+                                            value={gasPrice}
+                                            onChange={(value) => {
+                                                setGasPrice(value)
+                                                validateGasPrice(value)
+                                            }}
+                                            style={{ width: '100%' }}
+                                        />
+                                        <ErrMessage message={gasPriceErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginTop: 30}}>
+                                        <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </FormGroup>

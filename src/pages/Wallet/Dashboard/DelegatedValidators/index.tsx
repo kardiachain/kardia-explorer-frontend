@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Icon, Nav, Panel } from 'rsuite';
+import { Nav, Panel } from 'rsuite';
 import { getValidatorByDelegator } from '../../../../service/kai-explorer';
 import { getAccount } from '../../../../service/wallet';
 import ClaimRewards from './ClaimRewards';
@@ -25,10 +25,9 @@ const Delegator = () => {
 
     return (
         <div>
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="gray-highlight" icon="group" />
-                    <p style={{ marginLeft: '12px' }} className="title color-white">Your validators</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Delegated Validators
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">

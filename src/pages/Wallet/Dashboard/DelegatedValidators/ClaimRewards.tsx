@@ -65,21 +65,23 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 rowHeight={() => 60}
             >
                 <Column flexGrow={2} minWidth={isMobile ? 110 : 150} verticalAlign="middle">
-                    <HeaderCell>Validator</HeaderCell>
+                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <Link to={`/validator/${rowData?.validatorAddr}`}>
                                     <div>
-                                        <StakingIcon
-                                            color={rowData?.role?.classname}
-                                            character={rowData?.role?.character}
-                                            size='small' style={{ marginRight: 5 }} />
-                                        <span className="validator-name">{rowData.validatorName}</span>
-                                        <div className="validator-address">
+                                        <div style={{ display: 'inline-block', width: 50 }}>
+                                            <StakingIcon
+                                                color={rowData?.role?.classname}
+                                                character={rowData?.role?.character}
+                                                size='normal' style={{ marginRight: 5 }} />
+                                        </div>
+                                        <div className="validator-info color-white">
+                                            <div className="validator-name color-white">{rowData.validatorName}</div>
                                             {renderHashStringAndTooltip(
                                                 rowData.validatorAddr,
-                                                isMobile ? 10 : 30,
+                                                isMobile ? 10 : 15,
                                                 4,
                                                 true
                                             )}
@@ -131,7 +133,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter" style={{ textAlign: 'center'}}>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>
                         Are you sure you want to withdraw all your rewarded token.
                     </div>
                 </Modal.Body>
