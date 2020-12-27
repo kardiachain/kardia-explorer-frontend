@@ -71,11 +71,11 @@ const Home = () => {
                 <SearchSection />
                 <div>
                     <FlexboxGrid className="home-top-section" justify="space-between" style={{ alignItems: 'normal' }}>
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginRight: !isMobile ? 5 : 0}} className="wrap-token bocktime-chart-container">
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginRight: !isMobile ? 5 : 0, borderRadius: 8}} className="wrap-token bocktime-chart-container">
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
 
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginLeft: !isMobile ? 5 : 0}} className="wrap-token">
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginLeft: !isMobile ? 5 : 0, borderRadius: 8}} className="wrap-token">
                             <Panel shaded className="_wrap panel-bg-gray">
                                 <div className="token-infor">
                                     <div className="left">

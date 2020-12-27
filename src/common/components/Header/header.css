@@ -79,12 +79,20 @@
     padding:12px 11px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    background: var(--input-gray-color);
+    background: var(--input-gray-bg);
     color: var(--white-color);
-    border: 1px solid var(--input-gray-color);
+    border: 1px solid var(--input-gray-bg);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.search-wrapper .rs-input::placeholder {
+    color: var(--input-placeholder);
 }
 
 .btn-search{
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     width: 150px;

@@ -78,7 +78,7 @@
 .dashboard-container .rs-nav-item-active .rs-nav-item-content,
 .dashboard-container .rs-dropdown-menu-active ~ .rs-btn-subtle,
 .dashboard-container .rs-dropdown-menu-active ~ .rs-btn-subtle > .rs-icon {
-    color: var(--blue-color) !important;
+    color: var(--link-color) !important;
     font-weight: 600;
 }
 

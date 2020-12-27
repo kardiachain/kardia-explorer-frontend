@@ -87,7 +87,7 @@ const SearchSection = () => {
                     onChange={(value: string) => {handleOnchange(value) }}
                     onPressEnter={search}
                 />
-                    <Button onClick={search} className="btn-search kai-button-gray" style={{margin:0}}>Search</Button>
+                    <Button onClick={search} className="btn-search kai-button-violet-gradient" style={{margin:0}}>Search</Button>
             </InputGroup>
         </div>
     )

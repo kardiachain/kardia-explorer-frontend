@@ -20,23 +20,25 @@ const BlockSection = ({ blockList = [] }: {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
                         rowHeight={70}
-                        height={420}
+                        height={390}
                         data={blockList}
                         hover={false}
                         wordWrap
                         autoHeight={isMobile ? true : false}
                     >
-                        <Column flexGrow={1} minWidth={isMobile ? 100 : 0}>
-                            <HeaderCell>Block Height</HeaderCell>
+                        <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                            <HeaderCell><span style={{marginLeft: 40}}>Block Height</span></HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            <div>
-                                                <Icon icon="cubes" className="gray-highlight" style={{ marginRight: '10px' }} />
-                                                <Link className="color-white" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
-                                            </div>
-                                            <div>{millisecondToHMS(rowData.age || 0)}</div>
+                                            <span className="container-icon-left" style={{lineHeight: '28px'}}>
+                                                <Icon icon="cubes" className="gray-highlight"/>
+                                            </span>
+                                            <span className="container-content-right">
+                                                <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
+                                            </span>
                                         </div>
                                     );
                                 }}
@@ -60,8 +62,8 @@ const BlockSection = ({ blockList = [] }: {
                                             </div>
                                             <div>
                                             {
-                                                !rowData.transactions ? <span className="color-white">0 Txns</span>  :
-                                                <Link className="color-white" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)} Txns</Link>
+                                                !rowData.transactions ? <span className="sub-text">0 Txns</span>  :
+                                                <Link className="sub-text" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)} Txns</Link>
                                             }
                                             </div>
                                         </>
@@ -69,8 +71,8 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={1} align="right" verticalAlign="middle">
-                            <HeaderCell>Rewards</HeaderCell>
+                        <Column flexGrow={2} minWidth={110} align="right" verticalAlign="middle">
+                            <HeaderCell>Rewards (KAI)</HeaderCell>
                             <Cell dataKey="transactions">
                                 {(rowData: KAIBlock) => {
                                     return (
@@ -78,7 +80,7 @@ const BlockSection = ({ blockList = [] }: {
                                             {
                                                 !rowData.rewards ? '0' :
                                                 numberFormat(weiToKAI(rowData.rewards), 8)
-                                            } KAI
+                                            }
                                         </div>
                                     );
                                 }}

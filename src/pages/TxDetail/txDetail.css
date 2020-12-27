@@ -1,5 +1,5 @@
 .click-show-more {
-    color: var(--blue-color);
+    color: var(--link-color);
     font-weight: 600;
     cursor: pointer;
 }
