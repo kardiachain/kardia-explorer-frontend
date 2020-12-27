@@ -100,7 +100,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Market Cap:</p>
+                                        <p className="color-graylight">Market Cap:</p>
                                         <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="refresh" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Circulating Supply:</p>
+                                        <p className="color-graylight">Circulating Supply:</p>
                                         <p className="mt0 fw700 color-white">{tokenInfor.circulating_supply ? numberFormat(tokenInfor.circulating_supply) : ''}</p>
                                     </div>
                                 </div>

@@ -47,13 +47,13 @@ const AddressDetail = () => {
                     {
                         holderAccount?.isContract ? (
                             <>
-                                <Icon className="highlight" icon="file-text-o" size={"2x"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Contract Detail</p>
+                                <Icon className="gray-highlight" icon="file-text-o" size={"2x"} />
+                                <p style={{ marginLeft: '12px' }} className="title color-white">Contract Detail</p>
                             </>
                         ) : (
                                 <>
-                                    <Icon className="highlight" icon="vcard" size={"2x"} />
-                                    <p style={{ marginLeft: '12px' }} className="title">Address Detail</p>
+                                    <Icon className="gray-highlight" icon="vcard" size={"2x"} />
+                                    <p style={{ marginLeft: '12px' }} className="title color-white">Address Detail</p>
                                 </>
                             )
                     }
@@ -115,8 +115,8 @@ const AddressDetail = () => {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{padding: 0}}>
                             <div className="block-title">
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <Icon className="highlight" icon="exchange" size={"2x"} />
-                                    <p style={{ marginLeft: '12px' }} className="title">Transaction History</p>
+                                    <Icon className="gray-highlight" icon="exchange" size={"2x"} />
+                                    <p style={{ marginLeft: '12px' }} className="title color-white">Transaction History</p>
                                 </div>
                             </div>
                         </FlexboxGrid.Item>
@@ -126,7 +126,7 @@ const AddressDetail = () => {
                             </div>
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table

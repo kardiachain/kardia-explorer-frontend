@@ -129,6 +129,11 @@ a:hover {
   border-radius: 0px !important;
 }
 
+.rs-list-item,
+.rs-modal-content {
+  background: var(--panel-bg-color) !important;
+}
+
 .mb10{
   margin-bottom:10px;
 }
@@ -184,6 +189,7 @@ a:hover {
   background: var(--input-black-color) !important;
   color: var(--white-color) !important;
   border: 1px solid var(--input-black-color) !important;
+  outline: none;
 }
 .panel-bg-gray .rs-input-group:not(.rs-input-group-inside) {
   border: none;
@@ -356,7 +362,6 @@ a:hover {
   margin-bottom: 10px;
 }
 
-
 @media screen and (max-width: 992px) {
   .rs-header{
     display: flex;
@@ -410,4 +415,8 @@ a:hover {
   color: #000 !important;
   padding: 5px 20px !important;
   background-color: #c1c1c1 !important;
+}
+
+.rs-modal-header .rs-modal-title {
+  color: white !important;
 }

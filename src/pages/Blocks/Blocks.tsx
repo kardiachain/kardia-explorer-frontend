@@ -124,8 +124,8 @@ const Blocks = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            !rowData.transactions ? '0' :
-                                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
+                                                            !rowData.transactions ? <span className="color-white">0</span> :
+                                                            <Link className="color-white" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
                                                         }
                                                     </div>
                                                 );

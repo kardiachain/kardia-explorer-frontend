@@ -244,7 +244,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             <Form fluid>
                 <FlexboxGrid>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                        <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                        <ControlLabel className="color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                         <NumberInputFormat
                             value={gasLimit}
                             placeholder="Gas Limit"
@@ -255,7 +255,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ErrMessage message={gasLimitErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                        <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                        <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                         <SelectPicker
                             className="dropdown-custom"
                             data={gasPriceOption}
@@ -271,7 +271,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     </FlexboxGrid.Item>
 
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                        <ControlLabel>
+                        <ControlLabel className="color-white">
                             Name <span className="required-mask">(*)</span>
                         </ControlLabel>
                         <FormControl placeholder="Ex. My Validator"
@@ -284,7 +284,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ErrMessage message={valNameErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                        <ControlLabel>
+                        <ControlLabel className="color-white">
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                             Commission Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
@@ -298,7 +298,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ErrMessage message={commissionRateErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                        <ControlLabel>
+                        <ControlLabel className="color-white">
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                             Max Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
@@ -312,7 +312,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ErrMessage message={maxRateErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                        <ControlLabel>
+                        <ControlLabel className="color-white">
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                             Max Change Rate (%)  <span className="required-mask">(*)</span>
                         </ControlLabel>
@@ -326,7 +326,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ErrMessage message={maxChangeRateErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                        <ControlLabel>
+                        <ControlLabel className="color-white">
                             <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
                             Your Delegation Amount (KAI) <span className="required-mask">(*)</span>
                         </ControlLabel>
