@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Panel, FlexboxGrid, Table, Icon, Col, Tag } from 'rsuite';
+import { Panel, FlexboxGrid, Table, Icon, Col } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -48,17 +48,14 @@ const Blocks = () => {
         <div className="container block-container">
             <SearchSection />
             <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="block-title" style={{ padding: '0px 5px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="gray-highlight" icon="cubes" size={"2x"} />
-                            <p style={{ marginLeft: '12px' }} className="title color-white">Blocks</p>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <div style={{marginBottom: 16}}>
+                        <div className="title header-title">
+                            Blocks
                         </div>
-                    </div>
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="block-summary">
-                       <Tag className="gray-tab-custom">Block #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} to #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)</Tag>
+                        <div className="sub-title">
+                            Block #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} to #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)
+                        </div>
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
@@ -77,24 +74,19 @@ const Blocks = () => {
                                     loading={loading}
                                 >
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Block</HeaderCell>
+                                        <HeaderCell><span style={{marginLeft: 40}}>Block</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        <Icon className="gray-highlight" icon="cubes" style={{ marginRight: '5px' }} />
-                                                        <Link className="color-white" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                        <span className="container-icon-left" style={{lineHeight: '28px'}}>
+                                                            <Icon icon="cubes" className="gray-highlight"/>
+                                                        </span>
+                                                        <span className="container-content-right">
+                                                            <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                            <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
+                                                        </span>
                                                     </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 130 : 0} verticalAlign="middle">
-                                        <HeaderCell>Age</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAIBlock) => {
-                                                return (
-                                                    <div><Icon className="orange-highlight" icon="clock-o" style={{ marginRight: '5px' }} /> {millisecondToHMS(rowData.age || 0)}</div>
                                                 );
                                             }}
                                         </Cell>
@@ -107,7 +99,7 @@ const Blocks = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.validator.hash,
-                                                            headCount: isMobile ? 5 : 12,
+                                                            headCount: isMobile ? 5 : 20,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.validator.hash}`) }
@@ -157,12 +149,12 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Rewards</HeaderCell>
+                                        <HeaderCell>Rewards (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.rewards), 8)} KAI
+                                                        {numberFormat(weiToKAI(rowData.rewards), 8)}
                                                     </div>
                                                 );
                                             }}

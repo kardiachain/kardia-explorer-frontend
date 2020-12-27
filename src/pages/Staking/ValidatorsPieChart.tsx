@@ -6,17 +6,17 @@ highcharts3d(Highcharts);
 
 const chartConfigDefault = {
     chart: {
-        height: 500,
+        height: 480,
         type: 'pie',
         options3d: {
             enabled: true,
             alpha: 30,
             beta: 0
         },
-        backgroundColor: '#27282A'
+        backgroundColor: '#555770'
     },
     title: {
-        text: 'Proposers',
+        text: '',
         style: {
             "color": "white"
         }

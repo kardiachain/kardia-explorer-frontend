@@ -2,7 +2,7 @@
     background: var(--cyan-highlight);
     color: var(--white-color);
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 8px;
     margin:0px 5px;
     word-break: initial;
     position: relative;
@@ -15,7 +15,7 @@
 }
 
 .size-normal {
-    padding: 5px 31px;
+    padding: 8px 16px;
 }
 
 .size-big {
@@ -48,7 +48,7 @@
 }
 
 .kai-button-gray:hover{
-    background: var(--gray-button) !important;
+    background: var(--gray-button-hover) !important;
 }
 
 .kai-button-gray:focus {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, Panel, Table, Tag, Tooltip, Whisper } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
 import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
@@ -63,18 +63,14 @@ const TxList = () => {
         <div className="container txs-container">
             <SearchSection />
             <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="block-title" style={{ padding: '0px 5px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="gray-highlight" icon="exchange" size={"2x"} />
-                            <p style={{ marginLeft: 12, marginRight: 12 }} className="title color-white">Transactions</p>
-                            <span>{block ? `(For Block: #${block})` : ''}</span>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Transactions
                         </div>
-                    </div>
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="transaction-summary">
-                        <Tag className="gray-tab-custom">A total of {numberFormat(totalTxs)} transactions found</Tag>
+                        <div className="sub-title">
+                            {numberFormat(totalTxs)} transactions found
+                        </div>
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
@@ -93,26 +89,26 @@ const TxList = () => {
                                     wordWrap
                                 >
                                     <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Hash</HeaderCell>
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="exchange" style={{ marginRight: '5px' }} />}
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.txHash,
-                                                            headCount: isMobile ? 5 : 10,
-                                                            tailCount: 4,
-                                                            showTooltip: false,
-                                                            callback: () => { history.push(`/tx/${rowData.txHash}`) }
-                                                        })}
-                                                        {
-                                                            !rowData.status ? (
-                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">Transaction error</Tooltip>}>
-                                                                    <Icon style={{ marginRight: '5px' }} className="tx-error-icon" icon="warning" />
-                                                                </Whisper>
-                                                            ) : <></>
-                                                        }
+                                                        <span className="container-icon-left">
+                                                            <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                        </span>
+                                                        <span className="container-content-right">
+                                                            {
+                                                                renderHashToRedirect({
+                                                                    hash: rowData.txHash,
+                                                                    headCount: isMobile ? 5 : 10,
+                                                                    tailCount: 4,
+                                                                    showTooltip: false,
+                                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                                })
+                                                            }
+                                                            <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
+                                                        </span>
                                                     </div>
                                                 );
                                             }}
@@ -124,21 +120,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="cubes" style={{ marginRight: '5px' }} />}
                                                         <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Age</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {isMobile ? <></> : <Icon className="orange-highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
-                                                        {millisecondToHMS(rowData.age || 0)}
                                                     </div>
                                                 );
                                             }}
@@ -171,7 +153,6 @@ const TxList = () => {
                                                         {
                                                             !rowData.toSmcAddr ? (
                                                                 <>
-                                                                    {isMobile ? <></> : <Icon className="gray-highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                     {renderHashToRedirect({
                                                                         hash: rowData.to,
                                                                         headCount: isMobile ? 5 : 12,
@@ -182,7 +163,6 @@ const TxList = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
                                                                             <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
@@ -204,24 +184,24 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value</HeaderCell>
+                                        <HeaderCell>Value (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.value))} KAI
+                                                        {numberFormat(weiToKAI(rowData.value))}
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee</HeaderCell>
+                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.txFee))} KAI
+                                                        {numberFormat(weiToKAI(rowData.txFee))}
                                                     </div>
                                                 );
                                             }}

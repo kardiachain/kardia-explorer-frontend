@@ -26,7 +26,7 @@ const BlockSection = ({ blockList = [] }: {
                         wordWrap
                         autoHeight={isMobile ? true : false}
                     >
-                        <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                             <HeaderCell><span style={{marginLeft: 40}}>Block Height</span></HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
@@ -44,7 +44,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
+                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
                             <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {

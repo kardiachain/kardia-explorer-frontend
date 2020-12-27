@@ -32,7 +32,6 @@
 }
 
 .validator-address {
-  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   font-weight: 600;
 }
@@ -42,4 +41,13 @@
 }
 .validator-name {
     margin-bottom: 2px;
+}
+
+.validator-info {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.delegate-btn {
+    box-shadow: var(--box-shadow1);
 }

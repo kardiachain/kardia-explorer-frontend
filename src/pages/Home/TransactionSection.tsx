@@ -49,7 +49,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                        <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
                             <HeaderCell><span style={{marginLeft: 40}}>Detail</span></HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {

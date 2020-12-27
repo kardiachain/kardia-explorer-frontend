@@ -110,14 +110,18 @@ const Validators = () => {
             <FlexboxGrid justify="space-between" align="top" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray">
+                        <div className="color-white" style={{fontWeight: 600}}>
+                            <span style={{fontSize: 24}}>Proposer </span>
+                            <div style={{opacity: 0.6}}>Number: {totalProposer}</div>
+                        </div>
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray" style={{ marginBottom: '10px' }}>
                         <div className="color-white" style={{fontWeight: 600}}>
-                            <span>Total Staked Amount: </span>
-                            {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI
+                            <span style={{fontSize: 24}}>Total Staked </span>
+                            <div style={{opacity: 0.6}}>Amount: {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
                         </div>
                         <StakedPieChart dataForChart={dataForStakedPieChart || {}} />
                     </Panel>
@@ -129,10 +133,10 @@ const Validators = () => {
                                         <StakingIcon character='P' color="proposer"/>
                                     </div>
                                     <div className="content">
+                                        <div className="value color-white">{totalProposer}</div>
                                         <div className="title color-graylight">
                                             Proposers
                                         </div>
-                                        <div className="value color-white">{totalProposer}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -142,10 +146,10 @@ const Validators = () => {
                                         <StakingIcon character='V' color="validator"/>
                                     </div>
                                     <div className="content">
+                                        <div className="value color-white">{totalValidator}</div>
                                         <div className="title color-graylight">
                                             Validators
                                         </div>
-                                        <div className="value color-white">{totalValidator}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -155,10 +159,10 @@ const Validators = () => {
                                         <StakingIcon character='C' color="candidate"/>
                                     </div>
                                     <div className="content">
+                                        <div className="value color-white">{totalCandidate}</div>
                                         <div className="title color-graylight">
                                             Candidates
                                         </div>
-                                        <div className="value color-white">{totalCandidate}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>
@@ -168,10 +172,10 @@ const Validators = () => {
                                         <StakingIcon character='D' color="delegator"/>
                                     </div>
                                     <div className="content">
+                                        <div className="value color-white">{totalDelegator}</div>
                                         <div className="title color-graylight">
                                             Delegators
                                         </div>
-                                        <div className="value color-white">{totalDelegator}</div>
                                     </div>
                                 </div>
                             </FlexboxGrid.Item>

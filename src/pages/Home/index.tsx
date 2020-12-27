@@ -144,8 +144,7 @@ const Home = () => {
                     <FlexboxGrid.Item className="section-left" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="gray-highlight" icon="th-large" size={"lg"} />
-                                <p style={{ marginLeft: '12px' }} className="title color-white">Latest Blocks</p>
+                                <p className="title color-white fs-24">Latest Blocks</p>
                             </div>
                             <Button onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
                         </div>
@@ -154,8 +153,7 @@ const Home = () => {
                     <FlexboxGrid.Item className="section-right" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="gray-highlight" icon="exchange" size={"lg"} />
-                                <p style={{ marginLeft: '12px' }} className="title color-white">Latest Transactions</p>
+                                <p className="title color-white fs-24">Latest Transactions</p>
                             </div>
                             <Button onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>View all</Button>
                         </div>

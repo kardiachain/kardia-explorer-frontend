@@ -17,7 +17,7 @@ const networkList = [
         link: testnetLink
     },
     {
-        label: 'Mainnet',
+        label: 'Aris Mainnet 1.0',
         value: 'mainnet',
         disabled: mainnetDisable,
         link: mainnetLink

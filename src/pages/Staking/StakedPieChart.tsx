@@ -6,10 +6,10 @@ const chartConfigDefault = {
     chart: {
         height: 300,
         type: 'pie',
-        backgroundColor: '#27282A'
+        backgroundColor: '#555770'
     },
     title: {
-        text: 'Stakes',
+        text: '',
         style: {
             "color": "white"
         }
@@ -33,9 +33,12 @@ const chartConfigDefault = {
         }
     },
     series: [{
+        borderWidth: 5,
+        borderColor: `rgba(255, 255, 255, .5)`,
         name: 'Value',
         colorByPoint: true,
-        data: [] as any[]
+        data: [] as any[],
+        shadow: true
     }],
     credits: {
         enabled: false
@@ -53,13 +56,11 @@ const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataFor
             y: Number(dataForChart.totalValidatorStakedAmount),
             sliced: true,
             selected: true,
-            color: '#ae0001',
-            className: 'color-white'
+            color: '#24BD71'
         }, {
             name: "Delegators Stakes",
             y: Number(dataForChart.totalDelegatorStakedAmount),
-            color: '#680000',
-            className: 'color-white'
+            color: '#A9EFCC',
         }]
         setChartOptionsConfig(newConfig)
     }, [dataForChart])
