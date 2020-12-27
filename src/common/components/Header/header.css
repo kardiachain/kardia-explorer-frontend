@@ -107,4 +107,8 @@
     .rs-btn-subtle:focus, .rs-btn-subtle.rs-btn-focus, .rs-btn-subtle:hover{
         background: transparent;
     }
+
+    .rs-sidenav-subtle.rs-sidenav-collapse-in .rs-dropdown-menu.rs-dropdown-menu-active ~ .rs-dropdown-toggle:hover{
+        background:transparent;
+    }
 }
