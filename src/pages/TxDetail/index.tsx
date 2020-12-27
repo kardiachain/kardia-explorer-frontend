@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, IconButton, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup } from 'rsuite';
+import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { copyToClipboard, dateToUTCString, millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
+import { copyToClipboard, dateToUTCString, millisecondToHMS, renderCopyButton, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import { getTxByHash } from '../../service/kai-explorer';
 import abiDecoder from 'abi-decoder'
@@ -263,7 +263,7 @@ const TxDetail = () => {
                                                     showCopy: true
                                                 })}</div>
                                             ) : (
-                                                    <div className="property-content"><Icon className="highlight" icon="file-text-o" style={{ marginRight: 5 }} /> {renderHashToRedirect({
+                                                    <div className="property-content"><Icon className="gray-highlight" icon="file-text-o" style={{ marginRight: 5 }} /> {renderHashToRedirect({
                                                         hash: txDetail?.toSmcAddr,
                                                         headCount: 50,
                                                         tailCount: 4,
@@ -279,11 +279,12 @@ const TxDetail = () => {
                                                                     size='small' style={{ marginLeft: 5 }} />
                                                             ) : <></>
                                                         }
-                                                        <IconButton
-                                                            size="xs"
-                                                            onClick={() => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)}
-                                                            icon={<Icon icon="copy" />}
-                                                        />
+                                                        {
+                                                            renderCopyButton({
+                                                                str: txDetail?.toSmcAddr,
+                                                                size: "xs",
+                                                                callback: () => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)})
+                                                        }
                                                     </div>
                                                 )
                                         }
@@ -389,7 +390,12 @@ const TxDetail = () => {
                                                                     <FlexboxGrid>
                                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                                                                             <Panel bordered style={{ width: '100%' }}>
-                                                                                <ReactJson style={{fontSize: 12}} name={false} src={{ inputDataDecode }} />
+                                                                                <ReactJson 
+                                                                                style={{
+                                                                                    fontSize: 12,
+                                                                                    color: 'white'
+                                                                                }} 
+                                                                                name={false} src={{ inputDataDecode }} theme="grayscale" />
                                                                             </Panel>
                                                                         </FlexboxGrid.Item>
                                                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>

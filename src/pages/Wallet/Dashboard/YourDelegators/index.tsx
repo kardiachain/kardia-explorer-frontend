@@ -152,11 +152,11 @@ const YourDelegators = () => {
                             <div className="val-info-container">
                                 <div className="block-title" style={{ padding: '0px 5px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <Icon className="highlight" icon="user-info" size={"2x"} />
-                                        <p style={{ marginLeft: '12px' }} className="title">Validator information</p>
+                                        <Icon className="gray-highlight" icon="user-info" size={"2x"} />
+                                        <p style={{ marginLeft: '12px' }} className="title color-white">Validator information</p>
                                     </div>
                                 </div>
-                                <Panel shaded>
+                                <Panel shaded className="panel-bg-gray">
                                     <div style={{ textAlign: 'right' }}>
                                         <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`) }}>
                                             Delegate
@@ -380,7 +380,7 @@ const YourDelegators = () => {
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                             <div className="del-list-container">
-                                <Panel shaded>
+                                <Panel shaded className="panel-bg-gray">
                                     <div className="custom-nav">
                                         <Nav
                                             appearance="subtle"

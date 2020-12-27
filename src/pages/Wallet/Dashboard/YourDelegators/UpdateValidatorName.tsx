@@ -123,11 +123,11 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                     <Modal.Title>Update Validator Name</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form fluid>
+                    <Form fluid className="panel-bg-gray">
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                     <NumberInputFormat
                                         value={gasLimit}
                                         placeholder="Gas Limit"
@@ -138,7 +138,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -153,7 +153,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>New Validator Name <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">New Validator Name <span className="required-mask">(*)</span></ControlLabel>
                                     <div className="warning-note">You must pay 10000 KAI fees to change the validator name.</div>
                                     <FormControl placeholder="Validator Name"
                                         name="valName"

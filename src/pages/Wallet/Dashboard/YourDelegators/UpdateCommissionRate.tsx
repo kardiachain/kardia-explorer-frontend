@@ -144,11 +144,11 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                     <Modal.Title>Update Validator Commmission</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form fluid>
+                    <Form fluid  className="panel-bg-gray">
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                     <NumberInputFormat
                                         value={gasLimit}
                                         placeholder="Gas Limit"
@@ -159,7 +159,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -174,9 +174,9 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
                                     <div className="latest-update-validator">
-                                        <span>Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
+                                        <span className="color-white">Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
                                     </div>
                                     {
                                         !canUpdate ? <div className="warning-note">* The next update only can perform after 24 hours since the last update.</div> : <></>

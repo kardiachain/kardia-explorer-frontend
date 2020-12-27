@@ -60,10 +60,10 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
     return (
         <Modal backdrop="static" size="sm" enforceFocus={true} show={showModel} onHide={() => { setShowModel(false) }}>
             <Modal.Header>
-                <Modal.Title>Confirm starting to become validator</Modal.Title>
+                <Modal.Title>Confirmation</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
+                <div className="confirm-letter" style={{ textAlign: 'center' }}>
                     Are you sure you want to starting to become validator.
                             </div>
             </Modal.Body>

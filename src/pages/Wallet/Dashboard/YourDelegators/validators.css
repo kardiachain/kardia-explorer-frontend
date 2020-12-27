@@ -46,9 +46,10 @@
 }
 
 .edit-val-button {
-    color: #000000;
+    color: #ffffff;
     cursor: pointer;
     margin-left: 10px;
+    background: transparent;
 }
 
 .unjail-note {

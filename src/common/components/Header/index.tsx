@@ -62,20 +62,20 @@ const Header = () => {
                         <Sidenav appearance="subtle">
                             <Sidenav.Body>
                                 <Nav>
-                                    <Nav.Item eventKey="" icon={<Icon className="highlight" icon="explore" />} href="/">Home</Nav.Item>
-                                    <Dropdown eventKey="blockchain" icon={<Icon className="highlight" icon="unlink" />} title="Blockchain">
+                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="explore" />} href="/">Home</Nav.Item>
+                                    <Dropdown eventKey="blockchain" icon={<Icon className="gray-highlight" icon="unlink" />} title="Blockchain">
                                         <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
                                         <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
                                         <Dropdown.Item href="/accounts">View Accounts</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="highlight" icon="connectdevelop" />} href="/network">Network</Nav.Item>
-                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
-                                    <Nav.Item eventKey="staking" icon={<Icon className="highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
+                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="connectdevelop" />} href="/network">Network</Nav.Item>
+                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
+                                    <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
-                                            <Nav.Item eventKey="wallet" icon={<Icon className="highlight" icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
+                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
                                         ) : (
-                                                <Dropdown eventKey="wallet" icon={<Icon className="highlight" icon="money" />} title="Wallet">
+                                                <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
                                                     <Dropdown.Item href="/wallet/dashboard">Dashboard</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/send-transaction">Send transaction</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>

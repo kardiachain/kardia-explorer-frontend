@@ -244,7 +244,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     <div className="undelegate-note">* The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form fluid>
+                    <Form fluid className="panel-bg-gray">
                         <FlexboxGrid>
                             <RadioGroup
                                 name="delegateOption"
@@ -254,8 +254,8 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                     setUnstakeAmountErr('');
                                     setUnstakeAmount('');
                                 }}>
-                                <Radio value="part">Enter Amount</Radio>
-                                <Radio value="all">
+                                <Radio value="part" className="color-white">Enter Amount</Radio>
+                                <Radio value="all" className="color-white">
                                     <span>Maximun Amount</span>
                                     <Helper style={{ marginLeft: 5 }} info={HelperMessage.UndelegateAll} />
                                 </Radio>
@@ -264,7 +264,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                 delegateOption === 'part' ? (
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                         <FlexboxGrid justify="space-between" align="middle">
-                                            <ControlLabel>Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
                                         </FlexboxGrid>
                                         <NumberInputFormat
                                             value={unStakeAmount}

@@ -201,7 +201,7 @@ const DeployWithByteCode = () => {
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="label color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                 <NumberInputFormat
                                     value={gasLimit}
                                     placeholder="Gas Limit"
@@ -212,7 +212,7 @@ const DeployWithByteCode = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="label color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                 <SelectPicker
                                     className="dropdown-custom w100"
                                     data={gasPriceOption}
@@ -230,7 +230,7 @@ const DeployWithByteCode = () => {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                    <ControlLabel className="label">Byte Code <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="label color-white">Byte Code <span className="required-mask">(*)</span></ControlLabel>
                                     <Button className="kai-button-gray pd0" onClick={() => { setByteCode('') }}>Clear</Button>
                                 </FlexboxGrid>
                                 <FormControl rows={20}
@@ -248,7 +248,7 @@ const DeployWithByteCode = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle">
-                                    <ControlLabel className="label">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="label color-white">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
                                     <div className="mb10">
                                         <Button className="kai-button-gray pd0"
                                             onClick={() => {
@@ -310,7 +310,7 @@ const DeployWithByteCode = () => {
                                     <Divider />
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label">Your deployed contract:</ControlLabel>
+                                            <ControlLabel className="label color-white">Your deployed contract:</ControlLabel>
                                             <InputGroup style={{ width: '100%' }}>
                                                 <FormControl
                                                     readOnly
