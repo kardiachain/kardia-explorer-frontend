@@ -51,7 +51,7 @@ const Network = () => {
                     }
                 }
             });
-            
+
             const graphData = {
                 nodes: result.map((item, index) => {
                     const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
@@ -88,10 +88,9 @@ const Network = () => {
             }
             <div className="container">
                 <SearchSection />
-                <div className="block-title" style={{ padding: '0px 5px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon className="gray-highlight" icon="connectdevelop" size={"2x"} />
-                        <p style={{ marginLeft: '12px' }} className="title color-white">Network</p>
+                <div style={{ marginBottom: 16 }}>
+                    <div className="title header-title">
+                        Network
                     </div>
                 </div>
                 <FlexboxGrid>
@@ -106,25 +105,18 @@ const Network = () => {
                                         hover={false}
                                         wordWrap
                                     >
-                                        <Column width={30} verticalAlign="middle" align="center">
-                                            <HeaderCell></HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAINode) => {
-                                                    if (rowData.status) {
-                                                        return <div className="dot-status online"></div>
-                                                    }
-                                                    return <div className="dot-status offline"></div>
-                                                }}
-                                            </Cell>
-                                        </Column>
                                         <Column flexGrow={2} minWidth={isMobile ? 130 : 0} verticalAlign="middle">
-                                            <HeaderCell>Name</HeaderCell>
+                                            <HeaderCell><span style={{ marginLeft: 40 }}>Name</span></HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
                                                     return (
                                                         <div>
-                                                            {isMobile ? <></> : <Icon className="gray-highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
-                                                            {rowData.nodeName}
+                                                            <span className="container-icon-left">
+                                                                <Icon icon="globe2" className="gray-highlight" />
+                                                            </span>
+                                                            <span className="container-content-right middle-vertical">
+                                                                {rowData.nodeName}
+                                                            </span>
                                                         </div>
                                                     )
                                                 }}
@@ -148,7 +140,7 @@ const Network = () => {
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column flexGrow={1} verticalAlign="middle" align="center">
+                                        <Column flexGrow={1} verticalAlign="middle">
                                             <HeaderCell>Peer count</HeaderCell>
                                             <Cell dataKey="peerCount" />
                                         </Column>

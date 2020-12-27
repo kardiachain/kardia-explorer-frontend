@@ -499,7 +499,12 @@ a:hover {
   text-align: center;
   margin-right: 8px;
 }
+
 .container-content-right {
   display: inline-block;
   vertical-align: bottom;
+}
+
+.middle-vertical {
+  vertical-align: middle;
 }
