@@ -62,18 +62,18 @@ const CreateByMnemonic = () => {
     return (
         <div className="show-grid create-container mnemonic">
             <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded className="panel-bg-gray">
-                        <FlexboxGrid justify="center">
-                            <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                <div className="title color-white" style={{ textAlign: 'center' }}>CREATE WITH MNEMONIC PHRASE</div>
+                        <FlexboxGrid justify="start">
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                <h3 className="title color-white">MNEMONIC PHRASE</h3>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
                             readyAccessNow ? (
                                 <>
                                     <FlexboxGrid justify="center">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                             <div style={{ textAlign: 'center' }}>
                                                 <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle' }} icon='check-circle' /> Create wallet success, you can access wallet now.
                                         </div>
@@ -81,7 +81,7 @@ const CreateByMnemonic = () => {
                                                 <Link to="/create-wallet">
                                                     <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
-                                                <Button size="big" onClick={accessWallet}>Access Now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWallet}>Access Now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -89,10 +89,10 @@ const CreateByMnemonic = () => {
                             ) : (
                                     <>
                                         <FlexboxGrid justify="center">
-                                            <FlexboxGrid.Item componentClass={Col} colspan={22} xs={14}>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={14}>
                                                 <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
                                             </FlexboxGrid.Item>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={22} xs={10}>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={10}>
                                                 <div style={{ textAlign: 'right' }} className="switch-phrase-option">
                                                     <Toggle
                                                         size="lg"
@@ -134,7 +134,7 @@ const CreateByMnemonic = () => {
                                             <Link to="/create-wallet">
                                                 <Button size="big" className="kai-button-gray">Back</Button>
                                             </Link>
-                                            <Button size="big" onClick={createWallet}>Create wallet</Button>
+                                            <Button className="btn-access" size="big" onClick={createWallet}>Create wallet</Button>
                                         </div>
                                     </>
                                 )
