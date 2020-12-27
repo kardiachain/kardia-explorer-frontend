@@ -177,13 +177,12 @@ const DelegatorCreate = () => {
                     <div className="val-info-container">
                         <div className="block-title" style={{ padding: '0px 5px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="gear-circle" />
-                                <p style={{ marginLeft: '12px' }} className="title">Delegate</p>
+                                <Icon className="gray-highlight" icon="gear-circle" />
+                                <p style={{ marginLeft: '12px' }} className="title color-white">Delegate</p>
                             </div>
                         </div>
-                        <Panel shaded>
+                        <Panel shaded className="panel-bg-gray">
                             <List bordered={false}>
-
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
@@ -360,7 +359,7 @@ const DelegatorCreate = () => {
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
                                                         <NumberInputFormat
                                                             value={gasLimit}
                                                             placeholder="Gas Limit"
@@ -371,7 +370,7 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasLimitErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
                                                         <SelectPicker
                                                             className="dropdown-custom"
                                                             data={gasPriceOption}
@@ -386,7 +385,7 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasPriceErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
                                                         <NumberInputFormat
                                                             value={delAmount}
                                                             placeholder="Ex. 25,000"
@@ -411,7 +410,7 @@ const DelegatorCreate = () => {
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                     <div className="del-list-container">
-                        <Panel shaded>
+                        <Panel shaded className="panel-bg-gray">
                             <div className="custom-nav">
                                 <Nav
                                     appearance="subtle"

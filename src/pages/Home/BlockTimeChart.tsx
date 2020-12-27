@@ -28,6 +28,11 @@ const BlockTimeChart = ({ blockList = [] }: { blockList: KAIBlock[] }) => {
 }
 
 const options = {
+    legend: {
+        labels: {
+            fontColor: "white"
+        }
+    },
     responsive: true,
     maintainAspectRatio: true,
     tooltips: {
@@ -65,10 +70,12 @@ const options = {
                 },
                 scaleLabel: {
                     display: true,
-                    labelString: 'Transactions'
+                    labelString: 'Transactions',
+                    fontColor: 'white'
                 },
                 ticks: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    fontColor: 'white'
                 }
             },
             {
@@ -84,10 +91,12 @@ const options = {
                 },
                 scaleLabel: {
                     display: true,
-                    labelString: 'Time (s)'
+                    labelString: 'Time (s)',
+                    fontColor: 'white'
                 },
                 ticks: {
-                    min: 4
+                    min: 4,
+                    fontColor: 'white'
                 }
             }
         ]

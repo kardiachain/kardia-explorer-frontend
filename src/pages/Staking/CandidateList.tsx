@@ -51,7 +51,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                                             character={rowData?.role?.character}
                                             size='small' style={{ marginRight: 5 }} />
                                         <span className="validator-name">{rowData.name}</span>
-                                        <div className="validator-address">
+                                        <div className="validator-address color-white">
                                             {renderHashStringAndTooltip(
                                                 rowData.address,
                                                 isMobile ? 5 : 15,

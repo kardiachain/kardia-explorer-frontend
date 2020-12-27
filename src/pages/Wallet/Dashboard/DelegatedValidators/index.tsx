@@ -28,7 +28,7 @@ const Delegator = () => {
             <div className="block-title" style={{ padding: '0px 5px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon className="gray-highlight" icon="group" />
-                    <p style={{ marginLeft: '12px' }} className="title">Your validators</p>
+                    <p style={{ marginLeft: '12px' }} className="title color-white">Your validators</p>
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">

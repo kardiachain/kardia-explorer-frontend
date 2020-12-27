@@ -358,7 +358,7 @@ a:hover {
 
 .confirm-letter {
   font-weight: 600;
-  color: #36638A;
+  color: var(--white-color);
   margin-bottom: 10px;
 }
 
@@ -418,5 +418,11 @@ a:hover {
 }
 
 .rs-modal-header .rs-modal-title {
+  color: white !important;
+}
+
+.rs-pagination > li.rs-pagination-btn-active > a,
+.rs-table-pagination-length-menu, 
+.rs-table-pagination-page-info {
   color: white !important;
 }

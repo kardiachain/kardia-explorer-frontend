@@ -69,7 +69,7 @@ const Header = () => {
                                         <Dropdown.Item href="/accounts">View Accounts</Dropdown.Item>
                                     </Dropdown>
                                     <Nav.Item eventKey="network" icon={<Icon className="highlight" icon="connectdevelop" />} href="/network">Network</Nav.Item>
-                                    <Nav.Item eventKey="documentation" icon={<Icon className="highlight" icon="book" />} href="/documentation">Documentation</Nav.Item>
+                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
                                     <Nav.Item eventKey="staking" icon={<Icon className="highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
@@ -118,7 +118,7 @@ const Header = () => {
                             <Dropdown.Item eventKey="blockchain" style={{display: "none"}}></Dropdown.Item>
                         </Dropdown>
                         <Nav.Item eventKey="network" href="/network" >Network</Nav.Item>
-                        <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item>
+                        {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                         <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
                         {
                             isLoggedIn() ? (

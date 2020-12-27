@@ -171,7 +171,7 @@ const TxList = () => {
                                                         {
                                                             !rowData.toSmcAddr ? (
                                                                 <>
-                                                                    {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
+                                                                    {isMobile ? <></> : <Icon className="gray-highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                     {renderHashToRedirect({
                                                                         hash: rowData.to,
                                                                         headCount: isMobile ? 5 : 12,
@@ -182,9 +182,9 @@ const TxList = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
+                                                                        {isMobile ? <></> : <Icon className="gray-highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
                                                                         {
                                                                             rowData.isInValidatorsList ? (

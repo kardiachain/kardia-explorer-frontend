@@ -27,7 +27,7 @@ const TransactionSection = ({ transactionList = [] }: {
                         wordWrap
                         autoHeight={isMobile ? true : false}
                     >
-                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
+                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
                             <HeaderCell>Tx Hash</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
