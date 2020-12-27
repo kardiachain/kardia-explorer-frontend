@@ -3,7 +3,7 @@
   --gray-highlight: linear-gradient(98.97deg, #C4C4C4 6.81%, #696969 100%);
   --cyan-highlight: linear-gradient(90.13deg, #7C88F3 0.15%, #46D9EE 99.94%);
   --pink-highlight: linear-gradient(90.13deg, #6E5CE6 0.15%, #C047FD 99.94%);
-  --orange-highlight: linear-gradient(90.13deg, #FF6FAC 0.15%, #FD8F78 99.94%);
+  --orange-highlight: linear-gradient(147.14deg, #FF8800 6.95%, #E63535 93.05%);
 
   --violet-gradient: linear-gradient(147.14deg, #3E7BFA 6.95%, #6600CC 93.05%);
 
@@ -212,7 +212,7 @@ a:hover {
 .panel-bg-gray .rs-input-group-btn,
 .panel-bg-gray .rs-input-group-btn:focus,
 .panel-bg-gray .rs-input-group-btn:hover {
-  background: var(--input-black-color) !important;
+  background: var(--input-black-color);
   color: var(--white-color) !important;
   border: 1px solid var(--input-black-color) !important;
   outline: none;
@@ -222,11 +222,11 @@ a:hover {
 }
 
 .rs-header{
-  background-color: var(--white-color);
+  background: #555770;
   height:56px;
 }
 .rs-navbar.rs-navbar-inverse {
-  background-color: var(--white-color) !important;
+  background: #555770 !important;
 }
 
 .rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item-active a,

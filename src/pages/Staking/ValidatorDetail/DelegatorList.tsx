@@ -37,7 +37,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                     <Cell>
                         {(rowData: Delegator) => {
                             return (
-                                <div>
+                                <div style={{display:'flex', flexDirection:'column'}}>
                                     {   
                                         renderHashToRedirect({
                                             hash: rowData.address,
@@ -52,7 +52,9 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                                             <StakingIcon
                                                 character="owner"
                                                 style = {{
-                                                    width: 50
+                                                    width: 50,
+                                                    borderRadius:'8px',
+                                                    marginTop:'4px'
                                                 }}
                                                 className="common"
                                                 size='small'/>
