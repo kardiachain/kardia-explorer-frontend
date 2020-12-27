@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel, Icon } from 'rsuite';
 import Wallet from 'ethereumjs-wallet'
 import { useWalletStorage } from '../../../service/wallet';
 import { Link, useHistory } from 'react-router-dom';
@@ -60,18 +60,18 @@ const CreateByKeystore = () => {
     return (
         <div className="show-grid create-container">
             <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded className="panel-bg-gray">
-                        <FlexboxGrid justify="center">
-                            <div className="title color-white">CREATE WITH KEYSTORED FILE</div>
+                        <FlexboxGrid justify="start">
+                            <h3 className="color-white">KEYSTORED FILE</h3>
                         </FlexboxGrid>
                         {
                             !blobUrl ? (
                                 <FlexboxGrid justify="center">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                         <div className="text-container">
                                             <Form fluid>
-                                                <FormGroup>
+                                                <FormGroup style={{marginBottom:'12px'}}>
                                                     <FormControl placeholder="Password*" name="password" type="password" value={password} onChange={setPassword} />
                                                     <ErrMessage message={errorMessage} />
                                                 </FormGroup>
@@ -82,25 +82,25 @@ const CreateByKeystore = () => {
                                             <Link to="/create-wallet">
                                                 <Button size="big" className="kai-button-gray">Back</Button>
                                             </Link>
-                                            <Button size="big" loading={isLoading} onClick={createWallet}>Create wallet</Button>
+                                            <Button className="btn-access" size="big" loading={isLoading} onClick={createWallet}>Create wallet</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             ) : (
                                     <FlexboxGrid justify="center">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                             <div className="color-white">Please <span className="note">DOWNLOAD</span> and <span className="note">SAVE</span> the following Keystore File.</div>
                                             <div className="color-white"> You will need it and your password to access your wallet.</div>
                                             <div className="download-keystore-file">
                                                 <a href={blobUrl} download={keystoreFilename}>
-                                                    Download Keystore File
+                                                <Icon icon="download" size={"lg"}/> Download Keystore
                                             </a>
                                             </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
                                                     <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
-                                                <Button size="big" onClick={accessWallet}>Access now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWallet}>Access now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

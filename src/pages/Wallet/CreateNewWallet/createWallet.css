@@ -87,6 +87,8 @@
     padding: 10px 20px;
     background: linear-gradient(137.34deg,#22a993 14.41%,#7c7c83 116.67%);
     color: white;
+    border-radius:8px;
+
 }
 
 .note {

@@ -48,7 +48,7 @@ const CreateByPrivateKey = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
-                            <h3 className="title color-white">PRIVATE KEY</h3>
+                            <h3 className="color-white">PRIVATE KEY</h3>
                         </FlexboxGrid>
                         {
                             !wallet.privatekey ? (
