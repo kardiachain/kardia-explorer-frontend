@@ -61,7 +61,7 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card address panel-bg-gray">
                         <div className="card-body">
                             <div className="title color-white"><Icon className="icon gray-highlight" icon="views-authorize" />Address</div>
-                            <div className="content color-white" style={{ wordBreak: 'break-all', fontWeight: 'bold' }}>{account.publickey}</div>
+                            <div className="content color-white" style={{ wordBreak: 'break-all', fontWeight: 'bold', paddingLeft:'42px' }}>{account.publickey}</div>
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="qrcode" size="lg" onClick={() => { setShowAddress(true) }} />
@@ -74,7 +74,7 @@ const DashboardHeader = () => {
                     <Panel shaded bordered className="wallet-info-card balance panel-bg-gray">
                         <div className="card-body">
                             <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
-                            <div className="content color-white"><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
+                            <div className="content color-white" style={{paddingLeft:'42px'}}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance

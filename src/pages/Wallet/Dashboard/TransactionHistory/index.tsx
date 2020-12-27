@@ -35,18 +35,16 @@ const TransactionHistory = () => {
     return (
         <div>
             <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="block-title" style={{ padding: '0px 5px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="gray-highlight" icon="exchange" size={"lg"} />
-                            <p style={{ marginLeft: '12px' }} className="title color-white">Transaction history</p>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                        <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Transactions history
+                        </div>
+                        <div className="sub-title">
+                            {numberFormat(totalTxs)} transactions found
                         </div>
                     </div>
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="transaction-summary" style={{marginBottom: 5}}>
-                        <Tag className="gray-tab-custom">A total of {numberFormat(totalTxs)} transactions found</Tag>
-                    </div>
+
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <FlexboxGrid justify="space-between">

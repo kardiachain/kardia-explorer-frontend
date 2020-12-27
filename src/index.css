@@ -240,9 +240,12 @@ a:hover {
 .rs-header{
   background: #555770;
   height:56px;
+  box-shadow: var(--box-shadow4);
+  z-index:999;
 }
 .rs-navbar.rs-navbar-inverse {
   background: #555770 !important;
+
 }
 
 .rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item-active a,
@@ -424,7 +427,8 @@ a:hover {
   .rs-header{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: between;
+    padding:0px 20px;
   }
 
   .container {
