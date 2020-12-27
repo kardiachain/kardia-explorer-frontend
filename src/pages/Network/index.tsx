@@ -105,7 +105,7 @@ const Network = () => {
                                         hover={false}
                                         wordWrap
                                     >
-                                        <Column flexGrow={2} minWidth={isMobile ? 130 : 0} verticalAlign="middle">
+                                        <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
                                             <HeaderCell><span style={{ marginLeft: 40 }}>Name</span></HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {

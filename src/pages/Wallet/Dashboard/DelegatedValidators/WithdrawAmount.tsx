@@ -149,7 +149,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 wordWrap
                 rowHeight={() => 60}
             >
-                <Column flexGrow={2} minWidth={isMobile ? 110 : 150} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={250} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
@@ -258,7 +258,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                 }}>
                                 <Radio value="part" className="color-white">Enter Amount</Radio>
                                 <Radio value="all" className="color-white">
-                                    <span>Maximun Amount</span>
+                                    <span>Maximum Amount</span>
                                     <Helper style={{ marginLeft: 5 }} info={HelperMessage.UndelegateAll} />
                                 </Radio>
                             </RadioGroup>

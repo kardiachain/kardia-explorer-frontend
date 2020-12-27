@@ -27,7 +27,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                 rowHeight={() => 90}
                 loading={loading}
             >
-                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                <Column flexGrow={3} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -68,21 +68,21 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
-                    <HeaderCell>Staked Amount</HeaderCell>
+                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))} KAI</div>
+                                <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))}</div>
                             );
                         }}
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
-                    <HeaderCell>Voting power</HeaderCell>
+                    <HeaderCell>Voting power (%)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <div>{rowData.votingPower || '0'} %</div>
+                                <div>{rowData.votingPower || '0'}</div>
                             );
                         }}
                     </Cell>
@@ -98,11 +98,11 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                    <HeaderCell>Commission</HeaderCell>
+                    <HeaderCell>Commission (%)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <div>{numberFormat(rowData?.commissionRate || 0, 2)} %</div>
+                                <div>{numberFormat(rowData?.commissionRate || 0, 2)}</div>
                             );
                         }}
                     </Cell>
