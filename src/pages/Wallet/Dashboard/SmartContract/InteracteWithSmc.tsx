@@ -143,7 +143,7 @@ const InteracteWithSmc = () => {
                         seeTxdetail: true
                     });
                 } else {
-                    const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas`: `${NotifiMessage.TransactionError}`
+                    const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas` : `${NotifiMessage.TransactionError}`
                     NotificationError({
                         description: errMsg,
                         callback: () => { window.open(`/tx/${result.transactionHash}`) },
@@ -254,10 +254,9 @@ const InteracteWithSmc = () => {
 
     return (
         <div className="interact-smc-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="gray-highlight" icon="related-map" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title color-white">Interact With Smart Contract</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Interact With Smart Contract
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -441,7 +440,7 @@ const InteracteWithSmc = () => {
                                                 showResult ? <>
                                                     {
                                                         interactType === "call" ?
-                                                            <ControlLabel className="label"><ReactJson name={false} src={{ txResult }} /></ControlLabel> :
+                                                            <ControlLabel className="label"><ReactJson name={false} src={{ txResult }} theme="ocean" /></ControlLabel> :
                                                             (
                                                                 interactType === "send" ? (
                                                                     <>
@@ -468,7 +467,7 @@ const InteracteWithSmc = () => {
                     <Modal.Title>Transaction Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ReactJson name={false} src={{ txResult }} />
+                    <ReactJson name={false} src={{ txResult }} theme="ocean" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="kai-button-gray">

@@ -9,3 +9,8 @@
     font-size: 12px;
     font-style: italic;
 }
+
+.tx-detail-container .rs-uploader-file-item {
+    background: white;
+    border-radius: 8px;
+}

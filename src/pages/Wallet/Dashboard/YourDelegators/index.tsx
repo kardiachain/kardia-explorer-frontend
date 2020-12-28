@@ -229,8 +229,8 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                                     <span className="property-title">Commission Rate </span>
+                                                    <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -250,8 +250,8 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                                                     <span className="property-title">Max Commission Rate</span>
+                                                    <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -263,8 +263,8 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                                                     <span className="property-title">Max Change Commission Rate</span>
+                                                    <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxChangeRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>

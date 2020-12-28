@@ -83,7 +83,7 @@ const BlockByProposerList = ({
                                 <div>
                                     {
                                         !rowData.transactions ? '0' :
-                                            <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
+                                            <Link className="color-white" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
                                     }
                                 </div>
                             );

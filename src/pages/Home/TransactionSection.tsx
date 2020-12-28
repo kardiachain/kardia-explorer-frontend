@@ -33,7 +33,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                     return (
                                         <div>
                                             <span className="container-icon-left">
-                                                <Icon icon="exchange" className="gray-highlight" />
+                                                <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
                                             </span>
                                             <span className="container-content-right" style={{ display: 'inline-block' }}>
                                                 {renderHashToRedirect({
@@ -50,14 +50,11 @@ const TransactionSection = ({ transactionList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
-                            <HeaderCell><span style={{marginLeft: 40}}>Detail</span></HeaderCell>
+                            <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <span className="container-icon-left">
-                                                <Icon icon={rowData.toSmcAddr ? "file-text-o" : "arrow-circle-right"}className="gray-highlight" />
-                                            </span>
                                             <span className="container-content-right">
                                                 <span style={{ marginRight: 5, fontSize: 12 }}>From:</span>
                                                 {renderHashToRedirect({

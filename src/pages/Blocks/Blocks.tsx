@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Panel, FlexboxGrid, Table, Icon, Col } from 'rsuite';
+import { Panel, FlexboxGrid, Table, Icon, Col, Whisper, Tooltip } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
-import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS } from '../../common/utils/string';
 import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../config';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { numberFormat } from '../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import SearchSection from '../../common/components/Header/SearchSection';
@@ -20,7 +20,6 @@ const Blocks = () => {
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const { isMobile } = useViewport()
-    let history = useHistory();
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -91,19 +90,15 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.validator.hash,
-                                                            headCount: isMobile ? 5 : 20,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/address/${rowData.validator.hash}`) }
-                                                        })}
+                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.validator?.hash || ''}</Tooltip>}>
+                                                            <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>{rowData?.validator?.label || ''}</Link>
+                                                        </Whisper>
                                                     </div>
                                                 );
                                             }}

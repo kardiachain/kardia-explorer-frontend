@@ -190,10 +190,9 @@ const DeployWithByteCode = () => {
 
     return (
         <div className="deploy-bytecode-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="gray-highlight" icon="logo-dmp" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title color-white">Deploy Smart Contract By ByteCode</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Deploy Smart Contract By ByteCode
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -351,7 +350,7 @@ const DeployWithByteCode = () => {
                     <Modal.Title>Transaction Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ReactJson src={{ txDetail }} />
+                    <ReactJson src={{ txDetail }} theme="ocean" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="ghost-button">

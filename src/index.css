@@ -509,3 +509,6 @@ a:hover {
 .middle-vertical {
   vertical-align: middle;
 }
+.rs-steps-item-title {
+  color: white;
+}

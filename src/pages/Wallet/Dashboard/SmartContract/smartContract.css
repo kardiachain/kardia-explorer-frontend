@@ -16,6 +16,14 @@
     font-weight: bold;
 }
 
+.interact-smc-container .rs-uploader-file-item {
+    background: white;
+    border-radius: 8px;
+}
+
+.interact-smc-container .rs-uploader-file-item a{
+    color: #575757 !important;
+}
 
 
 @media screen and (max-width: 740px) {
