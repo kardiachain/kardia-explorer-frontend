@@ -243,7 +243,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 <Modal.Header>
                     <Modal.Title>Undelegate Your Staked</Modal.Title>
                     <div className="undelegate-note" style={{ marginTop: 20 }}>* After undelegated, the number of your current rewards will be an automatic withdrawal.</div>
-                    <div className="undelegate-note">* The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
+                    <div className="undelegate-note">* The number of undelegated amount will be added to withdrawable amount in the next 7 day.</div>
                 </Modal.Header>
                 <Modal.Body>
                     <Form fluid className="panel-bg-gray">
