@@ -117,7 +117,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <Button onClick={() => {
+                                <Button className="kai-button-gray" onClick={() => {
                                     setShowConfirmWithdrawRewardsModal(true)
                                     setValidatorActive(rowData)
                                 }}>Claim Rewards

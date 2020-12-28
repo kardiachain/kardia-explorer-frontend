@@ -68,7 +68,7 @@ const Header = () => {
                                         <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
                                         <Dropdown.Item href="/accounts">View Accounts</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="connectdevelop" />} href="/network">Network</Nav.Item>
+                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} href="/network">Network</Nav.Item>
                                     {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
                                     {

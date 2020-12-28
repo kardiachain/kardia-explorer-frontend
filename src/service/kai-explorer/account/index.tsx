@@ -34,7 +34,7 @@ export const getAccounts = async (page: number, size: number, sort: any): Promis
         totalAccount: responseJSON?.data?.total || 0,
         holderAccounts: raws.map((item: any, index: number) => {
             return {
-                index: index + 1,
+                index: item.rank,
                 address: item.address || '',
                 name: item.name || '',
                 isContract: item.isContract || false,

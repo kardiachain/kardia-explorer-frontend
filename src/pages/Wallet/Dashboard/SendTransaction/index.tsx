@@ -15,7 +15,7 @@ import { renderHashString } from '../../../../common/utils/string'
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
     const [toAddress, setToAddress] = useState('')
-    const [gasLimit, setGasLimit] = useState(21000)
+    const [gasLimit, setGasLimit] = useState(22000)
     const [amountErr, setAmountErr] = useState('')
     const [toAddressErr, setToAddressErr] = useState('')
     const [gasLimitErr, serGasLimitErr] = useState('')
@@ -84,7 +84,7 @@ const SendTransaction = () => {
     const resetFrom = () => {
         setAmount('');
         setToAddress('');
-        setGasLimit(21000);
+        setGasLimit(22000);
         setGasPrice(1);
         setAmountErr('');
     }

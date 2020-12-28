@@ -198,7 +198,7 @@ const AddressDetail = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            address === rowData.from ? <Tag color="yellow" className="tab-in-out">OUT</Tag> : <Tag color="green" className="tab-in-out">IN</Tag>
+                                                            address === rowData.from ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
                                                         }
                                                     </div>
                                                 )

@@ -58,7 +58,7 @@ const DashboardHeader = () => {
         <>
             <Row className="wallet-header-container">
                 <Col md={12} sm={24} xs={24}>
-                    <Panel shaded bordered className="wallet-info-card address panel-bg-gray">
+                    <Panel shaded className="wallet-info-card address panel-bg-gray">
                         <div className="card-body">
                             <div className="title color-white"><Icon className="icon gray-highlight" icon="views-authorize" />Address</div>
                             <div className="content color-white" style={{ wordBreak: 'break-all', fontWeight: 'bold', paddingLeft:'42px' }}>{account.publickey}</div>
@@ -71,7 +71,7 @@ const DashboardHeader = () => {
                     </Panel>
                 </Col>
                 <Col md={12} sm={24} xs={24}>
-                    <Panel shaded bordered className="wallet-info-card balance panel-bg-gray">
+                    <Panel shaded className="wallet-info-card balance panel-bg-gray">
                         <div className="card-body">
                             <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
                             <div className="content color-white" style={{paddingLeft:'42px'}}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>

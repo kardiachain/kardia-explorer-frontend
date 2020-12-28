@@ -72,7 +72,7 @@ const Blocks = () => {
                                     data={blocks}
                                     loading={loading}
                                 >
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                         <HeaderCell><span style={{marginLeft: 40}}>Block</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {

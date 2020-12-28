@@ -1,10 +1,15 @@
 .kai-footer {
     background-color: var(--nav-color);
     color: var(--white-color);
-    height: 80px;
+}
+
+.footer-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    height: 80px;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .footer-icon{

@@ -61,7 +61,7 @@ const TransactionHistory = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
                                         <HeaderCell>Tx Hash</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -124,7 +124,7 @@ const TransactionHistory = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            myAccount.publickey === rowData.from ? <Tag color="yellow" className="tab-in-out">OUT</Tag> : <Tag color="green" className="tab-in-out">IN</Tag>
+                                                            myAccount.publickey === rowData.from ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
                                                         }
                                                     </div>
                                                 )

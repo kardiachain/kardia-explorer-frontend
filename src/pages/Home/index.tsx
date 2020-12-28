@@ -82,18 +82,8 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="rocket" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight">Symbol:</p>
-                                        <p className="mt0 fw700 color-white">KAI</p>
-                                    </div>
-                                </div>
-                                <div className="token-infor">
-                                    <div className="left">
-                                        <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
-                                    </div>
-                                    <div className="right">
-                                        <p className="color-graylight">Market Cap:</p>
-                                        <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(tokenInfor.erc20_market_cap, 3) : ''}</p>
-                                        {/* <p className="mt0 fw700 color-white">Kardiachain Mainnet: $ {tokenInfor.price ? numberFormat(tokenInfor.mainnet_market_cap, 3) : ''}</p> */}
+                                        <p className="color-graylight fs-12">Symbol</p>
+                                        <p className="mt0 fw700 color-white fs-15">KAI</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -101,18 +91,8 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="usd" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight">Price:</p>
-                                        <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
-                                    </div>
-                                </div>
-                                <div className="token-infor">
-                                    <div className="left">
-                                        <Icon className="gray-highlight" icon="refresh" size={"2x"} />
-                                    </div>
-                                    <div className="right">
-                                        <p className="color-graylight">Circulating Supply:</p>
-                                        <p className="mt0 fw700 color-white">{tokenInfor.erc20_circulating_supply ? numberFormat(tokenInfor.erc20_circulating_supply) : ''}</p>
-                                        {/* <p className="mt0 fw700 color-white">Kardiachain Mainnet: {tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : ''}</p> */}
+                                        <p className="color-graylight fs-12">Price ($)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -120,8 +100,17 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="signal" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight">Volume 24h:</p>
-                                        <p className="mt0 fw700 color-white">$ {tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
+                                        <p className="color-graylight fs-12">Volume 24h ($)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
+                                    </div>
+                                </div>
+                                <div className="token-infor">
+                                    <div className="left">
+                                        <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
+                                    </div>
+                                    <div className="right">
+                                        <p className="color-graylight fs-12">Market Cap ($)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -129,9 +118,24 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="database" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight">Total Supply:</p>
-                                        <p className="mt0 fw700 color-white">{tokenInfor.erc20_total_supply ? numberFormat(tokenInfor.erc20_total_supply as number) : ''}</p>
-                                        {/* <p className="mt0 fw700 color-white">Kardiachain Mainnet: {tokenInfor.mainnet_total_supply ? numberFormat(tokenInfor.mainnet_total_supply as number) : ''}</p> */}
+                                        <p className="color-graylight fs-12">Total Supply (KAI)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
+                                    </div>
+                                </div>
+                                <div className="token-infor">
+                                    <div className="left">
+                                        <Icon className="gray-highlight" icon="refresh" size={"2x"} />
+                                    </div>
+                                    <div className="right">
+                                        <p className="color-graylight fs-12">Circulating Supply (KAI)</p>
+                                        <p className="mt0" style={{wordBreak: 'break-all'}}>
+                                            <span className="fw700 color-white fs-15">{tokenInfor.erc20_circulating_supply ? numberFormat(tokenInfor.erc20_circulating_supply) : 0}</span>
+                                            <span className="color-graylight fs-12" style={{marginLeft: 4}}>(Erc20)</span>
+                                        </p>
+                                        <p className="mt0" style={{wordBreak: 'break-all'}}>
+                                            <span className="fw700 color-white fs-15">{tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : 0}</span>
+                                            <span className="color-graylight fs-12" style={{marginLeft: 4}}>(Onchain) </span>
+                                        </p>
                                     </div>
                                 </div>
                             </Panel>

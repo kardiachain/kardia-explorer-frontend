@@ -6,7 +6,7 @@ highcharts3d(Highcharts);
 
 const chartConfigDefault = {
     chart: {
-        height: 480,
+        height: 500,
         type: 'pie',
         options3d: {
             enabled: true,
