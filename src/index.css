@@ -250,6 +250,14 @@ a:hover {
 
 }
 
+
+.rs-navbar-nav .rs-dropdown-toggle-caret{
+  top:8px !important;
+  right:9px !important;
+}
+
+
+/* menu item active  */
 .rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item-active a,
 .rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item:hover a,
 .rs-header .rs-navbar.rs-navbar-inverse .rs-nav-item:focus a,
@@ -260,6 +268,13 @@ a:hover {
 .rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:focus {
   background-color: var(--bg-color) !important;
   color: #FCFCFC !important;
+}
+
+/* menu item */
+.rs-navbar-nav .rs-dropdown > .rs-dropdown-toggle , .rs-navbar-nav .rs-nav-item > .rs-nav-item-content{
+  padding: 6px 22px !important;
+  height: auto !important;
+  border-radius: 8px !important;
 }
 
  /* Style table */

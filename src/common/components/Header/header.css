@@ -8,6 +8,17 @@
     display: flex;
 }
 
+.kardia-nav.rs-navbar-nav > ul{
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.rs-navbar-body{
+    display: flex;
+    align-items: center;
+}
+
 .rs-navbar-header{
     flex:1;
     padding: 10px 0px;
@@ -16,8 +27,27 @@
     display: flex;
 }
 
+.rs-dropdown-open.rs-dropdown-placement-bottom-start > .rs-dropdown-menu{
+    top:38px;
+    right:0;
+    left:initial;
+}
+
 .kai-header-container .rs-dropdown-menu {
-    border-radius: 0;
+    border-radius: 8px;
+    padding: 10px 16px;
+    background: #8E90A6;
+    box-shadow: var(--box-shadow5);
+}
+
+.kai-header-container .rs-dropdown-menu > li{
+    border-radius: 8px;
+}
+
+.kai-header-container .rs-dropdown-menu > li > a{
+    color:#fcfcfc;
+    border-radius: 8px;
+
 }
 
 
@@ -53,6 +83,10 @@
 
 .rs-dropdown > a , .rs-nav-item > a {
     color: rgba(252, 252, 252, 0.54) !important;
+}
+
+.rs-nav-item{
+    margin-right:10px;
 }
 
 .kai-header-container-mobile-menu .rs-icon-inverse{
