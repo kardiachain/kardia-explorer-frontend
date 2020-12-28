@@ -380,6 +380,7 @@ const TxDetail = () => {
                                                                 <Input
                                                                     componentClass="textarea"
                                                                     rows={5}
+                                                                    className="input"
                                                                     placeholder="resize: 'auto'"
                                                                     value={txDetail?.input}
                                                                 />
@@ -434,6 +435,7 @@ const TxDetail = () => {
                                                                                             name="abi"
                                                                                             componentClass="textarea"
                                                                                             placeholder="ABI"
+                                                                                            className="input"
                                                                                             value={abi}
                                                                                             onChange={(value) => {
                                                                                                 setAbi(value)

@@ -358,10 +358,11 @@ const DelegatorCreate = () => {
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel className="color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                                         <NumberInputFormat
                                                             value={gasLimit}
                                                             placeholder="Gas Limit"
+                                                            className="input"
                                                             onChange={(event) => {
                                                                 setGasLimit(event.value);
                                                                 validateGasLimit(event.value)
@@ -369,7 +370,7 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasLimitErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                                         <SelectPicker
                                                             className="dropdown-custom"
                                                             data={gasPriceOption}
@@ -384,10 +385,11 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasPriceErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel className="color-white">Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Delegation amount (KAI - required)</ControlLabel>
                                                         <NumberInputFormat
                                                             value={delAmount}
                                                             placeholder="Ex. 25,000"
+                                                            className="input"
                                                             onChange={(event) => {
                                                                 setDelAmount(event.value);
                                                                 validateDelAmount(event.value)

@@ -126,10 +126,9 @@ const YourDelegators = () => {
         !isVal ? (
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <div className="block-title" style={{ padding: '0px 5px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="gray-highlight" icon="user-plus" />
-                            <p style={{ marginLeft: '12px' }} className="title color-white">Register to become a validator</p>
+                    <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Register to become a validator
                         </div>
                     </div>
                     <div className="register-container">

@@ -275,10 +275,11 @@ const InteracteWithSmc = () => {
                                 <>
                                     <FlexboxGrid style={{ marginBottom: 20 }}>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="label color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                             <NumberInputFormat
                                                 value={gasLimit}
                                                 placeholder="Gas Limit"
+                                                className="input"
                                                 onChange={(event) => {
                                                     setGasLimit(event.value);
                                                     validateGasLimit(event.value)
@@ -286,7 +287,7 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={gasLimitErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="label color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                             <SelectPicker
                                                 className="dropdown-custom w100"
                                                 data={gasPriceOption}
@@ -303,9 +304,10 @@ const InteracteWithSmc = () => {
                                     </FlexboxGrid>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginBottom: 20 }}>
-                                            <ControlLabel className="label color-white">Contract Address <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Contract Address (required)</ControlLabel>
                                             <FormControl name="smcAddr"
                                                 placeholder="Input Contract Address"
+                                                className="input"
                                                 value={smcAddr}
                                                 onChange={(value) => {
                                                     setSmcAddr(value)
@@ -315,7 +317,7 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={smcAddrErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label color-white">{'Or Upload Your <contract.json> file'} <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">{'Or Upload Your <contract.json> file'} (required)</ControlLabel>
                                             <Uploader
                                                 action="//jsonplaceholder.typicode.com/posts/"
                                                 draggable
@@ -325,14 +327,14 @@ const InteracteWithSmc = () => {
                                                 onRemove={handleRemoveFile}>
                                                 <FormControl name="smcAddr"
                                                     style={{ padding: '11px 12px' }}
-                                                    placeholder="Upload Your <contract.json> file:"
+                                                    placeholder="Upload Your <contract.json> file"
                                                 />
                                             </Uploader>
                                             <ErrMessage message={fileUploadErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                             <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                                <ControlLabel className="label color-white">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
+                                                <ControlLabel className="color-white">ABI JSON (required)</ControlLabel>
                                                 <div>
                                                     <Button className="kai-button-gray pd0"
                                                         onClick={() => {
@@ -350,6 +352,7 @@ const InteracteWithSmc = () => {
                                                 name="abi"
                                                 componentClass="textarea"
                                                 placeholder="ABI"
+                                                className="input"
                                                 value={abi}
                                                 onChange={(value) => {
                                                     setAbi(value)
@@ -378,7 +381,7 @@ const InteracteWithSmc = () => {
                                             </Button>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label color-white">Interact With Contract</ControlLabel>
+                                            <ControlLabel className="color-white">Interact With Contract</ControlLabel>
                                             <SelectPicker
                                                 placeholder="Select a function"
                                                 data={smcFuncList}
@@ -393,7 +396,7 @@ const InteracteWithSmc = () => {
                                         {
                                             paramsFields && paramsFields.length > 0 ? (
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                    <ControlLabel className="label color-white">Params: </ControlLabel>
+                                                    <ControlLabel className="color-white">Params: </ControlLabel>
                                                     {
                                                         paramsFields.map((field: any, idx: any) => {
                                                             return (
@@ -403,6 +406,7 @@ const InteracteWithSmc = () => {
                                                                         marginBottom: 10,
                                                                     }}
                                                                     type="text"
+                                                                    className="input"
                                                                     name={field.name}
                                                                     placeholder={`${field.type} ${field.name}`}
                                                                     value={field.value}
@@ -422,6 +426,7 @@ const InteracteWithSmc = () => {
                                                     <FormControl
                                                         name="payableAmount"
                                                         placeholder="Payable Amount"
+                                                        className="input"
                                                         value={payableAmount}
                                                         onChange={(value) => {
                                                             if (onlyInteger(value)) {

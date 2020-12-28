@@ -266,11 +266,12 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                 delegateOption === 'part' ? (
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                         <FlexboxGrid justify="space-between" align="middle">
-                                            <ControlLabel className="color-white">Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Amount (KAI) (required)</ControlLabel>
                                         </FlexboxGrid>
                                         <NumberInputFormat
                                             value={unStakeAmount}
                                             placeholder="Enter Your Amount"
+                                            className="input"
                                             onChange={(event) => {
                                                 setUnstakeAmount(event.value);
                                                 validateUnStakeAmount(event.value)
