@@ -357,7 +357,7 @@ a:hover {
   color: var(--text-white-color);
 }
 .property-content {
-  font-weight: bold;
+  /* font-weight: bold; */
   word-break: break-all;
   color: var(--text-white-color);
 }
@@ -371,14 +371,38 @@ a:hover {
 
 .tab-in-out {
   width: 45px;
+  border-radius: 8;
+  padding: 8px 12px;
   text-align: center;
-  color: var(--white-color) !important;
+  color: #1C1C28 !important;
+  font-size: 12px;
+  font-weight: 600;
 }
+
 .tab-out {
-  background: var(--orange-highlight);
+  background: #FDDC49 !important;
 }
+
 .tab-in {
-  background: var(--pink-highlight)
+  background: #5CE09F !important;
+}
+
+.tab {
+  border-radius: 8;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tab-success {
+  color: #fcfcfc !important;
+  background: #24BD71 !important;
+}
+
+.tab-failed {
+  color: #fcfcfc98 !important;
+  background: #050E1F !important;
 }
 
 .verify-proposer-icon {

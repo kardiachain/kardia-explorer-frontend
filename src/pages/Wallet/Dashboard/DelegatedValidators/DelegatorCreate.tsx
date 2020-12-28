@@ -333,7 +333,7 @@ const DelegatorCreate = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
                                                 {
-                                                    validator?.jailed ? <Tag color="red">Jailed</Tag> : <Tag color="green">Active</Tag>
+                                                    validator?.jailed ? <Tag color="red" className="tab tab-failed">Jailed</Tag> : <Tag className="tab tab-success" color="green">Active</Tag>
                                                 }
                                             </div>
                                         </FlexboxGrid.Item>

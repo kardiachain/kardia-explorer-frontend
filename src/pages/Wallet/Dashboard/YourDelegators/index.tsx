@@ -302,7 +302,7 @@ const YourDelegators = () => {
                                                     {
                                                         validator?.jailed ? (
                                                             <>
-                                                                <Tag color="red">Jailed</Tag>
+                                                                <Tag color="red" className="tab tab-failed">Jailed</Tag>
                                                                 <Button
                                                                     disable={!canUnjail}
                                                                     style={{ marginLeft: 20 }}
@@ -321,7 +321,7 @@ const YourDelegators = () => {
                                                                     ) : <></>
                                                                 }
                                                             </>
-                                                        ) : <Tag color="green">Active</Tag>
+                                                        ) : <Tag className="tab tab-success" color="green">Active</Tag>
                                                     }
                                                 </div>
                                             </FlexboxGrid.Item>
