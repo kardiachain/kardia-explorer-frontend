@@ -108,7 +108,7 @@ const Header = () => {
                     </Link>
                 </Navbar.Header>
                 <Navbar.Body>
-                    <Nav className="kardia-nav" onSelect={setActiveKey} activeKey={activeKey}>
+                    <Nav className="kardia-nav" activeKey={activeKey}>
                         <Nav.Item eventKey="" href="/">Home</Nav.Item>
                         <Dropdown title="Blockchain" style={{marginRight:'10px'}}>
                             <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
