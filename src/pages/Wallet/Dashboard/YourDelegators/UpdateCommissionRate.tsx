@@ -197,11 +197,11 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} disable={!canUpdate} onClick={update}>
-                        Update
-                    </Button>
                     <Button className="kai-button-gray" onClick={cancelEdit}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} disable={!canUpdate} onClick={update}>
+                        Update
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -172,15 +172,15 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={update}>
-                        Update
-                    </Button>
                     <Button className="kai-button-gray"
                         onClick={() => {
                             setShowModel(false);
                             resetForm();
                         }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={update}>
+                        Update
                     </Button>
                 </Modal.Footer>
             </Modal>

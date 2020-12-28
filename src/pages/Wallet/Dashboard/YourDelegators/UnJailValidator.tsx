@@ -69,11 +69,11 @@ const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel,
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={unJailValidator}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowModel(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={unJailValidator}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

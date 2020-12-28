@@ -68,11 +68,11 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
                             </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button loading={isLoading} onClick={start}>
-                    Confirm
-                </Button>
                 <Button className="kai-button-gray" onClick={() => { setShowModel(false) }}>
                     Cancel
+                </Button>
+                <Button loading={isLoading} onClick={start}>
+                    Confirm
                 </Button>
             </Modal.Footer>
         </Modal>

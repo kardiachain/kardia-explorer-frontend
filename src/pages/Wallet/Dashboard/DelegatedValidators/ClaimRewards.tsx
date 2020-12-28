@@ -62,7 +62,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 data={yourValidators}
                 hover={false}
                 wordWrap
-                rowHeight={() => 60}
+                rowHeight={() => 80}
             >
                 <Column flexGrow={2} minWidth={200} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
@@ -138,11 +138,11 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={withdrawRewards} >
-                        Confirm
-                    </Button>
                     <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} className="kai-button-gray">
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={withdrawRewards} >
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

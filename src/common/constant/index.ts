@@ -41,6 +41,18 @@ export const colors = [
     '#8f3233',
     '#9a4647',
     '#a55a5b',
+    '#F63528',
+    '#FF8433',
+    '#FFD633',
+    '#2CC94B',
+    '#00C4F5',
+    '#591FFF',
+    '#A51FFF',
+    '#863232',
+    '#ae0001',
+    '#b6191a',
+    '#be3233',
+    '#c64c4d'
 ]
 
 export const gasLimitDefault = 3000000

@@ -522,11 +522,11 @@ const DelegatorCreate = () => {
                     </List>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={confirmDelegate}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={confirmDelegate}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

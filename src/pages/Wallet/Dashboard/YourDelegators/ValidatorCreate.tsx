@@ -423,11 +423,11 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     </List>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={registerValidator}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={registerValidator}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

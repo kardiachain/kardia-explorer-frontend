@@ -147,7 +147,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 data={yourValidators}
                 hover={false}
                 wordWrap
-                rowHeight={() => 60}
+                rowHeight={() => 80}
             >
                 <Column flexGrow={2} minWidth={250} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
@@ -284,14 +284,14 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={undelegate}>
-                        Undelegate
-                    </Button>
                     <Button className="kai-button-gray"
                         onClick={() => {
                             setShowUndelegateModel(false)
                         }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={undelegate}>
+                        Undelegate
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -305,11 +305,11 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     <div className="confirm-letter" style={{ textAlign: 'center' }}>Are you sure you want to withdraw your staked token.</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={widthdraw}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmWithdrawModal(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={widthdraw}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -264,11 +264,11 @@ const SendTransaction = () => {
                     </List>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={sendBntLoading} onClick={confirmSend}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={sendBntLoading} onClick={confirmSend}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

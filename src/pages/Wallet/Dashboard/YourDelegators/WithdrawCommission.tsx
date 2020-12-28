@@ -67,11 +67,11 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={widthdrawCommission}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowModel(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={widthdrawCommission}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>
