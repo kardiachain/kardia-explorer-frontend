@@ -64,7 +64,7 @@ const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel,
                     <Modal.Title>Confirm unjail validator</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', color: '#36638A', marginBottom: '15px' }}>
+                    <div className="confirm-letter" style={{ textAlign: 'center'}}>
                         Are you sure you want to unjail for your validator
                     </div>
                 </Modal.Body>

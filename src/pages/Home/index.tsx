@@ -92,7 +92,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p className="color-graylight">Market Cap:</p>
-                                        <p className="mt0 fw700 color-white">ERC20: $ {tokenInfor.price ? numberFormat(tokenInfor.erc20_market_cap, 3) : ''}</p>
+                                        <p className="mt0 fw700 color-white">$ {tokenInfor.price ? numberFormat(tokenInfor.erc20_market_cap, 3) : ''}</p>
                                         {/* <p className="mt0 fw700 color-white">Kardiachain Mainnet: $ {tokenInfor.price ? numberFormat(tokenInfor.mainnet_market_cap, 3) : ''}</p> */}
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p className="color-graylight">Circulating Supply:</p>
-                                        <p className="mt0 fw700 color-white">ERC20: {tokenInfor.erc20_circulating_supply ? numberFormat(tokenInfor.erc20_circulating_supply) : ''}</p>
+                                        <p className="mt0 fw700 color-white">{tokenInfor.erc20_circulating_supply ? numberFormat(tokenInfor.erc20_circulating_supply) : ''}</p>
                                         {/* <p className="mt0 fw700 color-white">Kardiachain Mainnet: {tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : ''}</p> */}
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p className="color-graylight">Total Supply:</p>
-                                        <p className="mt0 fw700 color-white">ERC20: {tokenInfor.erc20_total_supply ? numberFormat(tokenInfor.erc20_total_supply as number) : ''}</p>
+                                        <p className="mt0 fw700 color-white">{tokenInfor.erc20_total_supply ? numberFormat(tokenInfor.erc20_total_supply as number) : ''}</p>
                                         {/* <p className="mt0 fw700 color-white">Kardiachain Mainnet: {tokenInfor.mainnet_total_supply ? numberFormat(tokenInfor.mainnet_total_supply as number) : ''}</p> */}
                                     </div>
                                 </div>

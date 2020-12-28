@@ -47,6 +47,7 @@ interface KAIBlockDetails {
     blockHeight: number;
     transactions: number;
     validator: string;
+    vaidatorName: string;
     commitHash: string;
     gasLimit: number;
     gasUsed: number;

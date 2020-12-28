@@ -126,10 +126,9 @@ const YourDelegators = () => {
         !isVal ? (
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <div className="block-title" style={{ padding: '0px 5px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="gray-highlight" icon="user-plus" />
-                            <p style={{ marginLeft: '12px' }} className="title color-white">Register to become a validator</p>
+                    <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Register to become a validator
                         </div>
                     </div>
                     <div className="register-container">
@@ -229,8 +228,8 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                                     <span className="property-title">Commission Rate </span>
+                                                    <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -250,8 +249,8 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                                                     <span className="property-title">Max Commission Rate</span>
+                                                    <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -263,8 +262,8 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                                                     <span className="property-title">Max Change Commission Rate</span>
+                                                    <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxChangeRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>

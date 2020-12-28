@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Table, Panel, Icon } from 'rsuite';
+import { Link } from 'react-router-dom';
+import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 
@@ -13,7 +13,6 @@ const BlockSection = ({ blockList = [] }: {
     blockList: KAIBlock[]
 }) => {
     const { isMobile } = useViewport()
-    const history = useHistory();
     return (
         <Panel shaded className="panel-bg-gray">
             <FlexboxGrid justify="space-between">
@@ -27,13 +26,13 @@ const BlockSection = ({ blockList = [] }: {
                         autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                            <HeaderCell><span style={{marginLeft: 40}}>Block Height</span></HeaderCell>
+                            <HeaderCell><span style={{ marginLeft: 40 }}>Block Height</span></HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
-                                            <span className="container-icon-left" style={{lineHeight: '28px'}}>
-                                                <Icon icon="cubes" className="gray-highlight"/>
+                                            <span className="container-icon-left" style={{ lineHeight: '28px' }}>
+                                                <Icon icon="cubes" className="gray-highlight" />
                                             </span>
                                             <span className="container-content-right">
                                                 <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
@@ -49,24 +48,19 @@ const BlockSection = ({ blockList = [] }: {
                             <Cell>
                                 {(rowData: KAIBlock) => {
                                     return (
-                                        <>
-                                            <div>
-                                                {
-                                                    renderHashToRedirect({
-                                                        headCount: isMobile ? 5 : 12,
-                                                        showTooltip: false,
-                                                        hash: rowData.validator.hash,
-                                                        callback: () => { history.push(`/address/${rowData.validator.hash}`) }
-                                                    })
-                                                }
-                                            </div>
-                                            <div>
-                                            {
-                                                !rowData.transactions ? <span className="sub-text">0 Txns</span>  :
-                                                <Link className="sub-text" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)} Txns</Link>
-                                            }
-                                            </div>
-                                        </>
+                                        <div>
+                                            <span className="container-content-right">
+                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.validator?.hash || ''}</Tooltip>}>
+                                                    <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>{rowData?.validator?.label || ''}</Link>
+                                                </Whisper>
+                                                <div>
+                                                    {
+                                                        !rowData.transactions ? <span className="sub-text">0 Txns</span> :
+                                                            <Link className="sub-text" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)} Txns</Link>
+                                                    }
+                                                </div>
+                                            </span>
+                                        </div>
                                     );
                                 }}
                             </Cell>
@@ -79,7 +73,7 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             {
                                                 !rowData.rewards ? '0' :
-                                                numberFormat(weiToKAI(rowData.rewards), 8)
+                                                    numberFormat(weiToKAI(rowData.rewards), 8)
                                             }
                                         </div>
                                     );

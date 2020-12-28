@@ -509,3 +509,35 @@ a:hover {
 .middle-vertical {
   vertical-align: middle;
 }
+.rs-steps-item-title {
+  color: white;
+}
+
+.input{
+  background: var(--input-gray-bg) !important;
+  color: var(--white-color) !important;
+  border: none !important;
+}
+.input:focus{
+  border: none !important;
+  outline: none !important;
+}
+
+.dropdown-custom.rs-picker-default .rs-btn,
+.dropdown-custom.rs-picker-input .rs-btn,
+.dropdown-custom.rs-picker-default .rs-picker-toggle,
+.dropdown-custom.rs-picker-input .rs-picker-toggle {
+  background: var(--input-gray-bg) !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.dropdown-custom.rs-picker-has-value .rs-btn .rs-picker-toggle-value, 
+.dropdown-custom.rs-picker-has-value .rs-picker-toggle .rs-picker-toggle-value {
+  color: var(--white-color) !important;
+
+}
+.rs-control-label {
+  margin-bottom: 8px;
+  display: inline-block;
+}

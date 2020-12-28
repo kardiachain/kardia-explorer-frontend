@@ -148,10 +148,11 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                     <NumberInputFormat
                                         value={gasLimit}
                                         placeholder="Gas Limit"
+                                        className="input"
                                         onChange={(event) => {
                                             setGasLimit(event.value);
                                             validateGasLimit(event.value)
@@ -159,7 +160,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -174,7 +175,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">New Commission Rate (%)  (required)</ControlLabel>
                                     <div className="latest-update-validator">
                                         <span className="color-white">Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
                                     </div>
@@ -184,6 +185,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <NumberInputFormat
                                         value={commissionRate}
                                         placeholder="Commission Rate"
+                                        className="input"
                                         onChange={(event) => {
                                             setCommissionRate(event.value);
                                             validateCommissionRate(event.value)

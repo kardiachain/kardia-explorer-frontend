@@ -145,10 +145,11 @@ const SendTransaction = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">To Address  <span className="required-mask">(*)</span></ControlLabel>
+                                        <ControlLabel className="color-white">To Address  (required)</ControlLabel>
                                         <FormControl
-                                            placeholder="Please enter the address"
+                                            placeholder="Ex. 0xxxxxxx..."
                                             name="toAddress"
+                                            className="input"
                                             value={toAddress}
                                             onChange={(value) => {
                                                 validateToAddress(value)
@@ -158,10 +159,11 @@ const SendTransaction = () => {
                                         <ErrMessage message={toAddressErr} />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">Amount <span className="required-mask">(*)</span></ControlLabel>
+                                        <ControlLabel className="color-white">Amount (KAI - required)</ControlLabel>
                                         <NumberInputFormat
                                             value={amount}
-                                            placeholder="Amount"
+                                            placeholder="Ex. 1000"
+                                            className="input"
                                             onChange={(event) => {
                                                 setAmount(event.value);
                                                 validateAmount(event.value)
@@ -169,10 +171,11 @@ const SendTransaction = () => {
                                         <ErrMessage message={amountErr} />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                        <ControlLabel className="color-white">Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
+                                        <ControlLabel className="color-white">Gas Limit  (required)</ControlLabel>
                                         <NumberInputFormat
                                             value={gasLimit}
                                             placeholder="Gas limit"
+                                            className="input"
                                             onChange={(event) => {
                                                 setGasLimit(event.value);
                                                 validateGasLimit(event.value)
@@ -180,7 +183,7 @@ const SendTransaction = () => {
                                         <ErrMessage message={gasLimitErr} />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                        <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                        <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                         <SelectPicker
                                             className="dropdown-custom"
                                             data={gasPriceOption}

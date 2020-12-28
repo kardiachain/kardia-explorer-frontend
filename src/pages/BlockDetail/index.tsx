@@ -149,16 +149,19 @@ const BlockDetail = () => {
                                         <div className="property-title">Proposer</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{
-                                            renderHashToRedirect({
-                                                hash: blockDetail?.validator,
-                                                headCount: 50,
-                                                tailCount: 4,
-                                                showTooltip: false,
-                                                callback: () => { window.open(`/address/${blockDetail?.validator}`) },
-                                                showCopy: true
-                                            })
-                                        }</div>
+                                        <div className="property-content">
+                                            <span className="color-white text-bold" style={{marginRight: 8}} >{blockDetail?.vaidatorName || ''}</span>
+                                            {
+                                                renderHashToRedirect({
+                                                    hash: blockDetail?.validator,
+                                                    headCount: 50,
+                                                    tailCount: 4,
+                                                    showTooltip: false,
+                                                    callback: () => { window.open(`/address/${blockDetail?.validator}`) },
+                                                    showCopy: true
+                                                })
+                                            }
+                                        </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

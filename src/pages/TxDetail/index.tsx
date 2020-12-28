@@ -262,14 +262,18 @@ const TxDetail = () => {
                                                     showCopy: true
                                                 })}</div>
                                             ) : (
-                                                    <div className="property-content"><Icon className="gray-highlight" icon="file-text-o" style={{ marginRight: 5 }} /> {renderHashToRedirect({
-                                                        hash: txDetail?.toSmcAddr,
-                                                        headCount: 50,
-                                                        tailCount: 4,
-                                                        showTooltip: false,
-                                                        callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
-                                                        showCopy: false
-                                                    })} {txDetail.toSmcName}
+                                                    <div className="property-content">
+                                                        <span className="container-icon-left">
+                                                            <Icon icon="file-text-o" className="gray-highlight"/>
+                                                        </span>
+                                                        {renderHashToRedirect({
+                                                            hash: txDetail?.toSmcAddr,
+                                                            headCount: 50,
+                                                            tailCount: 4,
+                                                            showTooltip: false,
+                                                            callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
+                                                            showCopy: false
+                                                        })} {txDetail.toSmcName}
                                                         {
                                                             txDetail.isInValidatorsList ? (
                                                                 <StakingIcon
@@ -376,6 +380,7 @@ const TxDetail = () => {
                                                                 <Input
                                                                     componentClass="textarea"
                                                                     rows={5}
+                                                                    className="input"
                                                                     placeholder="resize: 'auto'"
                                                                     value={txDetail?.input}
                                                                 />
@@ -395,7 +400,7 @@ const TxDetail = () => {
                                                                                     fontSize: 12,
                                                                                     color: 'white'
                                                                                 }}
-                                                                                name={false} src={{ inputDataDecode }} theme="grayscale" />
+                                                                                name={false} src={{ inputDataDecode }} theme="ocean" />
                                                                         </Panel>
                                                                     </FlexboxGrid.Item>
                                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
@@ -408,7 +413,7 @@ const TxDetail = () => {
                                                                             <FormGroup>
                                                                                 <FlexboxGrid>
                                                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                                                        <ControlLabel className="label">{'Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
+                                                                                        <ControlLabel className="label color-white">{'Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
                                                                                         <Uploader
                                                                                             action="//jsonplaceholder.typicode.com/posts/"
                                                                                             draggable
@@ -425,11 +430,12 @@ const TxDetail = () => {
                                                                                         <ErrMessage message={fileUploadErr} />
                                                                                     </FlexboxGrid.Item>
                                                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                                                                        <ControlLabel className="label">Or Input contract ABI<span className="required-mask">*</span></ControlLabel>
+                                                                                        <ControlLabel className="label color-white">Or Input contract ABI<span className="required-mask">*</span></ControlLabel>
                                                                                         <FormControl rows={10}
                                                                                             name="abi"
                                                                                             componentClass="textarea"
                                                                                             placeholder="ABI"
+                                                                                            className="input"
                                                                                             value={abi}
                                                                                             onChange={(value) => {
                                                                                                 setAbi(value)

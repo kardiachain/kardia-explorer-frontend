@@ -244,10 +244,11 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             <Form fluid>
                 <FlexboxGrid>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                        <ControlLabel className="color-white">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                        <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                         <NumberInputFormat
                             value={gasLimit}
                             placeholder="Gas Limit"
+                            className="input"
                             onChange={(event) => {
                                 setGasLimit(event.value);
                                 validateGasLimit(event.value)
@@ -255,7 +256,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         <ErrMessage message={gasLimitErr} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                        <ControlLabel className="color-white">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                        <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                         <SelectPicker
                             className="dropdown-custom"
                             data={gasPriceOption}
@@ -272,10 +273,11 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel className="color-white">
-                            Name <span className="required-mask">(*)</span>
+                            Name (required)
                         </ControlLabel>
                         <FormControl placeholder="Ex. My Validator"
                             name="valName"
+                            className="input"
                             value={valName}
                             onChange={(value) => {
                                 setValName(value)
@@ -285,12 +287,13 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel className="color-white">
-                            <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                            Commission Rate (%)  <span className="required-mask">(*)</span>
+                            Commission Rate (% - required)
+                            <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
                         </ControlLabel>
                         <NumberInputFormat
                             value={commissionRate}
                             placeholder="Ex. 10"
+                            className="input"
                             onChange={(event) => {
                                 setCommissionRate(event.value);
                                 validateCommissionRate(event.value)
@@ -299,12 +302,13 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel className="color-white">
-                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                            Max Rate (%)  <span className="required-mask">(*)</span>
+                            Max Rate (% - required)
+                            <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
                         </ControlLabel>
                         <NumberInputFormat
                             value={maxRate}
                             placeholder="Ex. 20"
+                            className="input"
                             onChange={(event) => {
                                 setMaxRate(event.value);
                                 validateMaxRate(event.value)
@@ -313,12 +317,13 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel className="color-white">
-                            <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
-                            Max Change Rate (%)  <span className="required-mask">(*)</span>
+                            Max Change Rate (% - required)
+                            <Helper style={{ marginLeft: 8 }} info={HelperMessage.MaxChangeRate} />
                         </ControlLabel>
                         <NumberInputFormat
                             value={maxChangeRate}
                             placeholder="Ex. 2"
+                            className="input"
                             onChange={(event) => {
                                 setMaxChangeRate(event.value);
                                 validateMaxChangeRate(event.value)
@@ -327,12 +332,13 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel className="color-white">
-                            <Helper style={{ marginRight: 5 }} info={HelperMessage.AmountSelftDelegation} />
-                            Your Delegation Amount (KAI) <span className="required-mask">(*)</span>
+                            Your Delegation Amount (KAI- required)
+                            <Helper style={{ marginLeft: 5 }} info={HelperMessage.AmountSelftDelegation} />
                         </ControlLabel>
                         <NumberInputFormat
                             value={yourDelAmount}
                             placeholder="Ex. 25,000"
+                            className="input"
                             onChange={(event) => {
                                 setYourDelAmount(event.value);
                                 validateYourDelegationAmount(event.value)
