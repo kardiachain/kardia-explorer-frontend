@@ -155,6 +155,16 @@
     padding-left:30px;
 }
 
+@media only screen and (max-width: 1024px) {
+    .network-select-wrapper{
+        padding-left:0;
+    }
+
+    .network-select-wrapper::before{
+        content: none;
+    }
+}
+
 @media only screen and (max-width: 740px) {
     .search-wrapper{
         width: 100%;
@@ -173,11 +183,4 @@
         background:transparent;
     }
 
-    .network-select-wrapper{
-        padding-left:0;
-    }
-
-    .network-select-wrapper::before{
-        content: none;
-    }
 }
