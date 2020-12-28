@@ -259,7 +259,7 @@ a:hover {
 .rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:hover,
 .rs-header .rs-navbar.rs-navbar-inverse .rs-dropdown .rs-dropdown-menu ~ .rs-dropdown-toggle:focus {
   background-color: var(--bg-color) !important;
-  color: white !important;
+  color: #FCFCFC !important;
 }
 
  /* Style table */
