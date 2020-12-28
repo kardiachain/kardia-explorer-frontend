@@ -165,7 +165,7 @@ const DelegatorCreate = () => {
 
     const resetFrom = () => {
         setDelAmount('');
-        setGasLimit(21000);
+        setGasLimit(22000);
         setGasPrice(1);
         setErrorMessage('');
     }

@@ -190,11 +190,9 @@ interface KaiToken {
     change_7d?: number;
     change_24h?: number;
     erc20_circulating_supply: number;
-    erc20_market_cap: number;
-    erc20_total_supply: number;
     mainnet_circulating_supply: number;
-    mainnet_market_cap: number;
-    mainnet_total_supply: number;
+    market_cap: number;
+    total_supply: number;
     decimal?: number;
     name?: string;
     price?: number;

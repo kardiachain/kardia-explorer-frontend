@@ -44,8 +44,8 @@ const CreateByPrivateKey = () => {
 
     return (
         <div className="show-grid create-container private-key">
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
+            <FlexboxGrid justify="center" className="wrap">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
                             <h3 className="color-white">PRIVATE KEY</h3>
@@ -79,7 +79,7 @@ const CreateByPrivateKey = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                             <div style={{ wordBreak: 'break-all' }}>
                                                 <InputGroup style={{ width: '100%' }} className="privatekey-input-container">
-                                                    <Input value={renderCredential()} />
+                                                    <Input className="input" value={renderCredential()} />
                                                     <InputGroup.Button onClick={() => setShowPrivKey(!showPrivKey)}>
                                                         <Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />
                                                     </InputGroup.Button>

@@ -61,8 +61,8 @@ const CreateByMnemonic = () => {
 
     return (
         <div className="show-grid create-container mnemonic">
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+            <FlexboxGrid justify="center" className="wrap">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
@@ -74,9 +74,9 @@ const CreateByMnemonic = () => {
                                 <>
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                            <div style={{ textAlign: 'center' }}>
+                                            <div style={{ textAlign: 'center', marginTop: 32 }} className="color-white">
                                                 <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle' }} icon='check-circle' /> Create wallet success, you can access wallet now.
-                                        </div>
+                                            </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
                                                     <Button size="big" className="kai-button-gray">Back</Button>
@@ -112,6 +112,7 @@ const CreateByMnemonic = () => {
                                                         componentClass="textarea"
                                                         value={mnemonic}
                                                         readOnly
+                                                        className="input"
                                                     />
                                                     <div style={{ textAlign: 'right', marginTop: 10 }}>
                                                         <Button className="kai-button-gray"

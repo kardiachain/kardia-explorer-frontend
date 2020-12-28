@@ -111,8 +111,7 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray">
                         <div className="color-white" style={{ fontWeight: 600 }}>
-                            <span style={{ fontSize: 24 }}>Proposer </span>
-                            <div style={{ opacity: 0.6 }}>Total: {totalProposer}</div>
+                            <span style={{ fontSize: 24 }}>Proposers</span>
                         </div>
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>

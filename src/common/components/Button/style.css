@@ -1,5 +1,5 @@
 .kai-button {
-    background: var(--cyan-highlight);
+    background: var(--pink-highlight);
     color: var(--white-color);
     cursor: pointer;
     border-radius: 8px;
@@ -9,7 +9,7 @@
 }
 
 .kai-button:hover{
-    background: var(--cyan-highlight) !important;
+    background: var(--pink-highlight) !important;
     color: var(--white-color) !important;
     transition-property: none;
 }
@@ -23,7 +23,7 @@
 }
 
 .kai-button.loading {
-    background: var(--cyan-highlight) !important;
+    background: var(--pink-highlight) !important;
     color: transparent !important;
 }
 
@@ -76,11 +76,7 @@
 }
 
 .disable {
-    background:  var(--gray);
-    opacity: 0.4;
-}
-.disable:hover{
-    background:  var(--gray) !important;
+    opacity: 0.6;
 }
 
 .transparent-btn {

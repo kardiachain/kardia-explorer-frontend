@@ -59,8 +59,8 @@ const CreateByKeystore = () => {
 
     return (
         <div className="show-grid create-container">
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+            <FlexboxGrid justify="center" className="wrap">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
                             <h3 className="color-white">KEYSTORED FILE</h3>
@@ -71,8 +71,14 @@ const CreateByKeystore = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                         <div className="text-container">
                                             <Form fluid>
-                                                <FormGroup style={{marginBottom:'12px'}}>
-                                                    <FormControl placeholder="Password*" name="password" type="password" value={password} onChange={setPassword} />
+                                                <FormGroup style={{ marginBottom: '12px' }}>
+                                                    <FormControl
+                                                        className="input"
+                                                        placeholder="Password*"
+                                                        name="password"
+                                                        type="password"
+                                                        value={password}
+                                                        onChange={setPassword} />
                                                     <ErrMessage message={errorMessage} />
                                                 </FormGroup>
                                                 <div className="color-white">You will need <span className="note">BOTH</span>  your <span className="note">Password + Keystore File</span>  to access your wallet.</div>
