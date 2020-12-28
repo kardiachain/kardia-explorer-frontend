@@ -68,7 +68,7 @@ const Network = () => {
 
     return (
         <div className="network-container">
-            {/* {
+            {
                 graphData?.nodes?.length > 0 ?
                     <ForceGraph3D
                         ref={fgRef}
@@ -85,7 +85,7 @@ const Network = () => {
                         enableNodeDrag={false}
                         linkCurvature={0.3}
                     /> : <></>
-            } */}
+            }
             <div className="container">
                 <SearchSection />
                 <div style={{ marginBottom: 16 }}>
