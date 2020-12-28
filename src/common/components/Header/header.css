@@ -93,6 +93,10 @@
     color: var(--bg-color-dark);
 }
 
+.rs-btn-subtle:focus, .rs-btn-subtle.rs-btn-focus, .rs-btn-subtle:hover{
+    background:transparent !important;
+}
+
 
 /* drawer */
 .rs-drawer-content, .rs-drawer-body , .rs-sidenav-subtle{

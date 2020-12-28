@@ -110,7 +110,7 @@ const Header = () => {
                 <Navbar.Body>
                     <Nav className="kardia-nav" onSelect={setActiveKey} activeKey={activeKey}>
                         <Nav.Item eventKey="" href="/">Home</Nav.Item>
-                        <Dropdown title="Blockchain" >
+                        <Dropdown title="Blockchain" style={{marginRight:'10px'}}>
                             <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
                             <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
                             <Dropdown.Item eventKey="accounts" href="/accounts">View Accounts</Dropdown.Item>
