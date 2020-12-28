@@ -38,11 +38,11 @@ const DashboardWallet = () => {
                                     <Nav.Item eventKey="send-transaction" active={activeKey === "1"} href="/wallet/send-transaction" icon={<Icon icon="send" />}>
                                         Send Transaction
                                     </Nav.Item>
-                                    <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking" open={true}>
+                                    <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking">
                                         <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
                                         <Dropdown.Item  eventKey="delegated-validators" href="/wallet/staking/delegated-validators">Delegated Validators</Dropdown.Item>
                                     </Dropdown>
-                                    <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract" open={true}>
+                                    <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract">
                                         {/* <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item> */}
                                         <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>
                                         <Dropdown.Item eventKey="interaction" href="/wallet/smc/interaction">Interact With Contract</Dropdown.Item>
