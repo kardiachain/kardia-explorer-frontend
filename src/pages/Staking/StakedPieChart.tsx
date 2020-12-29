@@ -32,6 +32,11 @@ const chartConfigDefault = {
             showInLegend: true
         }
     },
+    legend: {
+        itemStyle: {
+            color: '#FFFFFF'
+        }
+    },
     series: [{
         borderWidth: 5,
         borderColor: `rgba(255, 255, 255, .5)`,
