@@ -2,8 +2,11 @@
 .access-privatekey-container,
 .access-keystore-container,
 .access-mnemonic-container {
-    margin-top: 50px;
+    /* margin-top: 50px; */
     width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Style for crate wallet with private key */
@@ -11,10 +14,22 @@
     margin-top: 50px;
 }
 
+.wrap{
+    width:100%;
+}
+
+.input{
+    background: var(--input-gray-bg) !important;
+}
+
+.btn-access{
+    background: var(--violet-gradient);
+}
+
 .button-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 }
 .button-container .submit-buttom {
     margin: 30px 20px;
@@ -24,14 +39,24 @@
     width: 700px;
 }
 
+.rs-panel-body{
+    background:#555770;
+    padding:24px 32px;
+}
+
+.creatOne{
+    color: var(--link-color);
+    font-weight: 600;
+
+}
+
+.title{
+    color:white;
+}
+
 .access-container .title {
     font-size: 20px;
     margin-bottom: 30px;
-}
-
-/* Style for access wallet container */
-.access-wallet-container .panel-body {
-    padding: 50px 20px;
 }
 
 .access-wallet-container .rs-panel-heading {
@@ -42,23 +67,29 @@
 
 .access-wallet-container .panel-body .rs-btn {
     text-align: left;
-    font-size: 20px;
     padding: 20px 20px;
-    box-shadow: 1px 1px 3px 0px #c6c6cb;
-    background: white;
-    color: #1d1b1b;
+    background: #8E90A6;
+    color: #ffffff;
     position: relative;
     padding-left: 70px;
     margin-bottom: 20px;
+    box-shadow: var(--box-shadow2);
+}
+
+.access-wallet-container .panel-body .rs-btn:hover{
+    box-shadow: var(--box-shadow4);
+    background: linear-gradient(145.51deg, #AC5DD9 7.21%, #004FC4 94.47%);
 }
 
 .access-wallet-container .panel-body .rs-btn .rs-icon {
-    font-size: 30px;
-    margin-right: 10px;
+    height: 25px;
+    width: 25px;
     left: 20px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    justify-content: center;
+    align-items: center;
 }
 
 .access-privatekey-container .title,
@@ -70,3 +101,27 @@
     margin-top: 20px;
     /* color: rgb(168 62 247); */
 }
+
+.access-keystore-container .rs-uploader-text .rs-uploader-file-item-icon::before,
+.access-keystore-container .rs-uploader-file-item-title,
+.access-keystore-container .rs-uploader-file-item-size {
+    color: white !important;
+}
+
+.access-keystore-container .rs-uploader-text .rs-uploader-file-item:hover {
+    background: transparent;
+}
+
+.access-keystore-container .rs-uploader-trigger-btn {
+    background: var(--orange-highlight);
+    border-radius: 8px;
+    color: white;
+}
+
+/* mobile screen */
+@media screen and (max-width: 740px) {
+    .wrap{
+        padding:0px 20px;
+    }
+}
+/* end mobile screen */

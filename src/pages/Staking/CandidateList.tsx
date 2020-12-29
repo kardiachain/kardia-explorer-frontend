@@ -27,65 +27,67 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                 rowHeight={() => 90}
                 loading={loading}
             >
-                <Column width={60} verticalAlign="middle">
+                <Column flexGrow={3} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
+                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
+                    <Cell>
+                        {(rowData: Candidate) => {
+                            return (
+                                <Link to={`/validator/${rowData?.address}`}>
+                                <div>
+                                    <div style={{display: 'inline-block', width: 50}}>
+                                        <StakingIcon
+                                            color={rowData?.role?.classname}
+                                            character={rowData?.role?.character}
+                                            size='normal' style={{ marginRight: 5 }} />
+                                    </div>
+                                    <div className="validator-info color-white">
+                                        <div className="validator-name color-white">{rowData.name}</div>
+                                        {renderHashStringAndTooltip(
+                                            rowData.address,
+                                            isMobile ? 10 : 15,
+                                            4,
+                                            true
+                                        )}
+                                    </div>
+                                </div>
+                            </Link>
+                            );
+                        }}
+                    </Cell>
+                </Column>
+                <Column flexGrow={1} verticalAlign="middle">
                     <HeaderCell>Rank</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <div className="rank-tab" style={{ backgroundColor: "#e8d21d" }}>
+                                <div>
                                     {rowData.rank}
                                 </div>
                             );
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                    <HeaderCell>Validator</HeaderCell>
+                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <Link to={`/validator/${rowData?.address}`}>
-                                    <div>
-                                        <StakingIcon
-                                            color={rowData?.role?.classname}
-                                            character={rowData?.role?.character}
-                                            size='small' style={{ marginRight: 5 }} />
-                                        <span className="validator-name">{rowData.name}</span>
-                                        <div className="validator-address">
-                                            {renderHashStringAndTooltip(
-                                                rowData.address,
-                                                isMobile ? 5 : 15,
-                                                4,
-                                                true
-                                            )}
-                                        </div>
-                                    </div>
-                                </Link>
+                                <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))}</div>
                             );
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
-                    <HeaderCell>Staked Amount</HeaderCell>
+                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                    <HeaderCell>Voting power (%)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))} KAI</div>
+                                <div>{rowData.votingPower || '0'}</div>
                             );
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
-                    <HeaderCell>Voting power</HeaderCell>
-                    <Cell>
-                        {(rowData: Candidate) => {
-                            return (
-                                <div>{rowData.votingPower || '0'} %</div>
-                            );
-                        }}
-                    </Cell>
-                </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
+                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
                     <HeaderCell>Total Delegators</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -95,22 +97,22 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
-                    <HeaderCell>Commission</HeaderCell>
+                <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                    <HeaderCell>Commission (%)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <div>{numberFormat(rowData?.commissionRate || 0, 2)} %</div>
+                                <div>{numberFormat(rowData?.commissionRate || 0, 2)}</div>
                             );
                         }}
                     </Cell>
                 </Column>
-                <Column width={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Action</HeaderCell>
+                <Column width={150} verticalAlign="middle">
+                    <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
-                                <Button onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                <Button className="kai-button-gray delegate-btn" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                             );
                         }}
                     </Cell>

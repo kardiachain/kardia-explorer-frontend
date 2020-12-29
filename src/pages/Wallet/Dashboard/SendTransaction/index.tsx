@@ -7,7 +7,7 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx, getStoredBalance } from '../../../../service/wallet'
 import Button from '../../../../common/components/Button'
-import { gasPriceOption } from '../../../../common/constant'
+import { gasLimitSendTx, gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
 import NumberInputFormat from '../../../../common/components/FormInput'
 import { renderHashString } from '../../../../common/utils/string'
@@ -15,7 +15,7 @@ import { renderHashString } from '../../../../common/utils/string'
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
     const [toAddress, setToAddress] = useState('')
-    const [gasLimit, setGasLimit] = useState(21000)
+    const [gasLimit, setGasLimit] = useState(gasLimitSendTx)
     const [amountErr, setAmountErr] = useState('')
     const [toAddressErr, setToAddressErr] = useState('')
     const [gasLimitErr, serGasLimitErr] = useState('')
@@ -84,7 +84,7 @@ const SendTransaction = () => {
     const resetFrom = () => {
         setAmount('');
         setToAddress('');
-        setGasLimit(21000);
+        setGasLimit(gasLimitSendTx);
         setGasPrice(1);
         setAmountErr('');
     }
@@ -133,68 +133,74 @@ const SendTransaction = () => {
 
     return (
         <div className="send-txs-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Transactions
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                <ControlLabel>Amount <span className="required-mask">(*)</span></ControlLabel>
-                                <NumberInputFormat
-                                    value={amount}
-                                    placeholder="Amount"
-                                    onChange={(event) => {
-                                        setAmount(event.value);
-                                        validateAmount(event.value)
-                                    }} />
-                                <ErrMessage message={amountErr} />
-                            </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                <ControlLabel>To Address  <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl
-                                    placeholder="Please enter the address"
-                                    name="toAddress"
-                                    value={toAddress}
-                                    onChange={(value) => {
-                                        validateToAddress(value)
-                                        setToAddress(value)
-                                    }}
-                                />
-                                <ErrMessage message={toAddressErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Limit  <span className="required-mask">(*)</span></ControlLabel>
-                                <NumberInputFormat
-                                    value={gasLimit}
-                                    placeholder="Gas limit"
-                                    onChange={(event) => {
-                                        setGasLimit(event.value);
-                                        validateGasLimit(event.value)
-                                    }} />
-                                <ErrMessage message={gasLimitErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
-                                <SelectPicker
-                                    className="dropdown-custom"
-                                    data={gasPriceOption}
-                                    searchable={false}
-                                    value={gasPrice}
-                                    onChange={(value) => {
-                                        setGasPrice(value)
-                                        validateGasPrice(value)
-                                    }}
-                                    style={{ width: '100%' }}
-                                />
-                                <ErrMessage message={gasPriceErr} />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                <FlexboxGrid>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                        <ControlLabel className="color-white">To Address  (required)</ControlLabel>
+                                        <FormControl
+                                            placeholder="Ex. 0x..."
+                                            name="toAddress"
+                                            className="input"
+                                            value={toAddress}
+                                            onChange={(value) => {
+                                                validateToAddress(value)
+                                                setToAddress(value)
+                                            }}
+                                        />
+                                        <ErrMessage message={toAddressErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                        <ControlLabel className="color-white">Amount (KAI - required)</ControlLabel>
+                                        <NumberInputFormat
+                                            value={amount}
+                                            placeholder="Ex. 1000"
+                                            className="input"
+                                            onChange={(event) => {
+                                                setAmount(event.value);
+                                                validateAmount(event.value)
+                                            }} />
+                                        <ErrMessage message={amountErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                        <ControlLabel className="color-white">Gas Limit  (required)</ControlLabel>
+                                        <NumberInputFormat
+                                            value={gasLimit}
+                                            placeholder="Gas limit"
+                                            className="input"
+                                            onChange={(event) => {
+                                                setGasLimit(event.value);
+                                                validateGasLimit(event.value)
+                                            }} />
+                                        <ErrMessage message={gasLimitErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                        <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                        <SelectPicker
+                                            className="dropdown-custom"
+                                            data={gasPriceOption}
+                                            searchable={false}
+                                            value={gasPrice}
+                                            onChange={(value) => {
+                                                setGasPrice(value)
+                                                validateGasPrice(value)
+                                            }}
+                                            style={{ width: '100%' }}
+                                        />
+                                        <ErrMessage message={gasPriceErr} />
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginTop: 30}}>
+                                        <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </FormGroup>
@@ -258,11 +264,11 @@ const SendTransaction = () => {
                     </List>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={sendBntLoading} onClick={confirmSend}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={sendBntLoading} onClick={confirmSend}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

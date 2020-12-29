@@ -42,27 +42,37 @@ const AddressDetail = () => {
     }, [page, size, address])
     return (
         <div className="container address-detail-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {
-                        holderAccount?.isContract ? (
-                            <>
-                                <Icon className="highlight" icon="file-text-o" size={"2x"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Contract Detail</p>
-                            </>
-                        ) : (
-                                <>
-                                    <Icon className="highlight" icon="vcard" size={"2x"} />
-                                    <p style={{ marginLeft: '12px' }} className="title">Address Detail</p>
-                                </>
-                            )
-                    }
-                </div>
-            </div>
+            {
+                holderAccount?.isContract ? (
+                    <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Contract Detail
+                        </div>
+                    </div>
+                ) : (
+                        <div style={{ marginBottom: 16 }}>
+                            <div className="title header-title">
+                                Address Detail
+                        </div>
+                        </div>
+                    )
+            }
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
-                    <Panel className="overview" shaded>
+                    <Panel className="overview panel-bg-gray" shaded>
                         <List bordered={false}>
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
+                                        <div className="property-title">Address: </div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
+                                        <div className="property-content">
+                                            {renderHashString(address, 45)}
+                                        </div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
                             {
                                 holderAccount?.name ? (
                                     <List.Item>
@@ -88,18 +98,6 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="property-title">Address: </div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
-                                        <div className="property-content">
-                                            {renderHashString(address, 45)}
-                                        </div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
                                         <div className="property-title">Balance: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
@@ -112,21 +110,18 @@ const AddressDetail = () => {
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{padding: 0}}>
-                            <div className="block-title">
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <Icon className="highlight" icon="exchange" size={"2x"} />
-                                    <p style={{ marginLeft: '12px' }} className="title">Transaction History</p>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                            <div style={{ marginBottom: 16 }}>
+                                <div className="title header-title">
+                                    Transaction History
+                                </div>
+                                <div className="sub-title">
+                                    {numberFormat(totalTxs)} transactions found
                                 </div>
                             </div>
                         </FlexboxGrid.Item>
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{padding: 0}}>
-                            <div className="transaction-summary">
-                                <Tag className="gray-tab-custom">A total of {numberFormat(totalTxs)} transactions found</Tag>
-                            </div>
-                        </FlexboxGrid.Item>
                     </FlexboxGrid>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -138,53 +133,39 @@ const AddressDetail = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Hash</HeaderCell>
+                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }} />}
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.txHash,
-                                                            headCount: isMobile ? 5 : 12,
-                                                            tailCount: 4,
-                                                            showTooltip: false,
-                                                            callback: () => { history.push(`/tx/${rowData.txHash}`) }
-                                                        })}
-                                                        {
-                                                            !rowData.status ? (
-                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">Transaction error</Tooltip>}>
-                                                                    <Icon style={{ marginRight: '5px' }} className="tx-error-icon" icon="warning" />
-                                                                </Whisper>
-                                                            ) : <></>
-                                                        }
+                                                        <span className="container-icon-left">
+                                                            <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                        </span>
+                                                        <span className="container-content-right">
+                                                            {
+                                                                renderHashToRedirect({
+                                                                    hash: rowData.txHash,
+                                                                    headCount: isMobile ? 5 : 10,
+                                                                    tailCount: 4,
+                                                                    showTooltip: false,
+                                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                                })
+                                                            }
+                                                            <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
+                                                        </span>
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>Block Height</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        { isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} align="center" minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Age</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
-                                                        {millisecondToHMS(rowData.age || 0)}
+                                                        <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -210,14 +191,14 @@ const AddressDetail = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1}>
+                                    <Column flexGrow={1} verticalAlign="middle">
                                         <HeaderCell></HeaderCell>
-                                        <Cell style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
                                                         {
-                                                            address === rowData.from ? <Tag color="yellow" className="tab-in-out">OUT</Tag> : <Tag color="green" className="tab-in-out">IN</Tag>
+                                                            address === rowData.from ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
                                                         }
                                                     </div>
                                                 )
@@ -233,7 +214,6 @@ const AddressDetail = () => {
                                                         {
                                                             !rowData.toSmcAddr ? (
                                                                 <>
-                                                                    {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
                                                                     {
                                                                         address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
                                                                             hash: rowData.to,
@@ -245,9 +225,8 @@ const AddressDetail = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr || '0x'}</Tooltip>}>
-                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
                                                                         {
                                                                             rowData.isInValidatorsList ? (
@@ -267,24 +246,24 @@ const AddressDetail = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value</HeaderCell>
+                                        <HeaderCell>Value (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.value))} KAI
+                                                        {numberFormat(weiToKAI(rowData.value))}
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee</HeaderCell>
+                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.txFee))} KAI
+                                                        {numberFormat(weiToKAI(rowData.txFee))}
                                                     </div>
                                                 );
                                             }}

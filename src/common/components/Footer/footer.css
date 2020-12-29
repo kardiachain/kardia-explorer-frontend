@@ -1,10 +1,15 @@
 .kai-footer {
     background-color: var(--nav-color);
     color: var(--white-color);
-    height: 80px;
+}
+
+.footer-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    height: 80px;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .footer-icon{
@@ -20,7 +25,15 @@
 @media screen and (max-width: 740px) {
     .kai-footer{
         flex-direction: column-reverse;
-        padding: 15px;
+        padding: 15px 0px;
+    }
+
+    .footer-container {
+        width:100%;
+        padding:0px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
     }
 }
 /* end mobile screen */

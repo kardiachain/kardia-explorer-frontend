@@ -25,35 +25,25 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                 wordWrap
                 hover={false}
                 autoHeight
-                rowHeight={() => 90}
+                rowHeight={() => 80}
                 data={validators}
                 loading={loading}
             >
-                <Column width={70} verticalAlign="middle">
-                    <HeaderCell>Rank</HeaderCell>
-                    <Cell>
-                        {(rowData: Validator) => {
-                            return (
-                                <div className="rank-tab" style={{ backgroundColor: rowData.isProposer ? rowData.color : 'rgb(53 162 92)' }}>
-                                    {rowData.rank}
-                                </div>
-                            );
-                        }}
-                    </Cell>
-                </Column>
-                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                    <HeaderCell>Validator</HeaderCell>
+                <Column flexGrow={3} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
+                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
                                 <Link to={`/validator/${rowData?.address}`}>
                                     <div>
-                                        <StakingIcon
-                                            color={rowData?.role?.classname}
-                                            character={rowData?.role?.character}
-                                            size='small' style={{ marginRight: 5 }} />
-                                        <span className="validator-name">{rowData.name}</span>
-                                        <div className="validator-address">
+                                        <div style={{display: 'inline-block', width: 50}}>
+                                            <StakingIcon
+                                                color={rowData?.role?.classname}
+                                                character={rowData?.role?.character}
+                                                size='normal' style={{ marginRight: 5 }} />
+                                        </div>
+                                        <div className="validator-info color-white">
+                                            <div className="validator-name color-white">{rowData.name}</div>
                                             {renderHashStringAndTooltip(
                                                 rowData.address,
                                                 isMobile ? 10 : 15,
@@ -67,28 +57,40 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
-                    <HeaderCell>Staked Amount</HeaderCell>
+                <Column flexGrow={1} verticalAlign="middle">
+                    <HeaderCell>Rank</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))} KAI</div>
+                                <div>
+                                    {rowData.rank}
+                                </div>
                             );
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
-                    <HeaderCell>Voting power</HeaderCell>
+                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <div>{rowData.votingPower || '0'} %</div>
+                                <div>{formatAmount(Number(weiToKAI(rowData.stakedAmount)))}</div>
                             );
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle" align="center">
-                    <HeaderCell>Total Delegators</HeaderCell>
+                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                    <HeaderCell>Voting power (%)</HeaderCell>
+                    <Cell>
+                        {(rowData: Validator) => {
+                            return (
+                                <div>{rowData.votingPower || '0'}</div>
+                            );
+                        }}
+                    </Cell>
+                </Column>
+                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                    <HeaderCell>Delegators</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -97,22 +99,22 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle" align="center">
-                    <HeaderCell>Commission</HeaderCell>
+                <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                    <HeaderCell>Commission (%)</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <div>{numberFormat(rowData?.commissionRate || 0, 2)} %</div>
+                                <div>{numberFormat(rowData?.commissionRate || 0, 2)}</div>
                             );
                         }}
                     </Cell>
                 </Column>
-                <Column width={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Action</HeaderCell>
+                <Column width={150} verticalAlign="middle">
+                    <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <Button onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                <Button className="kai-button-gray delegate-btn" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
                             );
                         }}
                     </Cell>

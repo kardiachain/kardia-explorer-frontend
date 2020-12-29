@@ -56,20 +56,22 @@ const AccessByMnemonicPhrase = () => {
     }
     return (
         <div className="show-grid access-mnemonic-container">
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
+            <FlexboxGrid justify="center" className="wrap">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={20} xs={24}>
                     <Panel shaded>
-                        <FlexboxGrid justify="center">
-                            <div className="title">ACCESS WALLET BY MNEMONIC PHARSE</div>
+                        <FlexboxGrid justify="start">
+                            <h3 className="color-white">ACCESS WALLET</h3>
                         </FlexboxGrid>
                         <FlexboxGrid justify="center">
-                            <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                 <Form fluid>
                                     <FormGroup>
-                                        <ControlLabel>Enter your secret twelve or twenty-four words phrase here to access your wallet <span className="required-mask">(*)</span></ControlLabel>
+                                        <ControlLabel className="color-white">Enter your secret 12 or 24 words phrase</ControlLabel>
                                         <FormControl
                                             rows={5}
                                             name="textarea"
+                                            className="input"
+                                            style={{border:'none'}}
                                             componentClass="textarea"
                                             placeholder="Separate each word with a single space"
                                             value={wordPhrase}
@@ -85,7 +87,7 @@ const AccessByMnemonicPhrase = () => {
                                     <Link to="/access-wallet">
                                         <Button size="big" className="kai-button-gray" >Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
+                                    <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

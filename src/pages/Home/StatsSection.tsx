@@ -19,44 +19,44 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
 
     return (
         <div className="stats-section">
-                <Panel className="stat-container" shaded>
+                <Panel className="stat-container panel-bg-transparent" shaded>
                     <div className="stat">
                         <div className="icon">
-                            <Icon className="highlight" icon="cubes" size={"lg"} />
+                            <Icon className="gray-highlight" icon="cubes" size={"lg"} />
                         </div>
-                        <div className="title">Block Height</div>
-                        <div className="value">{numberFormat(blockHeight)}</div>
+                        <div className="title color-graylight">Block Height</div>
+                        <div className="value color-white">{numberFormat(blockHeight)}</div>
                     </div>
 
                     <div className="stat">
                         <div className="icon">
-                            <Icon className="highlight" icon="realtime" size={"lg"} />
+                            <Icon className="gray-highlight" icon="realtime" size={"lg"} />
                         </div>
-                        <div className="title">Live TPS</div>
-                        <div className="value">{numberFormat(tps)}</div>
+                        <div className="title color-graylight">Live TPS</div>
+                        <div className="value color-white">{numberFormat(tps)}</div>
                     </div>
 
                     <div className="stat">
                         <div className="icon">
-                            <Icon className="highlight" icon="exchange" size={"lg"} />
+                            <Icon className="gray-highlight" icon="exchange" size={"lg"} />
                         </div>
-                        <div className="title">Transactions</div>
-                        <div className="value">{numberFormat(totalTxs)}</div>
+                        <div className="title color-graylight">Transactions</div>
+                        <div className="value color-white">{numberFormat(totalTxs)}</div>
                     </div>
 
                     <div className="stat">
                         <div className="icon">
-                            <Icon className="highlight" icon="vcard" size={"lg"} />
+                            <Icon className="gray-highlight" icon="vcard" size={"lg"} />
                         </div>
-                        <div className="title">Addresses</div>
-                        <div className="value">{numberFormat(totalStats.totalHolders)}</div>
+                        <div className="title color-graylight">Addresses</div>
+                        <div className="value color-white">{numberFormat(totalStats.totalHolders)}</div>
                     </div>
                     <div className="stat">
                         <div className="icon">
-                            <Icon className="highlight" icon="file-text-o" size={"lg"} />
+                            <Icon className="gray-highlight" icon="file-text-o" size={"lg"} />
                         </div>
-                        <div className="title">Contracts</div>
-                        <div className="value">{numberFormat(totalStats.totalContracts)}</div>
+                        <div className="title color-graylight">Contracts</div>
+                        <div className="value color-white">{numberFormat(totalStats.totalContracts)}</div>
                     </div>
                 </Panel>
         </div>

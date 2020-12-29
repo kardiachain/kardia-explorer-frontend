@@ -47,6 +47,7 @@ interface KAIBlockDetails {
     blockHeight: number;
     transactions: number;
     validator: string;
+    vaidatorName: string;
     commitHash: string;
     gasLimit: number;
     gasUsed: number;
@@ -188,13 +189,14 @@ interface KaiToken {
     change_1h?: number;
     change_7d?: number;
     change_24h?: number;
-    circulating_supply?: number;
+    erc20_circulating_supply: number;
+    mainnet_circulating_supply: number;
+    market_cap: number;
+    total_supply: number;
     decimal?: number;
-    market_cap?: number;
     name?: string;
     price?: number;
     symbol?: string;
-    total_supply?: number;
     volume_24h?: number;
 }
 

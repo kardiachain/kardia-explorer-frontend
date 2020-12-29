@@ -17,15 +17,15 @@
 }
 
 .create-wallet-container .panel-container.private-key .rs-panel {
-    background: linear-gradient(137.34deg,#812ce6 14.41%,#623555 116.67%);
+    background: var(--cyan-highlight);
 }
 
 .create-wallet-container .panel-container.keystore-file .rs-panel {
-    background: linear-gradient(137.34deg,#2c69e6 14.41%,#623555 116.67%);
+    background: var(--pink-highlight);
 }
 
 .create-wallet-container .panel-container.mnemonic-phrase .rs-panel {
-    background: linear-gradient(137.34deg,#e6982c 14.41%,#623555 116.67%);
+    background: var(--orange-highlight);
 }
 
 .create-wallet-container .panel-container .rs-panel-body {
@@ -62,8 +62,10 @@
 
 /* Style for crate wallet with private key */
 .create-container {
-    margin-top: 50px;
     width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 
 .button-container {
@@ -77,14 +79,6 @@
     color: white;
 }
 
-.create-container .title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    margin-top: 20px;
-    /* color: #0f198e; */
-}
-
 /* Style dowload with keystore */
 .download-keystore-file {
     margin-top: 30px;
@@ -93,11 +87,15 @@
     padding: 10px 20px;
     background: linear-gradient(137.34deg,#22a993 14.41%,#7c7c83 116.67%);
     color: white;
+    border-radius:8px;
+
 }
 
 .note {
-    color: #0f198e;
     font-weight: bold;
+    background: var(--orange-highlight);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .privatekey-input-container:hover {
@@ -141,3 +139,11 @@
 .switch-phrase-option .rs-btn-toggle{
     background: var(--highlight);
 }
+
+/* mobile screen */
+@media screen and (max-width: 740px) {
+    .create-container{
+        padding:0px 20px;
+    }
+}
+/* end mobile screen */

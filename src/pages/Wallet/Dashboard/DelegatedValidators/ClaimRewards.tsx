@@ -62,24 +62,26 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 data={yourValidators}
                 hover={false}
                 wordWrap
-                rowHeight={() => 60}
+                rowHeight={() => 80}
             >
-                <Column flexGrow={2} minWidth={isMobile ? 110 : 150} verticalAlign="middle">
-                    <HeaderCell>Validator</HeaderCell>
+                <Column flexGrow={2} minWidth={200} verticalAlign="middle">
+                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <Link to={`/validator/${rowData?.validatorAddr}`}>
                                     <div>
-                                        <StakingIcon
-                                            color={rowData?.role?.classname}
-                                            character={rowData?.role?.character}
-                                            size='small' style={{ marginRight: 5 }} />
-                                        <span className="validator-name">{rowData.validatorName}</span>
-                                        <div className="validator-address">
+                                        <div style={{ display: 'inline-block', width: 50 }}>
+                                            <StakingIcon
+                                                color={rowData?.role?.classname}
+                                                character={rowData?.role?.character}
+                                                size='normal' style={{ marginRight: 5 }} />
+                                        </div>
+                                        <div className="validator-info color-white">
+                                            <div className="validator-name color-white">{rowData.validatorName}</div>
                                             {renderHashStringAndTooltip(
                                                 rowData.validatorAddr,
-                                                isMobile ? 10 : 30,
+                                                isMobile ? 10 : 15,
                                                 4,
                                                 true
                                             )}
@@ -90,32 +92,32 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Staked Amount</HeaderCell>
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Claimable Rewards</HeaderCell>
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Claimable Rewards (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.claimableAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.claimableAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={200} verticalAlign="middle">
-                    <HeaderCell>Action</HeaderCell>
+                    <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <Button onClick={() => {
+                                <Button className="kai-button-gray" onClick={() => {
                                     setShowConfirmWithdrawRewardsModal(true)
                                     setValidatorActive(rowData)
                                 }}>Claim Rewards
@@ -131,16 +133,16 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter" style={{ textAlign: 'center'}}>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>
                         Are you sure you want to withdraw all your rewarded token.
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={withdrawRewards} >
-                        Confirm
-                    </Button>
                     <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} className="kai-button-gray">
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={withdrawRewards} >
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

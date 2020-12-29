@@ -17,18 +17,18 @@ export const getBlocks = async (page: number, size: number): Promise<BlocksRespo
         blocks: rawBlockList.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
             return {
-                blockHash: o.hash,
-                blockHeight: o.height,
-                transactions: o.numTxs,
+                blockHash: o.hash || '',
+                blockHeight: o.height || 0,
+                transactions: o.numTxs || 0,
                 validator: {
-                    label: 'Validator',
+                    label: o.proposerName || '',
                     hash: o.proposerAddress || ''
                 },
                 time: new Date(o.time),
                 age: (nowTime - createdTime),
-                gasUsed: o.gasUsed,
-                gasLimit: o.gasLimit,
-                rewards: o.rewards
+                gasUsed: o.gasUsed || 0,
+                gasLimit: o.gasLimit || 0,
+                rewards: o.rewards || 0
             } as KAIBlock
         })
     }
@@ -50,7 +50,8 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
         blockHash: blockDetail.hash,
         blockHeight: blockDetail.height,
         transactions: blockDetail.numTxs || 0,
-        validator: blockDetail.proposerAddress,
+        validator: blockDetail.proposerAddress || '',
+        vaidatorName: blockDetail.proposerName || '',
         commitHash: blockDetail.commitHash,
         gasLimit: blockDetail.gasLimit,
         gasUsed: blockDetail.gasUsed || 0,

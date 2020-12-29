@@ -1,5 +1,5 @@
 .click-show-more {
-    color: var(--hyperlink-color);
+    color: var(--link-color);
     font-weight: 600;
     cursor: pointer;
 }
@@ -8,4 +8,9 @@
     color: var(--hyperlink-color);
     font-size: 12px;
     font-style: italic;
+}
+
+.tx-detail-container .rs-uploader-file-item {
+    background: white;
+    border-radius: 8px;
 }

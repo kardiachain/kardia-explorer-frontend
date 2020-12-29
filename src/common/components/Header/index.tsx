@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
-import logo from '../../../resources/kardia-logo.png';
+import logo from '../../../resources/Logo-dark.svg';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';
@@ -62,20 +62,20 @@ const Header = () => {
                         <Sidenav appearance="subtle">
                             <Sidenav.Body>
                                 <Nav>
-                                    <Nav.Item eventKey="" icon={<Icon className="highlight" icon="explore" />} href="/">Home</Nav.Item>
-                                    <Dropdown eventKey="blockchain" icon={<Icon className="highlight" icon="unlink" />} title="Blockchain">
+                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="explore" />} href="/">Home</Nav.Item>
+                                    <Dropdown eventKey="blockchain" icon={<Icon className="gray-highlight" icon="unlink" />} title="Blockchain">
                                         <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
                                         <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
                                         <Dropdown.Item href="/accounts">View Accounts</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="highlight" icon="connectdevelop" />} href="/network">Network</Nav.Item>
-                                    <Nav.Item eventKey="documentation" icon={<Icon className="highlight" icon="book" />} href="/documentation">Documentation</Nav.Item>
-                                    <Nav.Item eventKey="staking" icon={<Icon className="highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
+                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} href="/network">Network</Nav.Item>
+                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
+                                    <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
-                                            <Nav.Item eventKey="wallet" icon={<Icon className="highlight" icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
+                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
                                         ) : (
-                                                <Dropdown eventKey="wallet" icon={<Icon className="highlight" icon="money" />} title="Wallet">
+                                                <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
                                                     <Dropdown.Item href="/wallet/dashboard">Dashboard</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/send-transaction">Send transaction</Dropdown.Item>
                                                     <Dropdown.Item href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
@@ -108,9 +108,9 @@ const Header = () => {
                     </Link>
                 </Navbar.Header>
                 <Navbar.Body>
-                    <Nav className="kardia-nav" onSelect={setActiveKey} activeKey={activeKey}>
+                    <Nav className="kardia-nav" activeKey={activeKey}>
                         <Nav.Item eventKey="" href="/">Home</Nav.Item>
-                        <Dropdown title="Blockchain" >
+                        <Dropdown title="Blockchain" style={{marginRight:'10px'}}>
                             <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
                             <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
                             <Dropdown.Item eventKey="accounts" href="/accounts">View Accounts</Dropdown.Item>
@@ -118,7 +118,7 @@ const Header = () => {
                             <Dropdown.Item eventKey="blockchain" style={{display: "none"}}></Dropdown.Item>
                         </Dropdown>
                         <Nav.Item eventKey="network" href="/network" >Network</Nav.Item>
-                        <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item>
+                        {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                         <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
                         {
                             isLoggedIn() ? (

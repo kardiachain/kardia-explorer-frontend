@@ -22,13 +22,13 @@ const renderCopyButton = ({str, size, callback}: {
 }) => {
     return (
         <IconButton
+            style={{background: 'transparent', color: "white"}}
             onClick={() => copyToClipboard(str, callback)}
             size={size}
             icon={<Icon icon="copy" />}
         />
     )
 }
-
 
 const renderHashString = (hash: string, headCount?: number, tailCount?: number) => {
     if (!hash) return null;

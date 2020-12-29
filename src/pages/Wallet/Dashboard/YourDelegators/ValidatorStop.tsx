@@ -67,11 +67,11 @@ const ValidatorStop = ({ validator = {} as Validator, showModel, setShowModel, r
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button loading={isLoading} onClick={stop}>
-                    Confirm
-                </Button>
                 <Button className="kai-button-gray" onClick={() => { setShowModel(false) }}>
                     Cancel
+                </Button>
+                <Button loading={isLoading} onClick={stop}>
+                    Confirm
                 </Button>
             </Modal.Footer>
         </Modal>

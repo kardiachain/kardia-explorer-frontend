@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Panel, FlexboxGrid, Table, Icon, Col, Tag } from 'rsuite';
+import { Panel, FlexboxGrid, Table, Icon, Col, Whisper, Tooltip } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
-import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS } from '../../common/utils/string';
 import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../config';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { numberFormat } from '../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import SearchSection from '../../common/components/Header/SearchSection';
@@ -20,7 +20,6 @@ const Blocks = () => {
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const { isMobile } = useViewport()
-    let history = useHistory();
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -48,23 +47,20 @@ const Blocks = () => {
         <div className="container block-container">
             <SearchSection />
             <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="block-title" style={{ padding: '0px 5px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Icon className="highlight" icon="cubes" size={"2x"} />
-                            <p style={{ marginLeft: '12px' }} className="title">Blocks</p>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <div style={{marginBottom: 16}}>
+                        <div className="title header-title">
+                            Blocks
                         </div>
-                    </div>
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12}>
-                    <div className="block-summary">
-                       <Tag className="gray-tab-custom">Block #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} to #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)</Tag>
+                        <div className="sub-title">
+                            Block #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} to #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)
+                        </div>
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -76,42 +72,33 @@ const Blocks = () => {
                                     data={blocks}
                                     loading={loading}
                                 >
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Block</HeaderCell>
+                                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                                        <HeaderCell><span style={{marginLeft: 40}}>Block</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />
-                                                        <Link to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                        <span className="container-icon-left" style={{lineHeight: '28px'}}>
+                                                            <Icon icon="cubes" className="gray-highlight"/>
+                                                        </span>
+                                                        <span className="container-content-right">
+                                                            <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                            <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
+                                                        </span>
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Age</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAIBlock) => {
-                                                return (
-                                                    <div><Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} /> {millisecondToHMS(rowData.age || 0)}</div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.validator.hash,
-                                                            headCount: isMobile ? 5 : 12,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/address/${rowData.validator.hash}`) }
-                                                        })}
+                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.validator?.hash || ''}</Tooltip>}>
+                                                            <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>{rowData?.validator?.label || ''}</Link>
+                                                        </Whisper>
                                                     </div>
                                                 );
                                             }}
@@ -124,8 +111,8 @@ const Blocks = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            !rowData.transactions ? '0' :
-                                                                <Link to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
+                                                            !rowData.transactions ? <span className="color-white">0</span> :
+                                                            <Link className="color-white" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
                                                         }
                                                     </div>
                                                 );
@@ -157,12 +144,12 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Rewards</HeaderCell>
+                                        <HeaderCell>Rewards (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.rewards), 8)} KAI
+                                                        {numberFormat(weiToKAI(rowData.rewards), 8)}
                                                     </div>
                                                 );
                                             }}

@@ -12,10 +12,14 @@ const chartConfigDefault = {
             enabled: true,
             alpha: 30,
             beta: 0
-        }
+        },
+        backgroundColor: '#555770'
     },
     title: {
-        text: 'Proposers'
+        text: '',
+        style: {
+            "color": "white"
+        }
     },
     accessibility: {
         point: {

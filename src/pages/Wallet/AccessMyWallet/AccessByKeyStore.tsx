@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlexboxGrid, Panel, Col, Form, FormGroup, FormControl, Uploader, Alert, ControlLabel } from 'rsuite';
+import { FlexboxGrid, Panel, Col, Form, FormGroup, FormControl, Uploader, Alert, ControlLabel, Icon} from 'rsuite';
 import { Link, useHistory } from 'react-router-dom';
 import { useWalletStorage } from '../../../service/wallet';
 import Wallet from 'ethereumjs-wallet'
@@ -80,20 +80,21 @@ const AccessByKeyStore = () => {
 
     return (
         <div className="show-grid access-keystore-container">
-            <FlexboxGrid justify="center">
+            <FlexboxGrid justify="center" className="wrap">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
-                    <Panel shaded>
-                        <FlexboxGrid justify="center">
-                            <div className="title">ACCESS WALLET BY KEYSTORE FILE</div>
+                    <Panel shaded className="panel-bg-gray">
+                        <FlexboxGrid justify="start">
+                        <h3 className="color-white">ACCESS WALLET</h3>
                         </FlexboxGrid>
                         <FlexboxGrid justify="center">
-                            <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                 <Form fluid>
-                                    <FormGroup>
-                                        <ControlLabel>Enter your Password <span className="required-mask">(*)</span></ControlLabel>
+                                    <FormGroup style={{marginBottom:'12px'}}>
+                                        <ControlLabel className="color-white">Password</ControlLabel>
                                         <FormControl placeholder="Password*"
                                             name="password"
                                             type="password"
+                                            className="input"
                                             value={password}
                                             onChange={(value) => {
                                                 validatePassword(value)
@@ -109,7 +110,8 @@ const AccessByKeyStore = () => {
                                         onError={uploadFileFailed}
                                         onRemove={handleRemoveFile}
                                     >
-                                        <div>Upload Keystore File</div>
+
+                                        <div><Icon icon="upload" size={"lg"}/><span style={{marginLeft:12}}>Upload Keystore</span></div>
                                     </Uploader>
                                     <ErrMessage message={keystoreFileErr} />
                                 </Form>
@@ -117,7 +119,7 @@ const AccessByKeyStore = () => {
                                     <Link to="/access-wallet">
                                         <Button size="big" className="kai-button-gray">Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
+                                    <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

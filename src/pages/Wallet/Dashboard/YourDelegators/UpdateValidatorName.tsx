@@ -123,14 +123,15 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                     <Modal.Title>Update Validator Name</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form fluid>
+                    <Form fluid className="panel-bg-gray">
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                     <NumberInputFormat
                                         value={gasLimit}
                                         placeholder="Gas Limit"
+                                        className="input"
                                         onChange={(event) => {
                                             setGasLimit(event.value);
                                             validateGasLimit(event.value)
@@ -138,7 +139,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -153,11 +154,12 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>New Validator Name <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">New Validator Name (required)</ControlLabel>
                                     <div className="warning-note">You must pay 10000 KAI fees to change the validator name.</div>
                                     <FormControl placeholder="Validator Name"
                                         name="valName"
                                         value={valName}
+                                        className="input"
                                         onChange={(value) => {
                                             setValName(value)
                                             validateValName(value)
@@ -170,15 +172,15 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={update}>
-                        Update
-                    </Button>
                     <Button className="kai-button-gray"
                         onClick={() => {
                             setShowModel(false);
                             resetForm();
                         }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={update}>
+                        Update
                     </Button>
                 </Modal.Footer>
             </Modal>

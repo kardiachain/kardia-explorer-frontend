@@ -190,21 +190,21 @@ const DeployWithByteCode = () => {
 
     return (
         <div className="deploy-bytecode-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="logo-dmp" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Deploy Smart Contract By ByteCode</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Deploy Smart Contract By ByteCode
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                 <NumberInputFormat
                                     value={gasLimit}
                                     placeholder="Gas Limit"
+                                    className="input"
                                     onChange={(event) => {
                                         setGasLimit(event.value);
                                         validateGasLimit(event.value)
@@ -212,7 +212,7 @@ const DeployWithByteCode = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                 <SelectPicker
                                     className="dropdown-custom w100"
                                     data={gasPriceOption}
@@ -230,7 +230,7 @@ const DeployWithByteCode = () => {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                    <ControlLabel className="label">Byte Code <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Byte Code (required)</ControlLabel>
                                     <Button className="kai-button-gray pd0" onClick={() => { setByteCode('') }}>Clear</Button>
                                 </FlexboxGrid>
                                 <FormControl rows={20}
@@ -238,6 +238,7 @@ const DeployWithByteCode = () => {
                                     name="bytecode"
                                     componentClass="textarea"
                                     placeholder="Byte Code"
+                                    className="input"
                                     value={byteCode}
                                     onChange={(value) => {
                                         setByteCode(value)
@@ -248,7 +249,7 @@ const DeployWithByteCode = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle">
-                                    <ControlLabel className="label">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">ABI JSON (required)</ControlLabel>
                                     <div className="mb10">
                                         <Button className="kai-button-gray pd0"
                                             onClick={() => {
@@ -266,6 +267,7 @@ const DeployWithByteCode = () => {
                                     style={{ minWidth: 100 }}
                                     name="abi"
                                     componentClass="textarea"
+                                    className="input"
                                     placeholder="ABI"
                                     value={abi}
                                     onChange={(value) => {
@@ -277,7 +279,7 @@ const DeployWithByteCode = () => {
                             {
                                 construcFields && construcFields.length > 0 ? (
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} sm={24}>
-                                        <ControlLabel className="label">Constructor:</ControlLabel>
+                                        <ControlLabel className="color-white">Constructor:</ControlLabel>
                                         {
                                             construcFields.map((field: any, idx: any) => {
                                                 return (
@@ -310,7 +312,7 @@ const DeployWithByteCode = () => {
                                     <Divider />
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label">Your deployed contract:</ControlLabel>
+                                            <ControlLabel className="color-white">Your deployed contract:</ControlLabel>
                                             <InputGroup style={{ width: '100%' }}>
                                                 <FormControl
                                                     readOnly
@@ -351,7 +353,7 @@ const DeployWithByteCode = () => {
                     <Modal.Title>Transaction Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ReactJson src={{ txDetail }} />
+                    <ReactJson src={{ txDetail }} theme="ocean" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="ghost-button">

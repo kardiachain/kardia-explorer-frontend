@@ -61,27 +61,27 @@ const CreateByMnemonic = () => {
 
     return (
         <div className="show-grid create-container mnemonic">
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
-                    <Panel shaded>
-                        <FlexboxGrid justify="center">
-                            <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                <div className="title" style={{ textAlign: 'center' }}>CREATE WITH MNEMONIC PHRASE</div>
+            <FlexboxGrid justify="center" className="wrap">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
+                    <Panel shaded className="panel-bg-gray">
+                        <FlexboxGrid justify="start">
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                <h3 className="title color-white">MNEMONIC PHRASE</h3>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
                             readyAccessNow ? (
                                 <>
                                     <FlexboxGrid justify="center">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                            <div style={{ textAlign: 'center' }}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                            <div style={{ textAlign: 'center', marginTop: 32 }} className="color-white">
                                                 <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle' }} icon='check-circle' /> Create wallet success, you can access wallet now.
-                                        </div>
+                                            </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
                                                     <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
-                                                <Button size="big" onClick={accessWallet}>Access Now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWallet}>Access Now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -89,10 +89,10 @@ const CreateByMnemonic = () => {
                             ) : (
                                     <>
                                         <FlexboxGrid justify="center">
-                                            <FlexboxGrid.Item componentClass={Col} colspan={22} xs={14}>
-                                                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={14}>
+                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
                                             </FlexboxGrid.Item>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={22} xs={10}>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={10}>
                                                 <div style={{ textAlign: 'right' }} className="switch-phrase-option">
                                                     <Toggle
                                                         size="lg"
@@ -100,7 +100,7 @@ const CreateByMnemonic = () => {
                                                         checkedChildren="12"
                                                         unCheckedChildren="24"
                                                         onChange={handleSwitchOption}
-                                                    /> Value
+                                                    /> <span className="color-white">Value</span>
                                                 </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
@@ -112,10 +112,7 @@ const CreateByMnemonic = () => {
                                                         componentClass="textarea"
                                                         value={mnemonic}
                                                         readOnly
-                                                        style={{
-                                                            fontWeight: 600,
-                                                            color: '#9e3144'
-                                                        }}
+                                                        className="input"
                                                     />
                                                     <div style={{ textAlign: 'right', marginTop: 10 }}>
                                                         <Button className="kai-button-gray"
@@ -133,12 +130,12 @@ const CreateByMnemonic = () => {
                                                 </FormGroup>
                                             </Form>
                                         </div>
-                                        <div>Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
+                                        <div className="color-white">Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
                                                 <Button size="big" className="kai-button-gray">Back</Button>
                                             </Link>
-                                            <Button size="big" onClick={createWallet}>Create wallet</Button>
+                                            <Button className="btn-access" size="big" onClick={createWallet}>Create wallet</Button>
                                         </div>
                                     </>
                                 )

@@ -147,66 +147,68 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 data={yourValidators}
                 hover={false}
                 wordWrap
-                rowHeight={() => 60}
+                rowHeight={() => 80}
             >
-                <Column flexGrow={2} minWidth={isMobile ? 110 : 150} verticalAlign="middle">
-                    <HeaderCell>Validator</HeaderCell>
+                <Column flexGrow={2} minWidth={250} verticalAlign="middle">
+                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <Link to={`/validator/${rowData?.validatorAddr}`}>
-                                    <div>
+                                <div>
+                                    <div style={{ display: 'inline-block', width: 50 }}>
                                         <StakingIcon
                                             color={rowData?.role?.classname}
                                             character={rowData?.role?.character}
-                                            size='small' style={{ marginRight: 5 }} />
-                                        <span className="validator-name">{rowData.validatorName}</span>
-                                        <div className="validator-address">
-                                            {renderHashStringAndTooltip(
-                                                rowData.validatorAddr,
-                                                isMobile ? 10 : 30,
-                                                4,
-                                                true
-                                            )}
-                                        </div>
+                                            size='normal' style={{ marginRight: 5 }} />
                                     </div>
-                                </Link>
+                                    <div className="validator-info color-white">
+                                        <div className="validator-name color-white">{rowData.validatorName}</div>
+                                        {renderHashStringAndTooltip(
+                                            rowData.validatorAddr,
+                                            isMobile ? 10 : 15,
+                                            4,
+                                            true
+                                        )}
+                                    </div>
+                                </div>
+                            </Link>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={150} verticalAlign="middle" align="center">
-                    <HeaderCell>Staked</HeaderCell>
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Staked (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={110} verticalAlign="middle" align="center">
-                    <HeaderCell>Unbonded</HeaderCell>
+                <Column flexGrow={1} minWidth={110} verticalAlign="middle">
+                    <HeaderCell>Unbonded (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={110} verticalAlign="middle" align="center">
-                    <HeaderCell>Withdrawable</HeaderCell>
+                <Column flexGrow={1} minWidth={110} verticalAlign="middle">
+                    <HeaderCell>Withdrawable (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.withdrawableAmount), 2)} KAI</div>
+                                <div>{numberFormat(weiToKAI(rowData.withdrawableAmount), 2)}</div>
                             )
                         }}
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={300} verticalAlign="middle">
-                    <HeaderCell>Action</HeaderCell>
+                    <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -241,10 +243,10 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 <Modal.Header>
                     <Modal.Title>Undelegate Your Staked</Modal.Title>
                     <div className="undelegate-note" style={{ marginTop: 20 }}>* After undelegated, the number of your current rewards will be an automatic withdrawal.</div>
-                    <div className="undelegate-note">* The number of undelegated amount will be added to withdrawable amount in the next 24 hours.</div>
+                    <div className="undelegate-note">* The number of undelegated amount will be added to withdrawable amount in the next 7 day.</div>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form fluid>
+                    <Form fluid className="panel-bg-gray">
                         <FlexboxGrid>
                             <RadioGroup
                                 name="delegateOption"
@@ -254,9 +256,9 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                     setUnstakeAmountErr('');
                                     setUnstakeAmount('');
                                 }}>
-                                <Radio value="part">Enter Amount</Radio>
-                                <Radio value="all">
-                                    <span>Maximun Amount</span>
+                                <Radio value="part" className="color-white">Enter Amount</Radio>
+                                <Radio value="all" className="color-white">
+                                    <span>Maximum Amount</span>
                                     <Helper style={{ marginLeft: 5 }} info={HelperMessage.UndelegateAll} />
                                 </Radio>
                             </RadioGroup>
@@ -264,11 +266,12 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                 delegateOption === 'part' ? (
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                         <FlexboxGrid justify="space-between" align="middle">
-                                            <ControlLabel>Amount (KAI) <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Amount (KAI) (required)</ControlLabel>
                                         </FlexboxGrid>
                                         <NumberInputFormat
                                             value={unStakeAmount}
                                             placeholder="Enter Your Amount"
+                                            className="input"
                                             onChange={(event) => {
                                                 setUnstakeAmount(event.value);
                                                 validateUnStakeAmount(event.value)
@@ -281,14 +284,14 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={undelegate}>
-                        Undelegate
-                    </Button>
                     <Button className="kai-button-gray"
                         onClick={() => {
                             setShowUndelegateModel(false)
                         }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={undelegate}>
+                        Undelegate
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -302,11 +305,11 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     <div className="confirm-letter" style={{ textAlign: 'center' }}>Are you sure you want to withdraw your staked token.</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={widthdraw}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmWithdrawModal(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={widthdraw}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

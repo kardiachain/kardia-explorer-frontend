@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Icon, List, Modal, Nav, Panel, SelectPicker, Tag } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, Nav, Panel, SelectPicker, Tag } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -165,7 +165,7 @@ const DelegatorCreate = () => {
 
     const resetFrom = () => {
         setDelAmount('');
-        setGasLimit(21000);
+        setGasLimit(gasLimitDefault);
         setGasPrice(1);
         setErrorMessage('');
     }
@@ -175,15 +175,13 @@ const DelegatorCreate = () => {
             <FlexboxGrid>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                     <div className="val-info-container">
-                        <div className="block-title" style={{ padding: '0px 5px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="gear-circle" />
-                                <p style={{ marginLeft: '12px' }} className="title">Delegate</p>
+                        <div style={{ marginBottom: 16 }}>
+                            <div className="title header-title">
+                                Delegate
                             </div>
                         </div>
-                        <Panel shaded>
+                        <Panel shaded className="panel-bg-gray">
                             <List bordered={false}>
-
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
@@ -246,8 +244,8 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
                                                 <span>Commission</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -259,8 +257,8 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
                                                 <span>Max Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -272,8 +270,8 @@ const DelegatorCreate = () => {
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                             <div className="property-title">
-                                                <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
                                                 <span>Max Change Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxChangeRate} />
                                             </div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -335,7 +333,7 @@ const DelegatorCreate = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                             <div className="property-content">
                                                 {
-                                                    validator?.jailed ? <Tag color="red">Jailed</Tag> : <Tag color="green">Active</Tag>
+                                                    validator?.jailed ? <Tag color="red" className="tab tab-failed">Jailed</Tag> : <Tag className="tab tab-success" color="green">Active</Tag>
                                                 }
                                             </div>
                                         </FlexboxGrid.Item>
@@ -360,10 +358,11 @@ const DelegatorCreate = () => {
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                                         <NumberInputFormat
                                                             value={gasLimit}
                                                             placeholder="Gas Limit"
+                                                            className="input"
                                                             onChange={(event) => {
                                                                 setGasLimit(event.value);
                                                                 validateGasLimit(event.value)
@@ -371,7 +370,7 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasLimitErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                                         <SelectPicker
                                                             className="dropdown-custom"
                                                             data={gasPriceOption}
@@ -386,10 +385,11 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasPriceErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel>Delegation amount  <span className="required-mask">(*)</span></ControlLabel>
+                                                        <ControlLabel className="color-white">Delegation amount (required)</ControlLabel>
                                                         <NumberInputFormat
                                                             value={delAmount}
-                                                            placeholder="Ex. 25,000"
+                                                            placeholder="Must be at least 25,000 KAI"
+                                                            className="input"
                                                             onChange={(event) => {
                                                                 setDelAmount(event.value);
                                                                 validateDelAmount(event.value)
@@ -411,7 +411,7 @@ const DelegatorCreate = () => {
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                     <div className="del-list-container">
-                        <Panel shaded>
+                        <Panel shaded className="panel-bg-gray">
                             <div className="custom-nav">
                                 <Nav
                                     appearance="subtle"
@@ -522,11 +522,11 @@ const DelegatorCreate = () => {
                     </List>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} onClick={confirmDelegate}>
-                        Confirm
-                    </Button>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} onClick={confirmDelegate}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>

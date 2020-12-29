@@ -42,13 +42,14 @@
 .warning-note {
     font-size: 12px;
     font-style: italic;
-    color: red;
+    color: #FF8585;
 }
 
 .edit-val-button {
-    color: #000000;
+    color: #ffffff;
     cursor: pointer;
     margin-left: 10px;
+    background: transparent;
 }
 
 .unjail-note {

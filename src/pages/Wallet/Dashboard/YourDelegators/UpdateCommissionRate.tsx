@@ -144,14 +144,15 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                     <Modal.Title>Update Validator Commmission</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form fluid>
+                    <Form fluid  className="panel-bg-gray">
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Limit <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                     <NumberInputFormat
                                         value={gasLimit}
                                         placeholder="Gas Limit"
+                                        className="input"
                                         onChange={(event) => {
                                             setGasLimit(event.value);
                                             validateGasLimit(event.value)
@@ -159,7 +160,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -174,9 +175,9 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel>New Commission Rate (%)  <span className="required-mask">(*)</span></ControlLabel>
+                                    <ControlLabel className="color-white">New Commission Rate (%)  (required)</ControlLabel>
                                     <div className="latest-update-validator">
-                                        <span>Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
+                                        <span className="color-white">Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
                                     </div>
                                     {
                                         !canUpdate ? <div className="warning-note">* The next update only can perform after 24 hours since the last update.</div> : <></>
@@ -184,6 +185,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <NumberInputFormat
                                         value={commissionRate}
                                         placeholder="Commission Rate"
+                                        className="input"
                                         onChange={(event) => {
                                             setCommissionRate(event.value);
                                             validateCommissionRate(event.value)
@@ -195,11 +197,11 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button loading={isLoading} disable={!canUpdate} onClick={update}>
-                        Update
-                    </Button>
                     <Button className="kai-button-gray" onClick={cancelEdit}>
                         Cancel
+                    </Button>
+                    <Button loading={isLoading} disable={!canUpdate} onClick={update}>
+                        Update
                     </Button>
                 </Modal.Footer>
             </Modal>

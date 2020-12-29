@@ -6,28 +6,28 @@ const AccessMyWallet = () => {
     let history = useHistory();
     return (
         <div className="access-wallet-container">
-            <div className="show-grid">
-                <FlexboxGrid justify="center">
+                <FlexboxGrid justify="center" align="middle" className="wrap">
                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
-                        <Panel header={<div className="header">Access Wallet</div>} shaded>
+                        <Panel class="shadow">
+                            <h2 className="title">Access wallet</h2>
                             <div className="panel-body">
-                                <Button className="access-button" size="lg" block onClick={() => { history.push('/access-private-key') }}>
-                                    <Icon icon="unlock-alt" className="highlight" /> By Private Key
+                                <Button size="lg" block onClick={() => { history.push('/access-private-key') }}>
+                                    <Icon size={"lg"} icon="unlock-alt" style={{color:'white'}} />Private Key
                                 </Button>
-                                <Button className="access-button" size="lg" block onClick={() => { history.push('/access-keystore') }}>
-                                    <Icon icon="file-code-o" className="highlight" /> By Keystore File
+                                <Button size="lg" block onClick={() => { history.push('/access-keystore') }}>
+                                    <Icon size={"lg"} icon="file-code-o" style={{color:'white'}} />Keystore File
                                 </Button>
-                                <Button className="access-button" size="lg" block onClick={() => { history.push('./access-mnemonic-pharse')}}>
-                                    <Icon icon="list" className="highlight" /> By Mnemonic Phrase
+                                <Button size="lg" block onClick={() => { history.push('./access-mnemonic-pharse')}}>
+                                    <Icon size={"lg"} icon="list" style={{color:'white'}} />Mnemonic Phrase
                                 </Button>
                             </div>
-                            <div>
-                                Do not have a wallet? <Link to="/create-wallet" style={{color: 'rgb(158, 49, 68)', fontWeight: 600}}> Create A New Wallet</Link>
+                            <hr/>
+                            <div style={{color:'white'}}>
+                                Do not have a wallet? <Link to="/create-wallet" className="creatOne"> Create one</Link>
                             </div>
                         </Panel>
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
-            </div>
         </div>
     );
 }
