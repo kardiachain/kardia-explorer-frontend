@@ -3,11 +3,14 @@
     line-height:36px;
     font-weight: 600;
     letter-spacing: 1.2px;
+    color: var(--white-color);
 }
 
 .document-content{
     font-size:16px;
     line-height:28px;
+    color: var(--white-color);
+
 }
 
 .get-started{
@@ -20,6 +23,7 @@
     align-items: center;
     flex-direction: column;
     text-align: center;
+    
 }
 
 .step-title{
@@ -28,6 +32,8 @@
     line-height:28px;
     letter-spacing: 1.2px;
     text-align: center;
+    color: var(--white-color);
+
 }
 
 .step-content{
@@ -35,6 +41,8 @@
     text-align: center;
     margin-top:0;
     line-height:28px;
+    color: var(--white-color);
+
 }
 
 .step-grid{
@@ -52,6 +60,14 @@
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.05) !important;
 }
+
+.rs-panel-body{
+    background: var(--bg-color);
+  }
+
+  .rs-panel-heading{
+      color: var(--white-color);
+  }
 
 
 /* mobile screen  */

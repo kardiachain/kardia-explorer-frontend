@@ -11,6 +11,7 @@ import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer
 import './txList.css'
 import SearchSection from '../../common/components/Header/SearchSection';
 import { numberFormat } from '../../common/utils/number';
+import { StakingIcon } from '../../common/components/IconCustom';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -35,13 +36,13 @@ const TxList = () => {
     }, [page, size, block])
 
     useEffect(() => {
-        if(!block) {
+        if (!block) {
             const loop = setInterval(async () => {
                 const rs = await getTransactions(page, size);
                 setTransactionList(rs.transactions)
                 setTotalTxs(rs.totalTxs)
             }, TIME_INTERVAL_MILISECONDS)
-    
+
             return () => clearInterval(loop)
         }
     }, [page, size, block])
@@ -61,16 +62,21 @@ const TxList = () => {
     return (
         <div className="container txs-container">
             <SearchSection />
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="exchange" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Transactions</p>
-                </div>
-            </div>
-            <div>{block ? `Block number: #${block}` : ''}</div>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <Panel shaded>
+                    <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Transactions
+                        </div>
+                        <div className="sub-title">
+                            {numberFormat(totalTxs)} transactions found
+                        </div>
+                    </div>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
+            <FlexboxGrid justify="space-between">
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
@@ -82,20 +88,27 @@ const TxList = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Hash</HeaderCell>
+                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="exchange" style={{ marginRight: '5px' }} />}
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.txHash,
-                                                            headCount: isMobile ? 5 : 12,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { history.push(`/tx/${rowData.txHash}`) }
-                                                        })}
+                                                        <span className="container-icon-left">
+                                                            <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                        </span>
+                                                        <span className="container-content-right">
+                                                            {
+                                                                renderHashToRedirect({
+                                                                    hash: rowData.txHash,
+                                                                    headCount: isMobile ? 5 : 10,
+                                                                    tailCount: 4,
+                                                                    showTooltip: false,
+                                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                                })
+                                                            }
+                                                            <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
+                                                        </span>
                                                     </div>
                                                 );
                                             }}
@@ -107,21 +120,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="cubes" style={{ marginRight: '5px' }} />}
-                                                        <Link to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Age</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {isMobile ? <></> : <Icon className="highlight" icon="clock-o" style={{ marginRight: '5px' }} />}
-                                                        {millisecondToHMS(rowData.age || 0)}
+                                                        <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -135,7 +134,7 @@ const TxList = () => {
                                                     <div>
                                                         {renderHashToRedirect({
                                                             hash: rowData.from,
-                                                            headCount: isMobile ? 5 : 12,
+                                                            headCount: isMobile ? 5 : 10,
                                                             tailCount: 4,
                                                             showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.from}`) }
@@ -154,49 +153,55 @@ const TxList = () => {
                                                         {
                                                             !rowData.toSmcAddr ? (
                                                                 <>
-                                                                {isMobile ? <></> : <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} />}
-                                                                {renderHashToRedirect({
-                                                                    hash: rowData.to,
-                                                                    headCount: isMobile ? 5 : 12,
-                                                                    tailCount: 4,
-                                                                    showTooltip: true,
-                                                                    callback: () => { history.push(`/address/${rowData.to}`) }
-                                                                })}
+                                                                    {renderHashToRedirect({
+                                                                        hash: rowData.to,
+                                                                        headCount: isMobile ? 5 : 12,
+                                                                        tailCount: 4,
+                                                                        showTooltip: true,
+                                                                        callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                    })}
                                                                 </>
                                                             ) : (
-                                                                <>
-                                                                {isMobile ? <></> : <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />}
-                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link style={{fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
-                                                                </Whisper>
-                                                                </>
+                                                                    <>
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
+                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                        </Whisper>
+                                                                        {
+                                                                            rowData.isInValidatorsList ? (
+                                                                                <StakingIcon
+                                                                                    color={rowData?.role?.classname}
+                                                                                    character={rowData?.role?.character}
+                                                                                    size='small' style={{ marginLeft: 5 }} />
+                                                                            ) : <></>
+                                                                        }
+                                                                    </>
 
-                                                            )
+                                                                )
                                                         }
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
-                                        <HeaderCell>Value</HeaderCell>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                        <HeaderCell>Value (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.value))} KAI
+                                                        {numberFormat(weiToKAI(rowData.value))}
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} align="center" verticalAlign="middle">
-                                        <HeaderCell>Tx Fee</HeaderCell>
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.txFee))} KAI
+                                                        {numberFormat(weiToKAI(rowData.txFee))}
                                                     </div>
                                                 );
                                             }}

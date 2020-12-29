@@ -15,89 +15,90 @@ const TransactionSection = ({ transactionList = [] }: {
     const { isMobile } = useViewport();
     const history = useHistory();
     return (
-        <Panel shaded>
+        <Panel shaded className="panel-bg-gray">
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Table
                         rowHeight={70}
-                        height={420}
+                        height={400}
                         hover={false}
                         data={transactionList}
                         wordWrap
                         autoHeight={isMobile ? true : false}
                     >
-                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0}>
-                            <HeaderCell>Tx Hash</HeaderCell>
+                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                            <HeaderCell><span style={{marginLeft: 40}}>Tx Hash</span></HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <div>
-                                                <Icon className="highlight" icon="exchange" style={{ marginRight: '10px' }} />
+                                            <span className="container-icon-left">
+                                                <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                            </span>
+                                            <span className="container-content-right" style={{ display: 'inline-block' }}>
                                                 {renderHashToRedirect({
                                                     hash: rowData.txHash,
                                                     headCount: isMobile ? 4 : 8,
                                                     showTooltip: false,
                                                     callback: () => { history.push(`/tx/${rowData.txHash}`) }
                                                 })}
-                                            </div>
-                                            <div>{millisecondToHMS(rowData.age || 0)}</div>
+                                                <div className="fs-12">{millisecondToHMS(rowData.age || 0)}</div>
+                                            </span>
                                         </div>
                                     );
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
+                        <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
                             <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            <div style={{ marginBottom: '5px' }}>
-                                                From:
+                                            <span className="container-content-right">
+                                                <span style={{ marginRight: 5, fontSize: 12 }}>From:</span>
                                                 {renderHashToRedirect({
-                                                hash: rowData.from,
-                                                headCount: isMobile ? 4 : 8,
-                                                tailCount: 4,
-                                                showTooltip: false,
-                                                callback: () => { history.push(`/address/${rowData.from}`) }
-                                            })}
-                                            </div>
-                                            <div>
-                                                {
-                                                    !rowData.toSmcAddr ? (
-                                                        <>
-                                                            <Icon className="highlight" icon="arrow-circle-right" style={{ marginRight: '5px' }} /><span style={{marginRight: 5}}> To:</span>
-                                                            {renderHashToRedirect({
-                                                                hash: rowData.to,
-                                                                headCount: isMobile ? 4 : 8,
-                                                                tailCount: 4,
-                                                                showTooltip: false,
-                                                                callback: () => { history.push(`/address/${rowData.to}`) }
-                                                            })}
-                                                        </>
-                                                    ) : (
+                                                    hash: rowData.from,
+                                                    headCount: isMobile ? 4 : 8,
+                                                    tailCount: 4,
+                                                    showTooltip: false,
+                                                    callback: () => { history.push(`/address/${rowData.from}`) }
+                                                })}
+                                                <div>
+                                                    <span style={{ marginRight: 5, fontSize: 12 }}>To:</span>
+                                                    {
+                                                        !rowData.toSmcAddr ? (
                                                             <>
-                                                                <Icon className="highlight" icon="file-text-o" style={{ marginRight: '5px' }} />To:
+                                                                {renderHashToRedirect({
+                                                                    hash: rowData.to,
+                                                                    headCount: isMobile ? 4 : 8,
+                                                                    tailCount: 4,
+                                                                    showTooltip: false,
+                                                                    callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                })}
+                                                            </>
+                                                        ) : (
+                                                            <>
                                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link style={{marginLeft: 5, fontSize: 12, fontWeight: 'bold'}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                    <Link className="color-white" style={{ fontSize: 12}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                 </Whisper>
                                                             </>
                                                         )
-                                                }
-                                            </div>
+                                                    }
+                                                </div>
+                                            </span>
                                         </div>
                                     );
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="right" minWidth={isMobile ? 100 : 0} flexGrow={1}>
-                            <HeaderCell>Value</HeaderCell>
+                        <Column align="right" verticalAlign="middle" minWidth={isMobile ? 100 : 0} flexGrow={1}>
+                            <HeaderCell>Value (KAI)</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
-                                            {numberFormat(weiToKAI(rowData.value))} KAI
+                                            {numberFormat(weiToKAI(rowData.value))}
                                         </div>
                                     );
                                 }}

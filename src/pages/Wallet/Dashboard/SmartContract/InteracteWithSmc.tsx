@@ -3,11 +3,13 @@ import ReactJson from 'react-json-view';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Modal, Panel, SelectPicker, Steps, Uploader } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../../../common/components/Button';
+import NumberInputFormat from '../../../../common/components/FormInput';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
-import { ErrorMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { onlyInteger } from '../../../../common/utils/number';
-import { copyToClipboard, renderHashToRedirect } from '../../../../common/utils/string';
+import { copyToClipboard } from '../../../../common/utils/string';
 import { addressValid, jsonValid } from '../../../../common/utils/validate';
 import { invokeFunctionFromContractAbi } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
@@ -32,13 +34,11 @@ const InteracteWithSmc = () => {
     const [gasLimitErr, setGasLimitErr] = useState('')
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
-    const [interactErr, setInteractErr] = useState('')
     const [txResult, setTxResult] = useState('')
     const [showResult, setShowResult] = useState(false)
     const [fileList, setListFile] = useState([] as FileType[]);
     const [fileUploadErr, setFileUploadErr] = useState('');
     const [interactType, setInteractType] = useState('') // interact with smc had 2 type: call or send
-    const [txHash, setTxHash] = useState('')
     const [showTxDetailModal, setShowTxDetailModal] = useState(false)
     const [payableAmount, setPayableAmount] = useState(0)
     const [payableFunction, setPayableFunction] = useState(false)
@@ -105,10 +105,10 @@ const InteracteWithSmc = () => {
         // TODO interact with smart contract
         const abiJson = JSON.parse(abi)
         const smcFuncList = abiJson.length > 0 ? abiJson.filter((item: any) => item.type === "function").map((item: any) => {
-                return {
-                    label: item.name,
-                    value: item
-                }
+            return {
+                label: item.name,
+                value: item
+            }
         }) : [];
         setSmcFuncList(smcFuncList);
         setCurrentStep(1)
@@ -117,7 +117,6 @@ const InteracteWithSmc = () => {
     const executeFunction = async () => {
         setLoadingExecute(true)
         setShowResult(false)
-        setInteractErr('')
         try {
             const txObject = {
                 contractAddress: smcAddr,
@@ -132,34 +131,44 @@ const InteracteWithSmc = () => {
             } as SMCInvokeObject
 
             setInteractType(txObject.isPure ? "call" : "send")
-            const invokeTx = await invokeFunctionFromContractAbi(txObject);
+            const result = await invokeFunctionFromContractAbi(txObject);
             if (txObject.isPure) {
-                setTxResult(invokeTx);
+                setTxResult(result);
                 setShowResult(true)
             } else {
-                if (invokeTx?.status === 1) {
-                    Alert.success("Interact with smart contract success.")
+                if (result?.status === 1) {
+                    NotificationSuccess({
+                        description: NotifiMessage.TransactionSuccess,
+                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                        seeTxdetail: true
+                    });
                 } else {
-                    const errMsg = invokeTx && invokeTx.gasUsed === Number(gasLimit) ? 'Invoke to smart contract fail with error: Out of gas' : 'Invoke to smart contract failed.'
-                    setInteractErr(errMsg)
+                    const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas` : `${NotifiMessage.TransactionError}`
+                    NotificationError({
+                        description: errMsg,
+                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                        seeTxdetail: true
+                    });
                 }
-                setTxResult(invokeTx);
+                setTxResult(result);
                 setShowResult(true)
-                setTxHash(invokeTx.transactionHash)
             }
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setInteractErr(`Invoke to smart contract failed: ${errJson?.error?.message}`)
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                })
             } catch (error) {
-                setInteractErr('Invoke to smart contract failed.')
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError}`
+                })
             }
         }
         setLoadingExecute(false)
     }
 
     const selectFunction = (value: any) => {
-        setInteractErr('')
         setShowResult(false)
         setPayableFunction(false)
         try {
@@ -175,7 +184,7 @@ const InteracteWithSmc = () => {
                     })
                 )
             }
-            if(value.stateMutability === 'payable') {
+            if (value.stateMutability === 'payable') {
                 setPayableFunction(true)
             }
             setSmcFuncActive(value)
@@ -230,13 +239,11 @@ const InteracteWithSmc = () => {
         setGasLimitErr('')
         setGasPrice(1)
         setGasPriceErr('')
-        setInteractErr('')
         setTxResult('')
         setShowResult(false)
         setListFile([] as FileType[])
         setFileUploadErr('')
         setInteractType('')
-        setTxHash('')
     }
 
     const handelInputFieldOnchange = (value: any, idx: any) => {
@@ -247,20 +254,19 @@ const InteracteWithSmc = () => {
 
     return (
         <div className="interact-smc-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="related-map" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Interact With Smart Contract</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Interact With Smart Contract
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 20 }}>
                                 <Steps current={currentStep}>
-                                    <Steps.Item title="Select Your Contract" />
-                                    <Steps.Item title="Invoke Contract" />
+                                    <Steps.Item className="color-white" title="Select Your Contract" />
+                                    <Steps.Item className="color-white" title="Invoke Contract" />
                                 </Steps>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
@@ -269,22 +275,19 @@ const InteracteWithSmc = () => {
                                 <>
                                     <FlexboxGrid style={{ marginBottom: 20 }}>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="label">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
-                                            <FormControl name="gaslimit"
-                                                placeholder="Gas Limit"
+                                            <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                            <NumberInputFormat
                                                 value={gasLimit}
-                                                onChange={(value) => {
-                                                    if (onlyInteger(value)) {
-                                                        setGasLimit(value);
-                                                        validateGasLimit(value)
-                                                    }
-                                                }}
-                                                width={50}
-                                            />
+                                                placeholder="Gas Limit"
+                                                className="input"
+                                                onChange={(event) => {
+                                                    setGasLimit(event.value);
+                                                    validateGasLimit(event.value)
+                                                }} />
                                             <ErrMessage message={gasLimitErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="label">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                             <SelectPicker
                                                 className="dropdown-custom w100"
                                                 data={gasPriceOption}
@@ -301,9 +304,10 @@ const InteracteWithSmc = () => {
                                     </FlexboxGrid>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginBottom: 20 }}>
-                                            <ControlLabel className="label">Contract Address <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">Contract Address (required)</ControlLabel>
                                             <FormControl name="smcAddr"
                                                 placeholder="Input Contract Address"
+                                                className="input"
                                                 value={smcAddr}
                                                 onChange={(value) => {
                                                     setSmcAddr(value)
@@ -313,7 +317,7 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={smcAddrErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label">{'Or Upload Your <contract.json> file'} <span className="required-mask">(*)</span></ControlLabel>
+                                            <ControlLabel className="color-white">{'Or Upload Your <contract.json> file'} (required)</ControlLabel>
                                             <Uploader
                                                 action="//jsonplaceholder.typicode.com/posts/"
                                                 draggable
@@ -323,31 +327,32 @@ const InteracteWithSmc = () => {
                                                 onRemove={handleRemoveFile}>
                                                 <FormControl name="smcAddr"
                                                     style={{ padding: '11px 12px' }}
-                                                    placeholder="Upload Your <contract.json> file:"
+                                                    placeholder="Upload Your <contract.json> file"
                                                 />
                                             </Uploader>
                                             <ErrMessage message={fileUploadErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                             <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                                    <ControlLabel className="label">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
-                                                    <div>
-                                                        <Button className="kai-button-gray pd0"
-                                                            onClick={() => {
-                                                                setAbi('')
-                                                                setAbiErr('')
-                                                            }}>Clear</Button>
-                                                        <Button className="kai-button-gray pd0"
-                                                            onClick={() => {
-                                                                copyToClipboard(abi, onSuccess)
-                                                            }}>Copy</Button>
-                                                        <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
-                                                    </div>
+                                                <ControlLabel className="color-white">ABI JSON (required)</ControlLabel>
+                                                <div>
+                                                    <Button className="kai-button-gray pd0"
+                                                        onClick={() => {
+                                                            setAbi('')
+                                                            setAbiErr('')
+                                                        }}>Clear</Button>
+                                                    <Button className="kai-button-gray pd0"
+                                                        onClick={() => {
+                                                            copyToClipboard(abi, onSuccess)
+                                                        }}>Copy</Button>
+                                                    <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
+                                                </div>
                                             </FlexboxGrid>
                                             <FormControl rows={10}
                                                 name="abi"
                                                 componentClass="textarea"
                                                 placeholder="ABI"
+                                                className="input"
                                                 value={abi}
                                                 onChange={(value) => {
                                                     setAbi(value)
@@ -376,7 +381,7 @@ const InteracteWithSmc = () => {
                                             </Button>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label">Interact With Contract</ControlLabel>
+                                            <ControlLabel className="color-white">Interact With Contract</ControlLabel>
                                             <SelectPicker
                                                 placeholder="Select a function"
                                                 data={smcFuncList}
@@ -391,7 +396,7 @@ const InteracteWithSmc = () => {
                                         {
                                             paramsFields && paramsFields.length > 0 ? (
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                    <ControlLabel className="label">Params: </ControlLabel>
+                                                    <ControlLabel className="color-white">Params: </ControlLabel>
                                                     {
                                                         paramsFields.map((field: any, idx: any) => {
                                                             return (
@@ -401,6 +406,7 @@ const InteracteWithSmc = () => {
                                                                         marginBottom: 10,
                                                                     }}
                                                                     type="text"
+                                                                    className="input"
                                                                     name={field.name}
                                                                     placeholder={`${field.type} ${field.name}`}
                                                                     value={field.value}
@@ -414,40 +420,35 @@ const InteracteWithSmc = () => {
                                             ) : <></>
                                         }
                                         {
-                                            payableFunction ? 
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                <ControlLabel className="label">Payable Amount: </ControlLabel>
-                                                <FormControl
-                                                    name="payableAmount"
-                                                    placeholder="Payable Amount"
-                                                    value={payableAmount}
-                                                    onChange={(value) => {
-                                                        if (onlyInteger(value)) {
-                                                            setPayableAmount(value)
+                                            payableFunction ?
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                                    <ControlLabel className="label color-white">Payable Amount: </ControlLabel>
+                                                    <FormControl
+                                                        name="payableAmount"
+                                                        placeholder="Payable Amount"
+                                                        className="input"
+                                                        value={payableAmount}
+                                                        onChange={(value) => {
+                                                            if (onlyInteger(value)) {
+                                                                setPayableAmount(value)
+                                                            }
                                                         }
-                                                    }
-                                                } />
-                                            </FlexboxGrid.Item> : <></>
+                                                        } />
+                                                </FlexboxGrid.Item> : <></>
                                         }
 
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             <Button size="big" style={{ width: '250px' }} loading={loadingExecute} onClick={executeFunction}>Execute</Button>
-                                            <ErrMessage message={interactErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
                                             {
                                                 showResult ? <>
                                                     {
                                                         interactType === "call" ?
-                                                            <ControlLabel className="label"><ReactJson name={false} src={{ txResult }} /></ControlLabel> :
+                                                            <ControlLabel className="label"><ReactJson name={false} src={{ txResult }} theme="ocean" /></ControlLabel> :
                                                             (
                                                                 interactType === "send" ? (
                                                                     <>
-                                                                        {
-                                                                            txHash ? <div style={{ marginBottom: '20px', wordBreak: 'break-all' }}>
-                                                                                Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}
-                                                                            </div> : <></>
-                                                                        }
                                                                         <Button className="kai-button-gray" onClick={() => { setShowTxDetailModal(true) }}>
                                                                             <Icon icon="file-text-o" style={{ marginRight: 10 }} />View Transaction Details
                                                                         </Button>
@@ -471,7 +472,7 @@ const InteracteWithSmc = () => {
                     <Modal.Title>Transaction Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ReactJson name={false} src={{ txResult }} />
+                    <ReactJson name={false} src={{ txResult }} theme="ocean" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="kai-button-gray">

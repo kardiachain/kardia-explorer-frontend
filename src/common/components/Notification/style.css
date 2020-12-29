@@ -1,0 +1,11 @@
+.rs-notification-item-content {
+    min-width: 300px;
+}
+
+.see-tx-detail {
+    font-weight: 600;
+    color: var(--hyperlink-color);
+    font-size: 12px;
+    display: inline-block;
+    cursor: pointer;
+}

@@ -29,8 +29,8 @@ import Validators from './pages/Staking';
 import AddressDetail from './pages/AddressDetail';
 import CreateByMnemonic from './pages/Wallet/CreateNewWallet/CreateByMnemonic';
 import SearchNotFound from './pages/searchNotFound';
-import Documentation from './pages/Documentation';
 import AccessByMnemonicPhrase from './pages/Wallet/AccessMyWallet/AccessByMnemonic';
+import AccountList from './pages/AccountList';
 
 class App extends Component {
   render() {
@@ -103,8 +103,11 @@ class App extends Component {
                 <Route path="/search-not-found">
                   <SearchNotFound />
                 </Route>
-                <Route path="/documentation">
+                {/* <Route path="/documentation">
                   <Documentation />
+                </Route> */}
+                <Route path="/accounts">
+                  <AccountList />
                 </Route>
                 <Route path="/">
                   <Home />

@@ -9,6 +9,7 @@ import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessa
 import { ErrorMessage } from '../../../common/constant/Message';
 import { privateKeyValid } from '../../../common/utils/validate';
 import Button from '../../../common/components/Button';
+import { ControlLabel } from 'rsuite';
 
 const AccessByPrivateKey = () => {
     let history = useHistory();
@@ -55,19 +56,21 @@ const AccessByPrivateKey = () => {
 
     return (
         <div className="show-grid access-privatekey-container">
-            <FlexboxGrid justify="center">
+            <FlexboxGrid justify="center" className="wrap">
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
-                    <Panel shaded>
-                        <FlexboxGrid justify="center">
-                            <div className="title">ACCESS WALLET BY PRIVATE KEY</div>
+                    <Panel shaded className="panel-bg-gray">
+                        <FlexboxGrid justify="start">
+                            <h3 className="color-white">ACCESS WALLET</h3>
                         </FlexboxGrid>
                         <FlexboxGrid justify="center">
-                            <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                 <Form fluid>
                                     <FormGroup>
-                                        <FormControl placeholder="Private key*"
+                                        <ControlLabel className="color-white">Private Key (required)</ControlLabel>
+                                        <FormControl placeholder="Ex. 0x..."
                                             name="password"
                                             type="password"
+                                            className="input"
                                             value={privateKey}
                                             onChange={(value) => {
                                                 validatePrivatekey(value)
@@ -80,7 +83,7 @@ const AccessByPrivateKey = () => {
                                     <Link to="/access-wallet">
                                         <Button size="big" className="kai-button-gray" >Back</Button>
                                     </Link>
-                                    <Button loading={loadingBtnSubmit} size="big" className="submit-buttom" onClick={accessWallet}>Access Now</Button>
+                                    <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
                                 </div>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>

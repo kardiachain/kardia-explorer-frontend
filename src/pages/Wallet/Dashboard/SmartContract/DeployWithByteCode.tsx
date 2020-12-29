@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { Alert, Col, ControlLabel, Divider, FlexboxGrid, Form, FormControl, FormGroup, Icon, InputGroup, Modal, Panel, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage } from '../../../../common/constant/Message';
-import { onlyInteger } from '../../../../common/utils/number';
-import { copyToClipboard, renderHashToRedirect } from '../../../../common/utils/string';
+import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
+import { copyToClipboard } from '../../../../common/utils/string';
 import { jsonValid } from '../../../../common/utils/validate';
 import { deploySmartContract } from '../../../../service/smc';
 import { getAccount } from '../../../../service/wallet';
 import ReactJson from 'react-json-view'
 import './smartContract.css'
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
+import NumberInputFormat from '../../../../common/components/FormInput';
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -33,8 +34,6 @@ const DeployWithByteCode = () => {
     const [txDetail, setTxDetail] = useState('')
     const [showTxDetailModal, setShowTxDetailModal] = useState(false)
     const [contractJsonFileDownload, setContractJsonFileDownload] = useState<ContractJsonFile>({ contractAddress: "", byteCode: "", abi: "{}" })
-    const [deploySmcErr, setDeploySmcErr] = useState('')
-    const [txHash, setTxHash] = useState('')
     const [construcFields, setConstrucFields] = useState([] as any[]);
 
 
@@ -89,23 +88,16 @@ const DeployWithByteCode = () => {
         setDeployDone(false)
         setDeployedContract('')
         setTxDetail('')
-        setDeploySmcErr('')
-        setTxHash('')
         setConstrucFields([])
     }
 
     const deploy = async () => {
         try {
             setDeployDone(false)
-            setTxHash('')
-            setDeploySmcErr('')
             if (!validateGasLimit(gasLimit) || !validateByteCode(byteCode) || !validateAbi(abi)) {
                 return false;
             }
-            setLoading(true)
-            setDeploySmcErr('')
-            setTxHash('')
-            
+            setLoading(true);
             const txObject = {
                 account: myAccount,
                 abi: abi,
@@ -114,29 +106,40 @@ const DeployWithByteCode = () => {
                 gasPrice: gasPrice,
                 params: construcFields ? (construcFields.length > 0 && construcFields.map(item => JSON.parse(item.value))) : []
             } as SMCDeployObject
-            
-            const deployTx = await deploySmartContract(txObject);
-            if (deployTx.status === 1) {
-                Alert.success("Deploy smart contract success.")
+
+            const result = await deploySmartContract(txObject);
+            if (result.status === 1) {
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
+                });
             } else {
-                const errMsg = deployTx.gasUsed === Number(gasLimit) ? 'Deploy smart contract fail with error: Out of gas' : 'Deploy smart contract failed.'
-                setDeploySmcErr(errMsg)
+                const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas`: `${NotifiMessage.TransactionError}`
+                NotificationError({
+                    description: errMsg,
+                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    seeTxdetail: true
+                });
             }
-            setDeployedContract(deployTx.contractAddress)
+            setDeployedContract(result.contractAddress)
             setContractJsonFileDownload({
-                contractAddress: deployTx.contractAddress,
+                contractAddress: result.contractAddress,
                 byteCode: byteCode,
                 abi: abi
             })
-            setTxDetail(deployTx)
+            setTxDetail(result)
             setDeployDone(true)
-            setTxHash(deployTx.transactionHash)
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
-                setDeploySmcErr(`Deploy smart contract failed with error: ${errJson?.error?.message}`)
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                })
             } catch (error) {
-                setDeploySmcErr('Deploy smart contract failed.')
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError}`
+                })
             }
         }
         setLoading(false)
@@ -187,33 +190,29 @@ const DeployWithByteCode = () => {
 
     return (
         <div className="deploy-bytecode-container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="logo-dmp" size={"lg"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Deploy Smart Contract By ByteCode</p>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Deploy Smart Contract By ByteCode
                 </div>
             </div>
-            <Panel shaded>
+            <Panel shaded className="panel-bg-gray">
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Limit <span className="required-mask">(*)</span></ControlLabel>
-                                <FormControl name="gaslimit"
-                                    placeholder="Gas Limit"
+                                <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                <NumberInputFormat
                                     value={gasLimit}
-                                    onChange={(value) => {
-                                        if (onlyInteger(value)) {
-                                            setGasLimit(value);
-                                            validateGasLimit(value)
-                                        }
-                                    }}
-                                    width={50}
-                                />
+                                    placeholder="Gas Limit"
+                                    className="input"
+                                    onChange={(event) => {
+                                        setGasLimit(event.value);
+                                        validateGasLimit(event.value)
+                                    }} />
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="label">Gas Price <span className="required-mask">(*)</span></ControlLabel>
+                                <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
                                 <SelectPicker
                                     className="dropdown-custom w100"
                                     data={gasPriceOption}
@@ -231,14 +230,15 @@ const DeployWithByteCode = () => {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                        <ControlLabel className="label">Byte Code <span className="required-mask">(*)</span></ControlLabel>
-                                            <Button className="kai-button-gray pd0" onClick={() => { setByteCode('') }}>Clear</Button>
+                                    <ControlLabel className="color-white">Byte Code (required)</ControlLabel>
+                                    <Button className="kai-button-gray pd0" onClick={() => { setByteCode('') }}>Clear</Button>
                                 </FlexboxGrid>
                                 <FormControl rows={20}
-                                style={{minWidth:100}}
+                                    style={{ minWidth: 100 }}
                                     name="bytecode"
                                     componentClass="textarea"
                                     placeholder="Byte Code"
+                                    className="input"
                                     value={byteCode}
                                     onChange={(value) => {
                                         setByteCode(value)
@@ -249,24 +249,25 @@ const DeployWithByteCode = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle">
-                                        <ControlLabel className="label">ABI JSON <span className="required-mask">(*)</span></ControlLabel>
-                                        <div className="mb10">
-                                            <Button className="kai-button-gray pd0"
-                                                onClick={() => {
-                                                    setAbi('')
-                                                    setAbiErr('')
-                                                }}>Clear</Button>
-                                            <Button className="kai-button-gray pd0"
-                                                onClick={() => {
-                                                    copyToClipboard(abi, onSuccess)
-                                                }}>Copy</Button>
-                                            <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
-                                        </div>
+                                    <ControlLabel className="color-white">ABI JSON (required)</ControlLabel>
+                                    <div className="mb10">
+                                        <Button className="kai-button-gray pd0"
+                                            onClick={() => {
+                                                setAbi('')
+                                                setAbiErr('')
+                                            }}>Clear</Button>
+                                        <Button className="kai-button-gray pd0"
+                                            onClick={() => {
+                                                copyToClipboard(abi, onSuccess)
+                                            }}>Copy</Button>
+                                        <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
+                                    </div>
                                 </FlexboxGrid>
                                 <FormControl rows={20}
-                                style={{minWidth:100}}
+                                    style={{ minWidth: 100 }}
                                     name="abi"
                                     componentClass="textarea"
+                                    className="input"
                                     placeholder="ABI"
                                     value={abi}
                                     onChange={(value) => {
@@ -278,7 +279,7 @@ const DeployWithByteCode = () => {
                             {
                                 construcFields && construcFields.length > 0 ? (
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} sm={24}>
-                                        <ControlLabel className="label">Constructor:</ControlLabel>
+                                        <ControlLabel className="color-white">Constructor:</ControlLabel>
                                         {
                                             construcFields.map((field: any, idx: any) => {
                                                 return (
@@ -304,14 +305,6 @@ const DeployWithByteCode = () => {
                                 <Button size="big" loading={loading} onClick={deploy}>Deploy Contract</Button>
                                 <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
                             </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ paddingLeft: 0 }}>
-                                <ErrMessage message={deploySmcErr} />
-                                {
-                                    txHash ? <div style={{ marginTop: '20px', wordBreak: 'break-all' }}>
-                                        Txs hash: {renderHashToRedirect({ hash: txHash, headCount: 100, tailCount: 4, showTooltip: false, callback: () => { window.open(`/tx/${txHash}`) } })}
-                                    </div> : <></>
-                                }
-                            </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
                             deployDone ?
@@ -319,7 +312,7 @@ const DeployWithByteCode = () => {
                                     <Divider />
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="label">Your deployed contract:</ControlLabel>
+                                            <ControlLabel className="color-white">Your deployed contract:</ControlLabel>
                                             <InputGroup style={{ width: '100%' }}>
                                                 <FormControl
                                                     readOnly
@@ -360,7 +353,7 @@ const DeployWithByteCode = () => {
                     <Modal.Title>Transaction Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ReactJson src={{ txDetail }} />
+                    <ReactJson src={{ txDetail }} theme="ocean" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="ghost-button">

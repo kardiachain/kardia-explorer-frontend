@@ -68,69 +68,74 @@ const Home = () => {
     return (
         <React.Fragment>
             <div className="container home-container">
-
                 <SearchSection />
-
-                <div className="home-top-section">
-                    <FlexboxGrid justify="space-between">
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ background: 'white', height: 356, paddingTop: 30 }}>
+                <div>
+                    <FlexboxGrid className="home-top-section" justify="space-between" style={{ alignItems: 'normal' }}>
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginRight: !isMobile ? 5 : 0, borderRadius: 8}} className="wrap-token bocktime-chart-container">
                             <BlockTimeChart blockList={blocksForChart} />
                         </FlexboxGrid.Item>
 
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} className="wrap-token">
-                            <Panel shaded className="_wrap">
+                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{marginLeft: !isMobile ? 5 : 0, borderRadius: 8}} className="wrap-token">
+                            <Panel shaded className="_wrap panel-bg-gray">
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="rocket" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="rocket" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Symbol:</p>
-                                        <p className="mt0 fw700">KAI</p>
+                                        <p className="color-graylight fs-12">Symbol</p>
+                                        <p className="mt0 fw700 color-white fs-15">KAI</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="usd" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="usd" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Price:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
+                                        <p className="color-graylight fs-12">Price ($)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="line-chart" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="signal" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Market Cap:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.price ? numberFormat(2033200000 * tokenInfor.price, 3) : ''}</p>
+                                        <p className="color-graylight fs-12">Volume 24h ($)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="signal" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Volume 24h:</p>
-                                        <p className="mt0 fw700">$ {tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
+                                        <p className="color-graylight fs-12">Market Cap ($)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="refresh" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="database" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Circulating Supply:</p>
-                                        <p className="mt0 fw700">{tokenInfor.circulating_supply ? numberFormat(2033200000) : ''}</p>
+                                        <p className="color-graylight fs-12">Total Supply (KAI)</p>
+                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
                                     <div className="left">
-                                        <Icon className="highlight" icon="database" size={"2x"} />
+                                        <Icon className="gray-highlight" icon="refresh" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p>Total Supply:</p>
-                                        <p className="mt0 fw700">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
+                                        <p className="color-graylight fs-12">Circulating Supply (KAI)</p>
+                                        <p className="mt0" style={{wordBreak: 'break-all'}}>
+                                            <span className="fw700 color-white fs-15">{tokenInfor.erc20_circulating_supply ? numberFormat(tokenInfor.erc20_circulating_supply) : 0}</span>
+                                            <span className="color-graylight fs-12" style={{marginLeft: 4}}>(ERC20)</span>
+                                        </p>
+                                        <p className="mt0" style={{wordBreak: 'break-all'}}>
+                                            <span className="fw700 color-white fs-15">{tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : 0}</span>
+                                            <span className="color-graylight fs-12" style={{marginLeft: 4}}>(Onchain) </span>
+                                        </p>
                                     </div>
                                 </div>
                             </Panel>
@@ -142,24 +147,22 @@ const Home = () => {
                     <StatsSection totalTxs={totalTxs} blockHeight={blockHeight} blockList={tpsCalculateBlocks} />
                 </FlexboxGrid>
 
-                <FlexboxGrid justify="space-between" style={{ marginTop: !isMobile ? '30px' : '0' }}>
+                <FlexboxGrid justify="space-between">
                     <FlexboxGrid.Item className="section-left" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="th-large" size={"lg"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Latest Blocks</p>
+                                <p className="title color-white fs-24">Latest Blocks</p>
                             </div>
-                            <Button onClick={() => { history.push('/blocks') }}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item className="section-right" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="exchange" size={"lg"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Latest Transactions</p>
+                                <p className="title color-white fs-24">Latest Transactions</p>
                             </div>
-                            <Button onClick={() => { history.push('/txs') }}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>View all</Button>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

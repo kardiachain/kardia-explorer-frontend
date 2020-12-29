@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Panel, Table } from 'rsuite';
+import { Col, FlexboxGrid, List, Nav, Panel, Tag } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
-import { renderHashToRedirect } from '../../../common/utils/string';
-import { useViewport } from '../../../context/ViewportContext';
+import { renderHashString } from '../../../common/utils/string';
 import { isLoggedIn } from '../../../service/wallet'
 import './validator.css'
 import { numberFormat } from '../../../common/utils/number';
@@ -13,91 +12,222 @@ import { HelperMessage } from '../../../common/constant/HelperMessage';
 import { addressValid } from '../../../common/utils/validate';
 import { TABLE_CONFIG } from '../../../config';
 import { getValidator } from '../../../service/kai-explorer';
-import TablePagination from 'rsuite/lib/Table/TablePagination';
-
-const { Column, HeaderCell, Cell } = Table;
+import DelegatorList from './DelegatorList';
+import { getBlocksByProposer } from '../../../service/kai-explorer/block';
+import BlockByProposerList from './BlockByProposerList';
+import { StakingIcon } from '../../../common/components/IconCustom';
 
 const ValidatorDetail = () => {
-    const { isMobile } = useViewport()
     const history = useHistory()
-    const [delegators, setDelegators] = useState([] as Delegator[]);
-    const [validator, setValidator] = useState<Validator>()
     const { valAddr }: any = useParams();
-    const [page, setPage] = useState(TABLE_CONFIG.page)
-    const [limit, setLimit] = useState(TABLE_CONFIG.limitDefault)
-    const [loading, setLoading] = useState(true);
+
+    const [delegators, setDelegators] = useState([] as Delegator[]);
+    const [validator, setValidator] = useState<Validator>();
+    const [pageDelegators, setPageDelegators] = useState(TABLE_CONFIG.page);
+    const [limitDelegators, setLimitDelegators] = useState(TABLE_CONFIG.limitDefault);
+    const [loadingDelegators, setLoadingDelegators] = useState(true);
+
+    const [blockRewards, setBlockRewards] = useState([] as KAIBlock[]);
+    const [pageBlockRewards, setPageBlockRewards] = useState(TABLE_CONFIG.page);
+    const [limitBlockRewards, setLimitBlockRewards] = useState(TABLE_CONFIG.limitDefault);
+    const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
+    const [totalBlockRewards, setTotalBlockRewards] = useState(0);
+
+
+    const [activeKey, setActiveKey] = useState("delegators");
 
     useEffect(() => {
-        setLoading(true)
-        if(addressValid(valAddr)) {
-            (async() => {
-                const val = await getValidator(valAddr, page, limit);
-                setValidator(val)
-                setDelegators(val.delegators)
-                setLoading(false)
+        setLoadingDelegators(true)
+        if (addressValid(valAddr)) {
+            (async () => {
+                const val = await getValidator(valAddr, pageDelegators, limitDelegators);
+                setValidator(val);
+                setDelegators(val.delegators);
+                setLoadingDelegators(false);
             })()
         }
-    }, [valAddr, page, limit])
+    }, [valAddr, pageDelegators, limitDelegators]);
+
+    // Fetch block rewards
+    useEffect(() => {
+        setLoadingBlockRewards(true)
+        if (addressValid(valAddr)) {
+            (async () => {
+                const rs = await getBlocksByProposer(valAddr, pageBlockRewards, limitBlockRewards);
+                setBlockRewards(rs.blocks);
+                setTotalBlockRewards(rs.totalBlocks);
+                setLoadingBlockRewards(false);
+            })()
+        }
+    }, [valAddr, pageBlockRewards, limitBlockRewards]);
 
     return (
         <div className="container val-detail-container">
             <FlexboxGrid>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} style={{ marginBottom: '30px' }}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: '30px' }}>
                     <div>
-                        <div className="block-title" style={{ padding: '0px 5px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="user-info" size={"2x"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Validator information</p>
+                        <div style={{ marginBottom: 16 }}>
+                            <div className="title header-title">
+                                Validator information
                             </div>
                         </div>
-                        <Panel shaded>
+                        <Panel shaded className="panel-bg-gray">
                             <List>
                                 <List.Item>
-                                    <span className="property-title">Address: </span>
-                                    <span className="property-content">
-                                        {
-                                            renderHashToRedirect({
-                                                hash: validator?.address || '',
-                                                headCount: isMobile ? 10 : 30,
-                                                tailCount: 4,
-                                                showTooltip: true,
-                                                callback: () => { window.open(`/address/${validator?.address}`) }
-                                            })
-                                        }
-                                    </span>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Validator</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content validator-name">
+                                                {validator?.name}
+                                            </div>
+
+                                            <div className="property-content">
+                                                {
+                                                    renderHashString(
+                                                        validator?.address || '',
+                                                        45,
+                                                        4
+                                                    )
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
                                 </List.Item>
                                 <List.Item>
-                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.CommissionRate} />
-                                    <span className="property-title">Commission: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.commissionRate || 0, 2)} %
-                                    </span>
-                                </List.Item>
-                                <List.Item bordered={false}>
-                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxRate} />
-                                    <span className="property-title">Max Commission Rate: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.maxRate || 0, 2)} %
-                                    </span>
-                                </List.Item>
-                                <List.Item bordered={false}>
-                                    <Helper style={{ marginRight: 5 }} info={HelperMessage.MaxChangeRate} />
-                                    <span className="property-title">Max Change Commission Rate: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.maxChangeRate || 0, 2)} %
-                                    </span>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Validator Contract</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {
+                                                    renderHashString(
+                                                        validator?.smcAddress || '',
+                                                        45,
+                                                        4
+                                                    )
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total Delegator: </span>
-                                    <span className="property-content">
-                                        {numberFormat(validator?.totalDelegators || 0)}
-                                    </span>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <span className="property-title">Role </span>
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                <StakingIcon
+                                                    size="small"
+                                                    color={validator?.role?.classname}
+                                                    character={validator?.role?.character || ''}
+                                                    style={{ marginRight: 5 }} />
+                                                <span>{validator?.role?.name}</span>
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
                                 </List.Item>
                                 <List.Item>
-                                    <span className="property-title">Total staked amount: </span>
-                                    <span className="property-content">
-                                        {numberFormat(weiToKAI(validator?.stakedAmount))} KAI
-                                    </span>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <span className="property-title">Commission Rate </span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {numberFormat(validator?.commissionRate || 0, 2)} %
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <span className="property-title">Max Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.maxRate || 0, 2)} %</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">
+                                                <span className="property-title">Max Change Commission Rate</span>
+                                                <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxChangeRate} />
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.maxChangeRate || 0, 2)} %</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Voting Power</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.votingPower || 0)} %</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Total Delegator</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(validator?.totalDelegators || 0)}</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Total staked amount</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{numberFormat(weiToKAI(validator?.stakedAmount), 4)} KAI</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Status</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">
+                                                {
+                                                    validator?.jailed ? <Tag className="tab tab-failed" color="red">Jailed</Tag> : <Tag className="tab tab-success" color="green">Active</Tag>
+                                                }
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Missing block</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content">{validator?.missedBlocks} Blocks</div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
                                 </List.Item>
                             </List>
                             <Button size="big" style={{ marginTop: '30px' }}
@@ -108,72 +238,51 @@ const ValidatorDetail = () => {
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={16}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div>
-                        <div className="block-title" style={{ padding: '0px 5px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon className="highlight" icon="people-group" size={"2x"} />
-                                <p style={{ marginLeft: '12px' }} className="title">Delegators</p>
+                        <Panel shaded className="panel-bg-gray">
+                            <div className="custom-nav">
+                                <Nav
+                                    appearance="subtle"
+                                    activeKey={activeKey}
+                                    onSelect={setActiveKey}
+                                    style={{ marginBottom: 20 }}>
+                                    <Nav.Item eventKey="delegators">
+                                        {`Delegators (${validator?.totalDelegators || 0})`}
+                                    </Nav.Item>
+                                    <Nav.Item eventKey="blocksreward">
+                                        {`Block Proposed (${totalBlockRewards || 0})`}
+                                    </Nav.Item>
+                                </Nav>
                             </div>
-                        </div>
-                        <Panel shaded>
-                            <Table
-                                hover={false}
-                                wordWrap
-                                autoHeight
-                                rowHeight={60}
-                                data={delegators}
-                                loading={loading}
-                            >
-                                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell>Delegator Address</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Delegator) => {
-                                            return (
-                                                <div>
-                                                    {
-                                                        renderHashToRedirect({
-                                                            hash: rowData.address,
-                                                            headCount: isMobile ? 5 : 20,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            callback: () => { window.open(`/address/${rowData.address}`) }
-                                                        })
-                                                    }
-                                                </div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell>Staked Amount</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Delegator) => {
-                                            return (
-                                                <div> {numberFormat(weiToKAI(rowData.stakeAmount))} KAI</div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell >Claimable Rewards</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Delegator) => {
-                                            return (
-                                                <div> {numberFormat(weiToKAI(rowData.rewardsAmount))} KAI</div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                            </Table>
-                            <TablePagination
-                                lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                activePage={page}
-                                displayLength={limit}
-                                total={validator?.totalDelegators}
-                                onChangePage={setPage}
-                                onChangeLength={setLimit}
-                            />
+
+                            {(() => {
+                                switch (activeKey) {
+                                    case 'delegators':
+                                        return (
+                                            <DelegatorList
+                                                delegators={delegators}
+                                                page={pageDelegators}
+                                                limit={limitDelegators}
+                                                loading={loadingDelegators}
+                                                totalDelegators={validator?.totalDelegators}
+                                                setpage={setPageDelegators}
+                                                setLimit={setLimitDelegators} />
+                                        );
+                                    case 'blocksreward':
+                                        return (
+                                            <BlockByProposerList
+                                                blockRewards={blockRewards}
+                                                totalBlockRewards={totalBlockRewards}
+                                                page={pageBlockRewards}
+                                                limit={limitBlockRewards}
+                                                setPage={setPageBlockRewards}
+                                                setLimit={setLimitBlockRewards}
+                                                loading={loadingBlockRewards}
+                                            />
+                                        );
+                                }
+                            })()}
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert, ButtonGroup, Col, Icon, IconButton, Modal, Panel, Row } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
-import { getBalance } from '../../../service/kai-explorer';
+import { getHolderAccount } from '../../../service/kai-explorer';
 import { getAccount, useBalanceStorage } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
@@ -18,13 +18,13 @@ const DashboardHeader = () => {
 
     useEffect(() => {
         (async() => {
-            const balance = await getBalance(account.publickey);
-            setBalance(weiToKAI(balance))
+            const holder = await getHolderAccount(account.publickey);
+            setBalance(weiToKAI(holder.balance))
         })();
 
         const fetchBalance = setInterval(async () => {
-            const balance = await getBalance(account.publickey);
-            setBalance(weiToKAI(balance))
+            const holder = await getHolderAccount(account.publickey);
+            setBalance(weiToKAI(holder.balance))
         }, TIME_INTERVAL_MILISECONDS)
 
         return () => clearInterval(fetchBalance);
@@ -35,8 +35,8 @@ const DashboardHeader = () => {
     }
 
     const reloadBalance = async () => {
-        const balance = await getBalance(account.publickey);
-        setBalance(weiToKAI(balance));
+        const holder = await getHolderAccount(account.publickey);
+        setBalance(weiToKAI(holder.balance));
     }
 
     const renderCredential = () => {
@@ -58,10 +58,10 @@ const DashboardHeader = () => {
         <>
             <Row className="wallet-header-container">
                 <Col md={12} sm={24} xs={24}>
-                    <Panel shaded bordered className="wallet-info-card address">
+                    <Panel shaded className="wallet-info-card address panel-bg-gray">
                         <div className="card-body">
-                            <div className="title"><Icon className="icon highlight" icon="views-authorize" />Address</div>
-                            <div className="content" style={{ wordBreak: 'break-all', fontWeight: 'bold' }}>{account.publickey}</div>
+                            <div className="title color-white"><Icon className="icon gray-highlight" icon="views-authorize" />Address</div>
+                            <div className="content color-white" style={{ wordBreak: 'break-all', fontWeight: 'bold', paddingLeft:'42px' }}>{account.publickey}</div>
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="qrcode" size="lg" onClick={() => { setShowAddress(true) }} />
@@ -71,10 +71,10 @@ const DashboardHeader = () => {
                     </Panel>
                 </Col>
                 <Col md={12} sm={24} xs={24}>
-                    <Panel shaded bordered className="wallet-info-card balance">
+                    <Panel shaded className="wallet-info-card balance panel-bg-gray">
                         <div className="card-body">
-                            <div className="title"><Icon className="icon highlight" icon="money" />Balance</div>
-                            <div className="content"><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
+                            <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
+                            <div className="content color-white" style={{paddingLeft:'42px'}}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance
@@ -106,7 +106,7 @@ const DashboardHeader = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ textAlign: 'center', wordBreak: 'break-all' }}>
-                        <div style={{ fontSize: '18px', wordBreak: 'break-all' }}>
+                        <div className="color-white" style={{ fontSize: '18px', wordBreak: 'break-all' }}>
                             {renderCredential()}
                         </div>
                         <ButtonGroup>

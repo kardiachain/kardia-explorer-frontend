@@ -45,18 +45,18 @@ const Network = () => {
             result.forEach((r) => {
                 for (let i = 0; i < peerSimolation; i++) {
                     const nodeRandom = Math.floor(Math.random() * (result?.length - 1));
-                    const targetValue = result[nodeRandom]?.id;
-                    if (targetValue !== r.id) {
-                        linkArr.push({ source: r.id, target: targetValue })
+                    const targetValue = result[nodeRandom]?.nodeName;
+                    if (targetValue !== r.nodeName) {
+                        linkArr.push({ source: r.nodeName, target: targetValue })
                     }
                 }
             });
-            
+
             const graphData = {
                 nodes: result.map((item, index) => {
                     const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
                     return {
-                        id: item.id,
+                        id: item.nodeName,
                         color: colors[index] || colors[colorIndexRandom]
                     }
                 }),
@@ -88,49 +88,41 @@ const Network = () => {
             }
             <div className="container">
                 <SearchSection />
-                <div className="block-title" style={{ padding: '0px 5px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon className="highlight" icon="connectdevelop" size={"2x"} />
-                        <p style={{ marginLeft: '12px' }} className="title">Network</p>
+                <div style={{ marginBottom: 16 }}>
+                    <div className="title header-title">
+                        Network
                     </div>
                 </div>
                 <FlexboxGrid>
                     <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={24}>
-                        <Panel shaded>
+                        <Panel shaded className="panel-bg-gray">
                             <FlexboxGrid justify="space-between">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                     <Table
                                         autoHeight
-                                        rowHeight={60}
+                                        rowHeight={() => 80}
                                         data={networks}
                                         hover={false}
                                         wordWrap
                                     >
-                                        <Column width={30} verticalAlign="middle" align="center">
-                                            <HeaderCell></HeaderCell>
-                                            <Cell>
-                                                {(rowData: KAINode) => {
-                                                    if (rowData.status === "online") {
-                                                        return <div className="dot-status online"></div>
-                                                    }
-                                                    return <div className="dot-status offline"></div>
-                                                }}
-                                            </Cell>
-                                        </Column>
-                                        <Column flexGrow={2} minWidth={isMobile ? 130 : 0} verticalAlign="middle">
-                                            <HeaderCell>Name</HeaderCell>
+                                        <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
+                                            <HeaderCell><span style={{ marginLeft: 40 }}>Name</span></HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
                                                     return (
                                                         <div>
-                                                            {isMobile ? <></> : <Icon className="highlight" icon="connectdevelop" style={{ marginRight: '5px' }} />}
-                                                            {rowData.id}
+                                                            <span className="container-icon-left">
+                                                                <Icon icon="globe2" className="gray-highlight" />
+                                                            </span>
+                                                            <span className="container-content-right middle-vertical">
+                                                                {rowData.nodeName}
+                                                            </span>
                                                         </div>
                                                     )
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle" align="center">
+                                        <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Address</HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
@@ -148,11 +140,7 @@ const Network = () => {
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column flexGrow={2} verticalAlign="middle" align="center">
-                                            <HeaderCell>Protocol</HeaderCell>
-                                            <Cell dataKey="protocol" />
-                                        </Column>
-                                        <Column flexGrow={1} verticalAlign="middle" align="center">
+                                        <Column flexGrow={1} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
                                             <HeaderCell>Peer count</HeaderCell>
                                             <Cell dataKey="peerCount" />
                                         </Column>

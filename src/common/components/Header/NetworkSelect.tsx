@@ -17,7 +17,7 @@ const networkList = [
         link: testnetLink
     },
     {
-        label: 'Mainnet',
+        label: 'Aris Mainnet 1.0',
         value: 'mainnet',
         disabled: mainnetDisable,
         link: mainnetLink
@@ -39,12 +39,12 @@ const NetworkSelect = () => {
 
     return (
         <div className="network-select-wrapper">
-            <Dropdown  icon={<Icon className={isMobile ? "highlight" : ""} icon="cubes" />} activeKey={network} title={getNetworkLabel(network)}>
+            <Dropdown  icon={<Icon className={isMobile ? "gray-highlight" : ""} icon="cubes" />} activeKey={network} title={getNetworkLabel(network)}>
                 {
                     networkList.map((networkItem) => {
                         return <Dropdown.Item
                             key={networkItem.value}
-                            eventKey={networkItem.value}
+                            // eventKey={networkItem.value}
                             onSelect={() => selectNetworkHandle(networkItem.link) }
                             disabled={networkItem.disabled}>
                             {networkItem.label}

@@ -44,25 +44,26 @@ const CreateByPrivateKey = () => {
 
     return (
         <div className="show-grid create-container private-key">
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={16} xs={24}>
-                    <Panel shaded>
-                        <FlexboxGrid justify="center">
-                            <div className="title">CREATE WITH PRIVATE KEY</div>
+            <FlexboxGrid justify="center" className="wrap">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
+                    <Panel shaded className="panel-bg-gray">
+                        <FlexboxGrid justify="start">
+                            <h3 className="color-white">PRIVATE KEY</h3>
                         </FlexboxGrid>
                         {
                             !wallet.privatekey ? (
-                                <FlexboxGrid justify="center">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                        <div> A unique private key will be generate for you </div>
-                                        <div> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span> ! If you <span className="note">lose</span>  your private key, you will <span className="note">not</span>  able to <span className="note">recover</span>  your wallet</div>
+                                <FlexboxGrid justify="start">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
+                                        <div className="color-white"> A unique private key will be generate for you </div>
+                                        <div className="color-white"> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span> ! If you <span className="note">lose</span>  your private key, you will <span className="note">not</span>  able to <span className="note">recover</span>  your wallet</div>
                                     </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={22} md={24} style={{marginTop: '20px'}}>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginTop: '20px'}}>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
                                                 <Button size="big" className="kai-button-gray">Back</Button>
                                             </Link>
-                                            <Button
+                                            <Button 
+                                            className="btn-access"
                                                 size="big"
                                                 onClick={handleGenerate}>
                                                 Create wallet
@@ -72,13 +73,13 @@ const CreateByPrivateKey = () => {
                                 </FlexboxGrid>
                             ) : (
                                     <FlexboxGrid justify="center">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
-                                            <div><b>Please <span className="note">COPY</span>  and <span className="note">SAVE</span>  the following Private key:</b></div>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 10, padding:0}}>
+                                            <div className="color-white"><b>Please <span className="note">COPY</span>  and <span className="note">SAVE</span>  the following Private key:</b></div>
                                         </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                             <div style={{ wordBreak: 'break-all' }}>
                                                 <InputGroup style={{ width: '100%' }} className="privatekey-input-container">
-                                                    <Input value={renderCredential()} />
+                                                    <Input className="input" value={renderCredential()} />
                                                     <InputGroup.Button onClick={() => setShowPrivKey(!showPrivKey)}>
                                                         <Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />
                                                     </InputGroup.Button>
@@ -88,12 +89,12 @@ const CreateByPrivateKey = () => {
                                                 </InputGroup>
                                             </div>
                                         </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
                                                     <Button size="big" className="kai-button-gray">Back</Button>
                                                 </Link>
-                                                <Button size="big" className="submit-buttom" onClick={accessWalletNow}>Access Now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWalletNow}>Access Now</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
