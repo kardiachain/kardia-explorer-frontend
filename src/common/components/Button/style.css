@@ -84,5 +84,5 @@
     border: 1px solid white;
 }
 .transparent-btn:hover{
-    background: var(--gray-button-hover) !important;
+    background: rgba(255, 255, 255, 0.527) !important;
 }

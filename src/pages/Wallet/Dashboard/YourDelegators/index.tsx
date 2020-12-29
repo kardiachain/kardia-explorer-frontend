@@ -359,7 +359,7 @@ const YourDelegators = () => {
                                         <>
                                             <div style={{ marginTop: '30px', marginBottom: '20px' }}>
                                                 {
-                                                    !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>* Your stake amount needs to bigger 12.5M KAI to starting become a validator.</div> : <></>
+                                                    !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>* Your stake amount needs to higher than 12.5M KAI to starting become a validator.</div> : <></>
                                                 }
                                                 <Button size="big"
                                                     onClick={startBecomeValidator}
