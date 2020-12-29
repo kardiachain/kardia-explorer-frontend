@@ -11,7 +11,6 @@ import DelegatorCreate from './DelegatedValidators/DelegatorCreate';
 import { useViewport } from '../../../context/ViewportContext';
 import DelegatedValidators from './DelegatedValidators';
 import AuthRouter from '../../../AuthRouter';
-// import DeployWithSourceCode from './SmartContract/DeployWithSourceCode';
 import DeployWithByteCode from './SmartContract/DeployWithByteCode';
 import InteracteWithSmc from './SmartContract/InteracteWithSmc';
 

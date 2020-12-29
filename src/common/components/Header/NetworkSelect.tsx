@@ -44,7 +44,6 @@ const NetworkSelect = () => {
                     networkList.map((networkItem) => {
                         return <Dropdown.Item
                             key={networkItem.value}
-                            // eventKey={networkItem.value}
                             onSelect={() => selectNetworkHandle(networkItem.link) }
                             disabled={networkItem.disabled}>
                             {networkItem.label}

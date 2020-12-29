@@ -22,7 +22,7 @@ const Network = () => {
 
     useEffect(() => {
         fgRef && fgRef.current && fgRef.current.cameraPosition && fgRef.current.cameraPosition({ z: distance });
-        // camera orbit
+        
         let angle = 0;
 
         const autoOrbite = setInterval(() => {

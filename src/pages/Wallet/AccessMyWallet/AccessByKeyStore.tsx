@@ -19,7 +19,6 @@ const AccessByKeyStore = () => {
     const [passwordErr, setPasswordErr] = useState('');
     const [keystoreFileErr, setKeystoreFileErr] = useState('')
 
-    //access wallet
     const accessWallet = async () => {
         if(!validatePassword(password) || !validateKeystoreFile()) {
             return

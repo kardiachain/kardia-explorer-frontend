@@ -32,7 +32,6 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false);
     const [delegateOption, setDelegateOption] = useState('part');
 
-    // @Function undelegate with amount
     const undelegate = async () => {
         const valSmcAddr = validatorActive?.validatorSmcAddr || '';
         if (!valSmcAddr) return;
@@ -109,7 +108,6 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
         setDelegateOption('part');
     }
 
-    // @Function for withdraw your withdrawable staked amount
     const widthdraw = async () => {
         setIsLoading(true)
         try {

@@ -73,8 +73,6 @@ const createValidator = async (params: CreateValParams, account: Account, gasLim
     }
 }
 
-
-// @Function: update validator name
 const updateValidatorName = async (valSmcAddr: string, name: string, account: Account, amountFee: number, gasLimit: number, gasPrice: number) => {
     try {
         // Convert amount to decimal type
@@ -97,7 +95,6 @@ const updateValidatorCommission = async (valSmcAddr: string, newCommissionRate: 
     }
 }
 
-// @Function registor start to become validator
 const startValidator = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "start", [], account, 0);
@@ -106,8 +103,6 @@ const startValidator = async (valSmcAddr: string, account: Account) => {
     }
 }
 
-
-// Validator withdraw commission reward
 const withdrawCommission = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "withdrawCommission", [], account, 0);
@@ -116,7 +111,6 @@ const withdrawCommission = async (valSmcAddr: string, account: Account) => {
     }
 }
 
-// Delegator withdraw reward
 const withdrawReward = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "withdrawRewards", [], account, 0);
@@ -125,7 +119,6 @@ const withdrawReward = async (valSmcAddr: string, account: Account) => {
     }
 }
 
-// Delegator withdraw their staked amount
 const withdrawDelegatedAmount = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "withdraw", [], account, 0);
@@ -134,7 +127,6 @@ const withdrawDelegatedAmount = async (valSmcAddr: string, account: Account) => 
     }
 }
 
-// Undelegate with amount
 const undelegateWithAmount = async (valSmcAddr: string, amountUndel: number, account: Account) => {
     try {
         // convert value number type to decimal type
@@ -145,7 +137,6 @@ const undelegateWithAmount = async (valSmcAddr: string, amountUndel: number, acc
     }
 }
 
-// Undelegate all amount
 const undelegateAll = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "undelegate", [], account, 0);
@@ -154,7 +145,6 @@ const undelegateAll = async (valSmcAddr: string, account: Account) => {
     }
 }
 
-// Validator unjailed
 const unjailValidator = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "unjail", [], account, 0);
@@ -163,7 +153,6 @@ const unjailValidator = async (valSmcAddr: string, account: Account) => {
     }
 }
 
-// Stop validator
 const stopValidator = async (valSmcAddr: string, account: Account) => {
     try {
         return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "stop", [], account, 0);

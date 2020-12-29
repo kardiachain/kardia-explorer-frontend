@@ -56,7 +56,6 @@ const DelegatorCreate = () => {
         })();
     }, [valAddr, page, limit]);
 
-    // Fetch block rewards
     useEffect(() => {
         (async () => {
             setLoadingBlockRewards(true)

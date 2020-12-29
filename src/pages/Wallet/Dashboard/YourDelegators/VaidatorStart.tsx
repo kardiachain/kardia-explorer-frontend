@@ -15,7 +15,6 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
     const myAccount = getAccount() as Account;
     const [isLoading, setIsLoading] = useState(false);
     
-    // @Function using for starting become validator
     const start = async () => {
         try {
             setIsLoading(true);

@@ -112,16 +112,12 @@ const TxDetail = () => {
         setDecodeErr('')
         try {
             let abiJson = null;
-            // TODO: Action decode raw data of transaction calls, for implementation had using abi-decoder libs
             if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === STAKING_SMC_ADDRESS) {
                 abiJson = STAKING_ABI
             } else {
                 abiJson = JSON.parse(abi)
             }
-            // parse contract abi input from string -> json
-            // Add abi for decoder
             abiDecoder.addABI(abiJson);
-            // using decoder method to decode input data
             let txDecodeData = abiDecoder.decodeMethod(`${txDetail?.input}`);
 
             if (!txDecodeData) {

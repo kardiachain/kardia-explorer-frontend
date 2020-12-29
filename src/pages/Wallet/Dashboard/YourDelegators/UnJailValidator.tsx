@@ -15,7 +15,6 @@ const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel,
     const [isLoading, setIsLoading] = useState(false);
     const myAccount = getAccount() as Account;
 
-    // Unjail validator
     const unJailValidator = async () => {
         try {
             setIsLoading(true);

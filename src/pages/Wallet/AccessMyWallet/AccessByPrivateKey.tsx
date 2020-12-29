@@ -18,7 +18,6 @@ const AccessByPrivateKey = () => {
     const [privateKeyErr, setPrivateKeyErr] = useState('')
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1];
 
-    //access wallet
     const accessWallet = () => {
         if (!validatePrivatekey(privateKey)){
             return;

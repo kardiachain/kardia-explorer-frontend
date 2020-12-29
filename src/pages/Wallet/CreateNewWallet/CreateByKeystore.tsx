@@ -17,15 +17,12 @@ const CreateByKeystore = () => {
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 
-
-    // create wallet
     const createWallet = async () => {
         if (!password) {
             setErrorMessage(ErrorMessage.Require)
             return;
         }
         setLoading(true)
-        // Generate wallet
         const wallet = Wallet.generate();
         const keystoreFilename = wallet.getV3Filename();
         const keystoreJson = await wallet.toV3(password);
@@ -43,7 +40,6 @@ const CreateByKeystore = () => {
         setLoading(false)
     }
 
-    // access wallet now
     const accessWallet = async () => {
         if (!wallet.privatekey) return;
         const newWallet = JSON.parse(JSON.stringify(wallet))

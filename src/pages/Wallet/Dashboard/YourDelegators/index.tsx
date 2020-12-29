@@ -70,7 +70,6 @@ const YourDelegators = () => {
                 if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
                     setReadyStarting(true)
                 }
-                // Check avaiable time to unjail
                 const nowTime = (new Date()).getTime();
                 if (nowTime > val.signingInfo.jailedUntil) {
                     setCanUnjail(true);
@@ -79,7 +78,6 @@ const YourDelegators = () => {
         })();
     }, [myAccount.publickey, page, limit]);
 
-    // Fetch block rewards
     useEffect(() => {
         setLoadingBlockRewards(true)
         if (addressValid(myAccount.publickey)) {
@@ -105,7 +103,6 @@ const YourDelegators = () => {
             if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
                 setReadyStarting(true)
             }
-            // Check avaiable time to unjail
             const nowTime = (new Date()).getTime();
             if (nowTime > val.signingInfo.jailedUntil) {
                 setCanUnjail(true);

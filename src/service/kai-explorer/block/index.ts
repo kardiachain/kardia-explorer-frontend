@@ -34,7 +34,6 @@ export const getBlocks = async (page: number, size: number): Promise<BlocksRespo
     }
 }
 
-// Common for get block detail by blockhash or blocknumber
 export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
     const response = await fetch(`${END_POINT}blocks/${block}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
@@ -69,7 +68,6 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
     } as KAIBlockDetails
 }
 
-// Calculate transaction number per seconds
 export const calculateTPS = (blockList: KAIBlock[]) => {
     const totalTimes = (new Date(blockList[0]?.time)).getTime() - (new Date(blockList[blockList.length - 1]?.time)).getTime()
     let totalTxs = 0;
@@ -114,7 +112,3 @@ export const getBlocksByProposer = async (proposerAddr: string, page: number, si
         return {} as BlocksResponse
     }
 }
-
-// export const getMissingBlock = async (proposerAddr: string, page: number, size: number): Promise<BlocksResponse> => {
-//     return null;
-// }

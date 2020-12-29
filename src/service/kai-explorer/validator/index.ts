@@ -119,8 +119,6 @@ export const getCandidates = async (): Promise<Candidate[]> => {
     }
 }
 
-
-// Get validator by delegator
 export const getValidatorByDelegator = async (delAddr: string): Promise<YourValidator[]> => {
     try {
         const response = await fetch(`${END_POINT}delegators/${delAddr}/validators`, GET_REQUEST_OPTION);
@@ -144,8 +142,6 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
     }
 }
 
-
-// check validator had register
 export const checkIsValidator = async (valAddr: string): Promise<boolean> => {
     try {
         const response = await fetch(`${END_POINT}validators/${valAddr}?page=0&limit=10`, GET_REQUEST_OPTION);

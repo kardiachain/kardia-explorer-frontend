@@ -53,7 +53,6 @@ const options = {
                 },
                 barPercentage: 1,
                 minBarLength: 2,
-                // barThickness: 10,
             }
         ],
         yAxes: [

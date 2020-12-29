@@ -54,13 +54,11 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             return false
         }
 
-        // The commission value cannot be more than 100%
         if (Number(value) > 100) {
             setCommissionRateErr(ErrorMessage.CommissionRateMoreThanHundred)
             return false
         }
 
-        //commission rate cannot be more than the max rate
         if (Number(value) > Number(maxRate)) {
             setCommissionRateErr(ErrorMessage.CommissionRateMoreThanMaxRate)
             return false
@@ -79,13 +77,11 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             return false
         }
 
-        // The commission max rate value cannot be more than 100%
         if (Number(value) > 100) {
             setMaxRateErr(ErrorMessage.MaxRateMoreThanHundred)
             return false
         }
 
-        //commission rate cannot be more than the max rate
         if (Number(value) < Number(commissionRate)) {
             setCommissionRateErr(ErrorMessage.CommissionRateMoreThanMaxRate)
             return false
@@ -93,7 +89,6 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             setCommissionRateErr('')
         }
 
-        //commission max change rate can not be more than the max rate
         if (Number(value) < Number(maxChangeRate)) {
             setMaxChangeRateErr(ErrorMessage.MaxChangeRateMoreThanMaxRate)
             return false
@@ -115,13 +110,11 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             return false
         }
 
-        // The commission max change rate value cannot be more than 100%
         if (Number(value) > 100) {
             setMaxChangeRateErr(ErrorMessage.MaxChangeRateMoreThanHundred)
             return false
         }
 
-        //commission max change rate can not be more than the max rate
         if (Number(value) > Number(maxRate)) {
             setMaxChangeRateErr(ErrorMessage.MaxChangeRateMoreThanMaxRate)
             return false
@@ -193,7 +186,6 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
         setShowConfirmModal(true)
     }
 
-    // @Function for register validator
     const registerValidator = async () => {
         try {
             setIsLoading(true)

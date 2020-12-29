@@ -102,7 +102,7 @@ const InteracteWithSmc = () => {
         if (!validateToAddress(smcAddr) || !validateAbi(abi)) {
             return
         }
-        // TODO interact with smart contract
+        
         const abiJson = JSON.parse(abi)
         const smcFuncList = abiJson.length > 0 ? abiJson.filter((item: any) => item.type === "function").map((item: any) => {
             return {

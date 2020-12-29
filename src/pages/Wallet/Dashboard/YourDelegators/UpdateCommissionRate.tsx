@@ -49,7 +49,6 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
             return false
         }
 
-        // The commission value cannot be more than 100%
         if (Number(value) > 100) {
             setCommissionRateErr(ErrorMessage.CommissionRateMoreThanHundred)
             return false
