@@ -27,7 +27,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                 rowHeight={() => 90}
                 loading={loading}
             >
-                <Column flexGrow={3} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
+                <Column flexGrow={3} minWidth={isMobile ? 250 : 0} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {

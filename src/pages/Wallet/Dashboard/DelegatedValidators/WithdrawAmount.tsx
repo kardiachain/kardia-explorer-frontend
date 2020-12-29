@@ -36,9 +36,9 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
     const undelegate = async () => {
         const valSmcAddr = validatorActive?.validatorSmcAddr || '';
         if (!valSmcAddr) return;
-        setIsLoading(true);
         if (delegateOption === 'part') {
             if (!validateUnStakeAmount(unStakeAmount)) return
+            setIsLoading(true);
             try {
                 const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
                 if (result && result.status === 1) {
@@ -61,6 +61,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             }
         } else {
             try {
+                setIsLoading(true);
                 const result = await undelegateAll(valSmcAddr, myAccount);
                 if (result && result.status === 1) {
                     NotificationSuccess({
@@ -183,6 +184,16 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         {(rowData: YourValidator) => {
                             return (
                                 <div>{numberFormat(weiToKAI(rowData.yourStakeAmount), 2)}</div>
+                            )
+                        }}
+                    </Cell>
+                </Column>
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Rewards (KAI)</HeaderCell>
+                    <Cell>
+                        {(rowData: YourValidator) => {
+                            return (
+                                <div>{numberFormat(weiToKAI(rowData.claimableAmount), 2)}</div>
                             )
                         }}
                     </Cell>
