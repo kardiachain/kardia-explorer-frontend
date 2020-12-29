@@ -43,7 +43,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0}>
+                        <Column flexGrow={3} minWidth={isMobile ? 150 : 0}>
                             <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {

@@ -155,7 +155,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                     <ControlLabel className="color-white">New Validator Name (required)</ControlLabel>
-                                    <div className="warning-note">You must pay 10000 KAI fees to change the validator name.</div>
+                                    <div className="warning-note">You must pay 10,000 KAI to change the validator's name.</div>
                                     <FormControl placeholder="Validator Name"
                                         name="valName"
                                         value={valName}
