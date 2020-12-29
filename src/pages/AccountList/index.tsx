@@ -85,7 +85,7 @@ const AccountList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={4} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                         <HeaderCell>Address</HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
@@ -104,7 +104,7 @@ const AccountList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 70 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
                                         <HeaderCell>Name</HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
