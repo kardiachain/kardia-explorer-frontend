@@ -66,7 +66,7 @@ const AccessByMnemonicPhrase = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                 <Form fluid>
                                     <FormGroup>
-                                        <ControlLabel className="color-white">Enter your secret 12 or 24 words phrase</ControlLabel>
+                                        <ControlLabel className="color-white">Enter your secret 12 or 24 words phrase (required)</ControlLabel>
                                         <FormControl
                                             rows={5}
                                             name="textarea"

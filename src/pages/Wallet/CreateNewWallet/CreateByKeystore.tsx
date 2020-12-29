@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel, Icon } from 'rsuite';
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel, Icon, ControlLabel } from 'rsuite';
 import Wallet from 'ethereumjs-wallet'
 import { useWalletStorage } from '../../../service/wallet';
 import { Link, useHistory } from 'react-router-dom';
@@ -70,11 +70,12 @@ const CreateByKeystore = () => {
                                 <FlexboxGrid justify="center">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                         <div className="text-container">
+                                        <ControlLabel className="color-white">Password (required)</ControlLabel>
                                             <Form fluid>
                                                 <FormGroup style={{ marginBottom: '12px' }}>
                                                     <FormControl
                                                         className="input"
-                                                        placeholder="Password*"
+                                                        placeholder="Password"
                                                         name="password"
                                                         type="password"
                                                         value={password}

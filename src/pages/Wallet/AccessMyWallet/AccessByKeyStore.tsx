@@ -90,8 +90,8 @@ const AccessByKeyStore = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                 <Form fluid>
                                     <FormGroup style={{marginBottom:'12px'}}>
-                                        <ControlLabel className="color-white">Password</ControlLabel>
-                                        <FormControl placeholder="Password*"
+                                        <ControlLabel className="color-white">Password (required)</ControlLabel>
+                                        <FormControl placeholder="Password"
                                             name="password"
                                             type="password"
                                             className="input"

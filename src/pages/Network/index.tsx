@@ -100,7 +100,7 @@ const Network = () => {
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                     <Table
                                         autoHeight
-                                        rowHeight={60}
+                                        rowHeight={() => 80}
                                         data={networks}
                                         hover={false}
                                         wordWrap
@@ -140,7 +140,7 @@ const Network = () => {
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column flexGrow={1} verticalAlign="middle">
+                                        <Column flexGrow={1} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
                                             <HeaderCell>Peer count</HeaderCell>
                                             <Cell dataKey="peerCount" />
                                         </Column>
