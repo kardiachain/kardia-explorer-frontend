@@ -130,7 +130,7 @@ const Home = () => {
                                         <p className="color-graylight fs-12">Circulating Supply (KAI)</p>
                                         <p className="mt0" style={{wordBreak: 'break-all'}}>
                                             <span className="fw700 color-white fs-15">{tokenInfor.erc20_circulating_supply ? numberFormat(tokenInfor.erc20_circulating_supply) : 0}</span>
-                                            <span className="color-graylight fs-12" style={{marginLeft: 4}}>(Erc20)</span>
+                                            <span className="color-graylight fs-12" style={{marginLeft: 4}}>(ERC20)</span>
                                         </p>
                                         <p className="mt0" style={{wordBreak: 'break-all'}}>
                                             <span className="fw700 color-white fs-15">{tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : 0}</span>

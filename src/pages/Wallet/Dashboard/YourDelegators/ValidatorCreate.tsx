@@ -332,12 +332,12 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                         <ControlLabel className="color-white">
-                            Your Delegation Amount (KAI- required)
+                            Your Delegation Amount (required)
                             <Helper style={{ marginLeft: 5 }} info={HelperMessage.AmountSelftDelegation} />
                         </ControlLabel>
                         <NumberInputFormat
                             value={yourDelAmount}
-                            placeholder="Ex. 25,000"
+                            placeholder="Must be at least 25,000 KAI"
                             className="input"
                             onChange={(event) => {
                                 setYourDelAmount(event.value);

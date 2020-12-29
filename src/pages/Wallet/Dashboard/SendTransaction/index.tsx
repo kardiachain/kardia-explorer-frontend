@@ -7,7 +7,7 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx, getStoredBalance } from '../../../../service/wallet'
 import Button from '../../../../common/components/Button'
-import { gasPriceOption } from '../../../../common/constant'
+import { gasLimitSendTx, gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
 import NumberInputFormat from '../../../../common/components/FormInput'
 import { renderHashString } from '../../../../common/utils/string'
@@ -15,7 +15,7 @@ import { renderHashString } from '../../../../common/utils/string'
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
     const [toAddress, setToAddress] = useState('')
-    const [gasLimit, setGasLimit] = useState(22000)
+    const [gasLimit, setGasLimit] = useState(gasLimitSendTx)
     const [amountErr, setAmountErr] = useState('')
     const [toAddressErr, setToAddressErr] = useState('')
     const [gasLimitErr, serGasLimitErr] = useState('')
@@ -84,7 +84,7 @@ const SendTransaction = () => {
     const resetFrom = () => {
         setAmount('');
         setToAddress('');
-        setGasLimit(22000);
+        setGasLimit(gasLimitSendTx);
         setGasPrice(1);
         setAmountErr('');
     }
@@ -147,7 +147,7 @@ const SendTransaction = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                         <ControlLabel className="color-white">To Address  (required)</ControlLabel>
                                         <FormControl
-                                            placeholder="Ex. 0xxxxxxx..."
+                                            placeholder="Ex. 0x..."
                                             name="toAddress"
                                             className="input"
                                             value={toAddress}

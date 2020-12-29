@@ -165,7 +165,7 @@ const DelegatorCreate = () => {
 
     const resetFrom = () => {
         setDelAmount('');
-        setGasLimit(22000);
+        setGasLimit(gasLimitDefault);
         setGasPrice(1);
         setErrorMessage('');
     }
@@ -385,10 +385,10 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasPriceErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel className="color-white">Delegation amount (KAI - required)</ControlLabel>
+                                                        <ControlLabel className="color-white">Delegation amount (required)</ControlLabel>
                                                         <NumberInputFormat
                                                             value={delAmount}
-                                                            placeholder="Ex. 25,000"
+                                                            placeholder="Must be at least 25,000 KAI"
                                                             className="input"
                                                             onChange={(event) => {
                                                                 setDelAmount(event.value);
