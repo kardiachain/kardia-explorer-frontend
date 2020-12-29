@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ButtonGroup, Col, Icon, IconButton, Modal, Panel, Row } from 'rsuite';
+import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getHolderAccount } from '../../../service/kai-explorer';
@@ -56,6 +56,13 @@ const DashboardHeader = () => {
 
     return (
         <>
+            <Row style={{marginBottom: 12}}>
+                <Col md={24} sm={24} xs={24}>
+                    <Message type="warning" description={
+                        <p>Warning: <strong>DO NOT</strong> send KAI Token from <strong>ERC20 Wallet</strong> or <strong>Exchange</strong> to this Wallet. We're <strong>NOT</strong> responsible for any token lost.</p>
+                    }/>
+                </Col>
+            </Row>
             <Row className="wallet-header-container">
                 <Col md={12} sm={24} xs={24}>
                     <Panel shaded className="wallet-info-card address panel-bg-gray">
