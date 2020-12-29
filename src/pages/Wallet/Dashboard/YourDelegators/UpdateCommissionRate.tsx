@@ -179,7 +179,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                         <span className="color-white">Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
                                     </div>
                                     {
-                                        !canUpdate ? <div className="warning-note">* The next update only can perform after 24 hours since the last update.</div> : <></>
+                                        !canUpdate ? <div className="warning-note">* Validator's commission rate can only be updated once every 24 hours.</div> : <></>
                                     }
                                     <NumberInputFormat
                                         value={commissionRate}
