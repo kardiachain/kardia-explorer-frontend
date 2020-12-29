@@ -218,7 +218,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={300} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={200} verticalAlign="middle">
                     <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {

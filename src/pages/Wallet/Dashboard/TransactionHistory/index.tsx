@@ -171,24 +171,24 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value</HeaderCell>
+                                        <HeaderCell>Value (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.value))} KAI
+                                                        {numberFormat(weiToKAI(rowData.value))}
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee</HeaderCell>
+                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.txFee))} KAI
+                                                        {numberFormat(weiToKAI(rowData.txFee))}
                                                     </div>
                                                 );
                                             }}

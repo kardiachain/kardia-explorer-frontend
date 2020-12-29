@@ -127,7 +127,7 @@ const AccountList = () => {
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
                                         <HeaderCell>
                                             <span className="sort-button" onClick={handleSort}>
-                                                <span>Balance</span>
+                                                <span>Balance (KAI)</span>
                                                 <Icon style={{ marginLeft: 3 }} icon={sortType === SortType.ASC ? "arrow-up-line" : "arrow-down-line"} />
                                             </span>
                                         </HeaderCell>
@@ -135,7 +135,7 @@ const AccountList = () => {
                                             {(rowData: HolderAccount) => {
                                                 return (
                                                     <div>
-                                                        {numberFormat(weiToKAI(rowData.balance), 4)} KAI
+                                                        {numberFormat(weiToKAI(rowData.balance), 4)}
                                                     </div>
                                                 );
                                             }}
