@@ -589,3 +589,7 @@ a:hover {
   margin-bottom: 8px;
   display: inline-block;
 }
+
+.rs-modal-header .rs-modal-header-close {
+  color: white !important;
+}
