@@ -313,7 +313,7 @@ const YourDelegators = () => {
                                                                 {
                                                                     !canUnjail ? (
                                                                         <span className="unjail-note">
-                                                                            ( Only can unjail after the time: {dateToUTCString(validator?.signingInfo?.jailedUntil || '')})
+                                                                            ( Only can be unjailed after {dateToUTCString(validator?.signingInfo?.jailedUntil || '')})
                                                                         </span>
                                                                     ) : <></>
                                                                 }
