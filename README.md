@@ -19,8 +19,5 @@ Our main features for this version:
 2. Run `npm install`
 3. Run `npm start`
 
-## Test
-Run `npm test`
-
 ## Build
 Run `npm run build`
