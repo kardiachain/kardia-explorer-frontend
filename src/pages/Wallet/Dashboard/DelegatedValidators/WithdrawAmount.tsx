@@ -251,8 +251,12 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 }}>
                 <Modal.Header>
                     <Modal.Title>Undelegate Your Staked</Modal.Title>
-                    <div className="undelegate-note" style={{ marginTop: 20 }}>* After undelegated, the number of your current rewards will be an automatic withdrawal.</div>
-                    <div className="undelegate-note">* The number of undelegated amount will be added to withdrawable amount in the next 7 day.</div>
+                    <div className="undelegate-note" style={{ marginTop: 20 }}>
+                        * Your undelegated amount will be marked as "Unbonded". Your current "Rewards" will be withdrawed to your wallet immediately.
+                    </div>
+                    <div className="undelegate-note">
+                        * After 168 hours (7 days), your "Unbonded" KAI will be marked as "Withdrawable" and can be claimed to your wallet.
+                    </div>
                 </Modal.Header>
                 <Modal.Body>
                     <Form fluid className="panel-bg-gray">
