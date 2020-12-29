@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite'
 import Button from '../../../common/components/Button';
 import * as Bip39 from 'bip39';
-import { hdkey } from 'ethereumjs-wallet'
+import { ethers } from "ethers";
 import { useWalletStorage } from '../../../service/wallet';
 import { ErrorMessage } from '../../../common/constant/Message';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
@@ -37,11 +37,9 @@ const AccessByMnemonicPhrase = () => {
         }
         setLoadingBtnSubmit(true)
         try {
-            const seed = await Bip39.mnemonicToSeed(wordPhrase.trim())
-            const root = hdkey.fromMasterSeed(seed)
-            const masterWallet = root.getWallet()
-            const privateKey = masterWallet.getPrivateKeyString();
-            const addressStr = masterWallet.getAddressString();
+            const wallet = ethers.Wallet.fromMnemonic(wordPhrase.trim());
+            const privateKey = wallet.privateKey;
+            const addressStr = wallet.address;
             const storedWallet = {
                 privatekey: privateKey,
                 address: addressStr,

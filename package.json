@@ -21,6 +21,7 @@
     "d3": "^5.16.0",
     "ethereumjs-util": "^7.0.6",
     "ethereumjs-wallet": "^1.0.1",
+    "ethers": "^5.0.24",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
     "kardia-tool": "0.0.13-3",

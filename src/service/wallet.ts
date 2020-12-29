@@ -12,7 +12,7 @@ const initialValue: WalletStore = {
 export const useWalletStorage = (callback?: () => void) => {
     const [storedValue, setStoredValue] = useState(() => {
         try {
-            const walletstore = window.localStorage.getItem('walletstore');
+            const walletstore = window.sessionStorage.getItem('walletstore');
             const walletstoreDecode = window.atob(walletstore || '')
             return walletstoreDecode ? JSON.parse(walletstoreDecode) : initialValue;
         } catch (err) { 
@@ -24,7 +24,7 @@ export const useWalletStorage = (callback?: () => void) => {
     useEffect(() => {
         if(storedValue.privatekey && storedValue.isAccess) {
             const encodeVal = window.btoa(JSON.stringify(storedValue))
-            window.localStorage.setItem('walletstore', encodeVal)
+            window.sessionStorage.setItem('walletstore', encodeVal)
             callback && callback();
         }
 
@@ -45,7 +45,7 @@ export const useWalletStorage = (callback?: () => void) => {
 export const useBalanceStorage = () => {
     const [storedBalance, setStoredBalance] = useState(() => {
         try {
-            const balance = window.localStorage.getItem(window.btoa("kaibalance"))
+            const balance = window.sessionStorage.getItem(window.btoa("kaibalance"))
             const balanceDecode = window.atob(balance || '');
             return balanceDecode || 0;
         } catch (error) {
@@ -56,7 +56,7 @@ export const useBalanceStorage = () => {
 
     useEffect(() => {
         const balanceEncode = window.btoa(storedBalance.toString())
-        window.localStorage.setItem(window.btoa("kaibalance"), balanceEncode)
+        window.sessionStorage.setItem(window.btoa("kaibalance"), balanceEncode)
     }, [storedBalance])
     
     const setBalance = (balance: number) => {
@@ -72,7 +72,7 @@ export const useBalanceStorage = () => {
 
 export const getStoredBalance = (): number => {
     try {
-        const balance = window.localStorage.getItem(window.btoa("kaibalance"))
+        const balance = window.sessionStorage.getItem(window.btoa("kaibalance"))
         const balanceDecode = window.atob(balance || '');
         return Number(balanceDecode) || 0;
     } catch (error) {
@@ -83,7 +83,7 @@ export const getStoredBalance = (): number => {
 
 export const isLoggedIn = () => {
     try {
-        const walletstore = window.localStorage.getItem('walletstore') || '{}';
+        const walletstore = window.sessionStorage.getItem('walletstore') || '{}';
         const walletstoreDecode = window.atob(walletstore || '')
         const walletstoreObj = JSON.parse(walletstoreDecode ) as WalletStore;
         if(walletstoreObj && walletstoreObj.isAccess) {
@@ -97,7 +97,7 @@ export const isLoggedIn = () => {
 }
 
 export const logoutWallet = () => {
-    window.localStorage.removeItem('walletstore');
+    window.sessionStorage.removeItem('walletstore');
 }
 
 export const getBalanceByAddress = async (address: string) => {
@@ -110,7 +110,7 @@ export const getBalanceByAddress = async (address: string) => {
 } 
 
 export const getAccount = (): Account => {
-    const walletstoreStr = window.localStorage.getItem('walletstore') || '{}';
+    const walletstoreStr = window.sessionStorage.getItem('walletstore') || '{}';
     try {
         const walletstoreDecode = window.atob(walletstoreStr || '')
         const walletstoreJson = JSON.parse(walletstoreDecode) || initialValue;

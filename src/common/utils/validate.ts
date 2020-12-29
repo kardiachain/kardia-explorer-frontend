@@ -2,6 +2,8 @@ const privateKeyValid = (privateKey: string) : boolean => {
 
     if (privateKey.length === 66 && privateKey.startsWith('0x')) {
         return true
+    } else if (privateKey.length === 64) {
+        return true
     }
     return false;
 }

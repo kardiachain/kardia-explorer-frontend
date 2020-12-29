@@ -24,7 +24,8 @@ const AccessByPrivateKey = () => {
         } 
         setLoadingBtnSubmit(true)
         try {
-            const privateKeyBuffer = EthUtil.toBuffer(privateKey);
+            const _privateKey = privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`;
+            const privateKeyBuffer = EthUtil.toBuffer(_privateKey);
             const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
             setWalletStored({
                 privatekey: wallet.getPrivateKeyString(),

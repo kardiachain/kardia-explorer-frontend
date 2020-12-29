@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel, Toggle } from 'rsuite'
-import * as Bip39 from 'bip39';
-import { hdkey } from 'ethereumjs-wallet'
+import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel } from 'rsuite'
+import { ethers } from "ethers";
 import { Link, useHistory } from 'react-router-dom';
 import './createWallet.css'
 import { useWalletStorage } from '../../../service/wallet';
@@ -9,20 +8,14 @@ import Button from '../../../common/components/Button';
 import { copyToClipboard } from '../../../common/utils/string';
 
 const CreateByMnemonic = () => {
-    enum WordNumber {
-        Twelve = 128,
-        TwentyFour = 256
-    }
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     let history = useHistory();
-    const [strength, setStrength] = useState(128)
 
     useEffect(() => {
-        randomPhrase(strength);
-    }, [strength]);
-
+        randomPhrase();
+    }, [])
 
     const createWallet = () => {
         setReadyAccessNow(true)
@@ -30,11 +23,9 @@ const CreateByMnemonic = () => {
 
     const accessWallet = async () => {
         try {
-            const seed = await Bip39.mnemonicToSeed(mnemonic)
-            const root = hdkey.fromMasterSeed(seed)
-            const masterWallet = root.getWallet()
-            const privateKey = masterWallet.getPrivateKeyString();
-            const addressStr = masterWallet.getAddressString();
+            const wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
+            const privateKey = wallet.privateKey;
+            const addressStr = wallet.address;
             const storedWallet = {
                 privatekey: privateKey,
                 address: addressStr,
@@ -46,17 +37,9 @@ const CreateByMnemonic = () => {
         }
     }
 
-    const handleSwitchOption = (checked: boolean) => {
-        if (checked) {
-            setStrength(WordNumber.Twelve);
-        } else {
-            setStrength(WordNumber.TwentyFour);
-        }
-    }
-
-    const randomPhrase = (strength: number) => {
-        const mn = Bip39.generateMnemonic(strength);
-        setMnemonic(mn)
+    const randomPhrase = () => {
+        const wallet = ethers.Wallet.createRandom();
+        setMnemonic(wallet.mnemonic.phrase)
     }
 
     return (
@@ -89,19 +72,8 @@ const CreateByMnemonic = () => {
                             ) : (
                                     <>
                                         <FlexboxGrid justify="center">
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={14}>
-                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your Mnemonic Phrase:</div>
-                                            </FlexboxGrid.Item>
-                                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={10}>
-                                                <div style={{ textAlign: 'right' }} className="switch-phrase-option">
-                                                    <Toggle
-                                                        size="lg"
-                                                        defaultChecked={true}
-                                                        checkedChildren="12"
-                                                        unCheckedChildren="24"
-                                                        onChange={handleSwitchOption}
-                                                    /> <span className="color-white">Value</span>
-                                                </div>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} xs={24}>
+                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your 12 Mnemonic Phrase</div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                         <div className="mnemonic-container">
@@ -123,7 +95,7 @@ const CreateByMnemonic = () => {
                                                                 copyToClipboard(mnemonic, onSuccess)
                                                             }}>Copy <Icon icon="copy-o" />
                                                         </Button>
-                                                        <Button className="kai-button-gray" onClick={() => randomPhrase(strength)}>
+                                                        <Button className="kai-button-gray" onClick={() => randomPhrase()}>
                                                             Change phrase <Icon icon="refresh" />
                                                         </Button>
                                                     </div>
