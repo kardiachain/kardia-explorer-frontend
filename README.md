@@ -1,19 +1,13 @@
 # Kardia block explorer
 
-## Requirement
-1. Blocks
-    - Blocks list
-    - Block detail
-2. Transactions
-    - Transactions list
-    - Transaction detail
-3. Networks + nodes
-    - Nodes list
-4. Wallet
-    - Create wallet
-    - Access wallet
-5. Faucet
-    - Get testnet KAI tokens
+This is Kardia's Aris mainnet Block Explorer.
+
+Our main features for this version: 
+- Block / transaction explorer
+- Master wallet
+- Network / Validator explorer
+- Staking
+- Smart contract deployment / interacting
 
 ## Development
 
