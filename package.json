@@ -44,7 +44,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "rsuite": "^4.8.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "web3": "^1.3.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
