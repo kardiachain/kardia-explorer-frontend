@@ -9,7 +9,7 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { gasLimitDefault, gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashString } from '../../../../common/utils/string';
@@ -463,7 +463,7 @@ const DelegatorCreate = () => {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter">Be carefully verify your stats before confirm delegation</div>
+                        <div className="confirm-letter">{InforMessage.DelegationConfirm}</div>
                     <List>
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">

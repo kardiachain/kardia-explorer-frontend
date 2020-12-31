@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './sendTxs.css'
 import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List } from 'rsuite'
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message'
+import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message'
 import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
@@ -211,7 +211,7 @@ const SendTransaction = () => {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter">Be carefully verify your transaction before sending the transaction</div>
+                    <div className="confirm-letter">{InforMessage.SendTxConfirm}</div>
                     <List>
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">

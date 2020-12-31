@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage } from '../../../../common/constant/Message';
+import { NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { startValidator } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 
@@ -63,8 +63,8 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
             </Modal.Header>
             <Modal.Body>
                 <div className="confirm-letter" style={{ textAlign: 'center' }}>
-                    Are you sure you want to starting to become validator.
-                            </div>
+                    {InforMessage.ConfirmStartingValidator}
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button className="kai-button-gray" onClick={() => { setShowModel(false) }}>

@@ -12,7 +12,7 @@ import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { checkIsValidator, getValidator } from '../../../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../../../config';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, InforMessage } from '../../../../common/constant/Message';
 import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
@@ -357,7 +357,7 @@ const YourDelegators = () => {
                                             <div style={{ marginTop: '30px', marginBottom: '20px' }}>
                                                 {
                                                     !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>
-                                                        * Your staked amount must be at least 12.5M KAI to become a validator.</div> : <></>
+                                                        {InforMessage.StartValidatorCondition}</div> : <></>
                                                 }
                                                 <Button size="big"
                                                     onClick={startBecomeValidator}

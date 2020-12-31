@@ -8,7 +8,7 @@ import { StakingIcon } from '../../../../common/components/IconCustom';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashStringAndTooltip } from '../../../../common/utils/string';
@@ -315,7 +315,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter" style={{ textAlign: 'center' }}>Are you sure you want to withdraw your staked token.</div>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>{InforMessage.WithdrawStakedAmountConfirm}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmWithdrawModal(false) }}>

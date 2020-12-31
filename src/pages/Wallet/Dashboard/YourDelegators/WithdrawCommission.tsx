@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage } from '../../../../common/constant/Message';
+import { NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { withdrawCommission } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
 
@@ -63,7 +63,7 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
                 </Modal.Header>
                 <Modal.Body>
                     <div className="confirm-letter" style={{ textAlign: 'center'}}>
-                        Are you sure you want to withdraw all your commission reward tokens.
+                        {InforMessage.WithdrawCommissionRewardsConfirm}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

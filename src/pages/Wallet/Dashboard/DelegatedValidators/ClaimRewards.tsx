@@ -4,7 +4,7 @@ import { Modal, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage } from '../../../../common/constant/Message';
+import { NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashStringAndTooltip } from '../../../../common/utils/string';
@@ -134,7 +134,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="confirm-letter" style={{ textAlign: 'center' }}>
-                        Are you sure you want to withdraw all your rewarded token.
+                        {InforMessage.ClaimRewardConfirm}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
