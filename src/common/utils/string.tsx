@@ -60,7 +60,6 @@ const renderHashStringAndTooltip = (hash: string, headCount?: number, tailCount?
 const renderStringAndTooltip = ({str, headCount = 12, showTooltip} : {
     str: string;
     headCount?: number;
-    tailCount?: number;
     showTooltip?: boolean;
 }) => {
     const truncatStr = str.length < headCount ? str : str.substr(0, headCount - 1) + '...';
