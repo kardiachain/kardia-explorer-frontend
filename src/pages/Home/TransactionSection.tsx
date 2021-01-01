@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 
@@ -26,7 +26,7 @@ const TransactionSection = ({ transactionList = [] }: {
                         wordWrap
                         autoHeight={isMobile ? true : false}
                     >
-                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                        <Column flexGrow={2} minWidth={150} verticalAlign="middle">
                             <HeaderCell><span style={{marginLeft: 40}}>Tx Hash</span></HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -49,7 +49,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
+                        <Column flexGrow={2} minWidth={180} verticalAlign="middle">
                             <HeaderCell>Detail</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
@@ -80,7 +80,15 @@ const TransactionSection = ({ transactionList = [] }: {
                                                         ) : (
                                                             <>
                                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link className="color-white" style={{ fontSize: 12}} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                    <Link className="color-white" style={{ fontSize: 12}} to={`/address/${rowData.toSmcAddr}`}>
+                                                                        {
+                                                                            renderStringAndTooltip({
+                                                                                str: rowData.toSmcName,
+                                                                                headCount: 15,
+                                                                                showTooltip: false
+                                                                            })
+                                                                        }
+                                                                    </Link>
                                                                 </Whisper>
                                                             </>
                                                         )
@@ -92,7 +100,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column align="right" verticalAlign="middle" minWidth={isMobile ? 100 : 0} flexGrow={1}>
+                        <Column align="right" verticalAlign="middle" flexGrow={1} minWidth={70}>
                             <HeaderCell>Value (KAI)</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {

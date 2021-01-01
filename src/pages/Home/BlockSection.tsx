@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { millisecondToHMS } from '../../common/utils/string';
+import { millisecondToHMS, renderStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 
@@ -25,7 +25,7 @@ const BlockSection = ({ blockList = [] }: {
                         wordWrap
                         autoHeight={isMobile ? true : false}
                     >
-                        <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                        <Column flexGrow={2} minWidth={150} verticalAlign="middle">
                             <HeaderCell><span style={{ marginLeft: 40 }}>Block Height</span></HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
@@ -43,7 +43,7 @@ const BlockSection = ({ blockList = [] }: {
                                 }}
                             </Cell>
                         </Column>
-                        <Column flexGrow={3} minWidth={isMobile ? 150 : 0}>
+                        <Column flexGrow={2} minWidth={150}>
                             <HeaderCell>Proposer</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {
@@ -51,7 +51,15 @@ const BlockSection = ({ blockList = [] }: {
                                         <div>
                                             <span className="container-content-right">
                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.validator?.hash || ''}</Tooltip>}>
-                                                    <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>{rowData?.validator?.label || ''}</Link>
+                                                    <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>
+                                                        {
+                                                            renderStringAndTooltip({
+                                                                str: rowData?.validator?.label || '',
+                                                                headCount: 15,
+                                                                showTooltip: false
+                                                            })
+                                                        }
+                                                    </Link>
                                                 </Whisper>
                                                 <div>
                                                     {

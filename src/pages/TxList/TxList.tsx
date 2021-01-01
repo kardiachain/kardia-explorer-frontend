@@ -3,7 +3,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
-import { millisecondToHMS, renderHashToRedirect } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import { useViewport } from '../../context/ViewportContext';
@@ -88,7 +88,7 @@ const TxList = () => {
                                     loading={loading}
                                     wordWrap
                                 >
-                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
                                         <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -114,7 +114,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 70 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 70 : 100} verticalAlign="middle">
                                         <HeaderCell>Block</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -126,7 +126,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
                                         <HeaderCell>From</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -144,7 +144,7 @@ const TxList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
                                         <HeaderCell>To</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
@@ -164,7 +164,15 @@ const TxList = () => {
                                                             ) : (
                                                                     <>
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>
+                                                                                {
+                                                                                    renderStringAndTooltip({
+                                                                                        str: rowData.toSmcName,
+                                                                                        headCount: isMobile ? 12 : 20,
+                                                                                        showTooltip: false
+                                                                                    })
+                                                                                }
+                                                                            </Link>
                                                                         </Whisper>
                                                                         {
                                                                             rowData.isInValidatorsList ? (

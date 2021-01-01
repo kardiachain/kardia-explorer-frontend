@@ -5,7 +5,7 @@ import Button from '../../common/components/Button';
 import { StakingIcon } from '../../common/components/IconCustom';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { renderHashStringAndTooltip } from '../../common/utils/string';
+import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import { isLoggedIn } from '../../service/wallet';
 import './staking.css'
@@ -27,7 +27,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                 rowHeight={() => 90}
                 loading={loading}
             >
-                <Column flexGrow={3} minWidth={isMobile ? 250 : 0} verticalAlign="middle">
+                <Column flexGrow={3} minWidth={isMobile ? 200 : 250} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -41,7 +41,15 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                                             size='normal' style={{ marginRight: 5 }} />
                                     </div>
                                     <div className="validator-info color-white">
-                                        <div className="validator-name color-white">{rowData.name}</div>
+                                        <div className="validator-name color-white">
+                                            {
+                                                renderStringAndTooltip({
+                                                    str: rowData.name,
+                                                    headCount: isMobile ? 12 : 25,
+                                                    showTooltip: false
+                                                })
+                                            }
+                                        </div>
                                         {renderHashStringAndTooltip(
                                             rowData.address,
                                             isMobile ? 10 : 15,
@@ -67,7 +75,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={140} verticalAlign="middle">
                     <HeaderCell>Staked Amount (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -77,7 +85,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={140} verticalAlign="middle">
                     <HeaderCell>Voting power (%)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -87,7 +95,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 140 : 0} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={140} verticalAlign="middle">
                     <HeaderCell>Total Delegators</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -97,7 +105,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={100} verticalAlign="middle">
                     <HeaderCell>Commission (%)</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
@@ -107,7 +115,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column width={150} verticalAlign="middle">
+                <Column width={120} verticalAlign="middle">
                     <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {

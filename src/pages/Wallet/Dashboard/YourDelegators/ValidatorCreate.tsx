@@ -359,7 +359,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                     <div className="property-content">
-                                        {numberFormat(commissionRate)}
+                                        {valName}
                                     </div>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
