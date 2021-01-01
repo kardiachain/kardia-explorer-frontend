@@ -6,6 +6,7 @@ import logo from '../../../resources/Logo-dark.svg';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';
+import Analytics from '../../../pages/Analytics/index';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('home');
@@ -138,7 +139,7 @@ const Header = () => {
                                     <Nav.Item eventKey="wallet" href="/wallet-login">Wallet</Nav.Item>
                                 )
                         }
-                        {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
+                        <Nav.Item eventKey="analytics" href="/analytics" >Analytics</Nav.Item>
                     </Nav>
                     <Nav className="kardia-nav" pullRight>
                     <NetworkSelect />

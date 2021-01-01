@@ -31,6 +31,7 @@ import CreateByMnemonic from './pages/Wallet/CreateNewWallet/CreateByMnemonic';
 import SearchNotFound from './pages/searchNotFound';
 import AccessByMnemonicPhrase from './pages/Wallet/AccessMyWallet/AccessByMnemonic';
 import AccountList from './pages/AccountList';
+import Analytics from './pages/Analytics';
 
 class App extends Component {
   render() {
@@ -108,6 +109,9 @@ class App extends Component {
                 </Route> */}
                 <Route path="/accounts">
                   <AccountList />
+                </Route>
+                <Route path="/analytics">
+                  <Analytics />
                 </Route>
                 <Route path="/">
                   <Home />
