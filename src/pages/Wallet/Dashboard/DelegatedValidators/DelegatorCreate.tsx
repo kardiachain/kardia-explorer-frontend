@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, Nav, Panel, SelectPicker, Tag } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, Nav, Panel, Progress, SelectPicker, Tag } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -9,7 +9,7 @@ import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMe
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { gasLimitDefault, gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashString } from '../../../../common/utils/string';
@@ -20,6 +20,8 @@ import { delegateAction } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
+
+const { Circle } = Progress;
 
 const DelegatorCreate = () => {
     const [delegators, setDelegators] = useState([] as Delegator[]);
@@ -45,6 +47,10 @@ const DelegatorCreate = () => {
     const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
     const [totalBlockRewards, setTotalBlockRewards] = useState(0);
 
+    const [indicator, setIndicator] = useState({
+        percentage: 0,
+        color: '#f04f43' 
+    })
 
     useEffect(() => {
         (async () => {
@@ -52,6 +58,10 @@ const DelegatorCreate = () => {
             const val = await getValidator(valAddr, page, limit);
             setValidator(val)
             setDelegators(val.delegators)
+            setIndicator({
+                percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
+                color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43' 
+            })
             setTableLoading(false)
         })();
     }, [valAddr, page, limit]);
@@ -71,6 +81,10 @@ const DelegatorCreate = () => {
         const val = await getValidator(valAddr, page, limit);
         setValidator(val)
         setDelegators(val.delegators)
+        setIndicator({
+            percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
+            color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43'
+        })
         setTableLoading(false)
     }
 
@@ -349,6 +363,23 @@ const DelegatorCreate = () => {
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Uptime</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content" style={{
+                                                width: 60,
+                                                color: 'white'
+                                            }}>
+                                                <Circle percent={indicator.percentage}
+                                                strokeColor={indicator.color} />
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
                             </List>
                             <div className="del-staking-container">
                                 <Form fluid>
@@ -463,7 +494,7 @@ const DelegatorCreate = () => {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter">Be carefully verify your stats before confirm delegation</div>
+                        <div className="confirm-letter">{InforMessage.DelegationConfirm}</div>
                     <List>
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">

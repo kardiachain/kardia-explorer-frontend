@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Panel, FlexboxGrid, Table, Icon, Col, Whisper, Tooltip } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
-import { millisecondToHMS } from '../../common/utils/string';
+import { millisecondToHMS, renderStringAndTooltip } from '../../common/utils/string';
 import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../config';
@@ -90,14 +90,22 @@ const Blocks = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 110 : 250} verticalAlign="middle">
                                         <HeaderCell>Proposer</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.validator?.hash || ''}</Tooltip>}>
-                                                            <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>{rowData?.validator?.label || ''}</Link>
+                                                            <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>
+                                                                {
+                                                                    renderStringAndTooltip({
+                                                                        str: rowData?.validator?.label || '',
+                                                                        headCount: isMobile ? 12 : 25,
+                                                                        showTooltip: true
+                                                                    })
+                                                                }
+                                                            </Link>
                                                         </Whisper>
                                                     </div>
                                                 );

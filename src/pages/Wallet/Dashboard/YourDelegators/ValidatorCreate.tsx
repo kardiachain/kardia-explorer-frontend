@@ -3,7 +3,7 @@ import { Col, ControlLabel, FlexboxGrid, Form, FormControl, List, Modal, SelectP
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { numberFormat } from '../../../../common/utils/number';
 import { createValidator } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
@@ -349,7 +349,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="confirm-letter">
-                        Be carefully verify your stats before confirm create a validator
+                        {InforMessage.CreateValidatorConfirm}
                     </div>
                     <List>
                         <List.Item>
@@ -359,7 +359,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                     <div className="property-content">
-                                        {numberFormat(commissionRate)}
+                                        {valName}
                                     </div>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>

@@ -57,6 +57,25 @@ const renderHashStringAndTooltip = (hash: string, headCount?: number, tailCount?
         );
 }
 
+const renderStringAndTooltip = ({str, headCount = 12, showTooltip} : {
+    str: string;
+    headCount?: number;
+    showTooltip?: boolean;
+}) => {
+    const truncatStr = str.length < headCount ? str : str.substr(0, headCount - 1) + '...';
+    return showTooltip ? (
+        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{str}</Tooltip>}>
+            <span className="hex">
+                {truncatStr}
+            </span>
+        </Whisper>
+    ) : (
+            <span className="hex">
+                {truncatStr}
+            </span>
+        );
+}
+
 const renderHashToRedirect = ({
     hash, headCount = 6, tailCount = 4, showTooltip = true, callback, showCopy = false
 }: {
@@ -115,4 +134,15 @@ const randomRGBColor = (): string => {
     const bbb =  Math.floor(Math.random() * 255);
     return `rgb(${rrr},${ggg},${bbb})`
 } 
-export { renderHashString, copyToClipboard, truncate, millisecondToHMS, renderHashToRedirect, dateToUTCString, renderHashStringAndTooltip, randomRGBColor, renderCopyButton}
+export { 
+    renderHashString, 
+    copyToClipboard, 
+    truncate, 
+    millisecondToHMS, 
+    renderHashToRedirect, 
+    dateToUTCString, 
+    renderHashStringAndTooltip, 
+    randomRGBColor, 
+    renderCopyButton,
+    renderStringAndTooltip
+}

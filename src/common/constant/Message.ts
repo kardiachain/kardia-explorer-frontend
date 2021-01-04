@@ -28,3 +28,14 @@ export const NotifiMessage = {
     TransactionSuccess: 'Congratulations! Your transaction has executed successfully.',
     TransactionError: 'Sorry! Your transaction has executed unsuccessfully.'
 }
+
+export const InforMessage = {
+    DelegationConfirm: 'Carefully verify your stats before confirm delegation',
+    SendTxConfirm: 'Carefully verify your transaction before sending the transaction',
+    CreateValidatorConfirm: 'Carefully verify your stats before confirm create a validator',
+    ClaimRewardConfirm: 'Are you sure you want to withdraw all your rewarded token',
+    WithdrawStakedAmountConfirm :'Are you sure you want to withdraw your staked token',
+    ConfirmStartingValidator: 'Are you sure you want to starting to become validator',
+    WithdrawCommissionRewardsConfirm: 'Are you sure you want to withdraw all your commission reward tokens',
+    StartValidatorCondition : '* Your staked amount must be at least 12.5M KAI to become a validator.'
+}

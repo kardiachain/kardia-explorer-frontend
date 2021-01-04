@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Col, FlexboxGrid, Icon, IconButton, List, Nav, Panel, Tag } from 'rsuite';
+import { Col, FlexboxGrid, Icon, IconButton, List, Nav, Panel, Progress, Tag } from 'rsuite';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
@@ -12,7 +12,7 @@ import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { checkIsValidator, getValidator } from '../../../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../../../config';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, InforMessage } from '../../../../common/constant/Message';
 import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
@@ -25,6 +25,8 @@ import UpdateCommissionRate from './UpdateCommissionRate';
 import UnJailValidator from './UnJailValidator';
 import VaidatorStart from './VaidatorStart';
 import WithdrawCommission from './WithdrawCommission';
+
+const { Circle } = Progress;
 
 const YourDelegators = () => {
 
@@ -54,6 +56,11 @@ const YourDelegators = () => {
     const [showConfirmStartValidatorModal, setShowConfirmStartValidatorModal] = useState(false);
     const [showWithdrawCommissionModal, setShowWithdrawCommissionModal] = useState(false);
 
+    const [indicator, setIndicator] = useState({
+        percentage: 0,
+        color: '#f04f43' 
+    })
+
     const [canUnjail, setCanUnjail] = useState(false);
 
     useEffect(() => {
@@ -65,6 +72,10 @@ const YourDelegators = () => {
             if (isVal) {
                 const val = await getValidator(myAccount.publickey, page, limit);
                 setValidator(val)
+                setIndicator({
+                    percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
+                    color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43'
+                })
                 setDelegators(val.delegators)
                 setTableLoading(false);
                 if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
@@ -98,6 +109,10 @@ const YourDelegators = () => {
         if (isVal) {
             const val = await getValidator(myAccount.publickey, page, limit);
             setValidator(val)
+            setIndicator({
+                percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
+                color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43' 
+            })
             setDelegators(val.delegators)
             setTableLoading(false);
             if (Number(weiToKAI(val?.stakedAmount)) >= MIN_STAKED_AMOUNT_START_VALIDATOR) {
@@ -338,6 +353,22 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                                <div className="property-title">Uptime</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                                <div className="property-content" style={{
+                                                    width: 60,
+                                                    color: 'white'
+                                                }}>
+                                                    <Circle percent={indicator.percentage}
+                                                    strokeColor={indicator.color} />
+                                                </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">Claimable Commission Rewards</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -357,7 +388,7 @@ const YourDelegators = () => {
                                             <div style={{ marginTop: '30px', marginBottom: '20px' }}>
                                                 {
                                                     !readyStarting ? <div className="warning-note" style={{ marginBottom: 5, fontSize: 14 }}>
-                                                        * Your staked amount must be at least 12.5M KAI to become a validator.</div> : <></>
+                                                        {InforMessage.StartValidatorCondition}</div> : <></>
                                                 }
                                                 <Button size="big"
                                                     onClick={startBecomeValidator}

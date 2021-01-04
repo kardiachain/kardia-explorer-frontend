@@ -30,6 +30,9 @@ const chartConfigDefault = {
                 enabled: false
             },
             showInLegend: true
+        },
+        series: {
+            shadow: true
         }
     },
     legend: {

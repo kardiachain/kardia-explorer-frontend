@@ -92,7 +92,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p className="color-graylight fs-12">Price ($)</p>
-                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
+                                        <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -101,7 +101,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p className="color-graylight fs-12">Volume 24h ($)</p>
-                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
+                                        <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -110,7 +110,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p className="color-graylight fs-12">Market Cap ($)</p>
-                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
+                                        <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -119,7 +119,7 @@ const Home = () => {
                                     </div>
                                     <div className="right">
                                         <p className="color-graylight fs-12">Total Supply (KAI)</p>
-                                        <p className="mt0 fw700 color-white fs-15">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
+                                        <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -129,7 +129,7 @@ const Home = () => {
                                     <div className="right">
                                         <p className="color-graylight fs-12">Total Rewards (KAI)</p>
                                         <p className="mt0" style={{wordBreak: 'break-all'}}>
-                                            <span className="fw700 color-white fs-15">{tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : 0}</span>
+                                            <span className="fw700 color-white fs-15 word-break-all">{tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : 0}</span>
                                         </p>
                                     </div>
                                 </div>

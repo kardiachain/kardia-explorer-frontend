@@ -8,10 +8,10 @@ import { StakingIcon } from '../../../../common/components/IconCustom';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
+import { ErrorMessage, NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashStringAndTooltip } from '../../../../common/utils/string';
+import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { undelegateAll, undelegateWithAmount, withdrawDelegatedAmount } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
@@ -162,7 +162,15 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                             size='normal' style={{ marginRight: 5 }} />
                                     </div>
                                     <div className="validator-info color-white">
-                                        <div className="validator-name color-white">{rowData.validatorName}</div>
+                                        <div className="validator-name color-white">
+                                            {
+                                                renderStringAndTooltip({
+                                                    str: rowData.validatorName,
+                                                    headCount: isMobile ? 12 : 20,
+                                                    showTooltip: true
+                                                })
+                                            }
+                                        </div>
                                         {renderHashStringAndTooltip(
                                             rowData.validatorAddr,
                                             isMobile ? 10 : 15,
@@ -206,7 +214,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={110} verticalAlign="middle">
+                <Column flexGrow={1} minWidth={150} verticalAlign="middle">
                     <HeaderCell>Withdrawable (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
@@ -315,7 +323,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter" style={{ textAlign: 'center' }}>Are you sure you want to withdraw your staked token.</div>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>{InforMessage.WithdrawStakedAmountConfirm}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmWithdrawModal(false) }}>

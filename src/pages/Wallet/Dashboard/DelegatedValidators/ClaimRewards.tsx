@@ -4,10 +4,10 @@ import { Modal, Table } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage } from '../../../../common/constant/Message';
+import { NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashStringAndTooltip } from '../../../../common/utils/string';
+import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { withdrawReward } from '../../../../service/smc/staking';
 import { getAccount } from '../../../../service/wallet';
@@ -64,7 +64,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 wordWrap
                 rowHeight={() => 80}
             >
-                <Column flexGrow={2} minWidth={200} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={250} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
@@ -78,7 +78,15 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                                                 size='normal' style={{ marginRight: 5 }} />
                                         </div>
                                         <div className="validator-info color-white">
-                                            <div className="validator-name color-white">{rowData.validatorName}</div>
+                                            <div className="validator-name color-white">
+                                                {
+                                                    renderStringAndTooltip({
+                                                        str: rowData.validatorName,
+                                                        headCount: isMobile ? 12 : 20,
+                                                        showTooltip: true
+                                                    })
+                                                }
+                                            </div>
                                             {renderHashStringAndTooltip(
                                                 rowData.validatorAddr,
                                                 isMobile ? 10 : 15,
@@ -93,7 +101,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
+                    <HeaderCell>Staked (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -134,7 +142,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="confirm-letter" style={{ textAlign: 'center' }}>
-                        Are you sure you want to withdraw all your rewarded token.
+                        {InforMessage.ClaimRewardConfirm}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
