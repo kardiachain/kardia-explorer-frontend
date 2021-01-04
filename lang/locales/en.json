@@ -1,0 +1,166 @@
+{
+    "navigationList": {
+        "home": "Home",
+        "blockchain": {
+            "blockchain": "Blockchain",
+            "viewTransactions": "View Transactions",
+            "viewBlocks": "View Blocks",
+            "viewAccounts": "View Accounts"
+        },
+        "network": "Network",
+        "staking": "Staking",
+        "wallet": "Wallet"
+    },
+    "common":{
+        "search": "Search",
+        "inputPlaceholder": "Search by Address / TxHash / BlockHash",
+        "gasLimit": "Gas Limit",
+        "gasPrice": "Gas Price",
+        "byteCode": "Byte Code",
+        "clear": "Clear",
+        "copy": "Copy",
+        "format": "Format",
+        "reset": "Reset"
+    },
+    "copyright": "Copyright © 2020 KardiaChain Foundation",
+    "homePage": {
+        "infor":{
+            "symbol": "Symbol",
+            "price": "Price",
+            "volumn24h": "Volume 24h",
+            "marketCap": "Market Cap",
+            "totalSupply": "Total Supply (KAI)",
+            "totalReward": "Total Rewards (KAI)"
+        },
+        "stats":{
+            "blockHeight": "Block Height",
+            "liveTPS": "Live TPS",
+            "transactions": "Transactions",
+            "addresses": "Addresses",
+            "contracts": "Contracts"
+        },
+        "table":{
+            "latestBlock": "Latest Block",
+            "viewAll": "View All",
+            "latestTransactions": "Latest Transactions",
+            "proposer": "Proposer",
+            "reward": "Rewards (KAI)",
+            "txHash": "Tx Hash",
+            "detail": "Detail",
+            "value": "Value (KAI)"
+        }
+    },
+    "networkPage": {
+        "network": "Network",
+        "name": "Name",
+        "address": "Address",
+        "peercount": "Peer count"
+    },
+    "stakingPage":{
+        "staking": "Staking",
+        "register": "Register to become validator",
+        "proposer": "Proposer",
+        "totalStaked": "Total Staked",
+        "amount": "Amount",
+        "validatorsStakes": "Validators Stakes",
+        "delegatorsStakes": "Delegators Stakes",
+        "stats":{
+            "proposers": "Proposers",
+            "validators": "Validators",
+            "candidates": "Candidates",
+            "delegators": "Delegators"
+        },
+        "table":{
+            "validator": "Validator",
+            "rank": "Rank",
+            "stakeAmount": "Stake Amount (KAI)",
+            "votingPower": "Voting Power",
+            "delegators": "Delegators",
+            "commission": "Commission",
+            "totalDelegators": "Total Delegators"
+        }
+    },
+    "walletPage":{
+        "createWallet":{
+            "title":"Create a new wallet",
+            "description": "Our user-friendly application will enable wallet creation and user's interaction with Kardiachain",
+            "getStarted": "Get Started",
+            "privateKey":{
+                "title": "Create with private key",
+                "description": "A unique private key will be generate for you Remember to save your private key! If you lose your private key, you will not able to recover your wallet",
+
+            },
+            "keyStoredFile":{
+                "title": "Create with keystored file",
+                "description": "You must be DOWNLOAD and SAVE the following Keystore File. You will need it and your password to access your wallet."
+            },
+            "phrase":{
+                "title": "Create with mnemonic phrase",
+                "description": "REMEMBER to save your mnemonic phrase. You will need this to access your wallet"
+            }
+        },
+        "accessWallet": {
+            "title": "Access my wallet",
+            "description": "Send your KAI and interact with Kardiachain blockchain platform",
+            "accessNow": "Access Now"
+        },
+
+        "navigationList":{
+            "dashboard": "Dashboard",
+            "sendTransaction": "Send Transaction",
+            "staking": "Staking",
+            "yourDelegators": "Your Delegators",
+            "delegatedValidators": "Delegated Validators",
+            "smartContract": "Smart Contract",
+            "deployContract": "Deploy Contract",
+            "interactWithContract": "Interact With Contract"
+        },
+
+        "dashboardPage":{
+            "table":{
+                "txHash": "Tx Hash",
+                "block": "Block",
+                "from": "From",
+                "to": "To",
+                "value": "Value (KAI)",
+                "txFee": "Tx Fee(KAI)"
+            }
+        },
+
+        "sendTransactionPage":{
+            "toAddress": "To Address",
+            "amount": "Amount (KAI - required)",
+            "sendKai": "Send KAI"
+        },
+
+        "yourDelegatorsPage":{
+            "name": "Name",
+            "commissionRate": "Commission Rate",
+            "maxRate": "Max Rate",
+            "maxChangeRate": "Max Change Rate",
+            "yourDelegatorAmount": "Your Delegator Amount"
+        },
+
+        "delegatedValidatorsPage":{
+            "validator": "Validator",
+            "stakedAmount": "Staked Amount",
+            "claimableRewards": "Claimble Rewards",
+            "staked": "Staked",
+            "rewards": "Rewards",
+            "unbonded": "Unbonded",
+            "withdrawable": "Withdrawable"
+        },
+
+        "deployContractPage":{
+            "deploySmartContractByByteCode": "Deploy Smart Contract By ByteCode",
+            "deployContract": "Deploy Contract"
+        },
+        
+        "interactWithContract":{
+            "selectYourContract": "Select your contract",
+            "invokeContract": "Invoke Contract",
+            "goToContract": "Go to contract"
+        }
+
+    }
+}
