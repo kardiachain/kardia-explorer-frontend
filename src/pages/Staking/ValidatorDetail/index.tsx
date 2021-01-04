@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, List, Nav, Panel, Tag } from 'rsuite';
+import { Col, FlexboxGrid, List, Nav, Panel, Progress, Tag } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { renderHashString } from '../../../common/utils/string';
 import { isLoggedIn } from '../../../service/wallet'
@@ -17,6 +17,8 @@ import { getBlocksByProposer } from '../../../service/kai-explorer/block';
 import BlockByProposerList from './BlockByProposerList';
 import { StakingIcon } from '../../../common/components/IconCustom';
 
+const { Circle } = Progress;
+
 const ValidatorDetail = () => {
     const history = useHistory()
     const { valAddr }: any = useParams();
@@ -32,7 +34,10 @@ const ValidatorDetail = () => {
     const [limitBlockRewards, setLimitBlockRewards] = useState(TABLE_CONFIG.limitDefault);
     const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
     const [totalBlockRewards, setTotalBlockRewards] = useState(0);
-
+    const [indicator, setIndicator] = useState({
+        percentage: 0,
+        color: '#f04f43' 
+    })
 
     const [activeKey, setActiveKey] = useState("delegators");
 
@@ -43,6 +48,10 @@ const ValidatorDetail = () => {
                 const val = await getValidator(valAddr, pageDelegators, limitDelegators);
                 setValidator(val);
                 setDelegators(val.delegators);
+                setIndicator({
+                    percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
+                    color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43' 
+                })
                 setLoadingDelegators(false);
             })()
         }
@@ -229,6 +238,23 @@ const ValidatorDetail = () => {
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
+
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
+                                            <div className="property-title">Indicator uptime</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
+                                            <div className="property-content" style={{
+                                                width: 60,
+                                            }}>
+                                                <Circle percent={indicator.percentage}
+                                                strokeColor={indicator.color} />
+                                            </div>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+
                             </List>
                             <Button size="big" style={{ marginTop: '30px' }}
                                 onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${valAddr}`) : history.push('/wallet') }}
