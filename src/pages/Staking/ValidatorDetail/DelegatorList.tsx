@@ -32,7 +32,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                 data={delegators}
                 loading={loading}
             >
-                <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                <Column flexGrow={3} minWidth={150} verticalAlign="middle">
                     <HeaderCell>Address</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
@@ -65,7 +65,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
+                <Column flexGrow={2} minWidth={150} verticalAlign="middle">
                     <HeaderCell>Staked (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
@@ -75,8 +75,8 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                    <HeaderCell >Claimable Rewards (KAI)</HeaderCell>
+                <Column flexGrow={2} minWidth={150} verticalAlign="middle">
+                    <HeaderCell>Rewards (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
                             return (

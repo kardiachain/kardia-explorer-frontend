@@ -33,7 +33,8 @@ const chartConfigDefault = {
             depth: 40,
             dataLabels: {
                 enabled: true,
-                format: '{point.name}'
+                format: '{point.name}',
+                color: 'white'
             },
             innerSize: '20%'
         },
@@ -49,6 +50,11 @@ const chartConfigDefault = {
                 pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.custom}</b><br/> Voting Power: <b>{point.y} %</b><br/>',
                 shared: true,
             },
+            dataLabels: {
+                enabled: true,
+                color: 'white'
+            },
+            shadow: true
         }
     },
     series: [{

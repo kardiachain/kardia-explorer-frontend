@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
-import { renderHashToRedirect } from '../../common/utils/string';
+import { renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import { colors } from '../../common/constant';
 import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';
@@ -105,7 +105,7 @@ const Network = () => {
                                         hover={false}
                                         wordWrap
                                     >
-                                        <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
+                                        <Column flexGrow={2} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
                                             <HeaderCell><span style={{ marginLeft: 40 }}>Name</span></HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
@@ -115,14 +115,20 @@ const Network = () => {
                                                                 <Icon icon="globe2" className="gray-highlight" />
                                                             </span>
                                                             <span className="container-content-right middle-vertical">
-                                                                {rowData.nodeName}
+                                                                {
+                                                                    renderStringAndTooltip({
+                                                                        str: rowData.nodeName,
+                                                                        headCount: isMobile ? 12 : 25,
+                                                                        showTooltip: true
+                                                                    })
+                                                                }
                                                             </span>
                                                         </div>
                                                     )
                                                 }}
                                             </Cell>
                                         </Column>
-                                        <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
+                                        <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
                                             <HeaderCell>Address</HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {

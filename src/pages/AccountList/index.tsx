@@ -7,7 +7,7 @@ import { StakingIcon } from '../../common/components/IconCustom';
 import { SortType } from '../../common/constant';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { renderHashToRedirect } from '../../common/utils/string';
+import { renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getAccounts } from '../../service/kai-explorer';
@@ -85,32 +85,44 @@ const AccountList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>Address</HeaderCell>
+                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>Address</span></HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
                                                 return (
-                                                    <div>
-                                                        {rowData.isContract ? <Icon icon="file-text-o" style={{ marginRight: '5px' }} /> : <></>}
-                                                        {renderHashToRedirect({
+                                                     <div>
+                                                     <span className="container-icon-left">
+                                                         <Icon icon={!rowData.isContract ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                     </span>
+                                                     <span className="container-content-right middle-vertical">
+                                                        {
+                                                        renderHashToRedirect({
                                                             hash: rowData.address,
                                                             headCount: isMobile ? 5 : 20,
                                                             tailCount: 4,
-                                                            showTooltip: false,
+                                                            showTooltip: true,
                                                             callback: () => { history.push(`/address/${rowData.address}`) }
-                                                        })}
-                                                    </div>
+                                                        })
+                                                        }
+                                                     </span>
+                                                 </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 200 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
                                         <HeaderCell>Name</HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
                                                 return (
                                                     <div>
-                                                        {rowData.name}
+                                                        {
+                                                            renderStringAndTooltip({
+                                                                str: rowData.name,
+                                                                headCount: isMobile ? 12 : 25,
+                                                                showTooltip: true
+                                                            })
+                                                        }
                                                         {
                                                             rowData.isInValidatorsList ? (
                                                                 <StakingIcon
@@ -124,7 +136,7 @@ const AccountList = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
+                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 200} verticalAlign="middle">
                                         <HeaderCell>
                                             <span className="sort-button" onClick={handleSort}>
                                                 <span>Balance (KAI)</span>

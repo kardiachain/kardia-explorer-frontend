@@ -120,6 +120,10 @@ body {
   background: var(--panel-bg-color);
 }
 
+.word-break-all {
+  word-break: break-all;
+}
+
 .hex {
   font-weight: 600;
   font-family: 'JetBrains Mono', monospace;
@@ -342,20 +346,6 @@ a:hover {
 }
 
 /* end mobile screen */
-.rs-table-scrollbar-vertical {
-  width: 3px !important;
-}
-
-.rs-table-scrollbar-vertical .rs-table-scrollbar-handle {
-  width: 3px !important;
-}
-
-.rs-table-scrollbar-horizontal {
-  height: 3px !important;
-}
-.rs-table-scrollbar-horizontal .rs-table-scrollbar-handle {
-  height: 3px !important;
-}
 
 .rs-input,
 .dropdown-custom .rs-btn{
@@ -592,4 +582,10 @@ a:hover {
 
 .rs-modal-header .rs-modal-header-close {
   color: white !important;
+}
+
+.rs-progress-circle-info {
+  color: white !important;
+  font-size: 12px !important;
+  line-height: 36px !important;
 }
