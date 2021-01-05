@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Button } from 'rsuite';
-import MetamaskConnect from './MetamaskConnect';
+import WalletExtensionConnect from './WalletExtensionConnect';
 
 const AccessMyWallet = () => {
     let history = useHistory();
@@ -12,7 +12,7 @@ const AccessMyWallet = () => {
                         <Panel class="shadow">
                             <h2 className="title">Access wallet</h2>
                             <div className="panel-body">
-                                <MetamaskConnect />
+                                <WalletExtensionConnect />
                                 <Button size="lg" block onClick={() => { history.push('/access-private-key') }}>
                                     <Icon size={"lg"} icon="unlock-alt" style={{color:'white'}} />Private Key
                                 </Button>

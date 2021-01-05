@@ -6,7 +6,9 @@ import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 const initialValue: WalletStore = {
     privatekey: '',
     address: '',
-    isAccess: false
+    isAccess: false,
+    externalWallet: false,
+    walletType: ''
 }
 
 export const useWalletStorage = (callback?: () => void) => {
@@ -22,7 +24,7 @@ export const useWalletStorage = (callback?: () => void) => {
     });
 
     useEffect(() => {
-        if(storedValue.privatekey && storedValue.isAccess) {
+        if(storedValue.isAccess) {
             const encodeVal = window.btoa(JSON.stringify(storedValue))
             window.sessionStorage.setItem('walletstore', encodeVal)
             callback && callback();

@@ -111,6 +111,8 @@ interface WalletStore {
     address: string;
     privatekey: string;
     isAccess: boolean;
+    externalWallet?: boolean;
+    walletType?: string;
 }
 
 interface Account {

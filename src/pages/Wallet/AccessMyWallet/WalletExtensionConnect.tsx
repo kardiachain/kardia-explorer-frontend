@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button } from 'rsuite';
-import Web3 from 'web3';
 import { useHistory } from 'react-router-dom';
 import { useWalletStorage } from '../../../service/wallet';
-import { store } from '../../../service/store';
+// import { store } from '../../../service/store';
+import Web3 from 'web3';
 
 declare global {
     interface Window {
@@ -12,7 +12,7 @@ declare global {
     }
 }
 
-const MetamaskConnect = () => {
+const WalletExtensionConnect = () => {
 
     const history = useHistory();
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1];
@@ -20,11 +20,10 @@ const MetamaskConnect = () => {
     // const newContext = React.createContext({ color: 'black' });
     // const value = useContext(newContext);
 
-    const globalState = useContext(store);
-    
-
 
     const ethEnabled = () => {
+        console.log("window", window);
+        
         if (window.ethereum) {
             window.web3 = new Web3(window.ethereum);
             window.ethereum.enable();
@@ -34,18 +33,17 @@ const MetamaskConnect = () => {
     }
 
     const metamaskConnect = async () => {
-        const { dispatch }: any = globalState;
-        await dispatch({ type: 'create', value: 'test' });
         if (!ethEnabled()) {
             alert("Please install an Ethereum-compatible browser or extension like MetaMask to use this dApp!");
         } else {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const accounts = await window.web3.eth.getAccounts();
             setWalletStored({
-                privatekey: '0xxxxxxxx',
+                privatekey: '',
                 address: accounts[0],
-                isAccess: true
-            }) 
-            
+                isAccess: true,
+                externalWallet: true,
+                walletType: 'webExtensionWallet'
+            });
         }
     }
 
@@ -56,4 +54,4 @@ const MetamaskConnect = () => {
     )
 }
 
-export default MetamaskConnect;
+export default WalletExtensionConnect;
