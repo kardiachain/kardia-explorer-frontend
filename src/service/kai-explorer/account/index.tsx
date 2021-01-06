@@ -1,5 +1,5 @@
-import { checkValidatorRole } from "..";
-import { END_POINT, GET_REQUEST_OPTION } from "../config"
+import {checkValidatorRole} from "..";
+import {END_POINT, GET_REQUEST_OPTION} from "../config"
 
 export const getHolderAccount = async (address: string): Promise<HolderAccount> => {
     const response = await fetch(`${END_POINT}addresses/${address}`, GET_REQUEST_OPTION);
@@ -16,7 +16,7 @@ export const getHolderAccount = async (address: string): Promise<HolderAccount> 
 }
 
 export const getTotalStats = async (): Promise<TotalStats> => {
-    const response = await fetch(`${END_POINT}dashboard/holders/total`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}dashboard/address`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     return responseJSON.data || 0
 }
@@ -35,7 +35,7 @@ export const getAccounts = async (page: number, size: number, sort: any): Promis
         holderAccounts: raws.map((item: any, index: number) => {
             return {
                 index: item.rank,
-                address: item.address || '',
+                address: item.hash || '',
                 name: item.name || '',
                 isContract: item.isContract || false,
                 balance: item.balance || '0',
