@@ -17,8 +17,8 @@ const DashboardHeader = () => {
     const [balance, setBalance] = useBalanceStorage()
     const setWalletStored = useWalletStorage()[1];
 
-    // Handle Kardia Extension Wallet switch account
-    window.ethereum.on('accountsChanged', function (accounts: any) {
+    // Handle Kardia Extension Wallet change account
+    window.ethereum.on('accountsChanged', (accounts: any) => {
         if (accounts && accounts[0]) {
             setWalletStored({
                 privatekey: '',
@@ -40,8 +40,9 @@ const DashboardHeader = () => {
             const holder = await getHolderAccount(account.publickey);
             setBalance(weiToKAI(holder.balance))
         }, TIME_INTERVAL_MILISECONDS)
-
+        
         return () => clearInterval(fetchBalance);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account.publickey])
      
     

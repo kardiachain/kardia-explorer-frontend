@@ -1,8 +1,10 @@
 import React from 'react';
-import { Button } from 'rsuite';
+import { Button, Alert } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { useWalletStorage } from '../../../service/wallet';
 import { kardiaExtensionWalletEnabled } from '../../../service/extensionWallet';
+import kardiaIcon from '../../../resources/kardia_logo.png';
+import './accessWallet.css';
 
 declare global {
     interface Window {
@@ -12,16 +14,15 @@ declare global {
 }
 
 const WalletExtensionConnect = () => {
-    
+
     const history = useHistory();
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1];
 
-    const metamaskConnect = async () => {
+    const walletConnect = async () => {
         if (!kardiaExtensionWalletEnabled()) {
-            alert("Please install the Kardia Extension Wallet to access.");
+            Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
         } else {
             const accounts = await window.web3.eth.getAccounts();
-            console.log(accounts[0]);
             if (accounts && accounts[0]) {
                 setWalletStored({
                     privatekey: '',
@@ -31,14 +32,14 @@ const WalletExtensionConnect = () => {
                     walletType: 'webExtensionWallet'
                 });
             } else {
-                alert("Please login Kardia Extension Wallet")
+                Alert.error("Please login Kardia Extension Wallet.", 5000)
             }
         }
     }
 
     return (
-        <Button size="lg" block onClick={metamaskConnect}>
-            Kardia Extenion Wallet Connect
+        <Button size="lg" block onClick={walletConnect}>
+            <img src={kardiaIcon} className="kardia-extension-wallet-icon" alt="Kardia block explorer" /> Kardia Extenion Wallet Connect
         </Button>
     )
 }

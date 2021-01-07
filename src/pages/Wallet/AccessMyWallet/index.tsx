@@ -10,9 +10,10 @@ const AccessMyWallet = () => {
                 <FlexboxGrid justify="center" align="middle" className="wrap">
                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                         <Panel className="shadow">
-                            <h2 className="title">Access wallet</h2>
+                            <h2 className="title" style={{marginBottom: 20}}>Access wallet</h2>
                             <div className="panel-body">
                                 <WalletExtensionConnect />
+                                <hr/>
                                 <Button size="lg" block onClick={() => { history.push('/access-private-key') }}>
                                     <Icon size={"lg"} icon="unlock-alt" style={{color:'white'}} />Private Key
                                 </Button>
