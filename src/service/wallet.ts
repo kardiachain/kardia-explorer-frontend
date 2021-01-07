@@ -104,7 +104,7 @@ export const logoutWallet = () => {
 
 export const getBalanceByAddress = async (address: string) => {
     try {
-        const balance = await kardiaApi.balance(toChecksum(address), '', null)
+        const balance = await kardiaApi.balance(toChecksum(address ? address.toLocaleLowerCase() : ''), '', null)
         return balance
     } catch (error) {
         console.error(error)
@@ -117,7 +117,7 @@ export const getAccount = (): Account => {
         const walletstoreDecode = window.atob(walletstoreStr || '')
         const walletstoreJson = JSON.parse(walletstoreDecode) || initialValue;
         return {
-            publickey: toChecksum(walletstoreJson.address),
+            publickey: toChecksum(walletstoreJson.address ? walletstoreJson.address.toLocaleLowerCase() : ''),
             privatekey: walletstoreJson.privatekey
         } as Account
     } catch (error) {

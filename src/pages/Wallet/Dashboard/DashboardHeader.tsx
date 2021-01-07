@@ -3,18 +3,32 @@ import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row }
 import { weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getHolderAccount } from '../../../service/kai-explorer';
-import { getAccount, useBalanceStorage } from '../../../service/wallet';
+import { getAccount, useBalanceStorage, useWalletStorage } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
 import { numberFormat } from '../../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 
 const DashboardHeader = () => {
-    const account: Account = getAccount()
+    let account: Account = getAccount()
     const [showAddress, setShowAddress] = useState(false)
     const [showPrivateKey, setShowPrivateKey] = useState(false)
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
+    const setWalletStored = useWalletStorage()[1];
+
+    // Handle Kardia Extension Wallet switch account
+    window.ethereum.on('accountsChanged', function (accounts: any) {
+        if (accounts && accounts[0]) {
+            setWalletStored({
+                privatekey: '',
+                address: accounts[0],
+                isAccess: true,
+                externalWallet: true,
+                walletType: 'webExtensionWallet'
+            });
+        }
+    })
 
     useEffect(() => {
         (async() => {
@@ -28,7 +42,8 @@ const DashboardHeader = () => {
         }, TIME_INTERVAL_MILISECONDS)
 
         return () => clearInterval(fetchBalance);
-    }, [account.publickey, setBalance])
+    }, [account.publickey])
+     
     
     const onSuccess = () => {
         Alert.success('Copied to clipboard.')
