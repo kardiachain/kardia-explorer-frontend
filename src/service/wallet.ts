@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { kardiaApi, kardiaCommon } from '../plugin/kardia-tool';
 import { cellValue } from '../common/utils/amount';
-import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 
 const initialValue: WalletStore = {
     privatekey: '',
@@ -102,7 +101,7 @@ export const logoutWallet = () => {
 
 export const getBalanceByAddress = async (address: string) => {
     try {
-        const balance = await kardiaApi.balance(toChecksum(address), '', null)
+        const balance = await kardiaApi.balance(address, '', null)
         return balance
     } catch (error) {
         console.error(error)
@@ -115,7 +114,7 @@ export const getAccount = (): Account => {
         const walletstoreDecode = window.atob(walletstoreStr || '')
         const walletstoreJson = JSON.parse(walletstoreDecode) || initialValue;
         return {
-            publickey: toChecksum(walletstoreJson.address),
+            publickey: walletstoreJson.address,
             privatekey: walletstoreJson.privatekey
         } as Account
     } catch (error) {

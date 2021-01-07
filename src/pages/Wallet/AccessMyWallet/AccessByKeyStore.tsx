@@ -29,8 +29,8 @@ const AccessByKeyStore = () => {
             const wallet = await Wallet.fromV3(blobFileString, password, true);  
             setLoadingBtnSubmit(false)
             setWalletStored({
-                privatekey: (await wallet).getPrivateKeyString(),
-                address: (await wallet).getAddressString(),
+                privatekey: wallet.getPrivateKeyString(),
+                address: wallet.getChecksumAddressString(),
                 isAccess: true
             } as WalletStore)
 

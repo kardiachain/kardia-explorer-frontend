@@ -22,7 +22,7 @@ const CreateByPrivateKey = () => {
         let wallet = EtherWallet.generate();
         setWallet({
             privatekey: wallet.getPrivateKeyString(),
-            address: wallet.getAddressString(),
+            address: wallet.getChecksumAddressString(),
             isAccess: false
         })
     }
