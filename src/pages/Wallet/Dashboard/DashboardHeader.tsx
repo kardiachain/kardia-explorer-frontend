@@ -8,6 +8,8 @@ import './dashboard.css';
 import QRCode from 'qrcode.react';
 import { numberFormat } from '../../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
+import { useRecoilState } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -15,6 +17,8 @@ const DashboardHeader = () => {
     const [showPrivateKey, setShowPrivateKey] = useState(false)
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
+
+    const [wallet, setWallet] = useRecoilState(walletState);
 
     useEffect(() => {
         (async() => {

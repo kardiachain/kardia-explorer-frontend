@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { kardiaApi, kardiaCommon } from '../plugin/kardia-tool';
 import { cellValue } from '../common/utils/amount';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
+import CryptoJS from 'crypto-js';
 
 const initialValue: WalletStore = {
     privatekey: '',
@@ -30,15 +31,17 @@ export const useWalletStorage = (callback?: () => void) => {
 
     }, [storedValue, callback])
     
-    const setValue = (value: WalletStore) => {
+    const setValue = (value: WalletStore, password: string) => {
         try {
             const valueToStore = value instanceof Function ? value(storedValue) : value;
+            const pkStr =  valueToStore && valueToStore.privatekey ? valueToStore.privatekey : ''
+            const encryptPk = CryptoJS.AES.encrypt(pkStr, password).toString();
+            valueToStore.privatekey = encryptPk;
             setStoredValue(valueToStore);
         } catch (err) {
             console.error(err);
         }
     }
-
     return [storedValue, setValue]
 }
 
@@ -90,7 +93,6 @@ export const isLoggedIn = () => {
             return true;
         }
         return false;
-        
     } catch (error) {
         return false
     }

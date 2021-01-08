@@ -10,6 +10,8 @@ import { ErrorMessage } from '../../../common/constant/Message';
 import { privateKeyValid } from '../../../common/utils/validate';
 import Button from '../../../common/components/Button';
 import { ControlLabel } from 'rsuite';
+import { useRecoilValue } from 'recoil';
+import walletPassState from '../../../atom/walletPass.atom';
 
 const AccessByPrivateKey = () => {
     let history = useHistory();
@@ -18,8 +20,11 @@ const AccessByPrivateKey = () => {
     const [privateKeyErr, setPrivateKeyErr] = useState('')
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1];
 
+    const walletPass = useRecoilValue(walletPassState);
+
+
     const accessWallet = () => {
-        if (!validatePrivatekey(privateKey)){
+        if (!validatePrivatekey(privateKey) && walletPass){
             return;
         } 
         setLoadingBtnSubmit(true)
@@ -31,13 +36,12 @@ const AccessByPrivateKey = () => {
                 privatekey: wallet.getPrivateKeyString(),
                 address: wallet.getChecksumAddressString(),
                 isAccess: true
-            })
+            }, walletPass)
             setLoadingBtnSubmit(false)
         } catch (error) {
             setLoadingBtnSubmit(false)
             Alert.error(`Access wallet Error: ${error.message}`);
         }
-
     }
 
     const validatePrivatekey = (privKey: string) => {
