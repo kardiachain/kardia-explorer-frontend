@@ -21,8 +21,7 @@ export const getValidators = async (): Promise<Validators> => {
                 return {
                     rank: i + 1,
                     color: colors[i] || colors[colorIndexRandom],
-                    // TODO: recheck hot fix
-                    address: toChecksum(typeof v.address === 'string' ? v.address.toLowerCase() : v.address),
+                    address: v.address ? toChecksum(v.address.toLowerCase()) : '',
                     votingPower: v.votingPowerPercentage,
                     stakedAmount: v.stakedAmount,
                     commissionRate: v.commissionRate,
@@ -30,8 +29,7 @@ export const getValidators = async (): Promise<Validators> => {
                     maxRate: v.maxRate,
                     maxChangeRate: v.maxChangeRate,
                     name: v.name,
-                    // TODO: recheck hot fix
-                    smcAddress: toChecksum(typeof v.smcAddress === 'string' ? v.smcAddress.toLowerCase() : v.smcAddress) || '',
+                    smcAddress: v.smcAddress ? toChecksum(v.smcAddress.toLowerCase()) : '',
                     isProposer: v.role === 2,
                     isValidator: v.role === 1,
                     isRegister: v.role === 0,
@@ -53,8 +51,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             return {} as Validator
         }
         return {
-            // TODO: recheck hot fix
-            address: toChecksum(typeof val.address === 'string' ? val.address.toLowerCase() : val.address),
+            address: val.address ? toChecksum(val.address.toLowerCase()) : '',
             votingPower: val.votingPowerPercentage,
             stakedAmount: val.stakedAmount,
             commissionRate: val.commissionRate,
@@ -62,8 +59,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             maxRate: val.maxRate,
             maxChangeRate: val.maxChangeRate,
             name: val.name || '',
-            // TODO: recheck hot fix
-            smcAddress: toChecksum(typeof val.smcAddress === 'string' ? val.smcAddress.toLowerCase() : val.smcAddress) || '',
+            smcAddress: val.smcAddress ? toChecksum(val.smcAddress.toLowerCase()) : '',
             role: checkValidatorRole(val.role),
             isProposer: val.role === 2,
             isValidator: val.role === 1,
@@ -83,8 +79,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
                 return {
                     owner: del?.address?.toLowerCase() === val?.address?.toLowerCase(),
-                    // TODO: recheck hot fix
-                    address: toChecksum(typeof del.address === 'string' ? del.address.toLowerCase() : del.address),
+                    address: del.address ? toChecksum(del.address.toLowerCase()) : '',
                     stakeAmount: del.stakedAmount,
                     rewardsAmount: del.reward
                 } as Delegator 
@@ -105,10 +100,8 @@ export const getCandidates = async (): Promise<Candidate[]> => {
             return {
                 rank: index + 1,
                 name: v.name,
-                // TODO: recheck hot fix
-                address: toChecksum(typeof v.address === 'string' ? v.address.toLowerCase() : v.address),
-                // TODO: recheck hot fix
-                smcAddress: toChecksum(typeof v.smcAddress === 'string' ? v.smcAddress.toLowerCase() : v.smcAddress),
+                address: v.address ? toChecksum(v.address.toLowerCase()) : '',
+                smcAddress: v.smcAddress ? toChecksum(v.smcAddress.toLowerCase()) : '',
                 role: checkValidatorRole(v.role),
                 isProposer: v.role === 2,
                 isValidator: v.role === 1,
@@ -135,11 +128,9 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
         return vals ? vals.map((v: any) => {
             return {
                 validatorName: v.name || '',
-                // TODO: recheck hot fix
-                validatorAddr: toChecksum(typeof v.validator === 'string' ? v.validator.toLowerCase() : v.validator) || '',
+                validatorAddr: v.validator ? toChecksum(v.validator.toLowerCase()) : '',
                 yourStakeAmount: v.stakedAmount,
-                // TODO: recheck hot fix
-                validatorSmcAddr: toChecksum(typeof v.validatorContractAddr === 'string' ? v.validatorContractAddr.toLowerCase() : v.validatorContractAddr) || '',
+                validatorSmcAddr: v.validatorContractAddr ? toChecksum(v.validatorContractAddr.toLowerCase()) : '',
                 claimableAmount: v.claimableRewards,
                 unbondedAmount: v.unbondedAmount,
                 withdrawableAmount: v.withdrawableAmount,
