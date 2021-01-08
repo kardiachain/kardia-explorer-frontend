@@ -51,7 +51,7 @@ const invokeSendAction = async (
 const delegateAction = async (valSmcAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
     try {
         const cellAmountDel = cellValue(amountDel);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "delegate", [], account, cellAmountDel, gasLimit, gasPrice);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "delegate", [], account, cellAmountDel, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }
@@ -79,7 +79,7 @@ const updateValidatorName = async (valSmcAddr: string, name: string, account: Ac
         const amountFeeDec = cellValue(amountFee);
         // Convert new validator name to bytes
         const valName = fromAscii(name);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "updateName", [valName], account, amountFeeDec, gasLimit, gasPrice);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "updateName", [valName], account, amountFeeDec, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }
@@ -89,7 +89,7 @@ const updateValidatorCommission = async (valSmcAddr: string, newCommissionRate: 
     try {
         // convert value percent type to decimal type
         const newCommissionRateDec = cellValue(newCommissionRate / 100);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "updateCommissionRate", [newCommissionRateDec], account, 0, gasLimit, gasPrice);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "updateCommissionRate", [newCommissionRateDec], account, 0, gasLimit, gasPrice);
     } catch (error) {
         throw error;
     }
@@ -97,7 +97,7 @@ const updateValidatorCommission = async (valSmcAddr: string, newCommissionRate: 
 
 const startValidator = async (valSmcAddr: string, account: Account) => {
     try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "start", [], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "start", [], account, 0);
     } catch (error) {
         throw error;
     }
@@ -105,7 +105,7 @@ const startValidator = async (valSmcAddr: string, account: Account) => {
 
 const withdrawCommission = async (valSmcAddr: string, account: Account) => {
     try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "withdrawCommission", [], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "withdrawCommission", [], account, 0);
     } catch (error) {
         throw error
     }
@@ -113,7 +113,7 @@ const withdrawCommission = async (valSmcAddr: string, account: Account) => {
 
 const withdrawReward = async (valSmcAddr: string, account: Account) => {
     try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "withdrawRewards", [], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "withdrawRewards", [], account, 0);
     } catch (error) {
         throw error;
     }
@@ -121,7 +121,7 @@ const withdrawReward = async (valSmcAddr: string, account: Account) => {
 
 const withdrawDelegatedAmount = async (valSmcAddr: string, account: Account) => {
     try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "withdraw", [], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "withdraw", [], account, 0);
     } catch (error) {
         throw error;
     }
@@ -131,7 +131,7 @@ const undelegateWithAmount = async (valSmcAddr: string, amountUndel: number, acc
     try {
         // convert value number type to decimal type
         const amountUndelDec = cellValue(amountUndel);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "undelegateWithAmount", [amountUndelDec], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "undelegateWithAmount", [amountUndelDec], account, 0);
     } catch (error) {
         throw error;
     }
@@ -139,7 +139,7 @@ const undelegateWithAmount = async (valSmcAddr: string, amountUndel: number, acc
 
 const undelegateAll = async (valSmcAddr: string, account: Account) => {
     try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "undelegate", [], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "undelegate", [], account, 0);
     } catch (error) {
         throw error;
     }
@@ -147,7 +147,7 @@ const undelegateAll = async (valSmcAddr: string, account: Account) => {
 
 const unjailValidator = async (valSmcAddr: string, account: Account) => {
     try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "unjail", [], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "unjail", [], account, 0);
     } catch (error) {
         throw error;
     }
@@ -155,7 +155,7 @@ const unjailValidator = async (valSmcAddr: string, account: Account) => {
 
 const stopValidator = async (valSmcAddr: string, account: Account) => {
     try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr), "stop", [], account, 0);
+        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "stop", [], account, 0);
     } catch (error) {
         throw error;
     }

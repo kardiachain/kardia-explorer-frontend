@@ -132,7 +132,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 }
 
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
-    const checkSumAddr = toChecksum(address.toLocaleLowerCase());
+    const checkSumAddr = address ? toChecksum(address.toLowerCase()) : '';
     const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []

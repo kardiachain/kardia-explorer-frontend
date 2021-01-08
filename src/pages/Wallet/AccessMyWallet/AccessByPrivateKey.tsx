@@ -29,7 +29,7 @@ const AccessByPrivateKey = () => {
             const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
             setWalletStored({
                 privatekey: wallet.getPrivateKeyString(),
-                address: wallet.getAddressString(),
+                address: wallet.getChecksumAddressString(),
                 isAccess: true
             })
             setLoadingBtnSubmit(false)

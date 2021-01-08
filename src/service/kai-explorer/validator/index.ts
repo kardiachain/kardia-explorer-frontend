@@ -21,7 +21,7 @@ export const getValidators = async (): Promise<Validators> => {
                 return {
                     rank: i + 1,
                     color: colors[i] || colors[colorIndexRandom],
-                    address: toChecksum(v.address),
+                    address: v.address ? toChecksum(v.address.toLowerCase()) : '',
                     votingPower: v.votingPowerPercentage,
                     stakedAmount: v.stakedAmount,
                     commissionRate: v.commissionRate,
@@ -29,7 +29,7 @@ export const getValidators = async (): Promise<Validators> => {
                     maxRate: v.maxRate,
                     maxChangeRate: v.maxChangeRate,
                     name: v.name,
-                    smcAddress: toChecksum(v.smcAddress) || '',
+                    smcAddress: v.smcAddress ? toChecksum(v.smcAddress.toLowerCase()) : '',
                     isProposer: v.role === 2,
                     isValidator: v.role === 1,
                     isRegister: v.role === 0,
@@ -51,7 +51,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             return {} as Validator
         }
         return {
-            address: toChecksum(val.address),
+            address: val.address ? toChecksum(val.address.toLowerCase()) : '',
             votingPower: val.votingPowerPercentage,
             stakedAmount: val.stakedAmount,
             commissionRate: val.commissionRate,
@@ -59,7 +59,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             maxRate: val.maxRate,
             maxChangeRate: val.maxChangeRate,
             name: val.name || '',
-            smcAddress: toChecksum(val.smcAddress) || '',
+            smcAddress: val.smcAddress ? toChecksum(val.smcAddress.toLowerCase()) : '',
             role: checkValidatorRole(val.role),
             isProposer: val.role === 2,
             isValidator: val.role === 1,
@@ -79,7 +79,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
                 return {
                     owner: del?.address?.toLowerCase() === val?.address?.toLowerCase(),
-                    address: toChecksum(del.address),
+                    address: del.address ? toChecksum(del.address.toLowerCase()) : '',
                     stakeAmount: del.stakedAmount,
                     rewardsAmount: del.reward
                 } as Delegator 
@@ -100,8 +100,8 @@ export const getCandidates = async (): Promise<Candidate[]> => {
             return {
                 rank: index + 1,
                 name: v.name,
-                address: toChecksum(v.address),
-                smcAddress: toChecksum(v.smcAddress),
+                address: v.address ? toChecksum(v.address.toLowerCase()) : '',
+                smcAddress: v.smcAddress ? toChecksum(v.smcAddress.toLowerCase()) : '',
                 role: checkValidatorRole(v.role),
                 isProposer: v.role === 2,
                 isValidator: v.role === 1,
@@ -128,9 +128,9 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
         return vals ? vals.map((v: any) => {
             return {
                 validatorName: v.name || '',
-                validatorAddr: toChecksum(v.validator) || '',
+                validatorAddr: v.validator ? toChecksum(v.validator.toLowerCase()) : '',
                 yourStakeAmount: v.stakedAmount,
-                validatorSmcAddr: toChecksum(v.validatorContractAddr) || '',
+                validatorSmcAddr: v.validatorContractAddr ? toChecksum(v.validatorContractAddr.toLowerCase()) : '',
                 claimableAmount: v.claimableRewards,
                 unbondedAmount: v.unbondedAmount,
                 withdrawableAmount: v.withdrawableAmount,
