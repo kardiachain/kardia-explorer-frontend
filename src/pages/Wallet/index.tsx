@@ -1,17 +1,28 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Panel, Icon, Modal } from 'rsuite';
-import Button from '../../common/components/Button';
+import { Col, FlexboxGrid, Panel, Icon } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import './wallet.css';
 import { useState } from 'react';
-import CreateNewPinCode from './CreateNewPincode';
+import { useEffect } from 'react';
+import walletState from '../../atom/wallet.atom';
+import { useRecoilValue } from 'recoil';
+import CreateNewPassword from './CreateNewPassword';
 
 const Wallet = () => {
     let history = useHistory();
 
     const { isMobile } = useViewport()
     const [showCreateNewPin, setShowCreateNewPin] = useState(true);
+    const wallet: WalletState = useRecoilValue(walletState);
+
+    useEffect(() => {
+        if (wallet && wallet.stateExist) {
+            setShowCreateNewPin(false);
+        } else {
+            setShowCreateNewPin(true);
+        }
+    }, [wallet])
 
     return (
         <>
@@ -57,7 +68,7 @@ const Wallet = () => {
                     </FlexboxGrid>
                 </div>
             </div>
-            <CreateNewPinCode showModal={showCreateNewPin} setShowModal={setShowCreateNewPin} />
+            <CreateNewPassword showModal={showCreateNewPin} setShowModal={setShowCreateNewPin} />
         </>
     )
 }

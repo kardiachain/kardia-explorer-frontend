@@ -6,6 +6,8 @@ import logo from '../../../resources/Logo-dark.svg';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';
+import { useSetRecoilState } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('home');
@@ -13,6 +15,9 @@ const Header = () => {
     const { isMobile } = useViewport()
 
     const location = useLocation()
+    let history = useHistory();
+
+    const setWalletState = useSetRecoilState(walletState);
 
     useEffect(() => {
         if (location.pathname.indexOf("/address/") > -1 ||
@@ -29,10 +34,9 @@ const Header = () => {
         setActiveKey(activeKey)
     }, [location])
 
-    let history = useHistory();
-
     const logout = () => {
         logoutWallet()
+        setWalletState({} as WalletState)
         history.push('/wallet-login')
     }
 

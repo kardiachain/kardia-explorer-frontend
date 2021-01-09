@@ -6,12 +6,14 @@ import { gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/consta
 import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { numberFormat } from '../../../../common/utils/number';
 import { createValidator } from '../../../../service/smc/staking';
-import { getAccount, getStoredBalance } from '../../../../service/wallet';
+import { getStoredBalance } from '../../../../service/wallet';
 import './validators.css'
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import NumberInputFormat from '../../../../common/components/FormInput';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 
@@ -34,6 +36,8 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(5000000)
     const [gasLimitErr, setGasLimitErr] = useState('')
+
+    const walletLocalState = useRecoilValue(walletState);
 
     const validateValName = (value: string) => {
         if (!value) {
@@ -189,7 +193,6 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
     const registerValidator = async () => {
         try {
             setIsLoading(true)
-            const account = await getAccount() as Account;
             const params = {
                 valName: valName,
                 commissionRate: Number(commissionRate),
@@ -198,7 +201,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                 yourDelegationAmount: Number(yourDelAmount)
             } as CreateValParams;
 
-            let validator = await createValidator(params, account, gasLimit, gasPrice);
+            let validator = await createValidator(params, walletLocalState.account, gasLimit, gasPrice);
             if (validator && validator.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

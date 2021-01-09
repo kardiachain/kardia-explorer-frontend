@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Col, FlexboxGrid, Icon, Panel, Button } from 'rsuite';
+import walletState from '../../../atom/wallet.atom';
 
 const AccessMyWallet = () => {
     let history = useHistory();
+    
+    const wallet: WalletState = useRecoilValue(walletState);
+    useEffect(() => {
+        if (!wallet || !wallet.stateExist) {
+            history.push("/wallet-login")
+        }
+    }, [wallet, history])
+
     return (
         <div className="access-wallet-container">
                 <FlexboxGrid justify="center" align="middle" className="wrap">

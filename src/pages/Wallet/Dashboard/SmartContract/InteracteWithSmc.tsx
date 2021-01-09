@@ -12,8 +12,9 @@ import { onlyInteger } from '../../../../common/utils/number';
 import { copyToClipboard } from '../../../../common/utils/string';
 import { addressValid, jsonValid } from '../../../../common/utils/validate';
 import { invokeFunctionFromContractAbi } from '../../../../service/smc';
-import { getAccount } from '../../../../service/wallet';
 import './smartContract.css'
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.');
@@ -27,7 +28,6 @@ const InteracteWithSmc = () => {
     const [abiErr, setAbiErr] = useState('')
     const [smcFuncList, setSmcFuncList] = useState([] as any[])
     const [smcFuncActive, setSmcFuncActive] = useState({} as any)
-    const myAccount = getAccount() as Account
     const [currentStep, setCurrentStep] = useState(0)
     const [loadingExecute, setLoadingExecute] = useState(false)
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
@@ -44,6 +44,7 @@ const InteracteWithSmc = () => {
     const [payableFunction, setPayableFunction] = useState(false)
 
     const [paramsFields, setParamsFields] = useState([] as any[]);
+    const walletLocalState = useRecoilValue(walletState)
 
     const validateGasLimit = (gas: any): boolean => {
         if (!Number(gas)) {
@@ -120,7 +121,7 @@ const InteracteWithSmc = () => {
         try {
             const txObject = {
                 contractAddress: smcAddr,
-                account: myAccount,
+                account: walletLocalState.account,
                 abi: abi,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,

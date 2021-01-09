@@ -3,10 +3,11 @@ import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal } f
 import Button from '../../common/components/Button';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { useSetRecoilState } from 'recoil';
-import walletPassState from '../../atom/walletPass.atom';
 import { ErrorMessage } from '../../common/constant/Message';
+import walletState from '../../atom/wallet.atom';
+import './wallet.css'
 
-const CreateNewPinCode = ({ showModal, setShowModal }: {
+const CreateNewPassword = ({ showModal, setShowModal }: {
     showModal: boolean;
     setShowModal: (isShow: boolean) => void;
 }) => {
@@ -16,7 +17,7 @@ const CreateNewPinCode = ({ showModal, setShowModal }: {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [confirmPasswordErr, setConfirmPasswordErr] = useState('')
 
-    const setWalletPass = useSetRecoilState(walletPassState)
+    const setWalletState = useSetRecoilState(walletState)
 
     const validatePass = (pass: string) => {
         if (!pass) {
@@ -58,7 +59,11 @@ const CreateNewPinCode = ({ showModal, setShowModal }: {
         if (!validatePass(password) || !validatePassConfirm(confirmPassword)) {
             return false
         }
-        setWalletPass(password)
+        setWalletState({
+            password: password,
+            stateExist: true,
+            account: {} as Account
+        } as WalletState)
         setShowModal(false)
     }
 
@@ -74,10 +79,9 @@ const CreateNewPinCode = ({ showModal, setShowModal }: {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                 <FlexboxGrid>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{marginBottom: 20}}>
-                                        <ControlLabel className="color-white">New Password (required)</ControlLabel>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{marginBottom: 10}}>
+                                        <ControlLabel className="color-white">New Password (min 8 chars) (required)</ControlLabel>
                                         <FormControl
-                                            placeholder="New Password (min 8 chars)"
                                             name="password"
                                             type="password"
                                             className="input"
@@ -92,7 +96,6 @@ const CreateNewPinCode = ({ showModal, setShowModal }: {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                         <ControlLabel className="color-white">Confirm Password (required)</ControlLabel>
                                         <FormControl
-                                            placeholder="Confirm Password"
                                             name="confirmPassword"
                                             type="password"
                                             className="input"
@@ -111,7 +114,7 @@ const CreateNewPinCode = ({ showModal, setShowModal }: {
                 </Form>
                 </div>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer style={{textAlign: 'center'}}>
                 <Button onClick={createNewPassword}>
                     Create
                 </Button>
@@ -120,4 +123,4 @@ const CreateNewPinCode = ({ showModal, setShowModal }: {
     )
 }
 
-export default CreateNewPinCode;
+export default CreateNewPassword;

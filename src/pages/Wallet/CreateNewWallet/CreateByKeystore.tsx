@@ -6,6 +6,8 @@ import { Link, useHistory } from 'react-router-dom';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../common/constant/Message';
 import Button from '../../../common/components/Button';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const CreateByKeystore = () => {
     const [password, setPassword] = useState('');
@@ -16,6 +18,14 @@ const CreateByKeystore = () => {
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
+    
+    const walletLocalState: WalletState = useRecoilValue(walletState);
+    
+    useEffect(() => {
+        if (!walletLocalState || !walletLocalState.stateExist) {
+            history.push("/wallet-login")
+        }
+    }, [walletLocalState, history])
 
     const createWallet = async () => {
         if (!password) {
@@ -44,7 +54,7 @@ const CreateByKeystore = () => {
         if (!wallet.privatekey) return;
         const newWallet = JSON.parse(JSON.stringify(wallet))
         newWallet.isAccess = true;
-        setWalletStored(newWallet)
+        setWalletStored(newWallet, walletLocalState.password);
     }
 
     useEffect(() => {

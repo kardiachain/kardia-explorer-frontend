@@ -8,8 +8,9 @@ import { gasLimitDefault, gasPriceOption } from "../../../../common/constant";
 import { ErrorMessage, NotifiMessage } from "../../../../common/constant/Message";
 import { dateToUTCString } from "../../../../common/utils/string";
 import { updateValidatorCommission } from "../../../../service/smc/staking";
-import { getAccount } from "../../../../service/wallet";
 import './validators.css'
+import { useRecoilValue } from 'recoil';
+import walletState from "../../../../atom/wallet.atom";
 
 const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -21,13 +22,14 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
     const [isLoading, setIsLoading] = useState(false);
     const [commissionRate, setCommissionRate] = useState('');
     const [commissionRateErr, setCommissionRateErr] = useState('');
-    const myAccount = getAccount() as Account;
 
     const [gasPrice, setGasPrice] = useState(1);
     const [gasPriceErr, setGasPriceErr] = useState('');
     const [gasLimit, setGasLimit] = useState(gasLimitDefault);
     const [gasLimitErr, setGasLimitErr] = useState('');
     const [canUpdate, setCanUpdate] = useState(false);
+
+    const walletLocalState = useRecoilValue(walletState);
 
     useEffect(() => {
         const updateTime = (new Date(validator.updateTime)).getTime()
@@ -95,7 +97,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
             if (!valSmcAddr) {
                 return
             }
-            let result = await updateValidatorCommission(valSmcAddr, Number(commissionRate), myAccount, gasLimit, gasPrice);
+            let result = await updateValidatorCommission(valSmcAddr, Number(commissionRate), walletLocalState.account, gasLimit, gasPrice);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

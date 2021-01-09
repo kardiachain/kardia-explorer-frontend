@@ -23,7 +23,8 @@ export const ErrorMessage = {
     BelowMinimumDelegationAmount: 'The minimum delegation amount is 25K KAI',
     CommissionMoreThanMaximunRateRangeChange: 'Change commission cannot be more than the maximum rate range.',
     PassWordNotLongEnough: 'Password not long enough',
-    ConfirmPasswordNotMatch: 'Confirm password don\'t match'
+    ConfirmPasswordNotMatch: 'Confirm password don\'t match',
+    PasswordIncorrect: 'Incorrect password.'
 }
 
 export const NotifiMessage = {

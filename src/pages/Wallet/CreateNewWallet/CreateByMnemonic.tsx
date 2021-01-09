@@ -6,12 +6,22 @@ import './createWallet.css'
 import { useWalletStorage } from '../../../service/wallet';
 import Button from '../../../common/components/Button';
 import { copyToClipboard } from '../../../common/utils/string';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const CreateByMnemonic = () => {
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     let history = useHistory();
+
+    const walletLocalState: WalletState = useRecoilValue(walletState);
+    
+    useEffect(() => {
+        if (!walletLocalState || !walletLocalState.stateExist) {
+            history.push("/wallet-login")
+        }
+    }, [walletLocalState, history])
 
     useEffect(() => {
         randomPhrase();
@@ -31,7 +41,7 @@ const CreateByMnemonic = () => {
                 address: addressStr,
                 isAccess: true
             }
-            setWalletStored(storedWallet);
+            setWalletStored(storedWallet, walletLocalState.password);
         } catch (error) {
             return false
         }
