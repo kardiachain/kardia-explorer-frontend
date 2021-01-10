@@ -98,7 +98,10 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                 </div>
             </Modal.Body>
             <Modal.Footer style={{ textAlign: 'center' }}>
-                <Button onClick={confirmPassword}>
+                <Button className="kai-button-gray" onClick={() => {history.push('/')}}>
+                    Back to home
+                </Button>
+                <Button className="kai-button-violet-gradient" onClick={confirmPassword}>
                     Access
                 </Button>
             </Modal.Footer>
