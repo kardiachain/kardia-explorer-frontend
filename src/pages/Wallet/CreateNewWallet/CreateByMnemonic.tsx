@@ -70,32 +70,36 @@ const CreateByMnemonic = () => {
                                                 <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your 12 Mnemonic Phrase</div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
-                                        <div className="mnemonic-container">
-                                            <Form fluid style={{ width: '100%' }}>
-                                                <FormGroup>
-                                                    <FormControl rows={4}
-                                                        name="mnemonic"
-                                                        componentClass="textarea"
-                                                        value={mnemonic}
-                                                        readOnly
-                                                        className="input"
-                                                    />
-                                                    <div style={{ textAlign: 'right', marginTop: 10 }}>
-                                                        <Button className="kai-button-gray"
-                                                            onClick={() => {
-                                                                const onSuccess = () => {
-                                                                    Alert.success('Copied to clipboard.')
-                                                                }
-                                                                copyToClipboard(mnemonic, onSuccess)
-                                                            }}>Copy <Icon icon="copy-o" />
-                                                        </Button>
-                                                        <Button className="kai-button-gray" onClick={() => randomPhrase()}>
-                                                            Change phrase <Icon icon="refresh" />
-                                                        </Button>
-                                                    </div>
-                                                </FormGroup>
-                                            </Form>
-                                        </div>
+                                        <FlexboxGrid justify="center">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
+                                                <Form fluid>
+                                                    <FormGroup>
+                                                        <FormControl
+                                                            rows={4}
+                                                            name="textarea"
+                                                            className="input"
+                                                            style={{ border: 'none' }}
+                                                            componentClass="textarea"
+                                                            value={mnemonic}
+                                                            readOnly
+                                                        />
+                                                    </FormGroup>
+                                                </Form>
+                                                <div style={{ textAlign: 'right', marginTop: 10 }}>
+                                                    <Button className="kai-button-gray" style={{ marginBottom: 5 }}
+                                                        onClick={() => {
+                                                            const onSuccess = () => {
+                                                                Alert.success('Copied to clipboard.')
+                                                            }
+                                                            copyToClipboard(mnemonic, onSuccess)
+                                                        }}>Copy <Icon icon="copy-o" />
+                                                    </Button>
+                                                    <Button className="kai-button-gray" onClick={() => randomPhrase()} style={{ marginBottom: 5 }}>
+                                                        Change phrase <Icon icon="refresh" />
+                                                    </Button>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
                                         <div className="color-white">Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
