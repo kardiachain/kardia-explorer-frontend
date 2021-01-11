@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Panel, Icon, ControlLabel, Form, FormGroup, FormControl, Message } from 'rsuite';
+import { Col, FlexboxGrid, Panel, Icon, ControlLabel, Form, FormGroup, FormControl } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import './wallet.css';
 import walletState from '../../atom/wallet.atom';
@@ -133,18 +133,6 @@ const Wallet = () => {
                                                 <FlexboxGrid justify="center" style={{ marginBottom: 20 }}>
                                                     <h2 className="color-white" style={{ fontSize: 20 }}>Create A New Pass Code</h2>
                                                 </FlexboxGrid>
-                                                <FlexboxGrid justify="center" style={{ marginBottom: 20 }}>
-                                                    <Message
-                                                        showIcon
-                                                        style={{width: '100%'}}
-                                                        type="info"
-                                                        title="Note"
-                                                        description={
-                                                            <p>
-                                                                xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                                            </p>
-                                                        }
-                                                    /></FlexboxGrid>
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
                                                         <ControlLabel className="color-white">New Pass Code (min 8 chars) (required)</ControlLabel>
