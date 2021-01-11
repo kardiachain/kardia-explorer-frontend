@@ -32,7 +32,7 @@ const CreateByKeystore = () => {
         });
         setWallet({
             privatekey: wallet.getPrivateKeyString(),
-            address: wallet.getAddressString(),
+            address: wallet.getChecksumAddressString(),
             isAccess: false
         })
         setBlobUrl(window.URL.createObjectURL(keystoreBlob));
