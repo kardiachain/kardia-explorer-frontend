@@ -63,7 +63,7 @@ const DashboardHeader = () => {
     }
 
     const copy = () => {
-        copyToClipboard(account.privatekey, () => {
+        copyToClipboard(walletLocalState?.account?.privatekey, () => {
             Alert.success('Copied to clipboard.')
         })
     }

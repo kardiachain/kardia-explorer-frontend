@@ -133,6 +133,13 @@ const Wallet = () => {
                                                 <FlexboxGrid justify="center" style={{ marginBottom: 20 }}>
                                                     <h2 className="color-white" style={{ fontSize: 20 }}>Create A New Pass Code</h2>
                                                 </FlexboxGrid>
+                                                <FlexboxGrid componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 20 }}>
+                                                <div style={{padding: '0 5px'}}>
+                                                    <div className="createpass-note">Note: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+                                                    <div className="createpass-note">Note: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+                                                    <div className="createpass-note">Note: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+                                                </div>
+                                                </FlexboxGrid>
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
                                                         <ControlLabel className="color-white">New Pass Code (min 8 chars) (required)</ControlLabel>
