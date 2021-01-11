@@ -147,3 +147,8 @@
     }
 }
 /* end mobile screen */
+
+
+.mnemonic textarea.rs-input.input {
+    min-width: auto !important;
+}

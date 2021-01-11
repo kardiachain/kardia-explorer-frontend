@@ -83,9 +83,9 @@ const CreateNewPassword = ({ show, setShow }: {
                                     <div style={{ padding: '0 5px' }}>
                                         <div className="createpass-note">
                                             <b>What is a pass code?</b> <br />
-                                            Pass Code is a protection layer to encrypt users Wallet to local storage, prevent others can access your Wallet (like MetaMask password) <br />
+                                            <span>Pass Code is a protection layer to encrypt users Wallet to local storage, prevent others can access your Wallet (like MetaMask password)</span> <br />
                                             <b>What if I lose my pass code?</b> <br />
-                                            You can easily remove the pass code and create a new one, you will have to access to your Wallet again.
+                                            <span>You can easily remove the pass code and create a new one, you will have to access to your Wallet again.</span>
                                         </div>
                                     </div>
                                 </FlexboxGrid>
