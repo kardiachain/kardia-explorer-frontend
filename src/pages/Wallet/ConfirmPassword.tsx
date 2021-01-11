@@ -69,7 +69,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                            <ControlLabel className="color-white">Enter Password (required)</ControlLabel>
+                                            <ControlLabel className="color-white">Enter Pass Code (required)</ControlLabel>
                                             <FormControl
                                                 name="password"
                                                 type="password"
@@ -87,7 +87,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                                 <span style={{
                                                     color: '#00C4F5',
                                                     cursor: 'pointer',
-                                                }} onClick={resetPassword}>Reset password</span>
+                                                }} onClick={resetPassword}>Reset New Pass Code</span>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

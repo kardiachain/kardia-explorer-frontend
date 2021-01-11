@@ -317,6 +317,7 @@ const DeployWithByteCode = () => {
                                             <InputGroup style={{ width: '100%' }}>
                                                 <FormControl
                                                     readOnly
+                                                    className="input"
                                                     name="deployedContract"
                                                     value={deployedContract}
                                                     onChange={(value) => {
@@ -326,7 +327,7 @@ const DeployWithByteCode = () => {
                                                 <InputGroup.Button onClick={() => {
                                                     copyToClipboard(deployedContract, onSuccess)
                                                 }}>
-                                                    <Icon icon="copy" />
+                                                    <Icon icon="copy" style={{color: 'black'}}/>
                                                 </InputGroup.Button>
                                             </InputGroup>
                                         </FlexboxGrid.Item>

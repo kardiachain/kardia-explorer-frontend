@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Panel, Icon, ControlLabel, Form, FormGroup, FormControl } from 'rsuite';
+import { Col, FlexboxGrid, Panel, Icon, ControlLabel, Form, FormGroup, FormControl, Message } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import './wallet.css';
 import walletState from '../../atom/wallet.atom';
@@ -29,9 +29,10 @@ const Wallet = () => {
         }
 
         if (pass.length < 8) {
-            setPasswordErr(ErrorMessage.PassWordNotLongEnough)
+            setPasswordErr(ErrorMessage.PassCodeNotLongEnough)
             return false
         }
+        setPasswordErr('')
 
         if (confirmPassword && confirmPassword !== pass) {
             setConfirmPasswordErr(ErrorMessage.ConfirmPasswordNotMatch)
@@ -39,7 +40,6 @@ const Wallet = () => {
         }
 
         setConfirmPasswordErr('')
-        setPasswordErr('')
         return true;
     }
 
@@ -131,11 +131,23 @@ const Wallet = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={22} >
                                             <Panel shaded className="panel-bg-gray">
                                                 <FlexboxGrid justify="center" style={{ marginBottom: 20 }}>
-                                                    <h2 className="color-white" style={{ fontSize: 20 }}>Create New Password</h2>
+                                                    <h2 className="color-white" style={{ fontSize: 20 }}>Create A New Pass Code</h2>
                                                 </FlexboxGrid>
+                                                <FlexboxGrid justify="center" style={{ marginBottom: 20 }}>
+                                                    <Message
+                                                        showIcon
+                                                        style={{width: '100%'}}
+                                                        type="info"
+                                                        title="Note"
+                                                        description={
+                                                            <p>
+                                                                xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                                            </p>
+                                                        }
+                                                    /></FlexboxGrid>
                                                 <FlexboxGrid>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                                        <ControlLabel className="color-white">New Password (min 8 chars) (required)</ControlLabel>
+                                                        <ControlLabel className="color-white">New Pass Code (min 8 chars) (required)</ControlLabel>
                                                         <FormControl
                                                             name="password"
                                                             type="password"
@@ -149,7 +161,7 @@ const Wallet = () => {
                                                         <ErrMessage message={passwordErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                                        <ControlLabel className="color-white">Confirm Password (required)</ControlLabel>
+                                                        <ControlLabel className="color-white">Confirm Pass Code (required)</ControlLabel>
                                                         <FormControl
                                                             name="confirmPassword"
                                                             type="password"

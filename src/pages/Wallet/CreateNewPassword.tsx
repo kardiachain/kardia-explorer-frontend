@@ -70,7 +70,7 @@ const CreateNewPassword = ({ showModal, setShowModal }: {
     return (
         <Modal backdrop="static" size="xs" enforceFocus={true} show={showModal}>
             <Modal.Header closeButton={false}>
-                <Modal.Title>Create New Password</Modal.Title>
+                <Modal.Title>Create A New Password Code</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
