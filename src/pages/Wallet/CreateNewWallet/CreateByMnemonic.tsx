@@ -5,21 +5,18 @@ import { Link, useHistory } from 'react-router-dom';
 import './createWallet.css'
 import Button from '../../../common/components/Button';
 import { copyToClipboard } from '../../../common/utils/string';
-import { useRecoilValue } from 'recoil';
-import walletState from '../../../atom/wallet.atom';
+import { isLoggedIn } from '../../../service/wallet';
 
 const CreateByMnemonic = () => {
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
     let history = useHistory();
 
-    const walletLocalState: WalletState = useRecoilValue(walletState);
-    
     useEffect(() => {
-        if (!walletLocalState || !walletLocalState.stateExist) {
-            history.push("/wallet-login")
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
         }
-    }, [walletLocalState, history])
+    }, [history])
 
     useEffect(() => {
         randomPhrase();

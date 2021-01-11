@@ -5,8 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../common/constant/Message';
 import Button from '../../../common/components/Button';
-import { useRecoilValue } from 'recoil';
-import walletState from '../../../atom/wallet.atom';
+import { isLoggedIn } from '../../../service/wallet';
 
 const CreateByKeystore = () => {
     const [password, setPassword] = useState('');
@@ -16,13 +15,11 @@ const CreateByKeystore = () => {
     const [errorMessage, setErrorMessage] = useState('')
     let history = useHistory();
     
-    const walletLocalState: WalletState = useRecoilValue(walletState);
-    
     useEffect(() => {
-        if (!walletLocalState || !walletLocalState.stateExist) {
-            history.push("/wallet-login")
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
         }
-    }, [walletLocalState, history])
+    }, [history])
 
     const validatePassword = (pass: string) => {
         
