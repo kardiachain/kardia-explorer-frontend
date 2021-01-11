@@ -11,6 +11,8 @@ import { gasLimitSendTx, gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
 import NumberInputFormat from '../../../../common/components/FormInput'
 import { renderHashString } from '../../../../common/utils/string'
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -19,12 +21,14 @@ const SendTransaction = () => {
     const [amountErr, setAmountErr] = useState('')
     const [toAddressErr, setToAddressErr] = useState('')
     const [gasLimitErr, serGasLimitErr] = useState('')
-    const myAccount = getAccount() as Account
+    const myAccount: Account = getAccount();
     const [sendBntLoading, setSendBntLoading] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
+
+    const walletLocalState = useRecoilValue(walletState)
 
 
     const validateAmount = (amount: any): boolean => {
@@ -99,7 +103,7 @@ const SendTransaction = () => {
     const confirmSend = async () => {
         setSendBntLoading(true)
         try {
-            const txHash = await generateTx(myAccount, toAddress, Number(amount), gasLimit, gasPrice)
+            const txHash = await generateTx(walletLocalState.account, toAddress, Number(amount), gasLimit, gasPrice)
             if (txHash) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

@@ -3,15 +3,23 @@ import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel } fr
 import { ethers } from "ethers";
 import { Link, useHistory } from 'react-router-dom';
 import './createWallet.css'
-import { useWalletStorage } from '../../../service/wallet';
 import Button from '../../../common/components/Button';
 import { copyToClipboard } from '../../../common/utils/string';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const CreateByMnemonic = () => {
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
-    const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     let history = useHistory();
+
+    const walletLocalState: WalletState = useRecoilValue(walletState);
+    
+    useEffect(() => {
+        if (!walletLocalState || !walletLocalState.stateExist) {
+            history.push("/wallet-login")
+        }
+    }, [walletLocalState, history])
 
     useEffect(() => {
         randomPhrase();
@@ -21,20 +29,9 @@ const CreateByMnemonic = () => {
         setReadyAccessNow(true)
     }
 
-    const accessWallet = async () => {
-        try {
-            const wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
-            const privateKey = wallet.privateKey;
-            const addressStr = wallet.address;
-            const storedWallet = {
-                privatekey: privateKey,
-                address: addressStr,
-                isAccess: true
-            }
-            setWalletStored(storedWallet);
-        } catch (error) {
-            return false
-        }
+    const accessWallet = () => {
+        history.push('/access-wallet')
+
     }
 
     const randomPhrase = () => {

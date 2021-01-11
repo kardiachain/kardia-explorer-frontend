@@ -157,7 +157,7 @@ const BlockDetail = () => {
                                                     headCount: 50,
                                                     tailCount: 4,
                                                     showTooltip: false,
-                                                    callback: () => { window.open(`/address/${blockDetail?.validator}`) },
+                                                    callback: () => { history.push(`/address/${blockDetail?.validator}`) },
                                                     showCopy: true
                                                 })
                                             }

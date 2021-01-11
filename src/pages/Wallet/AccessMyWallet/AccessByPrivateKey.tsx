@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel, Alert } from 'rsuite';
 import { useWalletStorage } from '../../../service/wallet';
@@ -10,6 +10,8 @@ import { ErrorMessage } from '../../../common/constant/Message';
 import { privateKeyValid } from '../../../common/utils/validate';
 import Button from '../../../common/components/Button';
 import { ControlLabel } from 'rsuite';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const AccessByPrivateKey = () => {
     let history = useHistory();
@@ -18,8 +20,17 @@ const AccessByPrivateKey = () => {
     const [privateKeyErr, setPrivateKeyErr] = useState('')
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1];
 
+    const walletLocalState: WalletState = useRecoilValue(walletState);
+
+    useEffect(() => {
+        if (!walletLocalState || !walletLocalState.stateExist) {
+            history.push("/wallet-login")
+        }
+    }, [walletLocalState, history])
+
+
     const accessWallet = () => {
-        if (!validatePrivatekey(privateKey)){
+        if (!validatePrivatekey(privateKey) && !walletLocalState.password){
             return;
         } 
         setLoadingBtnSubmit(true)
@@ -31,13 +42,12 @@ const AccessByPrivateKey = () => {
                 privatekey: wallet.getPrivateKeyString(),
                 address: wallet.getChecksumAddressString(),
                 isAccess: true
-            })
+            }, walletLocalState.password)
             setLoadingBtnSubmit(false)
         } catch (error) {
             setLoadingBtnSubmit(false)
             Alert.error(`Access wallet Error: ${error.message}`);
         }
-
     }
 
     const validatePrivatekey = (privKey: string) => {

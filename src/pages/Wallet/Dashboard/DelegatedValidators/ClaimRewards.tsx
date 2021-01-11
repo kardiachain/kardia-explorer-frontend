@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Modal, Table } from 'rsuite';
+import walletState from '../../../../atom/wallet.atom';
 import Button from '../../../../common/components/Button';
 import { StakingIcon } from '../../../../common/components/IconCustom';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
@@ -10,7 +12,6 @@ import { numberFormat } from '../../../../common/utils/number';
 import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { withdrawReward } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,15 +23,14 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
     const [showConfirmWithdrawRewardsModal, setShowConfirmWithdrawRewardsModal] = useState(false);
     const [validatorActive, setValidatorActive] = useState<YourValidator>();
     const [isLoading, setIsLoading] = useState(false);
-    const myAccount = getAccount() as Account
+    const walletLocalState = useRecoilValue(walletState)
 
     const withdrawRewards = async () => {
         setIsLoading(true)
         try {
             const valSmcAddr = validatorActive?.validatorSmcAddr || '';
             if (!valSmcAddr) return;
-
-            const result = await withdrawReward(valSmcAddr, myAccount);
+            const result = await withdrawReward(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

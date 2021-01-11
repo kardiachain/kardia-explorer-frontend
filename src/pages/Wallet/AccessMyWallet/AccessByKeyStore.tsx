@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlexboxGrid, Panel, Col, Form, FormGroup, FormControl, Uploader, Alert, ControlLabel, Icon} from 'rsuite';
 import { Link, useHistory } from 'react-router-dom';
 import { useWalletStorage } from '../../../service/wallet';
@@ -8,6 +8,8 @@ import { FileType } from 'rsuite/lib/Uploader';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../../common/constant/Message';
 import Button from '../../../common/components/Button';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const AccessByKeyStore = () => {
 
@@ -19,8 +21,16 @@ const AccessByKeyStore = () => {
     const [passwordErr, setPasswordErr] = useState('');
     const [keystoreFileErr, setKeystoreFileErr] = useState('')
 
+    const walletLocalState: WalletState = useRecoilValue(walletState);
+
+    useEffect(() => {
+        if (!walletLocalState || !walletLocalState.stateExist) {
+            history.push("/wallet-login")
+        }
+    }, [walletLocalState, history])
+
     const accessWallet = async () => {
-        if(!validatePassword(password) || !validateKeystoreFile()) {
+        if(!validatePassword(password) || !validateKeystoreFile() || !walletLocalState.password) {
             return
         }
         setLoadingBtnSubmit(true)
@@ -32,7 +42,7 @@ const AccessByKeyStore = () => {
                 privatekey: wallet.getPrivateKeyString(),
                 address: wallet.getChecksumAddressString(),
                 isAccess: true
-            } as WalletStore)
+            }, walletLocalState.password)
 
         } catch (error) {
             setLoadingBtnSubmit(false)

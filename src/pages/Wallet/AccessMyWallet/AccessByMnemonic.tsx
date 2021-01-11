@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite'
 import Button from '../../../common/components/Button';
@@ -7,6 +7,8 @@ import { ethers } from "ethers";
 import { useWalletStorage } from '../../../service/wallet';
 import { ErrorMessage } from '../../../common/constant/Message';
 import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const AccessByMnemonicPhrase = () => {
 
@@ -15,6 +17,14 @@ const AccessByMnemonicPhrase = () => {
     const [wordPhrase, setWordPhrase] = useState('');
     const [wordPhraseErr, setWordPhraseErr] = useState('')
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
+
+    const walletLocalState: WalletState = useRecoilValue(walletState);
+
+    useEffect(() => {
+        if (!walletLocalState || !walletLocalState.stateExist) {
+            history.push("/wallet-login")
+        }
+    }, [walletLocalState, history])
 
     const validateWordPhrase = (value: string): boolean => {
         if (!value) {
@@ -45,7 +55,7 @@ const AccessByMnemonicPhrase = () => {
                 address: addressStr,
                 isAccess: true
             }
-            setWalletStored(storedWallet);
+            setWalletStored(storedWallet, walletLocalState.password);
         } catch (error) {
             Alert.error("Access wallet failed. Something wrong! Please try again.")
             return false

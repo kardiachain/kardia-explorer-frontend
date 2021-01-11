@@ -7,6 +7,7 @@ import { numberFormat } from '../../../common/utils/number';
 import { renderHashToRedirect } from '../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
+import { useHistory } from 'react-router-dom';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -21,6 +22,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
 }) => {
 
     const { isMobile } = useViewport();
+    const history = useHistory()
    
     return (
         <>
@@ -44,7 +46,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                                             headCount: isMobile ? 5 : 20,
                                             tailCount: 4,
                                             showTooltip: false,
-                                            callback: () => { window.open(`/address/${rowData.address}`) }
+                                            callback: () => { history.push(`/address/${rowData.address}`) }
                                         })
                                     }
                                     {

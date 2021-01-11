@@ -589,3 +589,7 @@ a:hover {
   font-size: 12px !important;
   line-height: 36px !important;
 }
+
+.rs-modal-backdrop.in {
+  opacity: 0.9 !important;
+}

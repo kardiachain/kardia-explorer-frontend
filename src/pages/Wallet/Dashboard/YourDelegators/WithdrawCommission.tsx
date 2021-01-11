@@ -4,7 +4,8 @@ import Button from '../../../../common/components/Button';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { withdrawCommission } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -12,8 +13,8 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
     setShowModel: (isShow: boolean) => void;
     reFetchData: () => void;
 }) => {
-    const myAccount = getAccount() as Account;
     const [isLoading, setIsLoading] = useState(false);
+    const walletLocalState = useRecoilValue(walletState);
     
     const widthdrawCommission = async () => {
         try {
@@ -23,7 +24,7 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
                 setIsLoading(false);
                 return false;
             }
-            const result = await withdrawCommission(valSmcAddr, myAccount);
+            const result = await withdrawCommission(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,
