@@ -59,7 +59,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
     return (
         <Modal className="password-modal" backdrop="static" size="xs" enforceFocus={true} show={showModal}>
             <Modal.Header closeButton={false}>
-                <Modal.Title>Access Wallet</Modal.Title>
+                <Modal.Title>Verify pass code to access wallet</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
@@ -69,7 +69,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                            <ControlLabel className="color-white">Enter Pass Code (required)</ControlLabel>
+                                            <ControlLabel className="color-white">Enter pass code (required)</ControlLabel>
                                             <FormControl
                                                 name="password"
                                                 type="password"
@@ -87,7 +87,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                                 <span style={{
                                                     color: '#00C4F5',
                                                     cursor: 'pointer',
-                                                }} onClick={resetPassword}>Reset New Pass Code</span>
+                                                }} onClick={resetPassword}>Switch to another wallet and reset the new pass code</span>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

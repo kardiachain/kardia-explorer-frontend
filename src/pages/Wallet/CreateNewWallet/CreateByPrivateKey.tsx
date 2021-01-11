@@ -5,8 +5,7 @@ import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
 import { copyToClipboard } from '../../../common/utils/string';
 import Button from '../../../common/components/Button';
-import { useRecoilValue } from 'recoil';
-import walletState from '../../../atom/wallet.atom';
+import { isLoggedIn } from '../../../service/wallet';
 
 const CreateByPrivateKey = () => {
 
@@ -18,13 +17,11 @@ const CreateByPrivateKey = () => {
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
 
-    const walletLocalState: WalletState = useRecoilValue(walletState);
-    
     useEffect(() => {
-        if (!walletLocalState || !walletLocalState.stateExist) {
-            history.push("/wallet-login")
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
         }
-    }, [walletLocalState, history])
+    }, [history])
 
     const handleGenerate = () => {
         let wallet = EtherWallet.generate();

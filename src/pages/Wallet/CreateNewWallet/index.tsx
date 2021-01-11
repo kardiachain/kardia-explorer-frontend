@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import { Col, FlexboxGrid, Icon, Panel } from 'rsuite';
-import walletState from '../../../atom/wallet.atom';
+import { isLoggedIn } from '../../../service/wallet';
 import './createWallet.css'
 
 const CreateNewWallet = () => {
     let history = useHistory();
 
-    const walletLocalState: WalletState = useRecoilValue(walletState);
     useEffect(() => {
-        if (!walletLocalState || !walletLocalState.stateExist) {
-            history.push("/wallet-login")
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
         }
-    }, [walletLocalState, history])
+    }, [history])
     
     return (
         <div className="create-wallet-container">
