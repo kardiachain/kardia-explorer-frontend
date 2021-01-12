@@ -7,7 +7,9 @@ import { NotificationError, NotificationSuccess } from '../../../../common/compo
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { updateValidatorName } from '../../../../service/smc/staking';
-import { getAccount, getStoredBalance } from '../../../../service/wallet';
+import { getStoredBalance } from '../../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -22,9 +24,9 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
     const [gasLimitErr, setGasLimitErr] = useState('');
     const [valName, setValName] = useState('');
     const [valNameErr, setValNameErr] = useState('');
-    const myAccount = getAccount() as Account;
     const [isLoading, setIsLoading] = useState(false);
     const updateFee = Number(process.env.REACT_APP_UPDATE_VALIDATOR_NAME_FEE);
+    const walletLocalState = useRecoilValue(walletState);
 
     const validateGasPrice = (gasPrice: any): boolean => {
         if (!Number(gasPrice)) {
@@ -71,7 +73,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
             }
 
             if (!validateValName(valName)) return;
-            let result = await updateValidatorName(valSmcAddr, valName, myAccount, updateFee, gasLimit, gasPrice);
+            let result = await updateValidatorName(valSmcAddr, valName, walletLocalState.account, updateFee, gasLimit, gasPrice);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

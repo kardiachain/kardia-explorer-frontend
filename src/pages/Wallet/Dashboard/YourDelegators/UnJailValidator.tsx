@@ -4,7 +4,8 @@ import Button from '../../../../common/components/Button';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { NotifiMessage } from '../../../../common/constant/Message';
 import { unjailValidator } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -13,7 +14,7 @@ const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel,
     reFetchData: () => void;
 }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const myAccount = getAccount() as Account;
+    const walletLocalState = useRecoilValue(walletState);
 
     const unJailValidator = async () => {
         try {
@@ -23,7 +24,7 @@ const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel,
                 setIsLoading(false);
                 return false;
             }
-            const result = await unjailValidator(valSmcAddr, myAccount);
+            const result = await unjailValidator(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

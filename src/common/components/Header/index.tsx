@@ -6,6 +6,8 @@ import logo from '../../../resources/Logo-dark.svg';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';
+import { useSetRecoilState } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('home');
@@ -13,6 +15,9 @@ const Header = () => {
     const { isMobile } = useViewport()
 
     const location = useLocation()
+    let history = useHistory();
+
+    const setWalletState = useSetRecoilState(walletState);
 
     useEffect(() => {
         if (location.pathname.indexOf("/address/") > -1 ||
@@ -29,10 +34,9 @@ const Header = () => {
         setActiveKey(activeKey)
     }, [location])
 
-    let history = useHistory();
-
     const logout = () => {
         logoutWallet()
+        setWalletState({} as WalletState)
         history.push('/wallet-login')
     }
 
@@ -62,26 +66,87 @@ const Header = () => {
                         <Sidenav appearance="subtle">
                             <Sidenav.Body>
                                 <Nav>
-                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="explore" />} href="/">Home</Nav.Item>
+                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="explore" />}
+                                        onClick={() => {
+                                            history.push("/")
+                                            setShowMenu(false)
+                                        }}>Home</Nav.Item>
                                     <Dropdown eventKey="blockchain" icon={<Icon className="gray-highlight" icon="unlink" />} title="Blockchain">
-                                        <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
-                                        <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
-                                        <Dropdown.Item href="/accounts">View Accounts</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
+                                            history.push("/txs")
+                                            setShowMenu(false)
+                                        }}>View Transactions</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
+                                            history.push("/blocks")
+                                            setShowMenu(false)
+                                        }}>View Blocks</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
+                                            history.push("/accounts")
+                                            setShowMenu(false)
+                                        }}>View Accounts</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} href="/network">Network</Nav.Item>
+                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
+                                        onClick={() => {
+                                            history.push("/network")
+                                            setShowMenu(false)
+                                        }}>Network</Nav.Item>
                                     {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
-                                    <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
+                                    <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
+                                        onClick={() => {
+                                            history.push("/staking")
+                                            setShowMenu(false)
+                                        }} >Staking</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
-                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
+                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} 
+                                            onClick={() => { 
+                                                history.push("/wallet-login")
+                                                setShowMenu(false)
+                                             }}>Wallet</Nav.Item>
                                         ) : (
                                                 <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
-                                                    <Dropdown.Item href="/wallet/dashboard">Dashboard</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/send-transaction">Send transaction</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/staking/your-delegators">Your Delegators</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/staking/delegated-validators">Delegated Validators</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>
-                                                    <Dropdown.Item href="/wallet/smc/interaction" >Interact With Contract</Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            history.push("/wallet/dashboard")
+                                                            setShowMenu(false)
+                                                        }}>
+                                                        Dashboard
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            history.push("/wallet/send-transaction")
+                                                            setShowMenu(false)
+                                                        }}>
+                                                        Send transaction
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            history.push("/wallet/staking/your-delegators")
+                                                            setShowMenu(false)
+                                                        }}>
+                                                        Your Delegators
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            history.push("/wallet/staking/delegated-validators")
+                                                            setShowMenu(false)
+                                                        }}>
+                                                        Delegated Validators
+                                                        </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            history.push("/wallet/smc/byte-code-deployment")
+                                                            setShowMenu(false)
+                                                        }}>
+                                                        Deploy Contract
+                                                        </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            history.push("/wallet/smc/interaction")
+                                                            setShowMenu(false)
+                                                        }}>
+                                                        Interact With Contract
+                                                        </Dropdown.Item>
                                                 </Dropdown>
                                             )
                                     }
@@ -99,52 +164,51 @@ const Header = () => {
         )
     }
     return (
-            <Navbar appearance="inverse" className="kai-header-container">
-                <Navbar.Header>
-                    <Link to="/" className="navbar-brand logo">
-                        <div className="kai-logo-container">
-                            <img src={logo} alt="Kardia block explorer" />
-                        </div>
-                    </Link>
-                </Navbar.Header>
-                <Navbar.Body>
-                    <Nav className="kardia-nav" activeKey={activeKey}>
-                        <Nav.Item eventKey="" href="/">Home</Nav.Item>
-                        <Dropdown title="Blockchain" style={{marginRight:'10px'}}>
-                            <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
-                            <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
-                            <Dropdown.Item eventKey="accounts" href="/accounts">View Accounts</Dropdown.Item>
-                            {/* Hidden dropdown item */}
-                            <Dropdown.Item eventKey="blockchain" style={{display: "none"}}></Dropdown.Item>
-                        </Dropdown>
-                        <Nav.Item eventKey="network" href="/network" >Network</Nav.Item>
-                        {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
-                        <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
-                        {
-                            isLoggedIn() ? (
-                                <Dropdown
-                                    title="Wallet"
-                                    placement="bottomEnd"
-                                >
-                                    <Dropdown.Item eventKey="dashboard" href="/wallet/dashboard">Dashboard</Dropdown.Item>
-                                    <Dropdown.Item eventKey="send-transaction" href="/wallet/send-transaction">Send transaction</Dropdown.Item>
-                                    <Dropdown.Item eventKey="your-delegators" href="/wallet/staking/your-delegators" >Your Delegators</Dropdown.Item>
-                                    <Dropdown.Item eventKey="delegated-validators" href="/wallet/staking/delegated-validators" >Delegated Validators</Dropdown.Item>
-                                    <Dropdown.Item eventKey="byte-code-deployment" href="/wallet/smc/byte-code-deployment">Deploy Contract</Dropdown.Item>
-                                    <Dropdown.Item eventKey="interaction" href="/wallet/smc/interaction" >Interact With Contract</Dropdown.Item>
-                                    <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
-                                </Dropdown>
-                            ) : (
-                                    <Nav.Item eventKey="wallet" href="/wallet-login">Wallet</Nav.Item>
-                                )
-                        }
-                        {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
-                    </Nav>
-                    <Nav className="kardia-nav" pullRight>
+        <Navbar appearance="inverse" className="kai-header-container">
+            <Navbar.Header>
+                <Link to="/" className="navbar-brand logo">
+                    <div className="kai-logo-container">
+                        <img src={logo} alt="Kardia block explorer" />
+                    </div>
+                </Link>
+            </Navbar.Header>
+            <Navbar.Body>
+                <Nav className="kardia-nav" activeKey={activeKey}>
+                    <Nav.Item eventKey="" onClick={() => { history.push("/") }}>Home</Nav.Item>
+                    <Dropdown title="Blockchain" style={{ marginRight: '10px' }}>
+                        <Dropdown.Item eventKey="txs" onClick={() => { history.push("/txs") }}>View Transactions</Dropdown.Item>
+                        <Dropdown.Item eventKey="blocks" onClick={() => { history.push("/blocks") }}>View Blocks</Dropdown.Item>
+                        <Dropdown.Item eventKey="accounts" onClick={() => { history.push("/accounts") }}>View Accounts</Dropdown.Item>
+                        {/* Hidden dropdown item */}
+                        <Dropdown.Item eventKey="blockchain" style={{ display: "none" }}></Dropdown.Item>
+                    </Dropdown>
+                    <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item>
+                    {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
+                    <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
+                    {
+                        isLoggedIn() ? (
+                            <Dropdown
+                                title="Wallet"
+                                placement="bottomEnd">
+                                <Dropdown.Item eventKey="dashboard" onClick={() => { history.push("/wallet/dashboard") }}>Dashboard</Dropdown.Item>
+                                <Dropdown.Item eventKey="send-transaction" onClick={() => { history.push("/wallet/send-transaction") }}>Send transaction</Dropdown.Item>
+                                <Dropdown.Item eventKey="your-delegators" onClick={() => { history.push("/wallet/staking/your-delegators") }} >Your Delegators</Dropdown.Item>
+                                <Dropdown.Item eventKey="delegated-validators" onClick={() => { history.push("/wallet/staking/delegated-validators") }} >Delegated Validators</Dropdown.Item>
+                                <Dropdown.Item eventKey="byte-code-deployment" onClick={() => { history.push("/wallet/smc/byte-code-deployment") }} >Deploy Contract</Dropdown.Item>
+                                <Dropdown.Item eventKey="interaction" onClick={() => { history.push("/wallet/smc/interaction") }} >Interact With Contract</Dropdown.Item>
+                                <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
+                            </Dropdown>
+                        ) : (
+                                <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>Wallet</Nav.Item>
+                            )
+                    }
+                    {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
+                </Nav>
+                <Nav className="kardia-nav" pullRight>
                     <NetworkSelect />
                 </Nav>
-                </Navbar.Body>
-            </Navbar>
+            </Navbar.Body>
+        </Navbar>
     )
 }
 

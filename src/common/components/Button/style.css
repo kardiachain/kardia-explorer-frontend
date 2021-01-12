@@ -39,9 +39,9 @@
 .kai-button-violet-gradient {
     background:  var(--violet-gradient);
 }
-.kai-button-violet-gradient:hover{
+/* .kai-button-violet-gradient:hover{
     background: var(--violet-gradient) !important;
-}
+} */
 
 .kai-button-gray {
     background: var(--gray-button);

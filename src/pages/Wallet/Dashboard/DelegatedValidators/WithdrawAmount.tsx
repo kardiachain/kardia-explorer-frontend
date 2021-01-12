@@ -14,7 +14,8 @@ import { numberFormat } from '../../../../common/utils/number';
 import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { undelegateAll, undelegateWithAmount, withdrawDelegatedAmount } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -23,7 +24,6 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
     reFetchData: () => void;
 }) => {
     const { isMobile } = useViewport();
-    const myAccount = getAccount() as Account
     const [showUndelegateModel, setShowUndelegateModel] = useState(false);
     const [unStakeAmount, setUnstakeAmount] = useState('');
     const [unStakeAmountErr, setUnstakeAmountErr] = useState('');
@@ -32,6 +32,8 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false);
     const [delegateOption, setDelegateOption] = useState('part');
 
+    const walletLocalState = useRecoilValue(walletState)
+
     const undelegate = async () => {
         const valSmcAddr = validatorActive?.validatorSmcAddr || '';
         if (!valSmcAddr) return;
@@ -39,7 +41,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             if (!validateUnStakeAmount(unStakeAmount)) return
             setIsLoading(true);
             try {
-                const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), myAccount)
+                const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), walletLocalState.account)
                 if (result && result.status === 1) {
                     NotificationSuccess({
                         description: NotifiMessage.TransactionSuccess,
@@ -61,7 +63,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
         } else {
             try {
                 setIsLoading(true);
-                const result = await undelegateAll(valSmcAddr, myAccount);
+                const result = await undelegateAll(valSmcAddr, walletLocalState.account);
                 if (result && result.status === 1) {
                     NotificationSuccess({
                         description: NotifiMessage.TransactionSuccess,
@@ -114,7 +116,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             const valAddr = validatorActive?.validatorSmcAddr || '';
             if (!valAddr) return;
 
-            const result = await withdrawDelegatedAmount(valAddr, myAccount);
+            const result = await withdrawDelegatedAmount(valAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

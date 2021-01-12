@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Icon, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../../common/utils/amount';
@@ -27,6 +27,7 @@ const BlockByProposerList = ({
     setLimit: (newLimit: number) => void;
 }) => {
     const { isMobile } = useViewport();
+    const history = useHistory();
 
     return (
         <>
@@ -68,7 +69,7 @@ const BlockByProposerList = ({
                                         headCount: isMobile ? 10 : 20,
                                         tailCount: 4,
                                         showTooltip: true,
-                                        callback: () => { window.open(`/block/${rowData.blockHash}`) }
+                                        callback: () => { history.push(`/block/${rowData.blockHash}`) }
                                     })}
                                 </div>
                             );

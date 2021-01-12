@@ -6,12 +6,13 @@ import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message
 import { copyToClipboard } from '../../../../common/utils/string';
 import { jsonValid } from '../../../../common/utils/validate';
 import { deploySmartContract } from '../../../../service/smc';
-import { getAccount } from '../../../../service/wallet';
 import ReactJson from 'react-json-view'
 import './smartContract.css'
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -25,7 +26,6 @@ const DeployWithByteCode = () => {
     const [byteCodeErr, setByteCodeErr] = useState('')
     const [abiErr, setAbiErr] = useState('')
     const [gasLimitErr, setGasLimitErr] = useState('')
-    const myAccount = getAccount() as Account
     const [loading, setLoading] = useState(false)
     const [gasPrice, setGasPrice] = useState(1)
     const [gasPriceErr, setGasPriceErr] = useState('')
@@ -35,6 +35,7 @@ const DeployWithByteCode = () => {
     const [showTxDetailModal, setShowTxDetailModal] = useState(false)
     const [contractJsonFileDownload, setContractJsonFileDownload] = useState<ContractJsonFile>({ contractAddress: "", byteCode: "", abi: "{}" })
     const [construcFields, setConstrucFields] = useState([] as any[]);
+    const walletLocalState = useRecoilValue(walletState)
 
 
     const validateByteCode = (byteCode: string) => {
@@ -99,7 +100,7 @@ const DeployWithByteCode = () => {
             }
             setLoading(true);
             const txObject = {
-                account: myAccount,
+                account: walletLocalState.account,
                 abi: abi,
                 bytecode: byteCode,
                 gasLimit: gasLimit,
@@ -316,6 +317,7 @@ const DeployWithByteCode = () => {
                                             <InputGroup style={{ width: '100%' }}>
                                                 <FormControl
                                                     readOnly
+                                                    className="input"
                                                     name="deployedContract"
                                                     value={deployedContract}
                                                     onChange={(value) => {
@@ -325,7 +327,7 @@ const DeployWithByteCode = () => {
                                                 <InputGroup.Button onClick={() => {
                                                     copyToClipboard(deployedContract, onSuccess)
                                                 }}>
-                                                    <Icon icon="copy" />
+                                                    <Icon icon="copy" style={{color: 'black'}}/>
                                                 </InputGroup.Button>
                                             </InputGroup>
                                         </FlexboxGrid.Item>

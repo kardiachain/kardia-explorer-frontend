@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Alert, Col, FlexboxGrid, Icon, Input, InputGroup, Panel } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
 import { copyToClipboard } from '../../../common/utils/string';
-import { useWalletStorage } from '../../../service/wallet';
 import Button from '../../../common/components/Button';
+import { isLoggedIn } from '../../../service/wallet';
 
 const CreateByPrivateKey = () => {
 
@@ -14,9 +14,14 @@ const CreateByPrivateKey = () => {
     }
 
     const [showPrivKey, setShowPrivKey] = useState(false)
-    const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
+        }
+    }, [history])
 
     const handleGenerate = () => {
         let wallet = EtherWallet.generate();
@@ -36,10 +41,7 @@ const CreateByPrivateKey = () => {
     }
 
     const accessWalletNow = () => {
-        if (!wallet.privatekey) return;
-        const newWallet = JSON.parse(JSON.stringify(wallet))
-        newWallet.isAccess = true;
-        setWalletStored(newWallet)
+        history.push('/access-wallet')
     }
 
     return (

@@ -3,15 +3,20 @@ import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel } fr
 import { ethers } from "ethers";
 import { Link, useHistory } from 'react-router-dom';
 import './createWallet.css'
-import { useWalletStorage } from '../../../service/wallet';
 import Button from '../../../common/components/Button';
 import { copyToClipboard } from '../../../common/utils/string';
+import { isLoggedIn } from '../../../service/wallet';
 
 const CreateByMnemonic = () => {
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
-    const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1]
     let history = useHistory();
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
+        }
+    }, [history])
 
     useEffect(() => {
         randomPhrase();
@@ -21,20 +26,9 @@ const CreateByMnemonic = () => {
         setReadyAccessNow(true)
     }
 
-    const accessWallet = async () => {
-        try {
-            const wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
-            const privateKey = wallet.privateKey;
-            const addressStr = wallet.address;
-            const storedWallet = {
-                privatekey: privateKey,
-                address: addressStr,
-                isAccess: true
-            }
-            setWalletStored(storedWallet);
-        } catch (error) {
-            return false
-        }
+    const accessWallet = () => {
+        history.push('/access-wallet')
+
     }
 
     const randomPhrase = () => {
@@ -76,32 +70,36 @@ const CreateByMnemonic = () => {
                                                 <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your 12 Mnemonic Phrase</div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
-                                        <div className="mnemonic-container">
-                                            <Form fluid style={{ width: '100%' }}>
-                                                <FormGroup>
-                                                    <FormControl rows={4}
-                                                        name="mnemonic"
-                                                        componentClass="textarea"
-                                                        value={mnemonic}
-                                                        readOnly
-                                                        className="input"
-                                                    />
-                                                    <div style={{ textAlign: 'right', marginTop: 10 }}>
-                                                        <Button className="kai-button-gray"
-                                                            onClick={() => {
-                                                                const onSuccess = () => {
-                                                                    Alert.success('Copied to clipboard.')
-                                                                }
-                                                                copyToClipboard(mnemonic, onSuccess)
-                                                            }}>Copy <Icon icon="copy-o" />
-                                                        </Button>
-                                                        <Button className="kai-button-gray" onClick={() => randomPhrase()}>
-                                                            Change phrase <Icon icon="refresh" />
-                                                        </Button>
-                                                    </div>
-                                                </FormGroup>
-                                            </Form>
-                                        </div>
+                                        <FlexboxGrid justify="center">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
+                                                <Form fluid>
+                                                    <FormGroup>
+                                                        <FormControl
+                                                            rows={4}
+                                                            name="textarea"
+                                                            className="input"
+                                                            style={{ border: 'none' }}
+                                                            componentClass="textarea"
+                                                            value={mnemonic}
+                                                            readOnly
+                                                        />
+                                                    </FormGroup>
+                                                </Form>
+                                                <div style={{ textAlign: 'right', marginTop: 10 }}>
+                                                    <Button className="kai-button-gray" style={{ marginBottom: 5 }}
+                                                        onClick={() => {
+                                                            const onSuccess = () => {
+                                                                Alert.success('Copied to clipboard.')
+                                                            }
+                                                            copyToClipboard(mnemonic, onSuccess)
+                                                        }}>Copy <Icon icon="copy-o" />
+                                                    </Button>
+                                                    <Button className="kai-button-gray" onClick={() => randomPhrase()} style={{ marginBottom: 5 }}>
+                                                        Change phrase <Icon icon="refresh" />
+                                                    </Button>
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
                                         <div className="color-white">Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">

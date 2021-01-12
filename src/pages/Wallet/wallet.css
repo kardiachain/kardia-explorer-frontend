@@ -76,3 +76,15 @@
       padding:20px !important;
     }
 }
+
+.create-password-container {
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.createpass-note {
+    color: white;
+    max-width: 560px;
+}

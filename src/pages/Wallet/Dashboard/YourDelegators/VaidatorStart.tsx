@@ -4,7 +4,8 @@ import Button from '../../../../common/components/Button';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { startValidator } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -12,8 +13,8 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
     setShowModel: (isShow: boolean) => void;
     reFetchData: () => void;
 }) => {
-    const myAccount = getAccount() as Account;
     const [isLoading, setIsLoading] = useState(false);
+    const walletLocalState = useRecoilValue(walletState);
     
     const start = async () => {
         try {
@@ -24,7 +25,7 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
                 return false;
             }
 
-            const result = await startValidator(valSmcAddr, myAccount);
+            const result = await startValidator(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

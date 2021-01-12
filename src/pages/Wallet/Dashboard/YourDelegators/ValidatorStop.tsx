@@ -4,7 +4,8 @@ import Button from '../../../../common/components/Button';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { NotifiMessage } from '../../../../common/constant/Message';
 import { stopValidator } from '../../../../service/smc/staking';
-import { getAccount } from '../../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
 
 const ValidatorStop = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -12,8 +13,8 @@ const ValidatorStop = ({ validator = {} as Validator, showModel, setShowModel, r
     setShowModel: (isShow: boolean) => void;
     reFetchData: () => void;
 }) => {
-    const myAccount = getAccount() as Account;
     const [isLoading, setIsLoading] = useState(false);
+    const walletLocalState = useRecoilValue(walletState);
 
     const stop = async () => {
         try {
@@ -24,7 +25,7 @@ const ValidatorStop = ({ validator = {} as Validator, showModel, setShowModel, r
                 return false;
             }
 
-            const result = await stopValidator(valSmcAddr, myAccount);
+            const result = await stopValidator(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,

@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel } from 'rsuite';
+import { isLoggedIn } from '../../../service/wallet';
 import './createWallet.css'
 
 const CreateNewWallet = () => {
     let history = useHistory();
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
+        }
+    }, [history])
+    
     return (
         <div className="create-wallet-container">
             <FlexboxGrid justify="center">

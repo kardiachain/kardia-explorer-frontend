@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, Nav, Panel, Progress, SelectPicker, Tag } from 'rsuite';
+import walletState from '../../../../atom/wallet.atom';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -17,7 +19,7 @@ import { TABLE_CONFIG } from '../../../../config';
 import { getValidator } from '../../../../service/kai-explorer';
 import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
 import { delegateAction } from '../../../../service/smc/staking';
-import { getAccount, getStoredBalance } from '../../../../service/wallet';
+import { getStoredBalance } from '../../../../service/wallet';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
 
@@ -46,6 +48,8 @@ const DelegatorCreate = () => {
     const [limitBlockRewards, setLimitBlockRewards] = useState(TABLE_CONFIG.limitDefault);
     const [loadingBlockRewards, setLoadingBlockRewards] = useState(true);
     const [totalBlockRewards, setTotalBlockRewards] = useState(0);
+    const walletLocalState = useRecoilValue(walletState)
+
 
     const [indicator, setIndicator] = useState({
         percentage: 0,
@@ -138,12 +142,11 @@ const DelegatorCreate = () => {
     const confirmDelegate = async () => {
         try {
             setIsLoading(true)
-            const account = getAccount() as Account;
             const valSmcAddr = validator?.smcAddress || '';
             if (!valSmcAddr) {
                 return
             }
-            const delegate = await delegateAction(valSmcAddr, account, Number(delAmount), gasLimit, gasPrice);
+            const delegate = await delegateAction(valSmcAddr, walletLocalState.account, Number(delAmount), gasLimit, gasPrice);
 
             if (delegate && delegate.status === 1) {
                 NotificationSuccess({
