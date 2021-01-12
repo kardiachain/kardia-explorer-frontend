@@ -31,11 +31,12 @@ export const useWalletStorage = (callback?: () => void) => {
 
     }, [storedValue, callback])
     
-    const setValue = (value: WalletStore, password: string) => {
+    const setValue = (value: WalletStore, passcode: string) => {
         try {
+            const passcodeHash = CryptoJS.SHA256(passcode).toString(CryptoJS.enc.Hex);
             const valueToStore = value instanceof Function ? value(storedValue) : value;
             const pkStr =  valueToStore && valueToStore.privatekey ? valueToStore.privatekey : '';
-            const encryptPk = CryptoJS.AES.encrypt(pkStr.toString(), password).toString();
+            const encryptPk = CryptoJS.AES.encrypt(pkStr.toString(), passcodeHash).toString();
             valueToStore.privatekey = encryptPk;
             setStoredValue(valueToStore);
         } catch (err) {
@@ -45,17 +46,17 @@ export const useWalletStorage = (callback?: () => void) => {
     return [storedValue, setValue]
 }
 
-export const getPkByPassword = (password: string): string => {
+export const getPkByPassword = (passcode: string): string => {
     try {
         // Get wallet store from local store
         const walletstore = window.localStorage.getItem('walletstore') || '{}';
         const walletstoreDecode = window.atob(walletstore || '')
         const walletstoreObj = JSON.parse(walletstoreDecode ) as WalletStore;
-        const encryptedPk = walletstoreObj.privatekey
+        const encryptedPk = walletstoreObj.privatekey;
+        const passcodeHash = CryptoJS.SHA256(passcode).toString(CryptoJS.enc.Hex);
         // Using password decrypt pk
-        const decrypted = CryptoJS.AES.decrypt(encryptedPk, password).toString(CryptoJS.enc.Utf8)
-        
-        return decrypted
+        const pk = CryptoJS.AES.decrypt(encryptedPk, passcodeHash).toString(CryptoJS.enc.Utf8)        
+        return pk
     } catch (error) {
         return ''
     }
