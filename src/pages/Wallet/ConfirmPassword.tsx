@@ -83,12 +83,12 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                             <ErrMessage message={passwordErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                            <div>
+                                            <div className="color-white">
                                                 Forgot your Pass Code? Please
                                                 <span style={{
                                                     color: '#00C4F5',
                                                     cursor: 'pointer',
-                                                }} onClick={resetPassword}> click here</span>
+                                                }} onClick={resetPassword}> click here </span>
                                                 to reset the Pass Code and Sign out wallet
                                             </div>
                                         </FlexboxGrid.Item>

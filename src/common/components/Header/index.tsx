@@ -66,18 +66,43 @@ const Header = () => {
                         <Sidenav appearance="subtle">
                             <Sidenav.Body>
                                 <Nav>
-                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="explore" />} href="/">Home</Nav.Item>
+                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="explore" />}
+                                        onClick={() => {
+                                            history.push("/")
+                                            setShowMenu(false)
+                                        }}>Home</Nav.Item>
                                     <Dropdown eventKey="blockchain" icon={<Icon className="gray-highlight" icon="unlink" />} title="Blockchain">
-                                        <Dropdown.Item href="/txs">View Transactions</Dropdown.Item>
-                                        <Dropdown.Item href="/blocks">View Blocks</Dropdown.Item>
-                                        <Dropdown.Item href="/accounts">View Accounts</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
+                                            history.push("/txs")
+                                            setShowMenu(false)
+                                        }}>View Transactions</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
+                                            history.push("/blocks")
+                                            setShowMenu(false)
+                                        }}>View Blocks</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
+                                            history.push("/accounts")
+                                            setShowMenu(false)
+                                        }}>View Accounts</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} href="/network">Network</Nav.Item>
+                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
+                                        onClick={() => {
+                                            history.push("/network")
+                                            setShowMenu(false)
+                                        }}>Network</Nav.Item>
                                     {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
-                                    <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />} href="/staking" >Staking</Nav.Item>
+                                    <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
+                                        onClick={() => {
+                                            history.push("/staking")
+                                            setShowMenu(false)
+                                        }} >Staking</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
-                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} href={"/wallet-login"}>Wallet</Nav.Item>
+                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} 
+                                            onClick={() => { 
+                                                history.push("/wallet-login")
+                                                setShowMenu(false)
+                                             }}>Wallet</Nav.Item>
                                         ) : (
                                                 <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
                                                     <Dropdown.Item
@@ -149,17 +174,17 @@ const Header = () => {
             </Navbar.Header>
             <Navbar.Body>
                 <Nav className="kardia-nav" activeKey={activeKey}>
-                    <Nav.Item eventKey="" href="/">Home</Nav.Item>
+                    <Nav.Item eventKey="" onClick={() => { history.push("/") }}>Home</Nav.Item>
                     <Dropdown title="Blockchain" style={{ marginRight: '10px' }}>
-                        <Dropdown.Item eventKey="txs" href="/txs">View Transactions</Dropdown.Item>
-                        <Dropdown.Item eventKey="blocks" href="/blocks">View Blocks</Dropdown.Item>
-                        <Dropdown.Item eventKey="accounts" href="/accounts">View Accounts</Dropdown.Item>
+                        <Dropdown.Item eventKey="txs" onClick={() => { history.push("/txs") }}>View Transactions</Dropdown.Item>
+                        <Dropdown.Item eventKey="blocks" onClick={() => { history.push("/blocks") }}>View Blocks</Dropdown.Item>
+                        <Dropdown.Item eventKey="accounts" onClick={() => { history.push("/accounts") }}>View Accounts</Dropdown.Item>
                         {/* Hidden dropdown item */}
                         <Dropdown.Item eventKey="blockchain" style={{ display: "none" }}></Dropdown.Item>
                     </Dropdown>
-                    <Nav.Item eventKey="network" href="/network" >Network</Nav.Item>
+                    <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item>
                     {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
-                    <Nav.Item eventKey="staking" href="/staking" >Staking</Nav.Item>
+                    <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
                     {
                         isLoggedIn() ? (
                             <Dropdown
@@ -174,7 +199,7 @@ const Header = () => {
                                 <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                             </Dropdown>
                         ) : (
-                                <Nav.Item eventKey="wallet" href="/wallet-login">Wallet</Nav.Item>
+                                <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>Wallet</Nav.Item>
                             )
                     }
                     {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
