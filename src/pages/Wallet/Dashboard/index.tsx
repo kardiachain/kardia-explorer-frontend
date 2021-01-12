@@ -13,6 +13,9 @@ import DelegatedValidators from './DelegatedValidators';
 import AuthRouter from '../../../AuthRouter';
 import DeployWithByteCode from './SmartContract/DeployWithByteCode';
 import InteracteWithSmc from './SmartContract/InteracteWithSmc';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../atom/wallet.atom';
+import ConfirmPassword from '../ConfirmPassword';
 
 const DashboardWallet = () => {
 
@@ -21,12 +24,23 @@ const DashboardWallet = () => {
     const location = useLocation()
     const history = useHistory()
 
+    const walletLocalState = useRecoilValue(walletState)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    useEffect(() => {
+        if (walletLocalState && walletLocalState?.account?.privatekey) {
+            setShowConfirmPassword(false);
+        } else {
+            setShowConfirmPassword(true)
+        }
+    }, [walletLocalState]);
+
     useEffect(() => {
         setActiveKey(location.pathname.split('/')[location.pathname.split('/').length - 1])
     }, [location])
 
     return (
-        <div className="dashboard-container">
+        <div className="dashboard-container" style={{filter: showConfirmPassword ? 'blur(7px)' : 'none'}}>
             {
                 !isMobile ? (
                     <div className="left-container">
@@ -93,6 +107,9 @@ const DashboardWallet = () => {
                     </Route>
                 </Switch>
             </div>
+            <ConfirmPassword
+                showModal={showConfirmPassword}
+                setShowModal={setShowConfirmPassword}/>
         </div>
     )
 }

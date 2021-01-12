@@ -57,7 +57,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
     }
 
     return (
-        <Modal className="password-modal" backdrop="static" size="xs" enforceFocus={true} show={showModal}>
+        <Modal backdropClassName="password-modal" backdrop="static" size="xs" enforceFocus={true} show={showModal}>
             <Modal.Header closeButton={false}>
                 <Modal.Title>Verify pass code to access wallet</Modal.Title>
             </Modal.Header>

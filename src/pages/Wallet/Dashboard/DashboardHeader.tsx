@@ -10,7 +10,6 @@ import { numberFormat } from '../../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
-import ConfirmPassword from '../ConfirmPassword';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -18,18 +17,7 @@ const DashboardHeader = () => {
     const [showPrivateKey, setShowPrivateKey] = useState(false)
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
     const walletLocalState = useRecoilValue(walletState)
-
-    useEffect(() => {
-        if (walletLocalState && walletLocalState?.account?.privatekey) {
-            setShowConfirmPassword(false);
-        } else {
-            setShowConfirmPassword(true)
-        }
-    }, [walletLocalState]);
-
     useEffect(() => {
         (async () => {
             const holder = await getHolderAccount(account.publickey);
@@ -149,9 +137,6 @@ const DashboardHeader = () => {
                 <Modal.Footer>
                 </Modal.Footer>
             </Modal>
-            <ConfirmPassword
-                showModal={showConfirmPassword}
-                setShowModal={setShowConfirmPassword}/>
         </>
     )
 }

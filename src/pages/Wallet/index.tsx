@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Panel, Icon } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
+import { isLoggedIn } from '../../service/wallet';
 import './wallet.css';
 
 const Wallet = () => {
     let history = useHistory();
     const { isMobile } = useViewport()
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            history.push("/wallet/dashboard")
+        }
+    }, [history])
 
     return (
         <div className="wallet-container" style={{ marginTop: isMobile ? 40 : 80 }}>
