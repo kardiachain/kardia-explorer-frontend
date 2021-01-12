@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Input, InputGroup } from 'rsuite';
+import { Alert, Input, InputGroup } from 'rsuite';
 import { getTxByHash } from '../../../service/kai-explorer';
 import { getBlockBy } from '../../../service/kai-explorer/block';
 import { onlyInteger } from '../../utils/number';
@@ -37,6 +37,7 @@ const SearchSection = () => {
                 break;
             default:
                 setSearchInput('')
+                Alert.warning('Record not found.')
                 break;
         }
         setSearchInput('')
