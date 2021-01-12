@@ -72,7 +72,7 @@ const CreateByKeystore = () => {
                                 <FlexboxGrid justify="center">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                         <div className="text-container">
-                                        <ControlLabel className="color-white">Password (min 8 chars) (required)</ControlLabel>
+                                        <ControlLabel className="color-white">Key store password (minimum 8 characters) (required)</ControlLabel>
                                             <Form fluid>
                                                 <FormGroup style={{ marginBottom: '12px' }}>
                                                     <FormControl

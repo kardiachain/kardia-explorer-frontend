@@ -56,8 +56,8 @@ const CreateByPrivateKey = () => {
                             !wallet.privatekey ? (
                                 <FlexboxGrid justify="start">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
-                                        <div className="color-white"> A unique private key will be generate for you </div>
-                                        <div className="color-white"> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span> ! If you <span className="note">lose</span>  your private key, you will <span className="note">not</span>  able to <span className="note">recover</span>  your wallet</div>
+                                        <div className="color-white"> A unique Private Key will be generated for you </div>
+                                        <div className="color-white"> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span>! If you <span className="note">lose</span> your private key, you will <span className="note">not</span> be able to <span className="note">recover</span> your wallet</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginTop: '20px'}}>
                                         <div className="button-container">

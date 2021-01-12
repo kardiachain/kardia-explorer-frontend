@@ -83,15 +83,15 @@ const CreateNewPassword = ({ show, setShow }: {
                                     <div style={{ padding: '0 5px' }}>
                                         <div className="createpass-note">
                                             <b>What is a pass code?</b> <br />
-                                            <span>Pass Code is a protection layer to encrypt users Wallet to local storage, prevent others can access your Wallet (like MetaMask password)</span> <br />
-                                            <b>What if I lose my pass code?</b> <br />
-                                            <span>You can easily remove the pass code and create a new one, you will have to access to your Wallet again.</span>
+                                            <span>Pass Code is a protection layer to encrypt user Wallets to local storage, It prevents others can accessing your Wallet.</span> <br />
+                                            <b>What if I lose my Pass Code?</b> <br />
+                                            <span>You can easily remove the Pass Code and create a new one, you will have to access to your Wallet again.</span>
                                         </div>
                                     </div>
                                 </FlexboxGrid>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentclass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                        <ControlLabel className="color-white">New Pass Code (min 8 chars) (required)</ControlLabel>
+                                        <ControlLabel className="color-white">New Pass Code (minimum 8 characters) (required)</ControlLabel>
                                         <FormControl
                                             name="password"
                                             type="password"

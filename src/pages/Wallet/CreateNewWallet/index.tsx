@@ -23,7 +23,7 @@ const CreateNewWallet = () => {
                             <div className="icon">
                                 <Icon icon="key" size="lg" />
                             </div>
-                            <div> A unique private key will be generate for you </div>
+                            <div> A unique private key will be generated for you </div>
                             <div>Remember to save your private key! If you lose your private key, you will not able to recover your wallet</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>

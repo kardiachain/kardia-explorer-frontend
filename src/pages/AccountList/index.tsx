@@ -54,7 +54,7 @@ const AccountList = () => {
                             Account
                         </div>
                         <div className="sub-title">
-                            {numberFormat(totalAccount)} account found
+                            {numberFormat(totalAccount)} accounts found
                         </div>
                     </div>
                 </FlexboxGrid.Item>
