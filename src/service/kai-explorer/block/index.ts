@@ -77,13 +77,13 @@ export const calculateTPS = (blockList: KAIBlock[]) => {
     return Math.round(totalTxs / (totalTimes / 1000)) || 0
 }
 
-export const getLatestBlockNumber = async (): Promise<number> => {
-    const response = await fetch(`${END_POINT}blocks?page=1&limit=1`, GET_REQUEST_OPTION)
+export const getLatestBlock = async (): Promise<KAIBlock> => {
+    const response = await fetch(`${END_POINT}blocks?page=0&limit=1`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawBlockList = responseJSON.data.data || []
 
-    if (rawBlockList.length === 0) return 0
-    return rawBlockList[0].height
+    if (rawBlockList.length === 0) return {} as KAIBlock
+    return rawBlockList[0]
 }
 
 export const getBlocksByProposer = async (proposerAddr: string, page: number, size: number): Promise<BlocksResponse> => {

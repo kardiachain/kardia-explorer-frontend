@@ -13,6 +13,7 @@ import { checkIsValidator, getCandidates, getValidators } from '../../service/ka
 import ValidatorList from './ValidatorList';
 import { StakingIcon } from '../../common/components/IconCustom';
 import CandidateList from './CandidateList';
+import StakingCalculator from './StakingCalculator';
 
 const Validators = () => {
     let history = useHistory();
@@ -30,7 +31,8 @@ const Validators = () => {
     const [totalCandidate, setTotalCandidate] = useState(0)
     const myAccount = getAccount() as Account
     const [isVal, setIsVal] = useState(false)
-    const [activeKey, setActiveKey] = useState('validators');
+    const [activeKey, setActiveKey] = useState('validators')
+    const [stakingCalculator, setStakingCalculator] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -185,6 +187,11 @@ const Validators = () => {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded className="panel-bg-gray">
+                        <div className="staking-calculator">
+                            <Button onClick={() => {setStakingCalculator(true)}}>
+                                Calculator
+                            </Button>
+                        </div>
                         <div className="custom-nav">
                             <Nav
                                 appearance="subtle"
@@ -216,6 +223,8 @@ const Validators = () => {
                     </Panel>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
+            
+            <StakingCalculator showModal={stakingCalculator} setShowModal={setStakingCalculator} validators={validators} />
         </div>
     )
 }
