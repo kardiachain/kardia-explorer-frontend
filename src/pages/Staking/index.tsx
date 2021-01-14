@@ -98,13 +98,13 @@ const Validators = () => {
                         </div>
                     </div>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: isMobile ? 'left' : 'right' }}>
-                    <Button size="big" className="kai-button-gray" onClick={() => { setStakingCalculator(true) }}>
-                        <Icon icon="cog" style={{ marginRight: 5 }} />Calculator
-                            </Button>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
+                    <Button size="big" className="kai-button-gray" style={{marginBottom: 10}} onClick={() => { setStakingCalculator(true) }}>
+                        Staking Calculator
+                    </Button>
                     {
                         !isVal ?
-                            <Button size="big"
+                            <Button size="big" style={{marginBottom: 10}}
                                 onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
                             >
                                 Register to become validator
