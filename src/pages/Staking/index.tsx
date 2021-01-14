@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, Nav, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Nav, Panel } from 'rsuite';
 import { formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
 import { truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
