@@ -61,8 +61,8 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
             return false
         }
 
-        if (Number(amount) < 0) {
-            setAmountErr("Amount must be greater than 0")
+        if (Number(amount) <= 25000) {
+            setAmountErr("The minimun amount is 25,000")
             return false
         }
 
@@ -163,7 +163,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
                                 <ControlLabel className="color-white">Enter your KAI amount (required)</ControlLabel>
                                 <NumberInputFormat
                                     value={amount}
-                                    placeholder="Ex. 25,000"
+                                    placeholder="Minimum amount is 25,000"
                                     className="input"
                                     onChange={(event) => {
                                         setAmount(event.value);
@@ -318,7 +318,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
                                                 <div className="property-title">
-                                                    <p style={{ fontStyle: 'italic', fontSize: '10px', color: '#ccc', }}>*The current estimated rewards are based on current real-time network profile and staking dynamics. The actual results may be different and subjected to change.</p>
+                                                    <p style={{ fontStyle: 'italic', fontSize: '10px', color: '#ccc', wordBreak: 'initial' }}>*The current estimated rewards are based on current real-time network profile and staking dynamics. The actual results may be different and subjected to change.</p>
                                                 </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
