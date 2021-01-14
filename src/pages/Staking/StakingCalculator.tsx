@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, SelectPicker } from 'rsuite';
 import Button from '../../common/components/Button';
 import NumberInputFormat from '../../common/components/FormInput';
-import Helper from '../../common/components/Helper';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
@@ -59,6 +58,16 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
     const validateAmount = (amount: any) => {
         if (!amount) {
             setAmountErr(ErrorMessage.Require)
+            return false
+        }
+
+        if (Number(amount) < 0) {
+            setAmountErr("Amount must be greater than 0")
+            return false
+        }
+
+        if (Number(amount) > 1000000000) {
+            setAmountErr("The maximun amount is 1,000,000,000")
             return false
         }
 
@@ -239,7 +248,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                                <div className="property-title fs-24">Calculate Your Earnings</div>
+                                                <div className="property-title fs-24">Estimated Earnings</div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </List.Item>
@@ -295,12 +304,21 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-title">
-                                                    <span>APR (%)</span> <Helper style={{ marginLeft: 5 }} info={'Might be change in real-time'} />
+                                                    <span>APR (%)</span>
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
                                                     {numberFormat(calcResult._apr, 2)}
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
+                                                <div className="property-title">
+                                                    <p style={{ fontStyle: 'italic', fontSize: '10px', color: '#ccc', }}>*The current estimated rewards are based on current real-time network profile and staking dynamics. The actual results may be different and subjected to change.</p>
                                                 </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
