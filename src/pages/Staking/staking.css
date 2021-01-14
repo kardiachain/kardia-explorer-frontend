@@ -51,3 +51,8 @@
 .delegate-btn {
     box-shadow: var(--box-shadow1);
 }
+
+/* Staking calculator style */
+.staking-calculator {
+    text-align: right;
+}

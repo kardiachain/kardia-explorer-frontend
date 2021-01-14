@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Nav, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Nav, Panel } from 'rsuite';
 import { formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
 import { truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -13,6 +13,7 @@ import { checkIsValidator, getCandidates, getValidators } from '../../service/ka
 import ValidatorList from './ValidatorList';
 import { StakingIcon } from '../../common/components/IconCustom';
 import CandidateList from './CandidateList';
+import StakingCalculator from './StakingCalculator';
 
 const Validators = () => {
     let history = useHistory();
@@ -30,7 +31,8 @@ const Validators = () => {
     const [totalCandidate, setTotalCandidate] = useState(0)
     const myAccount = getAccount() as Account
     const [isVal, setIsVal] = useState(false)
-    const [activeKey, setActiveKey] = useState('validators');
+    const [activeKey, setActiveKey] = useState('validators')
+    const [stakingCalculator, setStakingCalculator] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -96,16 +98,19 @@ const Validators = () => {
                         </div>
                     </div>
                 </FlexboxGrid.Item>
-                {
-                    !isVal ?
-                        <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: isMobile ? 'left' : 'right' }}>
-                            <Button size="big"
+                <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
+                    <Button size="big" className="kai-button-gray" style={{marginBottom: 10}} onClick={() => { setStakingCalculator(true) }}>
+                        Staking Calculator
+                    </Button>
+                    {
+                        !isVal ?
+                            <Button size="big" style={{marginBottom: 10}}
                                 onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
                             >
                                 Register to become validator
-                        </Button>
-                        </FlexboxGrid.Item> : <></>
-                }
+                            </Button> : <></>
+                    }
+                </FlexboxGrid.Item>
             </FlexboxGrid>
             <FlexboxGrid justify="space-between" align="top" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
@@ -216,6 +221,8 @@ const Validators = () => {
                     </Panel>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
+
+            <StakingCalculator showModal={stakingCalculator} setShowModal={setStakingCalculator} validators={validators} />
         </div>
     )
 }
