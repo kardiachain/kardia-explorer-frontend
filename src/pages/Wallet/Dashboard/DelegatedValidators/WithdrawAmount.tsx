@@ -16,6 +16,8 @@ import { useViewport } from '../../../../context/ViewportContext';
 import { undelegateAll, undelegateWithAmount, withdrawDelegatedAmount } from '../../../../service/smc/staking';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { isExtensionWallet } from '../../../../service/wallet';
+import { undelegateAllByEW, undelegateWithAmountByEW, withdrawDelegatedAmountByEW } from '../../../../service/extensionWallet';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -41,6 +43,15 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             if (!validateUnStakeAmount(unStakeAmount)) return
             setIsLoading(true);
             try {
+                // Case: undelegate with amount interact with Kai Extension Wallet
+                if (isExtensionWallet()) {
+                    undelegateWithAmountByEW(valSmcAddr, Number(unStakeAmount))
+                    reFetchData()
+                    setShowUndelegateModel(false)
+                    setIsLoading(false)
+                    return
+                }
+
                 const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), walletLocalState.account)
                 if (result && result.status === 1) {
                     NotificationSuccess({
@@ -63,6 +74,16 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
         } else {
             try {
                 setIsLoading(true);
+
+                // Case: undelegate all interact with Kai Extension Wallet
+                if (isExtensionWallet()) {
+                    undelegateAllByEW(valSmcAddr)
+                    reFetchData();
+                    setShowUndelegateModel(false)
+                    setIsLoading(false)
+                    return
+                }
+
                 const result = await undelegateAll(valSmcAddr, walletLocalState.account);
                 if (result && result.status === 1) {
                     NotificationSuccess({
@@ -115,6 +136,15 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
         try {
             const valAddr = validatorActive?.validatorSmcAddr || '';
             if (!valAddr) return;
+
+            // Case: withdraw staked amount interact with Kai Extension Wallet
+            if (isExtensionWallet()) {
+                withdrawDelegatedAmountByEW(valAddr)
+                reFetchData()
+                setIsLoading(false)
+                setShowConfirmWithdrawModal(false)
+                return
+            }
 
             const result = await withdrawDelegatedAmount(valAddr, walletLocalState.account);
             if (result && result.status === 1) {

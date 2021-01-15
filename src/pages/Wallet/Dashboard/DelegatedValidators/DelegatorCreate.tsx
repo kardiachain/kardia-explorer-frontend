@@ -16,10 +16,11 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashString } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
+import { delegateByEW } from '../../../../service/extensionWallet';
 import { getValidator } from '../../../../service/kai-explorer';
 import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
 import { delegateAction } from '../../../../service/smc/staking';
-import { getStoredBalance } from '../../../../service/wallet';
+import { getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
 
@@ -118,6 +119,17 @@ const DelegatorCreate = () => {
         if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateDelAmount(delAmount)) {
             return;
         }
+
+        // Case: submit delegate with kai wallet extension
+        if (isExtensionWallet()) {
+            const valSmcAddr = validator?.smcAddress || '';
+            if (!valSmcAddr) {
+                return
+            }
+            await delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
+            return
+        }
+
         setShowConfirmModal(true)
     }
 

@@ -16,6 +16,7 @@ import InteracteWithSmc from './SmartContract/InteracteWithSmc';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import ConfirmPassword from '../ConfirmPassword';
+import { isExtensionWallet } from '../../../service/wallet';
 
 const DashboardWallet = () => {
 
@@ -27,8 +28,9 @@ const DashboardWallet = () => {
     const walletLocalState = useRecoilValue(walletState)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+
     useEffect(() => {
-        if (walletLocalState && walletLocalState?.account?.privatekey) {
+        if ((walletLocalState && walletLocalState?.account?.privatekey) || isExtensionWallet()) {
             setShowConfirmPassword(false);
         } else {
             setShowConfirmPassword(true)

@@ -125,3 +125,14 @@
     }
 }
 /* end mobile screen */
+
+.kardia-extension-wallet-icon{
+    height: 50px;
+    width: 50px;
+    left: 5px;
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+    justify-content: center;
+    align-items: center;
+}

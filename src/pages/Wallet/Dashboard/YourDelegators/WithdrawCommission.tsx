@@ -6,6 +6,8 @@ import { NotifiMessage, InforMessage } from '../../../../common/constant/Message
 import { withdrawCommission } from '../../../../service/smc/staking';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { isExtensionWallet } from '../../../../service/wallet';
+import { withdrawCommissionByEW } from '../../../../service/extensionWallet';
 
 const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -21,9 +23,18 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
             setIsLoading(true);
             const valSmcAddr = validator?.smcAddress || "";
             if (!valSmcAddr) {
-                setIsLoading(false);
+                setIsLoading(false)
                 return false;
             }
+
+            // Case: withdraw commission rewards interact with Kai Extension Wallet
+            if (isExtensionWallet()) {
+                withdrawCommissionByEW(valSmcAddr)
+                setIsLoading(false)
+                setShowModel(false)
+                return;
+            }
+            
             const result = await withdrawCommission(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({

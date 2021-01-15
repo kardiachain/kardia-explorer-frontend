@@ -5,3 +5,5 @@ declare module 'react-highcharts';
 declare module 'abi-decoder';
 declare module 'kardia-tool/lib/common/lib/bytes';
 declare module 'crypto-js';
+declare module 'kardia-tool/lib/common/lib/abi';
+declare module 'kardia-tool/lib/common/lib/utils';

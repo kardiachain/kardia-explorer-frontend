@@ -3,7 +3,7 @@ import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row }
 import { weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getHolderAccount } from '../../../service/kai-explorer';
-import { getAccount, useBalanceStorage } from '../../../service/wallet';
+import { getAccount, useBalanceStorage, isExtensionWallet } from '../../../service/wallet';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
 import { numberFormat } from '../../../common/utils/number';
@@ -75,10 +75,15 @@ const DashboardHeader = () => {
                         <div className="card-footer">
                             <Icon className="icon" icon="qrcode" size="lg" onClick={() => { setShowAddress(true) }} />
                             <Icon className="icon" icon="copy" size="lg" onClick={() => copyToClipboard(account.publickey, onSuccess)} />
-                            <Icon className="icon"
-                                icon="lock"
-                                size="lg"
-                                onClick={() => { setShowPrivateKey(true) }} />
+
+                            {
+                                !isExtensionWallet() ? (
+                                    <Icon className="icon"
+                                        icon="lock"
+                                        size="lg"
+                                        onClick={() => { setShowPrivateKey(true) }} />
+                                ) : <></>
+                            }
                         </div>
                     </Panel>
                 </Col>

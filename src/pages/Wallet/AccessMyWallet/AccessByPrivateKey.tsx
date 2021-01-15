@@ -33,7 +33,6 @@ const AccessByPrivateKey = () => {
 
 
     const accessWallet = () => {
-        // setCreateNewPassCode(true)
         if (!validatePrivatekey(privateKey) && !walletLocalState.password){
             return;
         } 
