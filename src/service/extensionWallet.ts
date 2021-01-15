@@ -33,7 +33,7 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
     } else {
         const accounts = await window.web3.eth.getAccounts();
         if (accounts && accounts[0]) {
-            const tx = window.web3.eth.sendTransaction({
+            window.web3.eth.sendTransaction({
                 from: accounts[0],
                 gasPrice: Number(gasPrice),
                 gas: Number(gasLimit),
