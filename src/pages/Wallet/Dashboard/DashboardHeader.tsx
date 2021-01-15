@@ -20,11 +20,17 @@ const DashboardHeader = () => {
     const walletLocalState = useRecoilValue(walletState)
     useEffect(() => {
         (async () => {
+            if (!account.publickey) {
+                return;
+            }
             const holder = await getHolderAccount(account.publickey);
             setBalance(weiToKAI(holder.balance))
         })();
 
         const fetchBalance = setInterval(async () => {
+            if (!account.publickey) {
+                return;
+            }
             const holder = await getHolderAccount(account.publickey);
             setBalance(weiToKAI(holder.balance))
         }, TIME_INTERVAL_MILISECONDS)
@@ -37,6 +43,9 @@ const DashboardHeader = () => {
     }
 
     const reloadBalance = async () => {
+        if (!account.publickey) {
+            return;
+        }
         const holder = await getHolderAccount(account.publickey);
         setBalance(weiToKAI(holder.balance));
     }
