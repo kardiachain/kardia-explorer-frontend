@@ -16,7 +16,7 @@ import InteracteWithSmc from './SmartContract/InteracteWithSmc';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import ConfirmPassword from '../ConfirmPassword';
-import { isExtensionWallet } from '../../../service/wallet';
+import { isExtensionWallet, useWalletStorage } from '../../../service/wallet';
 
 const DashboardWallet = () => {
 
@@ -27,7 +27,19 @@ const DashboardWallet = () => {
 
     const walletLocalState = useRecoilValue(walletState)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [walletStored, setWalletStored] = useWalletStorage();
 
+    // Handle Kardia Extension Wallet change account
+    window && window.kardiachain && window.kardiachain.on('accountsChanged', (accounts: any) => {
+        if (accounts && accounts[0] !== walletStored.address) {
+            setWalletStored({
+                privatekey: '',
+                address: accounts[0],
+                isAccess: true,
+                externalWallet: true,
+            });
+        }
+    })
 
     useEffect(() => {
         if ((walletLocalState && walletLocalState?.account?.privatekey) || isExtensionWallet()) {

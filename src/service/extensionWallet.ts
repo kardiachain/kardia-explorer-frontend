@@ -118,7 +118,7 @@ const invokeSMCByEW = async (
 // Delegate interact with Kai Extenstion Wallet
 const delegateByEW = async (smcAddr: string, amount: number, gasPrice: number, gasLimit: number) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'delegate', [], amount, gasPrice, gasLimit)
+        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'delegate', [], amount, gasLimit, gasPrice)
     } catch (error) {
         throw error
     }
@@ -134,7 +134,7 @@ const createValidatorByEW = async (params: CreateValParams, gasLimit: number, ga
         // Convert validator name to bytes
         const valName = fromAscii(params.valName);
         const delAmountDec = Number(params.yourDelegationAmount);
-        await invokeSMCByEW(STAKING_ABI, STAKING_SMC_ADDRESS, 'createValidator', [valName, commissionRateDec, maxRateDec, maxRateChangeDec], delAmountDec, gasPrice, gasLimit)   
+        await invokeSMCByEW(STAKING_ABI, STAKING_SMC_ADDRESS, 'createValidator', [valName, commissionRateDec, maxRateDec, maxRateChangeDec], delAmountDec, gasLimit, gasPrice)   
     } catch (error) {
         throw error
     }
@@ -144,7 +144,7 @@ const updateValidatorNameByEW = async (smcAddr: string, name: string, amountFee:
     try {
         // Convert new validator name to bytes
         const valName = fromAscii(name);
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'updateName', [valName], amountFee, gasPrice, gasLimit)
+        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'updateName', [valName], amountFee, gasLimit, gasPrice)
     } catch (error) {
         throw error
     }
@@ -154,7 +154,7 @@ const updateValidatorCommissionByEW = async (smcAddr: string, newCommissionRate:
     try {
         // convert value percent type to decimal type
         const newCommissionRateDec = cellValue(newCommissionRate / 100);
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'updateCommissionRate', [newCommissionRateDec], 0, gasPrice, gasLimit)
+        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'updateCommissionRate', [newCommissionRateDec], 0, gasLimit, gasPrice)
     } catch (error) {
         throw error
     }
