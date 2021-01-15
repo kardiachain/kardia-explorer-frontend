@@ -6,9 +6,49 @@ import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../../resources/smc-compile/validator-abi.json';
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
+import abiJS from 'kardia-tool/lib/common/lib/abi';
+import { isHexStrict, toHex } from 'kardia-tool/lib/common/lib/utils';
 
 const stakingContract = kardiaContract(kardiaProvider, "", STAKING_ABI);
 const validatorContract = kardiaContract(kardiaProvider, "", VALIDATOR_ABI);
+
+
+const findFunctionFromAbi = (abi: any, type = 'function', name = '') => {
+    if (type !== 'constructor') {
+        return abi.filter((item: any) => item.type === type && item.name === name)
+    }
+    return abi.filter((item: any) => item.type === type)
+};
+
+
+const encodeArray = (params: any) => {
+    params && params.length > 0 && params.map((param: any) => {
+        if (isHexStrict(param)) {
+            return param;
+          } else {
+            return toHex(param);
+          }
+    })
+}
+
+const getMethodData = (methodName: string, params: any[]) => {
+    try {
+        const functionFromAbi = findFunctionFromAbi(VALIDATOR_ABI, 'function', methodName);
+        const paramsDecorate = params && params.map(param => {
+            if (Array.isArray(param)) {
+                return encodeArray(param);
+              } else if (isHexStrict(param)) {
+                return param;
+              } else {
+                return toHex(param);
+              }
+        })
+        return abiJS.methodData(functionFromAbi, paramsDecorate)
+    } catch (error) {
+        console.log(error);
+    }
+    return '';
+}
 
 const invokeCallData = async (
     contractInstance: any,
@@ -175,5 +215,6 @@ export {
     unjailValidator,
     updateValidatorName,
     updateValidatorCommission,
-    stopValidator
+    stopValidator,
+    getMethodData
 }

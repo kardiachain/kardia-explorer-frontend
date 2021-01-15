@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List } from 'rsuite'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List, Alert } from 'rsuite'
 import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message'
 import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
@@ -11,6 +11,8 @@ import { gasLimitSendTx, gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
 import NumberInputFormat from '../../../../common/components/FormInput'
 import { renderHashString } from '../../../../common/utils/string'
+import { kardiaExtensionWalletEnabled } from '../../../../service/extensionWallet'
+import { ethers, utils } from 'ethers'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -89,11 +91,39 @@ const SendTransaction = () => {
         setAmountErr('');
     }
 
-    const submitSend = () => {
+    const submitSend = async () => {
         if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
-        setShowConfirmModal(true)
+        // setShowConfirmModal(true)
+
+        // var sender = window.web3.eth.accounts[0];
+        // console.log("Sender: ", sender);
+        // window.web3.eth.sendTransaction({
+        //     to: "0xF8bAaB9705D6d595aA3b4C25771fD433666c6820",
+        //     from: sender, 
+        //     value: "100000"});
+
+        if (!kardiaExtensionWalletEnabled()) {
+            Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
+        } else {
+            // window.kardiachain.triggerUI()
+            const accounts = await window.web3.eth.getAccounts();
+            if (accounts && accounts[0]) {
+                const tx = window.web3.eth.sendTransaction({
+                    from: accounts[0],
+                    gasPrice: Number(gasPrice),
+                    gas: Number(gasLimit),
+                    to: toAddress,
+                    value: amount
+                });
+                console.log(tx);
+            
+            } else {
+                Alert.error("Please login Kardia Extension Wallet.", 5000)
+            }
+            
+        }
     }
 
     const confirmSend = async () => {
@@ -113,6 +143,7 @@ const SendTransaction = () => {
                     seeTxdetail: true
                 });
             }
+                
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);

@@ -18,17 +18,17 @@ const DashboardHeader = () => {
     const setWalletStored = useWalletStorage()[1];
 
     // Handle Kardia Extension Wallet change account
-    window.ethereum.on('accountsChanged', (accounts: any) => {
-        if (accounts && accounts[0]) {
-            setWalletStored({
-                privatekey: '',
-                address: accounts[0],
-                isAccess: true,
-                externalWallet: true,
-                walletType: 'webExtensionWallet'
-            });
-        }
-    })
+    // window.ethereum.on('accountsChanged', (accounts: any) => {
+    //     if (accounts && accounts[0]) {
+    //         setWalletStored({
+    //             privatekey: '',
+    //             address: accounts[0],
+    //             isAccess: true,
+    //             externalWallet: true,
+    //             walletType: 'webExtensionWallet'
+    //         });
+    //     }
+    // })
 
     useEffect(() => {
         (async() => {

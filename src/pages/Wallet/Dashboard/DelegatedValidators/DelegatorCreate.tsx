@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, Nav, Panel, Progress, SelectPicker, Tag } from 'rsuite';
+import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, Nav, Panel, Progress, SelectPicker, Tag } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -16,10 +16,15 @@ import { renderHashString } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
 import { getValidator } from '../../../../service/kai-explorer';
 import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
-import { delegateAction } from '../../../../service/smc/staking';
+import { delegateAction, getMethodData } from '../../../../service/smc/staking';
 import { getAccount, getStoredBalance } from '../../../../service/wallet';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
+
+import VALIDATOR_ABI from '../../../../resources/smc-compile/validator-abi.json'
+import { kardiaExtensionWalletEnabled } from '../../../../service/extensionWallet';
+
+import { methodData } from 'kardia-tool/lib/common/lib/abi';
 
 const { Circle } = Progress;
 
@@ -111,10 +116,57 @@ const DelegatorCreate = () => {
     }
 
     const submitDelegate = async () => {
-        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateDelAmount(delAmount)) {
-            return;
+        // if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateDelAmount(delAmount)) {
+        //     return;
+        // }
+        // setShowConfirmModal(true)
+
+        if (!kardiaExtensionWalletEnabled()) {
+            Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
+        } else {
+            try {
+                const accounts = await window.web3.eth.getAccounts()
+                if (accounts && accounts[0]) {
+                    const getData = getMethodData("delagate", []);
+                    const valSmcAddr = validator?.smcAddress || '';
+                    if (!valSmcAddr) {
+                        return
+                    }
+                    console.log("valSmcAddr", valSmcAddr);
+                    
+                    const contract = new window.web3.eth.Contract(VALIDATOR_ABI, valSmcAddr);
+                    console.log("Contract instance: ", contract);
+                    // console.log("Method data: ", getData);
+                    // const tx = window.web3.eth.sendTransaction({
+                    //     from: accounts[0],
+                    //     gasPrice: Number(gasPrice),
+                    //     gas: Number(gasLimit),
+                    //     to: valSmcAddr,
+                    //     value: 0,
+                    //     data: getData
+                    // });
+                    // console.log(tx);
+                    
+                    const delegate = await contract.methods.delegate().send({
+                        from: accounts[0],
+                        gasPrice: 1,
+                        gas: 3000000,
+                        value: Number(delAmount),
+                        data: getData,
+                    })
+                    console.log("Delegate: ", delegate);
+                } else {
+                    Alert.error("Please login Kardia Extension Wallet.", 5000)
+                }
+                // const send = await window.web3.eth.sendSignedTransaction('0xf86e0d01832dc6c0946bc980c4b8b5fa0ddce2fe8c7564df35bbe9ae2c8ad3c21bcecceda100000084c89e43611ca021c9140ac2d7e25d204996374d9583cd986c6f00993e750c4a2f2727c7f546f7a00fbea308dcb4180c3c49de250bb69f9c2350b9eca1d0185c95a4649941391222')
+                // const data = deployData()
+                // console.log("send", send);
+                
+            } catch (error) {
+                console.log("Delegate error: ", error);
+            }
         }
-        setShowConfirmModal(true)
+
     }
 
     const validateGasPrice = (gasPrice: any): boolean => {

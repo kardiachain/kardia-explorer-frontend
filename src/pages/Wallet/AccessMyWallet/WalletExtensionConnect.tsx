@@ -6,12 +6,6 @@ import { kardiaExtensionWalletEnabled } from '../../../service/extensionWallet';
 import kardiaIcon from '../../../resources/kardia_logo.png';
 import './accessWallet.css';
 
-declare global {
-    interface Window {
-        ethereum: any;
-        web3: any;
-    }
-}
 
 const WalletExtensionConnect = () => {
 
