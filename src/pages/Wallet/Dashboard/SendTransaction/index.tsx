@@ -101,6 +101,7 @@ const SendTransaction = () => {
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
             generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+            resetFrom()
             return
         }
         setShowConfirmModal(true)
