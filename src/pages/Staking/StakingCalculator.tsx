@@ -61,7 +61,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
             return false
         }
 
-        if (Number(amount) <= 25000) {
+        if (Number(amount) < 25000) {
             setAmountErr("The minimun amount is 25,000")
             return false
         }
