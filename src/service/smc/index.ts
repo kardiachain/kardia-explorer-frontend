@@ -7,7 +7,7 @@ const deploySmartContract = async (object: SMCDeployObject) => {
         const deployment = contract.deploy(paramsJson);
         const deployResult = await deployment.send(object.account.privatekey, {
             gas: object.gasLimit,
-            gasPrice: object.gasPrice,
+            gasPrice: object.gasPrice * 10**9 || 10**9,
         });
         return deployResult;
     } catch (err) {
@@ -28,7 +28,7 @@ const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
             invokeResult = await invoke.send(object.account.privatekey, object.contractAddress, {
               amount: object.amount,
               gas: object.gasLimit,
-              gasPrice: object.gasPrice
+              gasPrice: object.gasPrice * 10**9 || 10**9
             });
             return invokeResult;
           } else {
