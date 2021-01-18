@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Icon, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../../common/utils/amount';
@@ -27,7 +27,6 @@ const BlockByProposerList = ({
     setLimit: (newLimit: number) => void;
 }) => {
     const { isMobile } = useViewport();
-    const history = useHistory();
 
     return (
         <>
@@ -48,7 +47,7 @@ const BlockByProposerList = ({
                                     <span className="container-icon-left" style={{lineHeight: '28px'}}>
                                         <Icon icon="cubes" className="gray-highlight"/>
                                     </span>
-                                    <span className="container-content-right">
+                                    <span className="container-content-right text-link">
                                         <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
                                         <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
                                     </span>
@@ -69,7 +68,7 @@ const BlockByProposerList = ({
                                         headCount: isMobile ? 10 : 20,
                                         tailCount: 4,
                                         showTooltip: true,
-                                        callback: () => { history.push(`/block/${rowData.blockHash}`) }
+                                        redirectTo: `/block/${rowData.blockHash}`
                                     })}
                                 </div>
                             );

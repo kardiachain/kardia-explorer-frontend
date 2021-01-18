@@ -34,7 +34,7 @@ const BlockSection = ({ blockList = [] }: {
                                             <span className="container-icon-left" style={{ lineHeight: '28px' }}>
                                                 <Icon icon="cubes" className="gray-highlight" />
                                             </span>
-                                            <span className="container-content-right">
+                                            <span className="container-content-right text-link">
                                                 <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
                                                 <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
                                             </span>

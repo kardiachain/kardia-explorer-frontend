@@ -5,7 +5,7 @@ import { renderHashToRedirect, millisecondToHMS } from '../../../../common/utils
 import { weiToKAI } from '../../../../common/utils/amount';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../../../config';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getTxsByAddress } from '../../../../service/kai-explorer/transaction';
 import { getAccount } from '../../../../service/wallet';
 import { numberFormat } from '../../../../common/utils/number';
@@ -19,7 +19,6 @@ const TransactionHistory = () => {
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
-    const history = useHistory();
     const myAccount = getAccount() as Account
 
     useEffect(() => {
@@ -77,7 +76,7 @@ const TransactionHistory = () => {
                                                                     headCount: isMobile ? 5 : 10,
                                                                     tailCount: 4,
                                                                     showTooltip: false,
-                                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                                    redirectTo: `/tx/${rowData.txHash}`
                                                                 })
                                                             }
                                                             <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
@@ -110,7 +109,7 @@ const TransactionHistory = () => {
                                                             headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
                                                             showTooltip: true,
-                                                            callback: () => { history.push(`/address/${rowData.from}`) }
+                                                            redirectTo: `/address/${rowData.from}`
                                                         })}
                                                     </div>
                                                 );
@@ -145,13 +144,13 @@ const TransactionHistory = () => {
                                                                         headCount: isMobile ? 5 : 12,
                                                                         tailCount: 4,
                                                                         showTooltip: true,
-                                                                        callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                        redirectTo: `/address/${rowData.to}`
                                                                     })}
                                                                 </>
                                                             ) : (
                                                                     <>
                                                                         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                            <Link style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                            <Link className="color-white" to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
                                                                         </Whisper>
                                                                         {
                                                                             rowData.isInValidatorsList ? (
