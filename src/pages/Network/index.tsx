@@ -4,7 +4,6 @@ import { renderHashToRedirect, renderStringAndTooltip } from '../../common/utils
 import { colors } from '../../common/constant';
 import { useViewport } from '../../context/ViewportContext';
 import { getNodes } from '../../service/kai-explorer/network';
-import { useHistory } from 'react-router-dom';
 import './network.css'
 import { ForceGraph3D } from 'react-force-graph';
 import SearchSection from '../../common/components/Header/SearchSection';
@@ -12,7 +11,6 @@ import SearchSection from '../../common/components/Header/SearchSection';
 const { Column, HeaderCell, Cell } = Table;
 
 const Network = () => {
-    const history = useHistory()
     const [graphData, setGraphData] = useState({} as any)
     const [networks, setNetworks] = useState([] as KAINode[])
     const { isMobile } = useViewport()
@@ -139,7 +137,7 @@ const Network = () => {
                                                                 headCount: isMobile ? 5 : 20,
                                                                 tailCount: 4,
                                                                 showTooltip: true,
-                                                                callback: () => { history.push(`/address/${rowData.address}`) }
+                                                                redirectTo: `/address/${rowData.address}`
                                                             })}
                                                         </div>
                                                     );

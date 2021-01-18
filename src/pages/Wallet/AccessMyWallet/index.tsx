@@ -32,7 +32,7 @@ const AccessMyWallet = () => {
                                 </Button>
                         </div>
                         <hr />
-                        <div style={{ color: 'white' }}>
+                        <div style={{ color: 'white' }} className="text-link">
                             Do not have a wallet? <Link to="/create-wallet" className="creatOne"> Create one</Link>
                         </div>
                     </Panel>

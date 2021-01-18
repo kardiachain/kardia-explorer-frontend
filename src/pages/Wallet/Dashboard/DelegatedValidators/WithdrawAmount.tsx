@@ -194,7 +194,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                             size='normal' style={{ marginRight: 5 }} />
                                     </div>
                                     <div className="validator-info color-white">
-                                        <div className="validator-name color-white">
+                                        <div className="validator-name">
                                             {
                                                 renderStringAndTooltip({
                                                     str: rowData.validatorName,
