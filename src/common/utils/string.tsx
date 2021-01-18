@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Alert, ButtonProps, Icon, IconButton, Tooltip, Whisper } from 'rsuite';
 function truncate(str: string, n: number, e: number) {
     if (n > str.length - e) {
@@ -77,9 +78,10 @@ const renderStringAndTooltip = ({str, headCount = 12, showTooltip} : {
 }
 
 const renderHashToRedirect = ({
-    hash, headCount = 6, tailCount = 4, showTooltip = true, callback, showCopy = false
+    hash, headCount = 6, tailCount = 4, showTooltip = true, showCopy = false, redirectTo = '/'
 }: {
-    hash: any, headCount?: number, tailCount?: number, showTooltip?: boolean, callback?: () => void, showCopy?: boolean
+    hash: any, headCount?: number, tailCount?: number, showTooltip?: boolean, showCopy?: boolean,
+    redirectTo?: string
 }) => {
     const onSuccess = () => {
         Alert.success('Copied to clipboard.')
@@ -87,13 +89,17 @@ const renderHashToRedirect = ({
     return showTooltip ? (
         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
             <span className="hex-link" style={{ cursor: 'pointer' }}>
-                <span onClick={() => {callback && callback()}}>{truncate(String(hash), headCount, tailCount)}{' '}</span>
+                <Link to={redirectTo}>
+                    {truncate(String(hash), headCount, tailCount)}{' '}
+                </Link>
                 {showCopy && renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
             </span>
         </Whisper>
     ) : (
         <span className="hex-link" style={{ cursor: 'pointer' }}>
-            <span onClick={() => {callback && callback()}} >{truncate(String(hash), headCount, tailCount)}{' '}</span>
+            <Link to={redirectTo}>
+                {truncate(String(hash), headCount, tailCount)}{' '}
+            </Link>
             {showCopy && renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
         </span>
     )

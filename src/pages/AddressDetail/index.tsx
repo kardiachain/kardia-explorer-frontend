@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper, Tag } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { StakingIcon } from '../../common/components/IconCustom';
@@ -17,7 +17,6 @@ const { Column, HeaderCell, Cell } = Table;
 
 const AddressDetail = () => {
     const { isMobile } = useViewport()
-    const history = useHistory();
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
@@ -149,7 +148,7 @@ const AddressDetail = () => {
                                                                     headCount: isMobile ? 5 : 10,
                                                                     tailCount: 4,
                                                                     showTooltip: false,
-                                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                                    redirectTo:`/tx/${rowData.txHash}`
                                                                 })
                                                             }
                                                             <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
@@ -183,7 +182,7 @@ const AddressDetail = () => {
                                                                 headCount: isMobile ? 5 : 12,
                                                                 tailCount: 4,
                                                                 showTooltip: true,
-                                                                callback: () => { history.push(`/address/${rowData.from}`) }
+                                                                redirectTo: `/address/${rowData.from}`
                                                             })
                                                         }
                                                     </div>
@@ -220,7 +219,7 @@ const AddressDetail = () => {
                                                                             headCount: isMobile ? 5 : 12,
                                                                             tailCount: 4,
                                                                             showTooltip: true,
-                                                                            callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                            redirectTo:`/address/${rowData.to}`
                                                                         })}
                                                                 </>
                                                             ) : (

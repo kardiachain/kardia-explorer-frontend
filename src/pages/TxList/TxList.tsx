@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { weiToKAI } from '../../common/utils/amount';
@@ -21,7 +21,6 @@ const TxList = () => {
     const block = query.get("block") || '';
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { isMobile } = useViewport()
-    const history = useHistory();
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
@@ -104,7 +103,7 @@ const TxList = () => {
                                                                     headCount: isMobile ? 5 : 10,
                                                                     tailCount: 4,
                                                                     showTooltip: false,
-                                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                                    redirectTo: `/tx/${rowData.txHash}`
                                                                 })
                                                             }
                                                             <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
@@ -137,7 +136,7 @@ const TxList = () => {
                                                             headCount: isMobile ? 5 : 10,
                                                             tailCount: 4,
                                                             showTooltip: true,
-                                                            callback: () => { history.push(`/address/${rowData.from}`) }
+                                                            redirectTo: `/address/${rowData.from}`
                                                         })}
                                                     </div>
                                                 );
@@ -158,7 +157,7 @@ const TxList = () => {
                                                                         headCount: isMobile ? 5 : 12,
                                                                         tailCount: 4,
                                                                         showTooltip: true,
-                                                                        callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                        redirectTo: `/address/${rowData.to}`
                                                                     })}
                                                                 </>
                                                             ) : (
