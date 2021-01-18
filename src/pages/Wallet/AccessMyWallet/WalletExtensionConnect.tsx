@@ -32,7 +32,7 @@ const WalletExtensionConnect = () => {
 
     return (
         <Button size="lg" block onClick={walletConnect}>
-            <img src={kardiaIcon} className="kardia-extension-wallet-icon" alt="Kardia block explorer" /> Kardia Extenion Wallet Connect
+            <img src={kardiaIcon} className="kardia-extension-wallet-icon" alt="Kardia block explorer" /> Kardia Extension Wallet Connect
         </Button>
     )
 }

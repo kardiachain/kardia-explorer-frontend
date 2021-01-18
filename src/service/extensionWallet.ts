@@ -82,15 +82,26 @@ const getMethodData = (abi: any, methodName: string, params: any[]) => {
     return '';
 }
 
-const invokeSMCByEW = async (
-    abi: any,
-    smcAddr: string,
-    methodName: string,
-    params: any[],
-    amount: number = 0,
-    gasLimit = gasLimitDefault,
-    gasPrice = 1
-) => {
+const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasPrice }: {
+    abi: any;
+    bytecode: any;
+    params: any;
+    amount: number;
+    gasLimit: number;
+    gasPrice: number;
+}) => {
+
+}
+
+const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gasLimit = gasLimitDefault, gasPrice = 1 }: {
+    abi: any;
+    smcAddr: string;
+    methodName: string;
+    params: any[];
+    amount?: number;
+    gasLimit?: number;
+    gasPrice?: number;
+}) => {
     if (!kardiaExtensionWalletEnabled()) {
         Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
     } else {
@@ -118,7 +129,15 @@ const invokeSMCByEW = async (
 // Delegate interact with Kai Extenstion Wallet
 const delegateByEW = async (smcAddr: string, amount: number, gasPrice: number, gasLimit: number) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'delegate', [], amount, gasLimit, gasPrice)
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'delegate',
+            params: [],
+            amount: amount,
+            gasLimit: gasLimit,
+            gasPrice: gasPrice
+        })
     } catch (error) {
         throw error
     }
@@ -134,7 +153,15 @@ const createValidatorByEW = async (params: CreateValParams, gasLimit: number, ga
         // Convert validator name to bytes
         const valName = fromAscii(params.valName);
         const delAmountDec = Number(params.yourDelegationAmount);
-        await invokeSMCByEW(STAKING_ABI, STAKING_SMC_ADDRESS, 'createValidator', [valName, commissionRateDec, maxRateDec, maxRateChangeDec], delAmountDec, gasLimit, gasPrice)   
+        await invokeSMCByEW({
+            abi: STAKING_ABI,
+            smcAddr: STAKING_SMC_ADDRESS,
+            methodName: 'createValidator',
+            params: [valName, commissionRateDec, maxRateDec, maxRateChangeDec],
+            amount: delAmountDec,
+            gasLimit: gasLimit,
+            gasPrice: gasPrice
+        })
     } catch (error) {
         throw error
     }
@@ -144,7 +171,13 @@ const updateValidatorNameByEW = async (smcAddr: string, name: string, amountFee:
     try {
         // Convert new validator name to bytes
         const valName = fromAscii(name);
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'updateName', [valName], amountFee, gasLimit, gasPrice)
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'updateName',
+            params: [valName],
+            amount: amountFee
+        })
     } catch (error) {
         throw error
     }
@@ -154,7 +187,14 @@ const updateValidatorCommissionByEW = async (smcAddr: string, newCommissionRate:
     try {
         // convert value percent type to decimal type
         const newCommissionRateDec = cellValue(newCommissionRate / 100);
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'updateCommissionRate', [newCommissionRateDec], 0, gasLimit, gasPrice)
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'updateCommissionRate',
+            params: [newCommissionRateDec],
+            gasLimit: gasLimit,
+            gasPrice: gasPrice
+        })
     } catch (error) {
         throw error
     }
@@ -162,7 +202,12 @@ const updateValidatorCommissionByEW = async (smcAddr: string, newCommissionRate:
 
 const startValidatorByEW = async (smcAddr: string) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'start', [])
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'start',
+            params: []
+        })
     } catch (error) {
         throw error
     }
@@ -171,7 +216,12 @@ const startValidatorByEW = async (smcAddr: string) => {
 
 const withdrawCommissionByEW = async (smcAddr: string) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'withdrawCommission', [])
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'withdrawCommission',
+            params: []
+        })
     } catch (error) {
         throw error
     }
@@ -179,7 +229,12 @@ const withdrawCommissionByEW = async (smcAddr: string) => {
 
 const withdrawRewardByEW = async (smcAddr: string) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'withdrawRewards', [])
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'withdrawRewards',
+            params: []
+        })
     } catch (error) {
         throw error
     }
@@ -187,7 +242,12 @@ const withdrawRewardByEW = async (smcAddr: string) => {
 
 const withdrawDelegatedAmountByEW = async (smcAddr: string) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'withdraw', [])
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'withdraw',
+            params: []
+        })
     } catch (error) {
         throw error
     }
@@ -197,7 +257,12 @@ const undelegateWithAmountByEW = async (smcAddr: string, amountUndel: number) =>
     try {
         // convert value number type to decimal type
         const amountUndelDec = cellValue(amountUndel);
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'undelegateWithAmount', [amountUndelDec])
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'undelegateWithAmount',
+            params: [amountUndelDec]
+        })
     } catch (error) {
         throw error
     }
@@ -205,7 +270,12 @@ const undelegateWithAmountByEW = async (smcAddr: string, amountUndel: number) =>
 
 const undelegateAllByEW = async (smcAddr: string) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'undelegate', [])
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'undelegate',
+            params: []
+        })
     } catch (error) {
         throw error
     }
@@ -213,7 +283,12 @@ const undelegateAllByEW = async (smcAddr: string) => {
 
 const unjailValidatorByEW = async (smcAddr: string) => {
     try {
-        await invokeSMCByEW(VALIDATOR_ABI, smcAddr, 'unjail', [])
+        await invokeSMCByEW({
+            abi: VALIDATOR_ABI,
+            smcAddr: smcAddr,
+            methodName: 'unjail',
+            params: []
+        })
     } catch (error) {
         throw error
     }
