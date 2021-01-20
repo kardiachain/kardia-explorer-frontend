@@ -42,7 +42,7 @@ const invokeSendAction = async (
         from: account.publickey,
         amount: amountVal,
         gas: gasLimit,
-        gasPrice: gasPrice * 10**9
+        gasPrice: gasPrice ? gasPrice * 10**9 : 10**9
     });
 
     return invokeResult;

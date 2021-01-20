@@ -149,7 +149,7 @@ export const generateTx = async (fromAccount: Account, toAddr: string, amount: n
         toAddr,
         cellAmount,
         nonce,
-        gasPrice * 10**9 || 10**9,
+        gasPrice ? gasPrice * 10**9 : 10**9,
         gasLimit,
     );
     
