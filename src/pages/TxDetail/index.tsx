@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
-import { weiToKAI } from '../../common/utils/amount';
+import { weiToKAI, weiToOXY } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToUTCString, millisecondToHMS, renderCopyButton, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';
@@ -317,7 +317,7 @@ const TxDetail = () => {
                                             <div className="property-title">Gas Price</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">{numberFormat(txDetail?.gasPrice || 0)} OXY</div>
+                                            <div className="property-content">{numberFormat(weiToOXY(txDetail?.gasPrice || 0))} OXY</div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
