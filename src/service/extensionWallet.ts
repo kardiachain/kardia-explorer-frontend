@@ -32,13 +32,14 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
         Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
     } else {
         const accounts = await window.web3.eth.getAccounts();
+        const cellAmountDel = cellValue(amount);
         if (accounts && accounts[0]) {
             window.web3.eth.sendTransaction({
                 from: accounts[0],
                 gasPrice: Number(gasPrice),
                 gas: Number(gasLimit),
                 to: toAddress,
-                value: amount
+                value: cellAmountDel
             });
         } else {
             Alert.error("Please login Kardia Extension Wallet.", 5000)
@@ -82,16 +83,16 @@ const getMethodData = (abi: any, methodName: string, params: any[]) => {
     return '';
 }
 
-const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasPrice }: {
-    abi: any;
-    bytecode: any;
-    params: any;
-    amount: number;
-    gasLimit: number;
-    gasPrice: number;
-}) => {
+// const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasPrice }: {
+//     abi: any;
+//     bytecode: any;
+//     params: any;
+//     amount: number;
+//     gasLimit: number;
+//     gasPrice: number;
+// }) => {
 
-}
+// }
 
 const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gasLimit = gasLimitDefault, gasPrice = 1 }: {
     abi: any;
@@ -110,11 +111,12 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
             if (accounts && accounts[0]) {
                 const data = getMethodData(abi, methodName, params);
                 const contract = await new window.web3.eth.Contract(abi, smcAddr);
+                const cellAmountDel = cellValue(amount);
                 await contract.methods[methodName](...params).send({
                     from: accounts[0],
                     gasPrice: gasPrice,
                     gas: gasLimit,
-                    value: Number(amount),
+                    value: cellAmountDel,
                     data: data,
                 })
             } else {
