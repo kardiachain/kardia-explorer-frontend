@@ -45,7 +45,7 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
                 Alert.error("Please login Kardia Extension Wallet.", 5000)
             }
         } catch (error) {
-            throw error
+            console.error(error);
         }
     }
 }
@@ -64,10 +64,11 @@ const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasP
         try {
             const accounts = await window.web3.eth.getAccounts()
             if (accounts && accounts[0]) {
-                const contract = kardiaContract(kardiaProvider, bytecode, JSON.parse(JSON.stringify(abi)));
-                const paramsJson = JSON.parse(JSON.stringify(params))
+                const abiJson = typeof abi === 'string' ? JSON.parse(abi) : JSON.parse(JSON.stringify(abi));
+                const contract = kardiaContract(kardiaProvider, bytecode, abiJson);
+                const paramsJson = JSON.parse(JSON.stringify(params));
                 const data = await contract.deploy(paramsJson).txData();
-                const contractInvokeWeb3 = new window.web3.eth.Contract(JSON.parse(JSON.stringify(abi)));
+                const contractInvokeWeb3 = new window.web3.eth.Contract(abiJson);
                 const cellAmountDel = amount ? cellValue(amount) : 0;
                 await contractInvokeWeb3.deploy({
                     data: bytecode,
@@ -83,7 +84,7 @@ const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasP
                 Alert.error("Please login Kardia Extension Wallet.", 5000)
             }
         } catch (error) {
-            throw error
+            console.error(error);
         }
     }
 
@@ -104,13 +105,15 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
         try {
             const accounts = await window.web3.eth.getAccounts()
             if (accounts && accounts[0]) {
-                const contractInstance = kardiaContract(kardiaProvider, "", JSON.parse(JSON.stringify(abi)));
+                const abiJson = typeof abi === 'string' ? JSON.parse(abi) : JSON.parse(JSON.stringify(abi));
+
+                const contractInstance = kardiaContract(kardiaProvider, "", abiJson);
                 const data = await contractInstance.invoke({
                     params: params,
                     name: methodName,
                 }).txData();
-
-                const contractInvokeWeb3 = await new window.web3.eth.Contract(JSON.parse(JSON.stringify(abi)), smcAddr);
+                
+                const contractInvokeWeb3 = await new window.web3.eth.Contract(abiJson, smcAddr);
                 const cellAmountDel = amount ? cellValue(amount) : 0;
                 await contractInvokeWeb3.methods[methodName](...params).send({
                     from: accounts[0],
@@ -123,7 +126,7 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
                 Alert.error("Please login Kardia Extension Wallet.", 5000)
             }
         } catch (error) {
-            throw error
+            console.error(error);
         }
     }
 }
@@ -312,4 +315,4 @@ export {
     unjailValidatorByEW,
     deploySMCByEW,
     invokeSMCByEW
-} 
+}

@@ -136,15 +136,28 @@ const InteracteWithSmc = () => {
 
             // Case: Invoke smart contract using Kai Extension Wallet
             if (!txObject.isPure && isExtensionWallet()) {
-                invokeSMCByEW({
-                    abi: txObject.abi,
-                    smcAddr: txObject.contractAddress,
-                    methodName: txObject.functionName,
-                    params: txObject.params,
-                    amount: txObject.amount || 0,
-                    gasLimit: txObject.gasLimit,
-                    gasPrice: txObject.gasPrice
-                })
+                try {
+                    invokeSMCByEW({
+                        abi: txObject.abi,
+                        smcAddr: txObject.contractAddress,
+                        methodName: txObject.functionName,
+                        params: txObject.params,
+                        amount: txObject.amount || 0,
+                        gasLimit: txObject.gasLimit,
+                        gasPrice: txObject.gasPrice
+                    })
+                } catch (error) {
+                    try {
+                        const errJson = JSON.parse(error?.message);
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                        })
+                    } catch (error) {
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError}`
+                        })
+                    }
+                }
                 return;
             }
 

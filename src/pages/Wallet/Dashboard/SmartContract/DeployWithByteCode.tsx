@@ -102,15 +102,27 @@ const DeployWithByteCode = () => {
             }
 
             if (isExtensionWallet()) {
-               const params = construcFields && construcFields.length > 0 ? construcFields.map(item => JSON.parse(item.value)) : []
-
-                deploySMCByEW({
-                    abi: abi, 
-                    bytecode: byteCode,
-                    params: params,
-                    gasLimit: gasLimit,
-                    gasPrice: gasPrice
-                })
+                try {
+                    const params = construcFields && construcFields.length > 0 ? construcFields.map(item => JSON.parse(item.value)) : []
+                     deploySMCByEW({
+                         abi: abi, 
+                         bytecode: byteCode,
+                         params: params,
+                         gasLimit: gasLimit,
+                         gasPrice: gasPrice
+                     })
+                } catch (error) {
+                    try {
+                        const errJson = JSON.parse(error?.message);
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                        })
+                    } catch (error) {
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError}`
+                        })
+                    }
+                }
                 return;
             }
 
