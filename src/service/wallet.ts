@@ -7,7 +7,8 @@ import CryptoJS from 'crypto-js';
 const initialValue: WalletStore = {
     privatekey: '',
     address: '',
-    isAccess: false
+    isAccess: false,
+    externalWallet: false
 }
 
 export const useWalletStorage = (callback?: () => void) => {
@@ -60,6 +61,18 @@ export const getPkByPassword = (passcode: string): string => {
     } catch (error) {
         return ''
     }
+}
+
+export const isExtensionWallet = (): boolean => {
+    const walletstore = window.localStorage.getItem('walletstore') || '{}';
+    const walletstoreDecode = window.atob(walletstore || '')
+    const walletstoreObj = JSON.parse(walletstoreDecode ) as WalletStore;
+
+    if (walletstoreObj && walletstoreObj.externalWallet) {
+        return true
+    }
+
+    return false;
 }
 
 export const useBalanceStorage = () => {

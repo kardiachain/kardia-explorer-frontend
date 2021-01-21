@@ -7,9 +7,10 @@ import { NotificationError, NotificationSuccess } from '../../../../common/compo
 import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
 import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { updateValidatorName } from '../../../../service/smc/staking';
-import { getStoredBalance } from '../../../../service/wallet';
+import { getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { updateValidatorNameByEW } from '../../../../service/extensionWallet';
 
 const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -62,16 +63,25 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
     }
 
     const update = async () => {
+
         if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateValName(valName)) {
             return
         }
+
+        const valSmcAddr = validator?.smcAddress || '';
+        if (!valSmcAddr) {
+            return
+        }
+        // Case: update validator's name interact with Kai Extension Wallet
+        if (isExtensionWallet()) {
+            updateValidatorNameByEW(valSmcAddr, valName, updateFee, gasLimit, gasPrice)
+            setShowModel(false);
+            resetForm();
+            return
+        }
+
         try {
             setIsLoading(true);
-            const valSmcAddr = validator?.smcAddress || '';
-            if (!valSmcAddr) {
-                return
-            }
-
             if (!validateValName(valName)) return;
             let result = await updateValidatorName(valSmcAddr, valName, walletLocalState.account, updateFee, gasLimit, gasPrice);
             if (result && result.status === 1) {

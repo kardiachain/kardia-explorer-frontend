@@ -6,6 +6,8 @@ import { NotifiMessage, InforMessage } from '../../../../common/constant/Message
 import { startValidator } from '../../../../service/smc/staking';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { isExtensionWallet } from '../../../../service/wallet';
+import { startValidatorByEW } from '../../../../service/extensionWallet';
 
 const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -23,6 +25,14 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
             if (!valSmcAddr) {
                 setIsLoading(false);
                 return false;
+            }
+
+            // Case: start validator interact with Kai Extension Wallet
+            if (isExtensionWallet()) {
+                startValidatorByEW(valSmcAddr)
+                setIsLoading(false)
+                setShowModel(false)
+                return
             }
 
             const result = await startValidator(valSmcAddr, walletLocalState.account);

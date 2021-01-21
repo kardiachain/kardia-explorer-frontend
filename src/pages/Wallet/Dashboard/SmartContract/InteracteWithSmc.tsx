@@ -15,6 +15,8 @@ import { invokeFunctionFromContractAbi } from '../../../../service/smc';
 import './smartContract.css'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { isExtensionWallet } from '../../../../service/wallet';
+import { invokeSMCByEW } from '../../../../service/extensionWallet';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.');
@@ -116,7 +118,6 @@ const InteracteWithSmc = () => {
     }
 
     const executeFunction = async () => {
-        setLoadingExecute(true)
         setShowResult(false)
         try {
             const txObject = {
@@ -132,6 +133,35 @@ const InteracteWithSmc = () => {
             } as SMCInvokeObject
 
             setInteractType(txObject.isPure ? "call" : "send")
+
+            // Case: Invoke smart contract using Kai Extension Wallet
+            if (!txObject.isPure && isExtensionWallet()) {
+                try {
+                    invokeSMCByEW({
+                        abi: txObject.abi,
+                        smcAddr: txObject.contractAddress,
+                        methodName: txObject.functionName,
+                        params: txObject.params,
+                        amount: txObject.amount || 0,
+                        gasLimit: txObject.gasLimit,
+                        gasPrice: txObject.gasPrice
+                    })
+                } catch (error) {
+                    try {
+                        const errJson = JSON.parse(error?.message);
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                        })
+                    } catch (error) {
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError}`
+                        })
+                    }
+                }
+                return;
+            }
+
+            setLoadingExecute(true)
             const result = await invokeFunctionFromContractAbi(txObject);
             if (txObject.isPure) {
                 setTxResult(result);

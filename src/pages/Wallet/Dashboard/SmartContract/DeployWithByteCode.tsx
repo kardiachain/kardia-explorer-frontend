@@ -13,6 +13,8 @@ import NumberInputFormat from '../../../../common/components/FormInput';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { isExtensionWallet } from '../../../../service/wallet';
+import { deploySMCByEW } from '../../../../service/extensionWallet';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -98,6 +100,32 @@ const DeployWithByteCode = () => {
             if (!validateGasLimit(gasLimit) || !validateByteCode(byteCode) || !validateAbi(abi)) {
                 return false;
             }
+
+            if (isExtensionWallet()) {
+                try {
+                    const params = construcFields && construcFields.length > 0 ? construcFields.map(item => JSON.parse(item.value)) : []
+                     deploySMCByEW({
+                         abi: abi, 
+                         bytecode: byteCode,
+                         params: params,
+                         gasLimit: gasLimit,
+                         gasPrice: gasPrice
+                     })
+                } catch (error) {
+                    try {
+                        const errJson = JSON.parse(error?.message);
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                        })
+                    } catch (error) {
+                        NotificationError({
+                            description: `${NotifiMessage.TransactionError}`
+                        })
+                    }
+                }
+                return;
+            }
+
             setLoading(true);
             const txObject = {
                 account: walletLocalState.account,
@@ -105,7 +133,7 @@ const DeployWithByteCode = () => {
                 bytecode: byteCode,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
-                params: construcFields ? (construcFields.length > 0 && construcFields.map(item => JSON.parse(item.value))) : []
+                params: construcFields && construcFields.length > 0 ? construcFields.map(item => JSON.parse(item.value)) : []
             } as SMCDeployObject
 
             const result = await deploySmartContract(txObject);
