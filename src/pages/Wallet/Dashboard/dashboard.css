@@ -82,7 +82,7 @@
     font-weight: 600;
 }
 
-.dashboard-container a {
+.dashboard-container .left-container a {
     color: var(--text-white-color) !important;
 }
 

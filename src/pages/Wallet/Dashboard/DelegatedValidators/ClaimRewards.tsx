@@ -11,7 +11,9 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
+import { withdrawRewardByEW } from '../../../../service/extensionWallet';
 import { withdrawReward } from '../../../../service/smc/staking';
+import { isExtensionWallet } from '../../../../service/wallet';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -30,6 +32,15 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
         try {
             const valSmcAddr = validatorActive?.validatorSmcAddr || '';
             if (!valSmcAddr) return;
+
+            if (isExtensionWallet()) {
+                // Case: claim reward interact with Kai Extension Wallet
+                withdrawRewardByEW(valSmcAddr)
+                setShowConfirmWithdrawRewardsModal(false)
+                setIsLoading(true)
+                return
+            }
+
             const result = await withdrawReward(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({
@@ -78,7 +89,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                                                 size='normal' style={{ marginRight: 5 }} />
                                         </div>
                                         <div className="validator-info color-white">
-                                            <div className="validator-name color-white">
+                                            <div className="validator-name">
                                                 {
                                                     renderStringAndTooltip({
                                                         str: rowData.validatorName,

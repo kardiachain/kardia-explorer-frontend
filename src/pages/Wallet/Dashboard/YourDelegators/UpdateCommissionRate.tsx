@@ -11,6 +11,8 @@ import { updateValidatorCommission } from "../../../../service/smc/staking";
 import './validators.css'
 import { useRecoilValue } from 'recoil';
 import walletState from "../../../../atom/wallet.atom";
+import { isExtensionWallet } from '../../../../service/wallet';
+import { updateValidatorCommissionByEW } from "../../../../service/extensionWallet";
 
 const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -91,12 +93,20 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
         if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateCommissionRate(commissionRate)) {
             return
         }
+        const valSmcAddr = validator?.smcAddress || '';
+        if (!valSmcAddr) {
+            return
+        }
+
+        // Case: update validator's commission interact with Kai Extension Wallet
+        if (isExtensionWallet()) {
+            updateValidatorCommissionByEW(valSmcAddr, Number(commissionRate), gasLimit, gasPrice)
+            cancelEdit()
+            return;
+        }
+
         try {
             setIsLoading(true);
-            const valSmcAddr = validator?.smcAddress || '';
-            if (!valSmcAddr) {
-                return
-            }
             let result = await updateValidatorCommission(valSmcAddr, Number(commissionRate), walletLocalState.account, gasLimit, gasPrice);
             if (result && result.status === 1) {
                 NotificationSuccess({

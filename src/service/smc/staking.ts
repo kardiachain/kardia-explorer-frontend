@@ -34,6 +34,9 @@ const invokeSendAction = async (
     gasLimit = gasLimitDefault,
     gasPrice = 2
 ) => {
+    if (!account.publickey) {
+        return;
+    }
     const invoke = await contractInstance.invoke({
         params: params,
         name: methodName,
@@ -42,7 +45,7 @@ const invokeSendAction = async (
         from: account.publickey,
         amount: amountVal,
         gas: gasLimit,
-        gasPrice: gasPrice
+        gasPrice: gasPrice ? gasPrice * 10**9 : 10**9
     });
 
     return invokeResult;

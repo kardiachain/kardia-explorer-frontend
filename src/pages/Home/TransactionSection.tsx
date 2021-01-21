@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -13,7 +13,6 @@ const TransactionSection = ({ transactionList = [] }: {
     transactionList: KAITransaction[]
 }) => {
     const { isMobile } = useViewport();
-    const history = useHistory();
     return (
         <Panel shaded className="panel-bg-gray">
             <FlexboxGrid justify="space-between">
@@ -40,7 +39,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                                     hash: rowData.txHash,
                                                     headCount: isMobile ? 4 : 8,
                                                     showTooltip: false,
-                                                    callback: () => { history.push(`/tx/${rowData.txHash}`) }
+                                                    redirectTo: `/tx/${rowData.txHash}`
                                                 })}
                                                 <div className="fs-12">{millisecondToHMS(rowData.age || 0)}</div>
                                             </span>
@@ -62,25 +61,25 @@ const TransactionSection = ({ transactionList = [] }: {
                                                     headCount: isMobile ? 4 : 8,
                                                     tailCount: 4,
                                                     showTooltip: false,
-                                                    callback: () => { history.push(`/address/${rowData.from}`) }
+                                                    redirectTo: `/address/${rowData.from}`
                                                 })}
                                                 <div>
                                                     <span style={{ marginRight: 5, fontSize: 12 }}>To:</span>
                                                     {
                                                         !rowData.toSmcAddr ? (
-                                                            <>
+                                                            <span>
                                                                 {renderHashToRedirect({
                                                                     hash: rowData.to,
                                                                     headCount: isMobile ? 4 : 8,
                                                                     tailCount: 4,
                                                                     showTooltip: false,
-                                                                    callback: () => { history.push(`/address/${rowData.to}`) }
+                                                                    redirectTo: `/address/${rowData.to}`
                                                                 })}
-                                                            </>
+                                                            </span>
                                                         ) : (
                                                             <>
                                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link className="color-white" style={{ fontSize: 12}} to={`/address/${rowData.toSmcAddr}`}>
+                                                                    <Link className="color-white" style={{ fontSize: 14}} to={`/address/${rowData.toSmcAddr}`}>
                                                                         {
                                                                             renderStringAndTooltip({
                                                                                 str: rowData.toSmcName,

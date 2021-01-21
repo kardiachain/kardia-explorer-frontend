@@ -28,7 +28,8 @@ const CreateByPrivateKey = () => {
         setWallet({
             privatekey: wallet.getPrivateKeyString(),
             address: wallet.getChecksumAddressString(),
-            isAccess: false
+            isAccess: false,
+            externalWallet: false,
         })
     }
 

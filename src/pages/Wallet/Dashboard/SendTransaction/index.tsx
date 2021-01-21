@@ -5,7 +5,7 @@ import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/co
 import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
-import { getAccount, generateTx, getStoredBalance } from '../../../../service/wallet'
+import { getAccount, generateTx, getStoredBalance, isExtensionWallet } from '../../../../service/wallet'
 import Button from '../../../../common/components/Button'
 import { gasLimitSendTx, gasPriceOption } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
@@ -13,6 +13,7 @@ import NumberInputFormat from '../../../../common/components/FormInput'
 import { renderHashString } from '../../../../common/utils/string'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom'
+import { generateTxForEW } from '../../../../service/extensionWallet'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -90,11 +91,17 @@ const SendTransaction = () => {
         setToAddress('');
         setGasLimit(gasLimitSendTx);
         setGasPrice(1);
+        setToAddressErr('');
         setAmountErr('');
     }
 
     const submitSend = () => {
-        if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
+        if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
+            return
+        }
+        if (isExtensionWallet()) {
+            // Case: Send transaction interact with Kai Extension Wallet
+            generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
             return
         }
         setShowConfirmModal(true)

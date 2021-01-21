@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import SearchSection from '../../common/components/Header/SearchSection';
@@ -18,7 +17,6 @@ const { Column, HeaderCell, Cell } = Table;
 const AccountList = () => {
 
     const { isMobile } = useViewport();
-    const history = useHistory();
     const [holderAccounts, setHolderAccounts] = useState([] as HolderAccount[]);
     const [page, setPage] = useState(TABLE_CONFIG.page);
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault);
@@ -101,7 +99,7 @@ const AccountList = () => {
                                                             headCount: isMobile ? 5 : 20,
                                                             tailCount: 4,
                                                             showTooltip: true,
-                                                            callback: () => { history.push(`/address/${rowData.address}`) }
+                                                            redirectTo: `/address/${rowData.address}`
                                                         })
                                                         }
                                                      </span>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, List, Panel, Placeholder } from 'rsuite'
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -10,7 +10,6 @@ import './blockDetail.css'
 const { Paragraph } = Placeholder;
 
 const BlockDetail = () => {
-    const history = useHistory();
     const [blockDetail, setBlockDetail] = useState<KAIBlockDetails>()
     const { block }: any = useParams();
     const [loading, setLoading] = useState(true)
@@ -126,7 +125,7 @@ const BlockDetail = () => {
                                                 headCount: 70,
                                                 tailCount: 4,
                                                 showTooltip: false,
-                                                callback: () => { history.push(`/block/${blockDetail?.lastBlock}`) },
+                                                redirectTo: `/block/${blockDetail?.lastBlock}`,
                                                 showCopy: true
                                             })}
                                         </div>
@@ -157,7 +156,7 @@ const BlockDetail = () => {
                                                     headCount: 50,
                                                     tailCount: 4,
                                                     showTooltip: false,
-                                                    callback: () => { history.push(`/address/${blockDetail?.validator}`) },
+                                                    redirectTo: `/address/${blockDetail?.validator}`,
                                                     showCopy: true
                                                 })
                                             }

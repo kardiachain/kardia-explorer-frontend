@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
-import { weiToKAI } from '../../common/utils/amount';
+import { weiToKAI, weiToOXY } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToUTCString, millisecondToHMS, renderCopyButton, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';
@@ -25,7 +25,6 @@ const onSuccess = () => {
 const { Paragraph } = Placeholder;
 
 const TxDetail = () => {
-    const history = useHistory();
     const { txHash }: any = useParams();
     const [txDetail, setTxDetail] = useState<KAITransaction>()
     const [loading, setLoading] = useState(true)
@@ -186,7 +185,7 @@ const TxDetail = () => {
                                                 headCount: 70,
                                                 tailCount: 4,
                                                 showTooltip: false,
-                                                callback: () => { history.push(`/block/${txDetail?.blockHash}`) },
+                                                redirectTo: `/block/${txDetail?.blockHash}`,
                                                 showCopy: true
                                             })}
                                         </div>
@@ -234,7 +233,7 @@ const TxDetail = () => {
                                                 headCount: 50,
                                                 tailCount: 4,
                                                 showTooltip: false,
-                                                callback: () => { history.push(`/address/${txDetail?.from}`) },
+                                                redirectTo: `/address/${txDetail?.from}`,
                                                 showCopy: true
                                             })}
                                         </div>
@@ -254,7 +253,7 @@ const TxDetail = () => {
                                                     headCount: 50,
                                                     tailCount: 4,
                                                     showTooltip: false,
-                                                    callback: () => { history.push(`/address/${txDetail?.to}`) },
+                                                    redirectTo: `/address/${txDetail?.to}`,
                                                     showCopy: true
                                                 })}</div>
                                             ) : (
@@ -267,7 +266,7 @@ const TxDetail = () => {
                                                             headCount: 50,
                                                             tailCount: 4,
                                                             showTooltip: false,
-                                                            callback: () => { history.push(`/address/${txDetail?.toSmcAddr}`) },
+                                                            redirectTo: `/address/${txDetail?.toSmcAddr}`,
                                                             showCopy: false
                                                         })} {txDetail.toSmcName}
                                                         {
@@ -318,7 +317,7 @@ const TxDetail = () => {
                                             <div className="property-title">Gas Price</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">{numberFormat(txDetail?.gasPrice || 0)} OXY</div>
+                                            <div className="property-content">{numberFormat(weiToOXY(txDetail?.gasPrice || 0))} OXY</div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>

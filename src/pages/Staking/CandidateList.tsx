@@ -41,7 +41,7 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                                             size='normal' style={{ marginRight: 5 }} />
                                     </div>
                                     <div className="validator-info color-white">
-                                        <div className="validator-name color-white">
+                                        <div className="validator-name">
                                             {
                                                 renderStringAndTooltip({
                                                     str: rowData.name,

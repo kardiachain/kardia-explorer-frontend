@@ -6,6 +6,8 @@ import { NotifiMessage } from '../../../../common/constant/Message';
 import { unjailValidator } from '../../../../service/smc/staking';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { isExtensionWallet } from '../../../../service/wallet';
+import { unjailValidatorByEW } from '../../../../service/extensionWallet';
 
 const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -24,6 +26,15 @@ const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel,
                 setIsLoading(false);
                 return false;
             }
+
+            // Case: Unjail validator interact with Kai Extension Wallet
+            if (isExtensionWallet()) {
+                unjailValidatorByEW(valSmcAddr)
+                setShowModel(false)
+                setIsLoading(false)
+                return
+            }
+
             const result = await unjailValidator(valSmcAddr, walletLocalState.account);
             if (result && result.status === 1) {
                 NotificationSuccess({

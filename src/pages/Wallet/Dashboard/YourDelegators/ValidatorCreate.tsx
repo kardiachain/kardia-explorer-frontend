@@ -6,7 +6,7 @@ import { gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/consta
 import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { numberFormat } from '../../../../common/utils/number';
 import { createValidator } from '../../../../service/smc/staking';
-import { getStoredBalance } from '../../../../service/wallet';
+import { getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
 import './validators.css'
 import Helper from '../../../../common/components/Helper';
 import { HelperMessage } from '../../../../common/constant/HelperMessage';
@@ -14,6 +14,7 @@ import { NotificationError, NotificationSuccess } from '../../../../common/compo
 import NumberInputFormat from '../../../../common/components/FormInput';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { createValidatorByEW } from '../../../../service/extensionWallet';
 
 const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 
@@ -177,7 +178,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
         setMaxChangeRateErr('');
     }
 
-    const submitValidator = () => {
+    const submitValidator = async  () => {
         if (!validateGasPrice(gasPrice) ||
             !validateValName(valName) ||
             !validateGasLimit(gasLimit) ||
@@ -187,6 +188,20 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             !validateYourDelegationAmount(yourDelAmount)) {
             return
         }
+
+        // Case: create validator interact with Kai Extension Wallet
+        if (isExtensionWallet()) {
+            const params = {
+                valName: valName,
+                commissionRate: Number(commissionRate),
+                maxRate: Number(maxRate),
+                maxChangeRate: Number(maxChangeRate),
+                yourDelegationAmount: Number(yourDelAmount)
+            } as CreateValParams;
+            await createValidatorByEW(params, gasLimit, gasPrice)
+            return;
+        }
+
         setShowConfirmModal(true)
     }
 

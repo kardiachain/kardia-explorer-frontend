@@ -112,6 +112,7 @@ interface WalletStore {
     privatekey: string;
     isAccess: boolean;
     expried?: boolean; 
+    externalWallet: boolean;
 }
 
 interface Account {
