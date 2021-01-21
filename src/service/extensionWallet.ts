@@ -1,13 +1,12 @@
 import { Alert } from 'rsuite';
 import Web3 from 'web3';
-import abiJS from 'kardia-tool/lib/common/lib/abi';
-import { isHexStrict, toHex } from 'kardia-tool/lib/common/lib/utils';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../resources/smc-compile/validator-abi.json';
 import { cellValue } from '../common/utils/amount';
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
 import { STAKING_SMC_ADDRESS } from '../config/api';
 import { gasLimitDefault } from '../common/constant';
+import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 
 declare global {
     interface Window {
@@ -31,68 +30,64 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
     if (!kardiaExtensionWalletEnabled()) {
         Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
     } else {
-        const accounts = await window.web3.eth.getAccounts();
-        const cellAmountDel = cellValue(amount);
-        if (accounts && accounts[0]) {
-            window.web3.eth.sendTransaction({
-                from: accounts[0],
-                gasPrice: Number(gasPrice),
-                gas: Number(gasLimit),
-                to: toAddress,
-                value: cellAmountDel
-            });
-        } else {
-            Alert.error("Please login Kardia Extension Wallet.", 5000)
-        }
-    }
-}
-
-const findFunctionFromAbi = (abi: any, type = 'function', name = '') => {
-    if (type !== 'constructor') {
-        return abi.filter((item: any) => item.type === type && item.name === name)
-    }
-    return abi.filter((item: any) => item.type === type)
-}
-
-const encodeArray = (params: any) => {
-    params && params.length > 0 && params.map((param: any) => {
-        if (isHexStrict(param)) {
-            return param;
-        } else {
-            return toHex(param);
-        }
-    })
-}
-
-const getMethodData = (abi: any, methodName: string, params: any[]) => {
-    try {
-        const functionFromAbi = findFunctionFromAbi(abi, 'function', methodName);
-        const paramsDecorate = params && params.map(param => {
-            if (Array.isArray(param)) {
-                return encodeArray(param);
-            } else if (isHexStrict(param)) {
-                return param;
+        try {
+            const accounts = await window.web3.eth.getAccounts();
+            const cellAmountDel = amount ? cellValue(amount) : 0;
+            if (accounts && accounts[0]) {
+                window.web3.eth.sendTransaction({
+                    from: accounts[0],
+                    gasPrice: Number(gasPrice),
+                    gas: Number(gasLimit),
+                    to: toAddress,
+                    value: cellAmountDel
+                });
             } else {
-                return toHex(param);
+                Alert.error("Please login Kardia Extension Wallet.", 5000)
             }
-        })
-        return abiJS && abiJS.methodData(functionFromAbi, paramsDecorate)
-    } catch (error) {
-        console.log(error);
+        } catch (error) {
+            throw error
+        }
     }
-    return '';
 }
 
-// const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasPrice }: {
-//     abi: any;
-//     bytecode: any;
-//     params: any;
-//     amount: number;
-//     gasLimit: number;
-//     gasPrice: number;
-// }) => {
+const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasPrice }: {
+    abi: any;
+    bytecode: any;
+    params: any;
+    amount?: number;
+    gasLimit: number;
+    gasPrice: number;
+}) => {
+    if (!kardiaExtensionWalletEnabled()) {
+        Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
+    } else {
+        try {
+            const accounts = await window.web3.eth.getAccounts()
+            if (accounts && accounts[0]) {
+                const contract = kardiaContract(kardiaProvider, bytecode, JSON.parse(JSON.stringify(abi)));
+                const paramsJson = JSON.parse(JSON.stringify(params))
+                const data = await contract.deploy(paramsJson).txData();
+                const contractInvokeWeb3 = new window.web3.eth.Contract(JSON.parse(JSON.stringify(abi)));
+                const cellAmountDel = amount ? cellValue(amount) : 0;
+                await contractInvokeWeb3.deploy({
+                    data: bytecode,
+                    arguments: [...params]
+                }).send({
+                    from: accounts[0],
+                    gasPrice: gasPrice,
+                    gas: gasLimit,
+                    value: cellAmountDel,
+                    data: data,
+                });
+            } else {
+                Alert.error("Please login Kardia Extension Wallet.", 5000)
+            }
+        } catch (error) {
+            throw error
+        }
+    }
 
-// }
+}
 
 const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gasLimit = gasLimitDefault, gasPrice = 1 }: {
     abi: any;
@@ -109,10 +104,15 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
         try {
             const accounts = await window.web3.eth.getAccounts()
             if (accounts && accounts[0]) {
-                const data = getMethodData(abi, methodName, params);
-                const contract = await new window.web3.eth.Contract(abi, smcAddr);
-                const cellAmountDel = cellValue(amount);
-                await contract.methods[methodName](...params).send({
+                const contractInstance = kardiaContract(kardiaProvider, "", JSON.parse(JSON.stringify(abi)));
+                const data = await contractInstance.invoke({
+                    params: params,
+                    name: methodName,
+                }).txData();
+
+                const contractInvokeWeb3 = await new window.web3.eth.Contract(JSON.parse(JSON.stringify(abi)), smcAddr);
+                const cellAmountDel = amount ? cellValue(amount) : 0;
+                await contractInvokeWeb3.methods[methodName](...params).send({
                     from: accounts[0],
                     gasPrice: gasPrice,
                     gas: gasLimit,
@@ -123,7 +123,7 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
                 Alert.error("Please login Kardia Extension Wallet.", 5000)
             }
         } catch (error) {
-            console.log(error);
+            throw error
         }
     }
 }
@@ -309,5 +309,7 @@ export {
     withdrawDelegatedAmountByEW,
     undelegateWithAmountByEW,
     undelegateAllByEW,
-    unjailValidatorByEW
+    unjailValidatorByEW,
+    deploySMCByEW,
+    invokeSMCByEW
 } 

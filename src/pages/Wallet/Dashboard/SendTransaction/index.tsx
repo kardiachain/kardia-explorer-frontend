@@ -91,17 +91,17 @@ const SendTransaction = () => {
         setToAddress('');
         setGasLimit(gasLimitSendTx);
         setGasPrice(1);
+        setToAddressErr('');
         setAmountErr('');
     }
 
     const submitSend = () => {
-        if (!validateAmount(amount) || !validateToAddress(toAddress) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
+        if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
             generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
-            resetFrom()
             return
         }
         setShowConfirmModal(true)
