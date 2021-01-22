@@ -115,7 +115,7 @@ const DelegatorCreate = () => {
         return true
     }
 
-    const submitDelegate = () => {
+    const submitDelegate = async () => {
         if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateDelAmount(delAmount)) {
             return;
         }
@@ -126,12 +126,25 @@ const DelegatorCreate = () => {
             if (!valSmcAddr) {
                 return
             }
-            delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
-            resetFrom()
-            return
-        }
 
-        setShowConfirmModal(true)
+            try {
+                await delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
+            } catch (error) {
+                try {
+                    const errJson = JSON.parse(error?.message);
+                    NotificationError({
+                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                    });
+                } catch (error) {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError
+                    });
+                }
+            }
+            resetFrom()
+        } else {
+            setShowConfirmModal(true)
+        }
     }
 
     const validateGasPrice = (gasPrice: any): boolean => {
@@ -196,9 +209,7 @@ const DelegatorCreate = () => {
         setDelAmount('');
         setGasLimit(gasLimitDefault);
         setGasPrice(1);
-        setTimeout(() => {
-            setErrorMessage('');
-        }, 5)
+        setErrorMessage('');
     }
 
     return (

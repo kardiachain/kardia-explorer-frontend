@@ -98,22 +98,33 @@ const SendTransaction = () => {
         setGasLimit(gasLimitSendTx);
         setGasPrice(1);
         setToAddressErr('');
-        setTimeout(() => {
-            setAmountErr('');
-        }, 5)
+        setAmountErr('');
     }
 
-    const submitSend = () => {
+    const submitSend = async () => {
         if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
-            generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+            try {
+                await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+            } catch (error) {
+                try {
+                    const errJson = JSON.parse(error?.message);
+                    NotificationError({
+                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                    })
+                } catch (error) {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError
+                    });
+                }
+            }
             resetFrom()
-            return
+        } else {
+            setShowConfirmModal(true)
         }
-        setShowConfirmModal(true)
     }
 
     const confirmSend = async () => {

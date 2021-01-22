@@ -70,7 +70,7 @@ const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasP
                 const data = await contract.deploy(paramsJson).txData();
                 const contractInvokeWeb3 = new window.web3.eth.Contract(abiJson);
                 const cellAmountDel = amount ? cellValue(amount) : 0;
-                await contractInvokeWeb3.deploy({
+                contractInvokeWeb3.deploy({
                     data: bytecode,
                     arguments: [...params]
                 }).send({
@@ -115,7 +115,7 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
                 
                 const contractInvokeWeb3 = await new window.web3.eth.Contract(abiJson, smcAddr);
                 const cellAmountDel = amount ? cellValue(amount) : 0;
-                await contractInvokeWeb3.methods[methodName](...params).send({
+                contractInvokeWeb3.methods[methodName](...params).send({
                     from: accounts[0],
                     gasPrice: gasPrice,
                     gas: gasLimit,
