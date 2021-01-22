@@ -31,8 +31,9 @@ const WalletExtensionConnect = () => {
     }
 
     return (
-        <Button size="lg" block onClick={walletConnect}>
-            <img src={kardiaIcon} className="kardia-extension-wallet-icon" alt="Kardia block explorer" /> Kardia Extension Wallet Connect
+        <Button size="lg" block onClick={walletConnect} style={{whiteSpace: 'break-spaces'}} >
+            <img src={kardiaIcon} className="kardia-extension-wallet-icon" alt="Kardia block explorer" /> 
+            <span>Kardia Extension Wallet Connect</span>
         </Button>
     )
 }
