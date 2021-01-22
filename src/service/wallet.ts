@@ -14,7 +14,7 @@ const initialValue: WalletStore = {
 export const useWalletStorage = (callback?: () => void) => {
     const [storedValue, setStoredValue] = useState(() => {
         try {
-            const walletstore = window.localStorage.getItem('walletstore');
+            const walletstore = window.localStorage.getItem('walletstore') ? window.localStorage.getItem('walletstore') : window.sessionStorage.getItem('walletstore');
             const walletstoreDecode = window.atob(walletstore || '')
             return walletstoreDecode ? JSON.parse(walletstoreDecode) : initialValue;
         } catch (err) { 
