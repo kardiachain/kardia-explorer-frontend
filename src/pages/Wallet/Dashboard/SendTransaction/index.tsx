@@ -33,7 +33,13 @@ const SendTransaction = () => {
 
 
     const validateAmount = (amount: any): boolean => {
-        if (Number(amount) === 0) {
+        
+        if (!amount) {
+            setAmountErr(ErrorMessage.Require)
+            return false
+        }
+
+        if (Number(amount) <= 0) {
             setAmountErr(ErrorMessage.AmountNotZero)
             return false
         }
@@ -95,16 +101,30 @@ const SendTransaction = () => {
         setAmountErr('');
     }
 
-    const submitSend = () => {
+    const submitSend = async () => {
         if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
-            generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
-            return
+            try {
+                await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+            } catch (error) {
+                try {
+                    const errJson = JSON.parse(error?.message);
+                    NotificationError({
+                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                    })
+                } catch (error) {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError
+                    });
+                }
+            }
+            resetFrom()
+        } else {
+            setShowConfirmModal(true)
         }
-        setShowConfirmModal(true)
     }
 
     const confirmSend = async () => {
@@ -156,7 +176,7 @@ const SendTransaction = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">To Address  (required)</ControlLabel>
+                                        <ControlLabel className="color-white">To Address (required)</ControlLabel>
                                         <FormControl
                                             placeholder="Ex. 0x..."
                                             name="toAddress"
@@ -176,13 +196,13 @@ const SendTransaction = () => {
                                             placeholder="Ex. 1000"
                                             className="input"
                                             onChange={(event) => {
-                                                setAmount(event.value);
+                                                setAmount(event.value)
                                                 validateAmount(event.value)
                                             }} />
                                         <ErrMessage message={amountErr} />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                        <ControlLabel className="color-white">Gas Limit  (required)</ControlLabel>
+                                        <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                         <NumberInputFormat
                                             value={gasLimit}
                                             placeholder="Gas limit"

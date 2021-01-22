@@ -105,7 +105,7 @@ const Validators = () => {
                     {
                         !isVal ?
                             <Button size="big" style={{marginBottom: 10}}
-                                onClick={() => { isLoggedIn() ? history.push("/wallet/staking/your-delegators") : history.push('/wallet') }}
+                                onClick={() => { isLoggedIn() ? history.push("/wallet/staking/for-validator") : history.push('/wallet') }}
                             >
                                 Register to become validator
                             </Button> : <></>
@@ -222,7 +222,7 @@ const Validators = () => {
                 </FlexboxGrid.Item>
             </FlexboxGrid>
 
-            <StakingCalculator showModal={stakingCalculator} setShowModal={setStakingCalculator} validators={validators} />
+            <StakingCalculator showModal={stakingCalculator} setShowModal={setStakingCalculator} validators={validators} totalStakedAmount={totalStakedAmount} />
         </div>
     )
 }

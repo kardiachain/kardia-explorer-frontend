@@ -22,10 +22,11 @@ interface CalcResult {
     _apr: number;
 }
 
-const StakingCalculator = ({ showModal, setShowModal, validators }: {
+const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmount }: {
     showModal: boolean;
     setShowModal: (show: boolean) => void;
     validators: Validator[];
+    totalStakedAmount: any;
 }) => {
 
     const blockTime = 5
@@ -91,15 +92,18 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
         }
         setIsLoading(true)
         try {
-            const votingPower = validator?.votingPower ? Number(validator.votingPower) / 100 : 0;
             const commission = validator?.commissionRate ? Number(validator.commissionRate) / 100 : 0;
-            const totalStaked = validator?.stakedAmount ? Number(weiToKAI(validator.stakedAmount)) + Number(amount) : 0;
+            const validatorStakedAmount = validator?.stakedAmount ? Number(weiToKAI(validator.stakedAmount)) + Number(amount) : 0;
+            // Total staked amount of all network
+            const netWorkStakedAmount = totalStakedAmount ? Number(weiToKAI(totalStakedAmount)) + Number(amount) : Number(weiToKAI(totalStakedAmount));
 
+            const votingPower = validatorStakedAmount / netWorkStakedAmount;
+            
             // Calculate reward for all delegator of validator for each block
             const delegatorsReward = blockReward * (1 - commission) * votingPower;
 
             // Calculate your reward on each block
-            const yourReward = Number(amount) / totalStaked * delegatorsReward
+            const yourReward = Number(amount) / validatorStakedAmount * delegatorsReward
 
             // Calculate staker earning 
             const _30days = yourReward * (30 * 24 * 3600) / blockTime;
@@ -153,6 +157,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators }: {
                                     value={validator}
                                     onChange={(value) => {
                                         setValidator(value)
+                                        setCalcResult(undefined)
                                         validateValidator(value)
                                     }}
                                     style={{ width: '100%' }}

@@ -126,11 +126,25 @@ const DelegatorCreate = () => {
             if (!valSmcAddr) {
                 return
             }
-            await delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
-            return
-        }
 
-        setShowConfirmModal(true)
+            try {
+                await delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
+            } catch (error) {
+                try {
+                    const errJson = JSON.parse(error?.message);
+                    NotificationError({
+                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                    });
+                } catch (error) {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError
+                    });
+                }
+            }
+            resetFrom()
+        } else {
+            setShowConfirmModal(true)
+        }
     }
 
     const validateGasPrice = (gasPrice: any): boolean => {
