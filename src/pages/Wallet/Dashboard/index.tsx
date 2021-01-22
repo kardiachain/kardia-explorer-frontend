@@ -75,12 +75,12 @@ const DashboardWallet = () => {
                                     </Nav.Item>
                                     <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking">
                                         <Dropdown.Item
-                                            eventKey="your-delegators"
-                                            onClick={() => { history.push("/wallet/staking/your-delegators") }}>Your Delegators
+                                            eventKey="for-validator"
+                                            onClick={() => { history.push("/wallet/staking/for-validator") }}>For Validator
                                         </Dropdown.Item>
                                         <Dropdown.Item
-                                            eventKey="delegated-validators"
-                                            onClick={() => { history.push("/wallet/staking/delegated-validators") }}>Delegated Validators
+                                            eventKey="for-delegator"
+                                            onClick={() => { history.push("/wallet/staking/for-delegator") }}>For Delegator
                                         </Dropdown.Item>
                                     </Dropdown>
                                     <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract">
@@ -105,8 +105,8 @@ const DashboardWallet = () => {
                 <DashboardHeader />
                 <Switch>
                     <AuthRouter component={SendTransaction} path="/wallet/send-transaction" />
-                    <AuthRouter component={YourDelegators} path="/wallet/staking/your-delegators" />
-                    <AuthRouter component={DelegatedValidators} path="/wallet/staking/delegated-validators" />
+                    <AuthRouter component={YourDelegators} path="/wallet/staking/for-validator" />
+                    <AuthRouter component={DelegatedValidators} path="/wallet/staking/for-delegator" />
                     <AuthRouter component={SmartContract} path="/wallet/smart-contract" />
                     <AuthRouter component={TransactionHistory} path="/wallet/dashboard" />
                     {/* <AuthRouter component={DelegatorCreate}  path="/wallet/staking/:valAddr" /> */}

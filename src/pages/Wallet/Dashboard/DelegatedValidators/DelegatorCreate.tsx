@@ -115,7 +115,7 @@ const DelegatorCreate = () => {
         return true
     }
 
-    const submitDelegate = async () => {
+    const submitDelegate = () => {
         if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateDelAmount(delAmount)) {
             return;
         }
@@ -126,7 +126,8 @@ const DelegatorCreate = () => {
             if (!valSmcAddr) {
                 return
             }
-            await delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
+            delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
+            resetFrom()
             return
         }
 
@@ -195,7 +196,9 @@ const DelegatorCreate = () => {
         setDelAmount('');
         setGasLimit(gasLimitDefault);
         setGasPrice(1);
-        setErrorMessage('');
+        setTimeout(() => {
+            setErrorMessage('');
+        }, 5)
     }
 
     return (

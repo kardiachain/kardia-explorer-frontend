@@ -121,17 +121,17 @@ const Header = () => {
                                                     </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
-                                                            history.push("/wallet/staking/your-delegators")
+                                                            history.push("/wallet/staking/for-validator")
                                                             setShowMenu(false)
                                                         }}>
-                                                        Your Delegators
+                                                        For Validator
                                                     </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
-                                                            history.push("/wallet/staking/delegated-validators")
+                                                            history.push("/wallet/staking/for-delegator")
                                                             setShowMenu(false)
                                                         }}>
-                                                        Delegated Validators
+                                                        For Delegator
                                                         </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
@@ -192,8 +192,8 @@ const Header = () => {
                                 placement="bottomEnd">
                                 <Dropdown.Item eventKey="dashboard" onClick={() => { history.push("/wallet/dashboard") }}>Dashboard</Dropdown.Item>
                                 <Dropdown.Item eventKey="send-transaction" onClick={() => { history.push("/wallet/send-transaction") }}>Send transaction</Dropdown.Item>
-                                <Dropdown.Item eventKey="your-delegators" onClick={() => { history.push("/wallet/staking/your-delegators") }} >Your Delegators</Dropdown.Item>
-                                <Dropdown.Item eventKey="delegated-validators" onClick={() => { history.push("/wallet/staking/delegated-validators") }} >Delegated Validators</Dropdown.Item>
+                                <Dropdown.Item eventKey="for-validator" onClick={() => { history.push("/wallet/staking/for-validator") }} >For Validator</Dropdown.Item>
+                                <Dropdown.Item eventKey="for-delegator" onClick={() => { history.push("/wallet/staking/for-delegator") }} >For Delegator</Dropdown.Item>
                                 <Dropdown.Item eventKey="byte-code-deployment" onClick={() => { history.push("/wallet/smc/byte-code-deployment") }} >Deploy Contract</Dropdown.Item>
                                 <Dropdown.Item eventKey="interaction" onClick={() => { history.push("/wallet/smc/interaction") }} >Interact With Contract</Dropdown.Item>
                                 <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
