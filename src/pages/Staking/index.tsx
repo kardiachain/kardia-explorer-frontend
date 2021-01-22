@@ -222,7 +222,7 @@ const Validators = () => {
                 </FlexboxGrid.Item>
             </FlexboxGrid>
 
-            <StakingCalculator showModal={stakingCalculator} setShowModal={setStakingCalculator} validators={validators} />
+            <StakingCalculator showModal={stakingCalculator} setShowModal={setStakingCalculator} validators={validators} totalStakedAmount={totalStakedAmount} />
         </div>
     )
 }
