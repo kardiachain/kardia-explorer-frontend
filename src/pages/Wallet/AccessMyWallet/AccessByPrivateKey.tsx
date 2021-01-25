@@ -49,7 +49,7 @@ const AccessByPrivateKey = () => {
             setLoadingBtnSubmit(false)
         } catch (error) {
             setLoadingBtnSubmit(false)
-            Alert.error(`Access wallet Error: ${error.message}`);
+            Alert.error(`Access wallet failed. Something wrong! Please try again.`);
         }
     }
 

@@ -99,12 +99,12 @@ const Validators = () => {
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
-                    <Button size="big" className="kai-button-gray" style={{marginBottom: 10}} onClick={() => { setStakingCalculator(true) }}>
+                    <Button size={isMobile ? "normal" : "big"} className="kai-button-gray" style={{marginBottom: 10}} onClick={() => { setStakingCalculator(true) }}>
                         Staking Calculator
                     </Button>
                     {
                         !isVal ?
-                            <Button size="big" style={{marginBottom: 10}}
+                            <Button size={isMobile ? "normal" : "big"} style={{marginBottom: 10}}
                                 onClick={() => { isLoggedIn() ? history.push("/wallet/staking/for-validator") : history.push('/wallet') }}
                             >
                                 Register to become validator
