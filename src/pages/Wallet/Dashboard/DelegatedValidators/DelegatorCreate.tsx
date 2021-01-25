@@ -166,6 +166,9 @@ const DelegatorCreate = () => {
     }
 
     const confirmDelegate = async () => {
+        if (!validateGasLimit(gasLimit) || !validateGasPrice(gasPrice) || !validateDelAmount(delAmount)) {
+            return;
+        }
         try {
             setIsLoading(true)
             const valSmcAddr = validator?.smcAddress || '';

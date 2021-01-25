@@ -128,6 +128,9 @@ const SendTransaction = () => {
     }
 
     const confirmSend = async () => {
+        if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
+            return
+        }
         setSendBntLoading(true)
         try {
             const txHash = await generateTx(walletLocalState.account, toAddress, Number(amount), gasLimit, gasPrice)
@@ -157,8 +160,8 @@ const SendTransaction = () => {
             }
         }
 
-        resetFrom()
         setShowConfirmModal(false)
+        resetFrom()
         setSendBntLoading(false)
     }
 

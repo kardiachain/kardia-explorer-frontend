@@ -18,7 +18,7 @@ const Button = ({onClick, children, size = "normal", className, style, loading=f
     <button className={`kai-button ${sizeClass} ${className} ${loading ? 'loading' : ''} ${disable ? 'disable' : ''}`} style={style} onClick={onClick} disabled={disable}>
         {
             loading ? <Loader className="button-loading" size="sm"></Loader> : <></>
-        }{children}
+        } <span className="text">{children}</span>
     </button>
     )
 }
