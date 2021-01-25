@@ -61,9 +61,8 @@ const AccessByMnemonicPhrase = () => {
             setWalletStored(storedWallet, walletLocalState.password);
         } catch (error) {
             Alert.error("Access wallet failed. Something wrong! Please try again.")
-            return false
+            setLoadingBtnSubmit(false)
         }
-        setLoadingBtnSubmit(false)
     }
     return (
         <div className="show-grid access-mnemonic-container">
