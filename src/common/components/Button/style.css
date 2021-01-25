@@ -25,6 +25,11 @@
 .kai-button.loading {
     background: var(--pink-highlight) !important;
     color: transparent !important;
+    pointer-events: none;
+}
+
+.kai-button.loading > span.text {
+    visibility: hidden;
 }
 
 /* kai-button-pink style */
