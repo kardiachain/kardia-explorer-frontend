@@ -93,7 +93,7 @@ class App extends Component {
                   <Route path="/access-keystore">
                     <AccessByKeyStore />
                   </Route>
-                  <Route path="/access-mnemonic-pharse">
+                  <Route path="/access-mnemonic-phrase">
                     <AccessByMnemonicPhrase />
                   </Route>
                   <Route path="/wallet">
