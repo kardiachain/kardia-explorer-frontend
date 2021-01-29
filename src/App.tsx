@@ -32,6 +32,8 @@ import SearchNotFound from './pages/searchNotFound';
 import AccessByMnemonicPhrase from './pages/Wallet/AccessMyWallet/AccessByMnemonic';
 import AccountList from './pages/AccountList';
 import { RecoilRoot } from 'recoil';
+import Proposal from './pages/Proposal';
+import ProposalDetails from './pages/Proposal/ProposalDetails';
 
 class App extends Component {
   render() {
@@ -104,6 +106,12 @@ class App extends Component {
                   </Route>
                   <Route path="/search-not-found">
                     <SearchNotFound />
+                  </Route>
+                  <Route path="/proposals">
+                    <Proposal />
+                  </Route>
+                  <Route path="/proposal/:proposalId">
+                    <ProposalDetails />
                   </Route>
                   {/* <Route path="/documentation">
                   <Documentation />
