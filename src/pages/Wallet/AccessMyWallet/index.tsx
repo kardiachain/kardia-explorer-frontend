@@ -27,7 +27,7 @@ const AccessMyWallet = () => {
                             <Button size="lg" block onClick={() => { history.push('/access-keystore') }}>
                                 <Icon size={"lg"} icon="file-code-o" style={{ color: 'white' }} />Keystore File
                                 </Button>
-                            <Button size="lg" block onClick={() => { history.push('./access-mnemonic-pharse') }}>
+                            <Button size="lg" block onClick={() => { history.push('./access-mnemonic-phrase') }}>
                                 <Icon size={"lg"} icon="list" style={{ color: 'white' }} />Mnemonic Phrase
                                 </Button>
                         </div>

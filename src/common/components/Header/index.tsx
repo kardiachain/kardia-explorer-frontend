@@ -91,6 +91,11 @@ const Header = () => {
                                             setShowMenu(false)
                                         }}>Network</Nav.Item>
                                     {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
+                                    <Nav.Item eventKey="proposal" icon={<Icon className="gray-highlight" icon="data-increase" />}
+                                        onClick={() => {
+                                            history.push("/proposals")
+                                            setShowMenu(false)
+                                        }}>Proposal</Nav.Item>
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
                                         onClick={() => {
                                             history.push("/staking")
@@ -183,6 +188,7 @@ const Header = () => {
                         <Dropdown.Item eventKey="blockchain" style={{ display: "none" }}></Dropdown.Item>
                     </Dropdown>
                     <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item>
+                    <Nav.Item eventKey="proposal" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item>
                     {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                     <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
                     {

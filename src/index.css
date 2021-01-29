@@ -421,6 +421,11 @@ a:hover {
   background: #24BD71 !important;
 }
 
+.tab-pending {
+  color: #fcfcfc !important;
+  background: #c02892 !important;
+}
+
 .tab-failed {
   color: #fcfcfc98 !important;
   background: #050E1F !important;
