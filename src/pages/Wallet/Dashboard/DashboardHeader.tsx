@@ -70,7 +70,10 @@ const DashboardHeader = () => {
             <Row style={{ marginBottom: 12 }}>
                 <Col md={24} sm={24} xs={24}>
                     <Message type="warning" description={
-                        <p>Warning: <strong>DO NOT</strong> send KAI Token from <strong>ERC20 Wallet</strong> or <strong>Exchange</strong> to this Wallet. We're <strong>NOT</strong> responsible for any token lost.</p>
+                        <>
+                            <p>Only send or withdraw KAI Token from the Exchanges support <strong>native KAI Token</strong>.</p>
+                            <p><strong>DO NOT</strong> send or withdraw KAI Token from <strong>ERC20 Wallet</strong> to this Wallet. We're <strong>NOT</strong> responsible for any token lost.</p>
+                        </>
                     } />
                 </Col>
             </Row>
