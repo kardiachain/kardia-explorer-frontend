@@ -221,3 +221,51 @@ interface HolderAccount {
     role: ValidatorRole;
     isInValidatorsList: boolean;
 }
+
+interface NetworkParams {
+
+    // Staking params
+    baseProposerReward: number;
+    bonusProposerReward: number;
+    maxProposers: number;
+
+    // Validator params
+    downtimeJailDuration: number;
+    slashFractionDowntime: number;
+    unbondingTime: number;
+    slashFractionDoubleSign: number;
+    signedBlockWindow: number;
+    minSignedPerWindow: number;
+    minStake: number;
+    minValidatorStake: number;
+    minAmountChangeName: number;
+    // minSelfDelegation: number;
+
+    // Minter params
+    inflationRateChange: number;
+    goalBonded: any;
+    blocksPerYear: number;
+    inflationMax: number;
+    inflationMin: number;
+
+    // Proposal
+    deposit: number;
+    votingPeriod: any;
+
+}
+interface Proposal {
+    id: number;
+    nominator: string;
+    startTime: number;
+    endTime: number;
+    deposit: string;
+    status: number;
+    voteYes: number;
+    voteNo: number;
+    voteAbstain: number;
+    params: NetworkParams;
+}
+interface ProposalsResponse {
+    total: number;
+    proposal: Proposal[]
+}
