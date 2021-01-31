@@ -52,6 +52,11 @@
     background: var(--gray-button);
 }
 
+.kai-button.kai-button-gray.loading {
+    background: var(--gray-button) !important;
+}
+
+
 .kai-button-gray:hover{
     background: var(--gray-button-hover) !important;
 }

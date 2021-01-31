@@ -7,7 +7,10 @@ import { TABLE_CONFIG } from '../../config';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { dateToUTCString } from '../../common/utils/string';
 import { RenderStatus } from '.';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import Button from '../../common/components/Button';
+import { isLoggedIn } from '../../service/wallet';
+import { numberFormat } from '../../common/utils/number';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -18,6 +21,7 @@ const ListProposal = () => {
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalProposal, setTotalProposal] = useState(0)
+    const history = useHistory()
 
     useEffect(() => {
         (async () => {
@@ -77,24 +81,24 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} minWidth={70} verticalAlign="middle">
-                                    <HeaderCell>Vote Yes</HeaderCell>
+                                    <HeaderCell>Vote Yes (%)</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
                                                 <div>
-                                                    {rowData.voteYes}
+                                                    {numberFormat(rowData.voteYes, 2)}
                                                 </div>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} minWidth={70} verticalAlign="middle">
-                                    <HeaderCell>Vote No</HeaderCell>
+                                    <HeaderCell>Vote No (%)</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
                                                 <div>
-                                                    {rowData.voteNo}
+                                                    {numberFormat(rowData.voteNo, 2)}
                                                 </div>
                                             );
                                         }}
@@ -108,6 +112,21 @@ const ListProposal = () => {
                                                 <div>
                                                     <RenderStatus status={rowData?.status || 0} />
                                                 </div>
+                                            );
+                                        }}
+                                    </Cell>
+                                </Column>
+                                <Column width={120} verticalAlign="middle">
+                                    <HeaderCell></HeaderCell>
+                                    <Cell>
+                                        {(rowData: Proposal) => {
+                                            return (
+                                                <Button className="kai-button-gray"
+                                                    onClick={() => {
+                                                        isLoggedIn() ? history.push(`/wallet/proposal-vote/${rowData.id}`) : history.push('/wallet')
+                                                    }}>
+                                                    Vote
+                                                </Button>
                                             );
                                         }}
                                     </Cell>
