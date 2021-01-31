@@ -1,3 +1,4 @@
+import { weiToKAI } from "../../../common/utils/amount";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 
@@ -11,12 +12,12 @@ const getProposals = async (page: number, size: number): Promise<ProposalsRespon
             return {
                 id: o.id,
                 nominator: o.nominator,
-                startTime: o.startTime,
-                endTime: o.endTime,
+                startTime: o.startTime * 1000,
+                endTime: o.endTime * 1000,
                 deposit: o.deposit,
                 status: o.status,
-                voteYes: o.voteYes,
-                voteNo: o.voteNo,
+                voteYes: o.voteYes ? Number(weiToKAI(o.voteYes)) * 10000 : 0,
+                voteNo: o.voteNo ? Number(weiToKAI(o.voteNo)) * 10000 : 0,
                 voteAbstain: o.voteAbstain,
                 params: o.params
             }
@@ -35,12 +36,12 @@ const getProposalDetails = async (id: number): Promise<Proposal> => {
     return {
         id: data.id,
         nominator: data.nominator,
-        startTime: data.startTime,
-        endTime: data.endTime,
+        startTime: data.startTime * 1000,
+        endTime: data.endTime * 1000,
         deposit: data.deposit,
         status: data.status,
-        voteYes: data.voteYes,
-        voteNo: data.voteNo,
+        voteYes: data.voteYes ? Number(weiToKAI(data.voteYes)) * 10000 : 0,
+        voteNo: data.voteNo ? Number(weiToKAI(data.voteNo)) * 10000 : 0,
         voteAbstain: data.voteAbstain,
         params: data.params
     } as Proposal;

@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Col, FlexboxGrid, Tag } from 'rsuite'
 import Button from '../../common/components/Button';
 import { useViewport } from '../../context/ViewportContext';
-import CreateNewProposal from './CreateNewProposal';
 import ListProposal from './ListProposal';
+import { useHistory } from 'react-router-dom';
+import { isLoggedIn } from '../../service/wallet';
 
 const Proposal = () => {
     const { isMobile } = useViewport();
-    const [showCreateProposal, setShowCreateProposal] = useState(false);
+    const history = useHistory()
 
     return (
         <div className="container proposal-container">
@@ -20,10 +21,8 @@ const Proposal = () => {
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
-                    {/* <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }}
-                        onClick={() => setShowCreateProposal(true)}>Create Proposal
-                    </Button> */}
-                    <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }} disable={true}>Create Proposal (Coming Soon)
+                    <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }}
+                        onClick={() => { isLoggedIn() ? history.push("/wallet/proposal-create") : history.push('/wallet') }}>Create Proposal
                     </Button>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
@@ -33,8 +32,6 @@ const Proposal = () => {
                     <ListProposal />
                 </FlexboxGrid.Item>
             </FlexboxGrid>
-
-            <CreateNewProposal showModal={showCreateProposal} setShowModal={setShowCreateProposal} />
         </div>
     )
 }

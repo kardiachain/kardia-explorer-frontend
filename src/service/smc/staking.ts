@@ -1,4 +1,3 @@
-import { gasLimitDefault } from '../../common/constant';
 import { cellValue } from '../../common/utils/amount';
 import { STAKING_SMC_ADDRESS } from '../../config/api';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
@@ -6,50 +5,12 @@ import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../../resources/smc-compile/validator-abi.json';
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
+import { invokeSendAction } from '.';
 
 const stakingContract = kardiaContract(kardiaProvider, "", STAKING_ABI);
 const validatorContract = kardiaContract(kardiaProvider, "", VALIDATOR_ABI);
 
-const invokeCallData = async (
-    contractInstance: any,
-    contractAddr: string,
-    methodName: string,
-    params: any[]
-) => {
-    const invoke = await contractInstance.invoke({
-        params: params,
-        name: methodName
-    })
 
-    return await invoke.call(contractAddr, {}, "latest")
-}
-
-const invokeSendAction = async (
-    contractInstance: any,
-    contractAddr: string,
-    methodName: string,
-    params: any[],
-    account: Account,
-    amountVal: number = 0,
-    gasLimit = gasLimitDefault,
-    gasPrice = 2
-) => {
-    if (!account.publickey) {
-        return;
-    }
-    const invoke = await contractInstance.invoke({
-        params: params,
-        name: methodName,
-    });
-    const invokeResult = await invoke.send(account.privatekey, contractAddr, {
-        from: account.publickey,
-        amount: amountVal,
-        gas: gasLimit,
-        gasPrice: gasPrice ? gasPrice * 10**9 : 10**9
-    });
-
-    return invokeResult;
-}
 
 const delegateAction = async (valSmcAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
     try {
@@ -165,8 +126,6 @@ const stopValidator = async (valSmcAddr: string, account: Account) => {
 }
 
 export {
-    invokeCallData,
-    invokeSendAction,
     delegateAction,
     createValidator,
     withdrawReward,
