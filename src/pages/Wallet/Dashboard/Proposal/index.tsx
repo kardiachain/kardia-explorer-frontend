@@ -187,7 +187,7 @@ const CreateProposal = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Form fluid>
                                     <FormGroup>
-                                        <div className="proposal-note">You must pay 500,000 KAI to create proposal.</div>
+                                        <div className="proposal-note">You must lock 500,000 KAI to create proposal.</div>
                                         <FlexboxGrid>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24} style={{ marginBottom: 15 }}>
                                                 <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
