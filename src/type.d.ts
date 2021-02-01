@@ -239,7 +239,7 @@ interface NetworkParams {
     minStake: number;
     minValidatorStake: number;
     minAmountChangeName: number;
-    // minSelfDelegation: number;
+    minSelfDelegation: number;
 
     // Minter params
     inflationRateChange: number;
@@ -263,7 +263,7 @@ interface Proposal {
     voteYes: number;
     voteNo: number;
     voteAbstain: number;
-    params: NetworkParams;
+    params: NetworkParams[];
 }
 interface ProposalsResponse {
     total: number;

@@ -41,5 +41,6 @@ export const InforMessage = {
     WithdrawStakedAmountConfirm :'Are you sure you want to withdraw your staked token',
     ConfirmStartingValidator: 'Are you sure you want to starting to become validator',
     WithdrawCommissionRewardsConfirm: 'Are you sure you want to withdraw all your commission reward tokens',
-    StartValidatorCondition : '* Your staked amount must be at least 12.5M KAI to become a validator.'
+    StartValidatorCondition : '* Your staked amount must be at least 12.5M KAI to become a validator.',
+    CreateProposalCondition : '* Your staked amount must be at least 500K KAI to create proposal.'
 }

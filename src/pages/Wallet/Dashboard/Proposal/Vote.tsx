@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, List, Panel, Placeholder } from 'rsuite';
+import { Col, FlexboxGrid, Icon, List, Modal, Panel, Placeholder, Progress } from 'rsuite';
 import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
-import { getProposalDetails } from '../../../../service/kai-explorer';
+import { getCurrentNetworkParams, getProposalDetails, parseLabelNameByKey } from '../../../../service/kai-explorer';
 import { RenderStatus } from '../../../Proposal';
 import ButtomCustom from '../../../../common/components/Button';
 import { voting } from '../../../../service/smc/proposal';
@@ -10,29 +10,36 @@ import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { NotifiMessage } from '../../../../common/constant/Message';
-import { numberFormat } from '../../../../common/utils/number';
-import ReactJson from 'react-json-view';
+import { convertProposalValue } from '../../../../service/kai-explorer/proposal';
+import Button from '../../../../common/components/Button';
+import { proposalVotingByEW } from '../../../../service/extensionWallet';
+import { isExtensionWallet } from '../../../../service/wallet';
 
 const { Paragraph } = Placeholder;
+const { Line } = Progress;
 
 const Vote = () => {
 
     const [loading, setLoading] = useState(true)
     const { proposalId }: any = useParams();
-    const [proposal, setProposal] = useState<Proposal>();
+    const [proposal, setProposal] = useState<Proposal>({} as Proposal);
     const [voteYesLoading, setVoteYesLoading] = useState(false);
-    const [voteNoLoading, setVoteNoLoading] = useState(false);
+    // const [voteNoLoading, setVoteNoLoading] = useState(false);
+    const [currentNetworkParams, setCurrentNetworkParams] = useState<NetworkParams>({} as NetworkParams)
+    const [showModelConfirm, setShowModelConfirm] = useState(false)
     
     const walletLocalState = useRecoilValue(walletState)
 
     useEffect(() => {
         (async () => {
             setLoading(true)
-            const _proposal = await getProposalDetails(proposalId);
-            if (_proposal) {
-                setProposal(_proposal)
-                setLoading(false)
-            }
+            const rs = await Promise.all([
+                getProposalDetails(proposalId),
+                getCurrentNetworkParams()
+            ])
+            setProposal(rs[0])
+            setCurrentNetworkParams(rs[1])
+            setLoading(false)
         })()
     }, [proposalId])
 
@@ -46,26 +53,30 @@ const Vote = () => {
     }
 
     const vote = async (option: number) => {
-        if (option === 1) {
-            setVoteYesLoading(true)
-        } else {
-            setVoteNoLoading(true)
-        }
+        setShowModelConfirm(true)
+    }
+
+    const confirmVote = async () => {
+        setVoteYesLoading(true)
         try {
-            const rs = await voting(walletLocalState.account, Number(proposalId), option)
-            if (rs && rs.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${rs.transactionHash}`) },
-                    seeTxdetail: true
-                });
-                fetchData();
+            if (isExtensionWallet()) {
+                await proposalVotingByEW(Number(proposalId), 1)
             } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${rs.transactionHash}`) },
-                    seeTxdetail: true
-                });
+                const rs = await voting(walletLocalState.account, Number(proposalId), 1)
+                if (rs && rs.status === 1) {
+                    NotificationSuccess({
+                        description: NotifiMessage.TransactionSuccess,
+                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                    fetchData();
+                } else {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError,
+                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                }
             }
         } catch (error) {
             try {
@@ -79,12 +90,8 @@ const Vote = () => {
                 });
             }
         }
-        if (option === 1) {
-            setVoteYesLoading(false)
-        } else {
-            setVoteNoLoading(false)
-        }
-
+        setVoteYesLoading(false)
+        setShowModelConfirm(false)
     }
 
     return (
@@ -157,14 +164,17 @@ const Vote = () => {
                                             <div className="property-title">Current Vote</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <ButtonToolbar>
+                                            {/* <ButtonToolbar>
                                                 <Button color="blue" style={{ marginRight: 10 }}>
                                                     <Icon icon="thumbs-up" /> Yes {numberFormat(proposal?.voteYes, 2)} %
                                                 </Button>
                                                 <Button color="red" >
                                                     <Icon icon="thumbs-down" /> No {numberFormat(proposal?.voteNo, 2)} %
                                                 </Button>
-                                            </ButtonToolbar>
+                                            </ButtonToolbar> */}
+                                            <div className="property-content" style={{width: 200}}>
+                                                <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
+                                            </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
@@ -174,12 +184,48 @@ const Vote = () => {
                                             <div className="property-title">Proposal</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <ReactJson
-                                                style={{
-                                                    fontSize: 12,
-                                                    color: 'white'
-                                                }}
-                                                name={false} src={ proposal?.params || {} } theme="ocean" />
+                                                <div className="property-content">
+                                                {
+                                                    proposal.params ?
+                                                        Object.keys(proposal.params).map(function (key: string, index: number) {
+                                                            return (
+                                                                <div key={index} style={{
+                                                                    marginBottom: 10
+                                                                }}>
+                                                                    <span style={{
+                                                                        marginRight: 10,
+                                                                        display: 'inline-block',
+                                                                        width: 200
+                                                                    }}>{parseLabelNameByKey(key)}</span>
+                                                                    <span style={{
+                                                                        marginRight: 10,
+                                                                        minWidth: 100,
+                                                                        textAlign: 'center'
+                                                                    }}>
+                                                                        {
+                                                                            key in currentNetworkParams ? (currentNetworkParams as any)[key] : ''
+                                                                        }
+                                                                    </span>
+                                                                    <Icon className="cyan-highlight" style={{
+                                                                        marginRight: 10
+                                                                    }} icon="long-arrow-right" />
+                                                                    <span
+                                                                        style={{
+                                                                            minWidth: 100,
+                                                                            textAlign: 'center',
+                                                                            fontWeight: 600,
+                                                                            color: 'aqua'
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            key in proposal.params ? convertProposalValue(key, (proposal.params as any)[key]) : ''
+                                                                        }
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        }) : <></>
+                                                }
+                                            </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
@@ -189,14 +235,36 @@ const Vote = () => {
                                     <ButtomCustom size="big" loading={voteYesLoading} style={{ minWidth: 200, marginLeft: 0}} onClick={() => {vote(1)}}>
                                         <Icon icon="thumbs-up" /> Vote Yes
                                     </ButtomCustom>
-                                    <ButtomCustom size="big" loading={voteNoLoading} style={{ minWidth: 200 }} onClick={() => {vote(2)}} className="kai-button-gray">
+                                    {/* <ButtomCustom size="big" loading={voteNoLoading} style={{ minWidth: 200 }} onClick={() => {vote(2)}} className="kai-button-gray">
                                         <Icon icon="thumbs-down" /> Vote No
-                                    </ButtomCustom>
+                                    </ButtomCustom> */}
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
                         </>
                 }
             </Panel>
+            {/* Modal confirm when create proposal */}
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showModelConfirm} onHide={() => { setShowModelConfirm(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Confirm vote</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>
+                        Are you sure you want to vote for this proposal
+                    </div>
+                    {/* <div className="confirm-letter" style={{ textAlign: 'center', color: '#FF8585' }}>
+                        You must pay 500,000 KAI to create proposal.
+                    </div> */}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button className="kai-button-gray" onClick={() => { setShowModelConfirm(false) }}>
+                        Cancel
+                    </Button>
+                    <Button loading={voteYesLoading} onClick={confirmVote}>
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

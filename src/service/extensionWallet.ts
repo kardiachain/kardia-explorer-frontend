@@ -4,9 +4,10 @@ import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../resources/smc-compile/validator-abi.json';
 import { cellValue } from '../common/utils/amount';
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
-import { STAKING_SMC_ADDRESS } from '../config/api';
+import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS } from '../config/api';
 import { gasLimitDefault } from '../common/constant';
 import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
+import PROPOSAL_ABI from '../resources/smc-compile/proposal-abi.json';
 
 declare global {
     interface Window {
@@ -299,6 +300,33 @@ const unjailValidatorByEW = async (smcAddr: string) => {
     }
 }
 
+const createProposalByEW = async (paramsKey: any[], paramsValue: any[]) => {
+    try {
+        await invokeSMCByEW({
+            abi: PROPOSAL_ABI,
+            smcAddr: PROPOSAL_SMC_ADDRESS,
+            methodName: 'addProposal',
+            params: [paramsKey, paramsValue],
+            amount: 500000
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
+const proposalVotingByEW = async (proposalId: number, voteOption: number) => {
+    try {
+        await invokeSMCByEW({
+            abi: PROPOSAL_ABI,
+            smcAddr: PROPOSAL_SMC_ADDRESS,
+            methodName: 'addVote',
+            params: [proposalId, voteOption]
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
 export {
     kardiaExtensionWalletEnabled,
     generateTxForEW,
@@ -314,5 +342,7 @@ export {
     undelegateAllByEW,
     unjailValidatorByEW,
     deploySMCByEW,
-    invokeSMCByEW
+    invokeSMCByEW,
+    createProposalByEW,
+    proposalVotingByEW
 }
