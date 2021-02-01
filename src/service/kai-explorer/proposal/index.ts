@@ -1,9 +1,10 @@
 import { weiToKAI } from "../../../common/utils/amount";
+import { proposalItems } from "../../../pages/Wallet/Dashboard/Proposal/type";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 
 const getProposals = async (page: number, size: number): Promise<ProposalsResponse> => {
-    const response = await fetch(`${END_POINT}proposal?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}proposal?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     return {
@@ -29,7 +30,7 @@ const getProposalDetails = async (id: number): Promise<Proposal> => {
     const response = await fetch(`${END_POINT}proposal/${id}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const data = responseJSON?.data || {};
-    if(!data) {
+    if (!data) {
         return {} as Proposal
     }
 
@@ -52,36 +53,101 @@ const getCurrentNetworkParams = async (): Promise<NetworkParams> => {
     const responseJSON = await response.json()
     const data = responseJSON?.data || {};
 
-    if(!data) {
+    if (!data) {
         return {} as NetworkParams
     }
 
     return {
-        baseProposerReward: data.baseProposerReward,
-        bonusProposerReward: data.bonusProposerReward,
-        maxProposers: data.maxProposers,
-        downtimeJailDuration: data.downtimeJailDuration,
-        slashFractionDowntime: data.slashFractionDowntime,
-        unbondingTime: data.unbondingTime,
-        slashFractionDoubleSign: data.slashFractionDoubleSign,
-        signedBlockWindow: data.signedBlockWindow,
-        minSignedPerWindow: data.minSignedPerWindow,
-        minStake: data.minStake,
-        minValidatorStake: data.minValidatorStake,
-        minAmountChangeName: data.minAmountChangeName,
-        inflationRateChange: data.inflationRateChange,
-        goalBonded: data.goalBonded,
-        blocksPerYear: data.blocksPerYear,
-        inflationMax: data.inflationMax,
-        inflationMin: data.inflationMin,
-        deposit: data.Deposit,
-        votingPeriod: data.VotingPeriod
+        baseProposerReward: convertProposalValue('baseProposerReward', data.baseProposerReward),
+        bonusProposerReward: convertProposalValue('bonusProposerReward', data.bonusProposerReward),
+        maxProposers: convertProposalValue('maxProposers', data.maxProposers),
+        downtimeJailDuration: convertProposalValue('downtimeJailDuration', data.downtimeJailDuration),
+        slashFractionDowntime: convertProposalValue('slashFractionDowntime', data.slashFractionDowntime),
+        unbondingTime: convertProposalValue('unbondingTime', data.unbondingTime),
+        slashFractionDoubleSign: convertProposalValue('slashFractionDoubleSign', data.slashFractionDoubleSign),
+        signedBlockWindow: convertProposalValue('signedBlockWindow', data.signedBlockWindow),
+        minSignedPerWindow: convertProposalValue('minSignedPerWindow', data.minSignedPerWindow),
+        minStake: convertProposalValue('minStake', data.minStake),
+        minValidatorStake: convertProposalValue('minValidatorStake', data.minValidatorStake),
+        minAmountChangeName: convertProposalValue('minAmountChangeName', data.minAmountChangeName),
+        minSelfDelegation: convertProposalValue('minSelfDelegation', data.minSelfDelegation),
+        inflationRateChange: convertProposalValue('inflationRateChange', data.inflationRateChange),
+        goalBonded: convertProposalValue('goalBonded', data.goalBonded),
+        blocksPerYear: convertProposalValue('blocksPerYear', data.blocksPerYear),
+        inflationMax: convertProposalValue('inflationMax', data.inflationMax),
+        inflationMin: convertProposalValue('inflationMin', data.inflationMin),
+        deposit: convertProposalValue('Deposit', data.Deposit),
+        votingPeriod: convertProposalValue('VotingPeriod', data.VotingPeriod)
     } as NetworkParams
+}
 
+const parseLabelNameByKey = (key: string): string => {
+    switch (key) {
+        case 'baseProposerReward':
+            return 'Base Proposer Reward'
+        case 'bonusProposerReward':
+            return 'Bonus Proposer Reward'
+        case 'maxProposers':
+            return 'Max Proposers'
+        case 'downtimeJailDuration':
+            return 'Downtime Jail Duration'
+        case 'slashFractionDowntime':
+            return 'Slash Fraction Downtime'
+        case 'unbondingTime':
+            return 'Unboding Time'
+        case 'slashFractionDoubleSign':
+            return 'Slash Fraction Double Sign'
+        case 'signedBlockWindow':
+            return 'Signed Block Window'
+        case 'minSignedPerWindow':
+            return 'Min Signed Per Window'
+        case 'minStake':
+            return 'Min Stake'
+        case 'minValidatorStake':
+            return 'Min Validator Stake'
+        case 'minAmountChangeName':
+            return 'Min Amount Change Name'
+        case 'minSelfDelegation':
+            return 'Min Self Deleagation'
+        case 'inflationRateChange':
+            return 'Inflation Rate Change'
+        case 'goalBonded':
+            return 'Goal Bonded'
+        case 'blocksPerYear':
+            return 'Block Per Year'
+        case 'inflationMax':
+            return 'Inflation Max'
+        case 'inflationMin':
+            return 'Inflation Min'
+        case 'Deposit':
+            return 'Deposit'
+        case 'VotingPeriod':
+            return 'Voting Period'
+        default:
+            return '';
+    }
+}
+
+const convertProposalValue = (key: string, value: any) => {
+
+    const _items = proposalItems.filter((item) => item.value.name === key)[0];
+    const _type = _items && (_items as any).value ? (_items as any).value.type : ''
+    switch (_type) {
+        case 'decimal':
+            return weiToKAI(value)
+        case 'percent':
+            return weiToKAI(value) * 100
+        case 'time':
+            return value
+        default:
+            return value
+    }
 }
 
 export {
     getProposals,
     getProposalDetails,
-    getCurrentNetworkParams
+    getCurrentNetworkParams,
+    parseLabelNameByKey,
+    convertProposalValue
 }

@@ -1,33 +1,36 @@
 import React, { useState } from 'react'
-import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
-import { useViewport } from '../../context/ViewportContext';
+import { Col, FlexboxGrid, Panel, Table, Icon, Progress } from 'rsuite';
 import { useEffect } from 'react';
-import { getProposals } from '../../service/kai-explorer';
+import { getCurrentNetworkParams, getProposals, parseLabelNameByKey } from '../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../config';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { dateToUTCString } from '../../common/utils/string';
 import { RenderStatus } from '.';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../common/components/Button';
 import { isLoggedIn } from '../../service/wallet';
-import { numberFormat } from '../../common/utils/number';
+import { convertProposalValue } from '../../service/kai-explorer/proposal';
 
 const { Column, HeaderCell, Cell } = Table;
+const { Line } = Progress;
 
 const ListProposal = () => {
 
-    const { isMobile } = useViewport();
     const [proposals, setProposals] = useState([] as Proposal[])
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalProposal, setTotalProposal] = useState(0)
     const history = useHistory()
+    const [currentNetworkParams, setCurrentNetworkParams] = useState<NetworkParams>({} as NetworkParams)
 
     useEffect(() => {
         (async () => {
-            const rs = await getProposals(page, size)
-            setProposals(rs.proposal)
-            setTotalProposal(rs.total)
+            const rs = await Promise.all([
+                getProposals(page, size),
+                getCurrentNetworkParams()
+            ])
+            setProposals(rs[0].proposal)
+            setTotalProposal(rs[0].total)
+            setCurrentNetworkParams(rs[1])
         })()
     }, [page, size])
 
@@ -39,7 +42,6 @@ const ListProposal = () => {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                             <Table
                                 autoHeight
-                                rowHeight={() => 80}
                                 data={proposals}
                                 hover={false}
                                 wordWrap
@@ -56,49 +58,67 @@ const ListProposal = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell>Start time</HeaderCell>
+                                <Column flexGrow={2} minWidth={400} verticalAlign="middle">
+                                    <HeaderCell>Proposal</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
-                                                <div>
-                                                    {dateToUTCString(rowData?.startTime) || ''}
-                                                </div>
+                                                <>
+
+                                                    {
+                                                        rowData.params ?
+                                                            Object.keys(rowData.params).map(function (key: string, index: number) {
+                                                                return (
+                                                                    <div key={index} style={{
+                                                                        marginBottom: 10
+                                                                    }}>
+
+                                                                        <span style={{
+                                                                            marginRight: 10,
+                                                                            display: 'inline-block',
+                                                                            width: 200
+                                                                        }}>{parseLabelNameByKey(key)}</span>
+                                                                        <span style={{
+                                                                            marginRight: 10,
+                                                                            minWidth: 100,
+                                                                            textAlign: 'center'
+                                                                        }}>
+                                                                            {
+                                                                                key in currentNetworkParams ? (currentNetworkParams as any)[key] : ''
+                                                                            }
+                                                                        </span>
+                                                                        <Icon className="cyan-highlight" style={{
+                                                                            marginRight: 10
+                                                                        }} icon="long-arrow-right" />
+                                                                        <span
+                                                                            style={{
+                                                                                minWidth: 100,
+                                                                                textAlign: 'center',
+                                                                                display: 'inline-block',
+                                                                                fontWeight: 600,
+                                                                                color: 'aqua'
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                key in rowData.params ? convertProposalValue(key, (rowData.params as any)[key]) : ''
+                                                                            }
+                                                                        </span>
+                                                                    </div>
+                                                                )
+                                                            }) : <></>
+                                                    }
+                                                </>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                    <HeaderCell>End time</HeaderCell>
+                                <Column flexGrow={1} minWidth={200} verticalAlign="middle">
+                                    <HeaderCell>Vote Power</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
                                                 <div>
-                                                    {dateToUTCString(rowData?.endTime) || ''}
-                                                </div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                                <Column flexGrow={1} minWidth={70} verticalAlign="middle">
-                                    <HeaderCell>Vote Yes (%)</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Proposal) => {
-                                            return (
-                                                <div>
-                                                    {numberFormat(rowData.voteYes, 2)}
-                                                </div>
-                                            );
-                                        }}
-                                    </Cell>
-                                </Column>
-                                <Column flexGrow={1} minWidth={70} verticalAlign="middle">
-                                    <HeaderCell>Vote No (%)</HeaderCell>
-                                    <Cell>
-                                        {(rowData: Proposal) => {
-                                            return (
-                                                <div>
-                                                    {numberFormat(rowData.voteNo, 2)}
+                                                    <Line percent={Number(parseFloat(String(rowData.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                                 </div>
                                             );
                                         }}
