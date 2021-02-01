@@ -64,7 +64,7 @@ body {
   font-family: 'Work Sans', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--white-color);
+  /* color: var(--white-color); */
 
 }
 
