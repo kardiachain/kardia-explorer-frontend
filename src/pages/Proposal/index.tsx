@@ -1,13 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, FlexboxGrid, Tag } from 'rsuite'
 import Button from '../../common/components/Button';
 import { useViewport } from '../../context/ViewportContext';
-import CreateNewProposal from './CreateNewProposal';
 import ListProposal from './ListProposal';
+import { useHistory } from 'react-router-dom';
+import { isLoggedIn } from '../../service/wallet';
+import CurrentNetwork from './CurrentNetwork';
+import { getCurrentNetworkParams } from '../../service/kai-explorer';
 
 const Proposal = () => {
     const { isMobile } = useViewport();
-    const [showCreateProposal, setShowCreateProposal] = useState(false);
+    const history = useHistory()
+    const [showCurrentNetwork, setShowCurrentNetwork] = useState(false)
+    const [currentNetworkParams, setCurrentNetworkParams] = useState<NetworkParams>({} as NetworkParams)
+
+    useEffect(() => {
+        (async () => {
+            const rs = await getCurrentNetworkParams()
+            setCurrentNetworkParams(rs)
+        })()
+    }, [])
 
     return (
         <div className="container proposal-container">
@@ -20,21 +32,28 @@ const Proposal = () => {
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
-                    {/* <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }}
-                        onClick={() => setShowCreateProposal(true)}>Create Proposal
-                    </Button> */}
-                    <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }} disable={true}>Create Proposal (Coming Soon)
+                    <Button
+                        size={isMobile ? "normal" : "big"}
+                        className="kai-button-gray"
+                        style={{ marginBottom: 10 }}
+                        onClick={() => { setShowCurrentNetwork(true) }}>
+                        Network Profile
+                    </Button>
+                    <Button
+                        size={isMobile ? "normal" : "big"}
+                        style={{ marginBottom: 10 }}
+                        onClick={() => { isLoggedIn() ? history.push("/wallet/proposal-create") : history.push('/wallet') }}>
+                        Create Proposal
                     </Button>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
 
             <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={24} style={{ marginBottom: isMobile ? '15px' : '0' }}>
-                    <ListProposal />
+                    <ListProposal/>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
-
-            <CreateNewProposal showModal={showCreateProposal} setShowModal={setShowCreateProposal} />
+            <CurrentNetwork showModal={showCurrentNetwork} setShowModal={setShowCurrentNetwork} currentNetworkParams={currentNetworkParams} />
         </div>
     )
 }
@@ -42,7 +61,7 @@ const Proposal = () => {
 export default Proposal
 
 
-export const RenderStatus = ({status} : {
+export const RenderStatus = ({ status }: {
     status: number
 }) => {
 

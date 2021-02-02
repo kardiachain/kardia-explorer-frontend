@@ -17,6 +17,8 @@ import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import ConfirmPassword from '../ConfirmPassword';
 import { isExtensionWallet, useWalletStorage } from '../../../service/wallet';
+import CreateProposal from './Proposal';
+import Vote from './Proposal/Vote';
 
 const DashboardWallet = () => {
 
@@ -116,6 +118,8 @@ const DashboardWallet = () => {
                     {/* <AuthRouter component={DeployWithSourceCode} path="/wallet/smc/source-code-deployment" /> */}
                     <AuthRouter component={DeployWithByteCode} path="/wallet/smc/byte-code-deployment" />
                     <AuthRouter component={InteracteWithSmc} path="/wallet/smc/interaction" />
+                    <AuthRouter component={CreateProposal} path="/wallet/proposal-create" />
+                    <Route component={Vote} path="/wallet/proposal-vote/:proposalId" />
                     <Route path="/wallet">
                         <Redirect to="/wallet/dashboard" />
                     </Route>

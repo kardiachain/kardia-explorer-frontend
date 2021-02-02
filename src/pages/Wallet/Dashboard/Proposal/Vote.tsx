@@ -1,38 +1,100 @@
-import React, { useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom';
-import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, List, Panel, Placeholder, Progress } from 'rsuite';
-import { RenderStatus } from '.';
-import { dateToUTCString, renderHashString } from '../../common/utils/string';
-import { getProposalDetails } from '../../service/kai-explorer';
-import ButtomCustom from '../../common/components/Button';
-import { isLoggedIn } from '../../service/wallet';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, List, Modal, Panel, Placeholder, Progress } from 'rsuite';
+import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
+import { getProposalDetails } from '../../../../service/kai-explorer';
+import { RenderStatus } from '../../../Proposal';
+import ButtomCustom from '../../../../common/components/Button';
+import { voting } from '../../../../service/smc/proposal';
+import { useRecoilValue } from 'recoil';
+import walletState from '../../../../atom/wallet.atom';
+import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import { NotifiMessage } from '../../../../common/constant/Message';
+import { proposalVotingByEW } from '../../../../service/extensionWallet';
+import { isExtensionWallet } from '../../../../service/wallet';
 
 const { Paragraph } = Placeholder;
 const { Line } = Progress;
 
-const ProposalDetails = () => {
+const Vote = () => {
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true)
     const { proposalId }: any = useParams();
     const [proposal, setProposal] = useState<Proposal>({} as Proposal);
-    const history = useHistory();
+    const [showModelConfirm, setShowModelConfirm] = useState(false)
+    const [voteOption, setVoteOption] = useState(1)
+    const [submitLoading, setSubmitLoading] = useState(false)
+    
+    const walletLocalState = useRecoilValue(walletState)
 
     useEffect(() => {
         (async () => {
             setLoading(true)
             const rs = await Promise.all([
-                getProposalDetails(proposalId),
-            ]);
+                getProposalDetails(proposalId)
+            ])
             setProposal(rs[0])
             setLoading(false)
         })()
     }, [proposalId])
 
+    const fetchData = async () => {
+        setLoading(true)
+        const _proposal = await getProposalDetails(proposalId);
+        if (_proposal) {
+            setProposal(_proposal)
+            setLoading(false)
+        }
+    }
+
+    const vote = async (option: number) => {
+        setVoteOption(option)
+        setShowModelConfirm(true)
+    }
+
+    const confirmVote = async () => {
+        setSubmitLoading(true)
+        try {
+            if (isExtensionWallet()) {
+                await proposalVotingByEW(Number(proposalId), voteOption)
+            } else {
+                const rs = await voting(walletLocalState.account, Number(proposalId), voteOption)
+                if (rs && rs.status === 1) {
+                    NotificationSuccess({
+                        description: NotifiMessage.TransactionSuccess,
+                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                    fetchData();
+                } else {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError,
+                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
+                        seeTxdetail: true
+                    });
+                }
+            }
+        } catch (error) {
+            try {
+                const errJson = JSON.parse(error?.message);
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                });
+            } catch (error) {
+                NotificationError({
+                    description: NotifiMessage.TransactionError
+                });
+            }
+        }
+        setSubmitLoading(false)
+        setShowModelConfirm(false)
+    }
+
     return (
-        <div className="container proposal-detail-container">
+        <div>
             <div style={{ marginBottom: 16 }}>
                 <div className="title header-title">
-                    Proposal Details
+                    Proposal Voting
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -112,10 +174,10 @@ const ProposalDetails = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Vote Power</div>
+                                            <div className="property-title">Power Vote</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content" style={{ width: 200 }}>
+                                            <div className="property-content" style={{width: 200}}>
                                                 <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                             </div>
                                         </FlexboxGrid.Item>
@@ -127,10 +189,10 @@ const ProposalDetails = () => {
                                             <div className="property-title">Proposal</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">
+                                                <div className="property-content">
                                                 {
                                                     proposal.params ?
-                                                        proposal.params.map((item: ProposalParams, index: number) => {
+                                                    proposal.params.map((item: ProposalParams, index: number) => {
                                                             return (
                                                                 <div key={index} style={{
                                                                     marginBottom: 10
@@ -165,21 +227,40 @@ const ProposalDetails = () => {
                                     </FlexboxGrid>
                                 </List.Item>
                             </List>
-                            {
-                                proposal.status === 0 ? (
-                                    <ButtomCustom
-                                        size="big"
-                                        style={{ marginTop: '30px' }}
-                                        onClick={() => { isLoggedIn() ? history.push(`/wallet/proposal-vote/${proposal?.id}`) : history.push('/wallet') }}>
-                                        Go to vote
+                            <FlexboxGrid style={{marginTop: 30}}>
+                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
+                                    <ButtomCustom size="big" style={{ minWidth: 200, marginLeft: 0}} onClick={() => {vote(1)}}>
+                                        <Icon icon="thumbs-up" /> Vote Yes
                                     </ButtomCustom>
-                                ) : <></>
-                            }
+                                    <ButtomCustom size="big" style={{ minWidth: 200 }} onClick={() => {vote(2)}} className="kai-button-gray">
+                                        <Icon icon="thumbs-down" /> Vote No
+                                    </ButtomCustom>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
                         </>
                 }
             </Panel>
+            {/* Modal confirm when create proposal */}
+            <Modal backdrop="static" size="sm" enforceFocus={true} show={showModelConfirm} onHide={() => { setShowModelConfirm(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Confirm vote</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>
+                        Are you sure you want to vote for this proposal
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <ButtomCustom className="kai-button-gray" onClick={() => { setShowModelConfirm(false) }}>
+                        Cancel
+                    </ButtomCustom>
+                    <ButtomCustom loading={submitLoading} onClick={confirmVote}>
+                        Confirm
+                    </ButtomCustom>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
 
-export default ProposalDetails;
+export default Vote;

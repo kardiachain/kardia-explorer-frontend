@@ -1,3 +1,4 @@
+import { gasLimitDefault } from '../../common/constant';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 
 const deploySmartContract = async (object: SMCDeployObject) => {
@@ -40,7 +41,50 @@ const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
     }
 }
 
+const invokeCallData = async (
+    contractInstance: any,
+    contractAddr: string,
+    methodName: string,
+    params: any[]
+) => {
+    const invoke = await contractInstance.invoke({
+        params: params,
+        name: methodName
+    })
+
+    return await invoke.call(contractAddr, {}, "latest")
+}
+
+const invokeSendAction = async (
+    contractInstance: any,
+    contractAddr: string,
+    methodName: string,
+    params: any[],
+    account: Account,
+    amountVal: number = 0,
+    gasLimit = gasLimitDefault,
+    gasPrice = 2
+) => {
+    if (!account.publickey) {
+        return;
+    }
+    const invoke = await contractInstance.invoke({
+        params: params,
+        name: methodName,
+    });
+    const invokeResult = await invoke.send(account.privatekey, contractAddr, {
+        from: account.publickey,
+        amount: amountVal,
+        gas: gasLimit,
+        gasPrice: gasPrice ? gasPrice * 10**9 : 10**9
+    });
+
+    return invokeResult;
+}
+
 export {
     deploySmartContract,
-    invokeFunctionFromContractAbi
+    invokeFunctionFromContractAbi,
+    invokeCallData,
+    invokeSendAction,
 }

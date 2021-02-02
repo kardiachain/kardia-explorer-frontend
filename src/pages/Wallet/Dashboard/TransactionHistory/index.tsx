@@ -67,7 +67,7 @@ const TransactionHistory = () => {
                                                 return (
                                                     <div>
                                                         <span className="container-icon-left">
-                                                            <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                            <Icon icon={!rowData.isSmcInteraction ? "exchange" : "file-text-o"} className="gray-highlight" />
                                                         </span>
                                                         <span className="container-content-right">
                                                             {
@@ -137,7 +137,7 @@ const TransactionHistory = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            !rowData.toSmcAddr ? (
+                                                            !rowData.isSmcInteraction || !rowData.toName ? (
                                                                 <>
                                                                     {renderHashToRedirect({
                                                                         hash: rowData.to,
@@ -149,8 +149,8 @@ const TransactionHistory = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                            <Link className="color-white" to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
+                                                                            <Link className="color-white" to={`/address/${rowData.to}`}>{rowData.toName}</Link>
                                                                         </Whisper>
                                                                         {
                                                                             rowData.isInValidatorsList ? (

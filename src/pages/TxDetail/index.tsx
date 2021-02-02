@@ -111,7 +111,7 @@ const TxDetail = () => {
         setDecodeErr('')
         try {
             let abiJson = null;
-            if (txDetail && txDetail.toSmcAddr && txDetail.toSmcAddr === STAKING_SMC_ADDRESS) {
+            if (txDetail && txDetail.to && txDetail.to === STAKING_SMC_ADDRESS) {
                 abiJson = STAKING_ABI
             } else {
                 abiJson = JSON.parse(abi)
@@ -247,7 +247,7 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         {
-                                            !txDetail?.toSmcAddr ? (
+                                            !txDetail?.isSmcInteraction || !txDetail?.toName ? (
                                                 <div className="property-content">{renderHashToRedirect({
                                                     hash: txDetail?.to,
                                                     headCount: 50,
@@ -262,13 +262,13 @@ const TxDetail = () => {
                                                             <Icon icon="file-text-o" className="gray-highlight"/>
                                                         </span>
                                                         {renderHashToRedirect({
-                                                            hash: txDetail?.toSmcAddr,
+                                                            hash: txDetail?.to,
                                                             headCount: 50,
                                                             tailCount: 4,
                                                             showTooltip: false,
-                                                            redirectTo: `/address/${txDetail?.toSmcAddr}`,
+                                                            redirectTo: `/address/${txDetail?.to}`,
                                                             showCopy: false
-                                                        })} {txDetail.toSmcName}
+                                                        })} {txDetail.toName}
                                                         {
                                                             txDetail.isInValidatorsList ? (
                                                                 <StakingIcon
@@ -279,9 +279,9 @@ const TxDetail = () => {
                                                         }
                                                         {
                                                             renderCopyButton({
-                                                                str: txDetail?.toSmcAddr,
+                                                                str: txDetail?.to,
                                                                 size: "xs",
-                                                                callback: () => copyToClipboard(txDetail?.toSmcAddr || '', onSuccess)
+                                                                callback: () => copyToClipboard(txDetail?.to || '', onSuccess)
                                                             })
                                                         }
                                                     </div>

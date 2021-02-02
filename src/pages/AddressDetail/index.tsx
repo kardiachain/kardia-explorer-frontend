@@ -139,7 +139,7 @@ const AddressDetail = () => {
                                                 return (
                                                     <div>
                                                         <span className="container-icon-left">
-                                                            <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                            <Icon icon={!rowData.isSmcInteraction ? "exchange" : "file-text-o"} className="gray-highlight" />
                                                         </span>
                                                         <span className="container-content-right">
                                                             {
@@ -211,7 +211,7 @@ const AddressDetail = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            !rowData.toSmcAddr ? (
+                                                            !rowData.isSmcInteraction || !rowData.toName ? (
                                                                 <>
                                                                     {
                                                                         address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
@@ -224,8 +224,10 @@ const AddressDetail = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr || '0x'}</Tooltip>}>
-                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>{rowData.toSmcName}</Link>
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to || '0x'}</Tooltip>}>
+                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.to}`}>
+                                                                                {rowData.toName}
+                                                                            </Link>
                                                                         </Whisper>
                                                                         {
                                                                             rowData.isInValidatorsList ? (

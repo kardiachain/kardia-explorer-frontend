@@ -94,7 +94,7 @@ const TxList = () => {
                                                 return (
                                                     <div>
                                                         <span className="container-icon-left">
-                                                            <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                            <Icon icon={ !rowData.isSmcInteraction ? "exchange" : "file-text-o"} className="gray-highlight" />
                                                         </span>
                                                         <span className="container-content-right">
                                                             {
@@ -131,13 +131,31 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.from,
-                                                            headCount: isMobile ? 5 : 10,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            redirectTo: `/address/${rowData.from}`
-                                                        })}
+                                                        {
+                                                            !rowData.fromName ? (
+                                                                <>
+                                                                { renderHashToRedirect({
+                                                                    hash: rowData.from,
+                                                                    headCount: isMobile ? 5 : 10,
+                                                                    tailCount: 4,
+                                                                    showTooltip: true,
+                                                                    redirectTo: `/address/${rowData.from}`
+                                                                })}
+                                                                </>
+                                                            ) : (
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.from}</Tooltip>}>
+                                                                    <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.from}`}>
+                                                                        {
+                                                                            renderStringAndTooltip({
+                                                                                str: rowData.fromName,
+                                                                                headCount: isMobile ? 12 : 20,
+                                                                                showTooltip: false
+                                                                            })
+                                                                        }
+                                                                    </Link>
+                                                                </Whisper>
+                                                            )
+                                                        }
                                                     </div>
                                                 );
                                             }}
@@ -150,7 +168,7 @@ const TxList = () => {
                                                 return (
                                                     <div>
                                                         {
-                                                            !rowData.toSmcAddr ? (
+                                                            !rowData.isSmcInteraction || !rowData.toName ? (
                                                                 <>
                                                                     {renderHashToRedirect({
                                                                         hash: rowData.to,
@@ -162,11 +180,11 @@ const TxList = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.toSmcAddr}`}>
+                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
+                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.to}`}>
                                                                                 {
                                                                                     renderStringAndTooltip({
-                                                                                        str: rowData.toSmcName,
+                                                                                        str: rowData.toName,
                                                                                         headCount: isMobile ? 12 : 20,
                                                                                         showTooltip: false
                                                                                     })

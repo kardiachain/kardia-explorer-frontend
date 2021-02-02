@@ -1,5 +1,4 @@
 import { numberFormat } from "../../../common/utils/number";
-import { STAKING_SMC_ADDRESS } from "../../../config/api";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 import { checkValidatorRole } from "..";
@@ -18,12 +17,11 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
-            const toSmcAddress = defineToSmcAddress(o.to, o.contractAddress, o.decodedInputData);
-            
+            const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
             return {
                 txHash: o.hash,
                 from:  o.from,
-                to:  o.to,
+                to: !isContractCreation ? o.to : o.contractAddress,
                 value: o.value,
                 time: o.time,
                 blockNumber: o.blockNumber,
@@ -39,11 +37,13 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 gasLimit: o.gas,
                 input:  o.input,
                 logs:  o.logs,
-                toSmcName:  o.toName ? o.toName : toSmcAddress.toSmcName,
-                toSmcAddr: toSmcAddress.toSmcAddr,
                 txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
                 role: checkValidatorRole(o.role),
-                isInValidatorsList: o.isInValidatorsList
+                isInValidatorsList: o.isInValidatorsList,
+                toName: o.toName ? o.toName : (isContractCreation ? 'Contract Creation' : ''),
+                fromName: o.fromName ? o.fromName : '',
+                isSmcInteraction: o.input && o.input !== '0x',
+                isContractCreation: isContractCreation,
             }
         })
     }
@@ -59,11 +59,11 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
-            const toSmcAddress = defineToSmcAddress(o.to, o.contractAddress, o.decodedInputData)
+            const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
             return {
                 txHash: o.hash,
                 from:  o.from,
-                to:  o.to,
+                to: !isContractCreation ? o.to : o.contractAddress,
                 value: o.value,
                 time: o.time,
                 blockNumber: o.blockNumber,
@@ -79,11 +79,13 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 gasLimit: o.gas,
                 input:  o.input,
                 logs:  o.logs,
-                toSmcName:  o.toName ? o.toName : toSmcAddress.toSmcName,
-                toSmcAddr: toSmcAddress.toSmcAddr,
                 txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
                 role: checkValidatorRole(o.role),
-                isInValidatorsList: o.isInValidatorsList
+                isInValidatorsList: o.isInValidatorsList,
+                toName: o.toName ? o.toName : (isContractCreation ? 'Contract Creation' : ''),
+                fromName: o.fromName ? o.fromName : '',
+                isSmcInteraction: o.input && o.input !== '0x',
+                isContractCreation: isContractCreation,
             }
         })
     }
@@ -99,12 +101,12 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     }
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(tx.time)).getTime()
-    const toSmcAddress = defineToSmcAddress(tx.to, tx.contractAddress, tx.decodedInputData)
     const gasUsedPercent = numberFormat(tx.gasUsed / tx.gas * 100, 3);
+    const isContractCreation = tx.contractAddress && tx.contractAddress !== '0x';
     return {
         txHash:tx.hash,
         from: tx.from,
-        to: tx.to,
+        to: !isContractCreation ? tx.to : tx.contractAddress,
         value:tx.value,
         time:tx.time,
         blockNumber:tx.blockNumber,
@@ -121,13 +123,15 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         gasLimit: tx.gas,
         input: tx.input,
         logs: tx.logs,
-        toSmcName: tx.toName ? tx.toName : toSmcAddress.toSmcName,
-        toSmcAddr: toSmcAddress.toSmcAddr,
         gasUsedPercent: gasUsedPercent,
         txFee: tx.txFee ? tx.txFee : (tx.gasUsed * tx.gasPrice * 10**9),
         decodedInputData: tx.decodedInputData,
         role: checkValidatorRole(tx.role),
-        isInValidatorsList: tx.isInValidatorsList
+        isInValidatorsList: tx.isInValidatorsList,
+        toName: tx.toName ? tx.toName :  (isContractCreation ? 'Contract Creation' : ''),
+        fromName: tx.fromName ? tx.fromName : '',
+        isSmcInteraction: tx.input && tx.input !== '0x',
+        isContractCreation: isContractCreation,
     }
 }
 
@@ -142,11 +146,11 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
-            const toSmcAddress = defineToSmcAddress(o.to, o.contractAddress, o.decodedInputData)
+            const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
             return {
                 txHash: o.hash,
                 from:  o.from,
-                to:  o.to,
+                to: !isContractCreation ? o.to : o.contractAddress,
                 value: o.value,
                 time: o.time,
                 blockNumber: o.blockNumber,
@@ -162,11 +166,13 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                 gasLimit: o.gas,
                 input:  o.input,
                 logs:  o.logs,
-                toSmcName: o.toName ? o.toName : toSmcAddress.toSmcName,
-                toSmcAddr: toSmcAddress.toSmcAddr,
                 txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice * 10**9),
                 role: checkValidatorRole(o.role),
-                isInValidatorsList: o.isInValidatorsList
+                isInValidatorsList: o.isInValidatorsList,
+                toName: o.toName ? o.toName : (isContractCreation ? 'Contract Creation' : ''),
+                fromName: o.fromName ? o.fromName : '',
+                isSmcInteraction: o.input && o.input !== '0x',
+                isContractCreation: isContractCreation,
             }
         })
     }
@@ -177,32 +183,4 @@ const defineFailedReason = (status: boolean, gasUsed: number, gasLimit: number):
         return 'Transacsion error: Out of gas.'
     }
     return '';
-}
-
-
-const defineToSmcAddress = (toAddress: string, smcAddr: string, decodedInputData: any): ToSmcAddress => {
-    if (toAddress?.toLocaleLowerCase() === STAKING_SMC_ADDRESS?.toLocaleLowerCase()) {
-        return {
-            toSmcAddr: toAddress,
-            toSmcName: "Staking Master Contract"
-        }
-    }
-
-    if (decodedInputData && toAddress?.toLocaleLowerCase() !== STAKING_SMC_ADDRESS?.toLocaleLowerCase()) {
-        return {
-            toSmcAddr: toAddress,
-            toSmcName: "Validator Contract"
-        }
-    }
-
-    if(toAddress?.toLocaleLowerCase() === "0x") {
-        return {
-            toSmcAddr: smcAddr,
-            toSmcName: "Contract Creation"
-        }
-    }
-    return {
-        toSmcAddr: "",
-        toSmcName: ""
-    }
 }

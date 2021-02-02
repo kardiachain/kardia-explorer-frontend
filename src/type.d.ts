@@ -18,13 +18,15 @@ interface KAITransaction {
     input: string;
     logs: string;
     gasUsed: number;
-    toSmcName: string;
-    toSmcAddr: string;
     gasUsedPercent: any;
     txFee: number;
     decodedInputData?: any;
     role: ValidatorRole;
     isInValidatorsList: boolean;
+    toName: string;
+    fromName: string;
+    isSmcInteraction: boolean;
+    isContractCreation: boolean;
 }
 
 interface KAIBlock {
@@ -239,7 +241,7 @@ interface NetworkParams {
     minStake: number;
     minValidatorStake: number;
     minAmountChangeName: number;
-    // minSelfDelegation: number;
+    minSelfDelegation: number;
 
     // Minter params
     inflationRateChange: number;
@@ -263,8 +265,18 @@ interface Proposal {
     voteYes: number;
     voteNo: number;
     voteAbstain: number;
-    params: NetworkParams;
+    params: ProposalParams[];
+    numberOfVoteYes: number;
+    numberOfVoteNo: number;
+    numberOfVoteAbstain: number;
 }
+
+interface ProposalParams {
+    labelName: string;
+    fromValue: any;
+    toValue: any;
+}
+
 interface ProposalsResponse {
     total: number;
     proposal: Proposal[]
