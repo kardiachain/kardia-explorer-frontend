@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import { Col, FlexboxGrid, Panel, Table, Icon, Progress } from 'rsuite';
+import { Col, FlexboxGrid, Panel, Table, Icon, Progress, ButtonToolbar, Button } from 'rsuite';
 import { useEffect } from 'react';
 import { getCurrentNetworkParams, getProposals } from '../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../config';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { RenderStatus } from '.';
 import { Link, useHistory } from 'react-router-dom';
-import Button from '../../common/components/Button';
+import CustomButton from '../../common/components/Button';
 import { isLoggedIn } from '../../service/wallet';
+import { millisecondToDay } from '../../common/utils/string';
 
 const { Column, HeaderCell, Cell } = Table;
 const { Line } = Progress;
@@ -50,6 +51,18 @@ const ListProposal = () => {
                                             return (
                                                 <div className="text-link">
                                                     <Link className="text-bold" to={`/proposal/${rowData.id}`} >#{rowData.id}</Link>
+                                                </div>
+                                            );
+                                        }}
+                                    </Cell>
+                                </Column>
+                                <Column width={110} verticalAlign="middle">
+                                    <HeaderCell>Deadline</HeaderCell>
+                                    <Cell>
+                                        {(rowData: Proposal) => {
+                                            return (
+                                                <div>
+                                                    in {millisecondToDay(rowData.expriedTime)}
                                                 </div>
                                             );
                                         }}
@@ -106,12 +119,31 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} minWidth={200} verticalAlign="middle">
-                                    <HeaderCell>Vote Power</HeaderCell>
+                                    <HeaderCell>Validator Votes</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
                                                 <div>
                                                     <Line percent={Number(parseFloat(String(rowData.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
+                                                </div>
+                                            );
+                                        }}
+                                    </Cell>
+                                </Column>
+                                <Column flexGrow={1} minWidth={250} verticalAlign="middle">
+                                    <HeaderCell>Community Votes</HeaderCell>
+                                    <Cell>
+                                        {(rowData: Proposal) => {
+                                            return (
+                                                <div>
+                                                <ButtonToolbar>
+                                                    <Button color="blue" style={{ marginRight: 10 }}>
+                                                        <Icon icon="thumbs-up" /> Yes {rowData?.numberOfVoteYes}
+                                                    </Button>
+                                                    <Button color="red" >
+                                                        <Icon icon="thumbs-down" /> No {rowData?.numberOfVoteNo}
+                                                    </Button>
+                                                </ButtonToolbar>
                                                 </div>
                                             );
                                         }}
@@ -139,10 +171,10 @@ const ListProposal = () => {
                                                     {
                                                         rowData?.status === 0 ?
                                                             (
-                                                                <Button className="kai-button-gray"
+                                                                <CustomButton className="kai-button-gray"
                                                                     onClick={() => {
                                                                         isLoggedIn() ? history.push(`/wallet/proposal-vote/${rowData.id}`) : history.push('/wallet')
-                                                                    }}>Vote</Button>
+                                                                    }}>Vote</CustomButton>
                                                             ) : <></>
 
                                                     }

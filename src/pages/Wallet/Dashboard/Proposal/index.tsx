@@ -288,9 +288,6 @@ const CreateProposal = () => {
                     <div className="confirm-letter" style={{ textAlign: 'center' }}>
                         Are you sure you want to create proposal
                     </div>
-                    {/* <div className="confirm-letter" style={{ textAlign: 'center', color: '#FF8585' }}>
-                        You must pay 500,000 KAI to create proposal.
-                    </div> */}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={() => { setShowModelConfirm(false) }}>
