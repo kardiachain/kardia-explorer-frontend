@@ -61,15 +61,15 @@ const ListProposal = () => {
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
-                                                <div>
-                                                    in {millisecondToDay(rowData.expriedTime)}
-                                                </div>
+                                                <>
+                                                    {millisecondToDay(rowData.expriedTime)}
+                                                </>
                                             );
                                         }}
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={2} minWidth={500} verticalAlign="middle">
-                                    <HeaderCell>Proposal</HeaderCell>
+                                    <HeaderCell>Params</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -79,10 +79,7 @@ const ListProposal = () => {
                                                         rowData.params ?
                                                         rowData.params.map((item: ProposalParams, index: number) => {
                                                                 return (
-                                                                    <div key={index} style={{
-                                                                        marginBottom: 10
-                                                                    }}>
-
+                                                                    <div key={index}>
                                                                         <span style={{
                                                                             marginRight: 10,
                                                                             display: 'inline-block',
