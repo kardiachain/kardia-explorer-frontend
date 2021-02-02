@@ -263,8 +263,18 @@ interface Proposal {
     voteYes: number;
     voteNo: number;
     voteAbstain: number;
-    params: NetworkParams[];
+    params: ProposalParams[];
+    numberOfVoteYes: number;
+    numberOfVoteNo: number;
+    numberOfVoteAbstain: number;
 }
+
+interface ProposalParams {
+    labelName: string;
+    fromValue: any;
+    toValue: any;
+}
+
 interface ProposalsResponse {
     total: number;
     proposal: Proposal[]

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Modal, Panel, Placeholder, Progress } from 'rsuite';
+import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, List, Modal, Panel, Placeholder, Progress } from 'rsuite';
 import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
-import { getCurrentNetworkParams, getProposalDetails, parseLabelNameByKey } from '../../../../service/kai-explorer';
+import { getProposalDetails } from '../../../../service/kai-explorer';
 import { RenderStatus } from '../../../Proposal';
 import ButtomCustom from '../../../../common/components/Button';
 import { voting } from '../../../../service/smc/proposal';
@@ -10,8 +10,6 @@ import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
 import { NotifiMessage } from '../../../../common/constant/Message';
-import { convertProposalValue } from '../../../../service/kai-explorer/proposal';
-import Button from '../../../../common/components/Button';
 import { proposalVotingByEW } from '../../../../service/extensionWallet';
 import { isExtensionWallet } from '../../../../service/wallet';
 
@@ -23,10 +21,9 @@ const Vote = () => {
     const [loading, setLoading] = useState(true)
     const { proposalId }: any = useParams();
     const [proposal, setProposal] = useState<Proposal>({} as Proposal);
-    const [voteYesLoading, setVoteYesLoading] = useState(false);
-    // const [voteNoLoading, setVoteNoLoading] = useState(false);
-    const [currentNetworkParams, setCurrentNetworkParams] = useState<NetworkParams>({} as NetworkParams)
     const [showModelConfirm, setShowModelConfirm] = useState(false)
+    const [voteOption, setVoteOption] = useState(1)
+    const [submitLoading, setSubmitLoading] = useState(false)
     
     const walletLocalState = useRecoilValue(walletState)
 
@@ -34,11 +31,9 @@ const Vote = () => {
         (async () => {
             setLoading(true)
             const rs = await Promise.all([
-                getProposalDetails(proposalId),
-                getCurrentNetworkParams()
+                getProposalDetails(proposalId)
             ])
             setProposal(rs[0])
-            setCurrentNetworkParams(rs[1])
             setLoading(false)
         })()
     }, [proposalId])
@@ -53,16 +48,17 @@ const Vote = () => {
     }
 
     const vote = async (option: number) => {
+        setVoteOption(option)
         setShowModelConfirm(true)
     }
 
     const confirmVote = async () => {
-        setVoteYesLoading(true)
+        setSubmitLoading(true)
         try {
             if (isExtensionWallet()) {
-                await proposalVotingByEW(Number(proposalId), 1)
+                await proposalVotingByEW(Number(proposalId), voteOption)
             } else {
-                const rs = await voting(walletLocalState.account, Number(proposalId), 1)
+                const rs = await voting(walletLocalState.account, Number(proposalId), voteOption)
                 if (rs && rs.status === 1) {
                     NotificationSuccess({
                         description: NotifiMessage.TransactionSuccess,
@@ -90,7 +86,7 @@ const Vote = () => {
                 });
             }
         }
-        setVoteYesLoading(false)
+        setSubmitLoading(false)
         setShowModelConfirm(false)
     }
 
@@ -161,17 +157,26 @@ const Vote = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Current Vote</div>
+                                            <div className="property-title">Vote</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            {/* <ButtonToolbar>
+                                            <ButtonToolbar>
                                                 <Button color="blue" style={{ marginRight: 10 }}>
-                                                    <Icon icon="thumbs-up" /> Yes {numberFormat(proposal?.voteYes, 2)} %
+                                                    <Icon icon="thumbs-up" /> Yes {proposal?.numberOfVoteYes}
                                                 </Button>
                                                 <Button color="red" >
-                                                    <Icon icon="thumbs-down" /> No {numberFormat(proposal?.voteNo, 2)} %
+                                                    <Icon icon="thumbs-down" /> No {proposal?.numberOfVoteNo}
                                                 </Button>
-                                            </ButtonToolbar> */}
+                                            </ButtonToolbar>
+                                        </FlexboxGrid.Item>
+                                    </FlexboxGrid>
+                                </List.Item>
+                                <List.Item>
+                                    <FlexboxGrid justify="start" align="middle">
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                            <div className="property-title">Power Vote</div>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content" style={{width: 200}}>
                                                 <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                             </div>
@@ -187,7 +192,7 @@ const Vote = () => {
                                                 <div className="property-content">
                                                 {
                                                     proposal.params ?
-                                                        Object.keys(proposal.params).map(function (key: string, index: number) {
+                                                    proposal.params.map((item: ProposalParams, index: number) => {
                                                             return (
                                                                 <div key={index} style={{
                                                                     marginBottom: 10
@@ -196,16 +201,12 @@ const Vote = () => {
                                                                         marginRight: 10,
                                                                         display: 'inline-block',
                                                                         width: 200
-                                                                    }}>{parseLabelNameByKey(key)}</span>
+                                                                    }}>{item.labelName}</span>
                                                                     <span style={{
                                                                         marginRight: 10,
                                                                         minWidth: 100,
                                                                         textAlign: 'center'
-                                                                    }}>
-                                                                        {
-                                                                            key in currentNetworkParams ? (currentNetworkParams as any)[key] : ''
-                                                                        }
-                                                                    </span>
+                                                                    }}>{item.fromValue}</span>
                                                                     <Icon className="cyan-highlight" style={{
                                                                         marginRight: 10
                                                                     }} icon="long-arrow-right" />
@@ -216,11 +217,7 @@ const Vote = () => {
                                                                             fontWeight: 600,
                                                                             color: 'aqua'
                                                                         }}
-                                                                    >
-                                                                        {
-                                                                            key in proposal.params ? convertProposalValue(key, (proposal.params as any)[key]) : ''
-                                                                        }
-                                                                    </span>
+                                                                    >{item.toValue}</span>
                                                                 </div>
                                                             )
                                                         }) : <></>
@@ -232,12 +229,12 @@ const Vote = () => {
                             </List>
                             <FlexboxGrid style={{marginTop: 30}}>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                    <ButtomCustom size="big" loading={voteYesLoading} style={{ minWidth: 200, marginLeft: 0}} onClick={() => {vote(1)}}>
+                                    <ButtomCustom size="big" style={{ minWidth: 200, marginLeft: 0}} onClick={() => {vote(1)}}>
                                         <Icon icon="thumbs-up" /> Vote Yes
                                     </ButtomCustom>
-                                    {/* <ButtomCustom size="big" loading={voteNoLoading} style={{ minWidth: 200 }} onClick={() => {vote(2)}} className="kai-button-gray">
+                                    <ButtomCustom size="big" style={{ minWidth: 200 }} onClick={() => {vote(2)}} className="kai-button-gray">
                                         <Icon icon="thumbs-down" /> Vote No
-                                    </ButtomCustom> */}
+                                    </ButtomCustom>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
                         </>
@@ -252,17 +249,14 @@ const Vote = () => {
                     <div className="confirm-letter" style={{ textAlign: 'center' }}>
                         Are you sure you want to vote for this proposal
                     </div>
-                    {/* <div className="confirm-letter" style={{ textAlign: 'center', color: '#FF8585' }}>
-                        You must pay 500,000 KAI to create proposal.
-                    </div> */}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="kai-button-gray" onClick={() => { setShowModelConfirm(false) }}>
+                    <ButtomCustom className="kai-button-gray" onClick={() => { setShowModelConfirm(false) }}>
                         Cancel
-                    </Button>
-                    <Button loading={voteYesLoading} onClick={confirmVote}>
+                    </ButtomCustom>
+                    <ButtomCustom loading={submitLoading} onClick={confirmVote}>
                         Confirm
-                    </Button>
+                    </ButtomCustom>
                 </Modal.Footer>
             </Modal>
         </div>

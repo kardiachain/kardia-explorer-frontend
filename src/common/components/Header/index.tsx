@@ -188,7 +188,7 @@ const Header = () => {
                         <Dropdown.Item eventKey="blockchain" style={{ display: "none" }}></Dropdown.Item>
                     </Dropdown>
                     <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item>
-                    <Nav.Item eventKey="proposal" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item>
+                    <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item>
                     {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                     <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
                     {
