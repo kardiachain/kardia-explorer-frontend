@@ -18,13 +18,15 @@ interface KAITransaction {
     input: string;
     logs: string;
     gasUsed: number;
-    toSmcName: string;
-    toSmcAddr: string;
     gasUsedPercent: any;
     txFee: number;
     decodedInputData?: any;
     role: ValidatorRole;
     isInValidatorsList: boolean;
+    toName: string;
+    fromName: string;
+    isSmcInteraction: boolean;
+    isContractCreation: boolean;
 }
 
 interface KAIBlock {

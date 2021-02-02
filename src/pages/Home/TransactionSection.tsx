@@ -32,7 +32,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                     return (
                                         <div>
                                             <span className="container-icon-left">
-                                                <Icon icon={!rowData.toSmcAddr ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                <Icon icon={!rowData.isSmcInteraction ? "exchange" : "file-text-o"} className="gray-highlight" />
                                             </span>
                                             <span className="container-content-right" style={{ display: 'inline-block' }}>
                                                 {renderHashToRedirect({
@@ -66,7 +66,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                                 <div>
                                                     <span style={{ marginRight: 5, fontSize: 12 }}>To:</span>
                                                     {
-                                                        !rowData.toSmcAddr ? (
+                                                        !rowData.isSmcInteraction || !rowData.toName ? (
                                                             <span>
                                                                 {renderHashToRedirect({
                                                                     hash: rowData.to,
@@ -78,11 +78,11 @@ const TransactionSection = ({ transactionList = [] }: {
                                                             </span>
                                                         ) : (
                                                             <>
-                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.toSmcAddr}</Tooltip>}>
-                                                                    <Link className="color-white" style={{ fontSize: 14}} to={`/address/${rowData.toSmcAddr}`}>
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
+                                                                    <Link className="color-white" style={{ fontSize: 14}} to={`/address/${rowData.to}`}>
                                                                         {
                                                                             renderStringAndTooltip({
-                                                                                str: rowData.toSmcName,
+                                                                                str: rowData.toName,
                                                                                 headCount: 15,
                                                                                 showTooltip: false
                                                                             })
