@@ -119,7 +119,7 @@ const ProposalDetails = () => {
                                             <div className="property-title">Vote Power</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content" style={{width: 200}}>
+                                            <div className="property-content" style={{ width: 200 }}>
                                                 <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                             </div>
                                         </FlexboxGrid.Item>
@@ -177,11 +177,16 @@ const ProposalDetails = () => {
                                     </FlexboxGrid>
                                 </List.Item>
                             </List>
-                            <ButtomCustom size="big" style={{ marginTop: '30px' }}
-                                onClick={() => { isLoggedIn() ? history.push(`/wallet/proposal-vote/${proposal?.id}`) : history.push('/wallet') }}
-                            >
-                                Go to vote
-                        </ButtomCustom>
+                            {
+                                proposal.status === 0 ? (
+                                    <ButtomCustom
+                                        size="big"
+                                        style={{ marginTop: '30px' }}
+                                        onClick={() => { isLoggedIn() ? history.push(`/wallet/proposal-vote/${proposal?.id}`) : history.push('/wallet') }}>
+                                        Go to vote
+                                    </ButtomCustom>
+                                ) : <></>
+                            }
                         </>
                 }
             </Panel>

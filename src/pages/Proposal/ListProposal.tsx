@@ -13,14 +13,15 @@ import { convertProposalValue } from '../../service/kai-explorer/proposal';
 const { Column, HeaderCell, Cell } = Table;
 const { Line } = Progress;
 
-const ListProposal = () => {
+const ListProposal = ({ currentNetworkParams }: {
+    currentNetworkParams: NetworkParams
+}) => {
 
     const [proposals, setProposals] = useState([] as Proposal[])
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalProposal, setTotalProposal] = useState(0)
     const history = useHistory()
-    const [currentNetworkParams, setCurrentNetworkParams] = useState<NetworkParams>({} as NetworkParams)
 
     useEffect(() => {
         (async () => {
@@ -30,7 +31,6 @@ const ListProposal = () => {
             ])
             setProposals(rs[0].proposal)
             setTotalProposal(rs[0].total)
-            setCurrentNetworkParams(rs[1])
         })()
     }, [page, size])
 
@@ -58,7 +58,7 @@ const ListProposal = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} minWidth={400} verticalAlign="middle">
+                                <Column flexGrow={2} minWidth={500} verticalAlign="middle">
                                     <HeaderCell>Proposal</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
@@ -140,13 +140,20 @@ const ListProposal = () => {
                                     <HeaderCell></HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
+
                                             return (
-                                                <Button className="kai-button-gray"
-                                                    onClick={() => {
-                                                        isLoggedIn() ? history.push(`/wallet/proposal-vote/${rowData.id}`) : history.push('/wallet')
-                                                    }}>
-                                                    Vote
-                                                </Button>
+                                                <>
+                                                    {
+                                                        rowData?.status === 0 ?
+                                                            (
+                                                                <Button className="kai-button-gray"
+                                                                    onClick={() => {
+                                                                        isLoggedIn() ? history.push(`/wallet/proposal-vote/${rowData.id}`) : history.push('/wallet')
+                                                                    }}>Vote</Button>
+                                                            ) : <></>
+
+                                                    }
+                                                </>
                                             );
                                         }}
                                     </Cell>
