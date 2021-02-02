@@ -157,7 +157,7 @@ const Vote = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Vote</div>
+                                            <div className="property-title">Community Votes</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <ButtonToolbar>
@@ -174,7 +174,7 @@ const Vote = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Power Vote</div>
+                                            <div className="property-title">Validator Votes</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content" style={{width: 200}}>

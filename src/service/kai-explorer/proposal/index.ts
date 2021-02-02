@@ -29,7 +29,8 @@ const getProposals = async (page: number, size: number): Promise<ProposalsRespon
                 }) : [] as ProposalParams[],
                 numberOfVoteAbstain: o.numberOfVoteAbstain,
                 numberOfVoteYes: o.numberOfVoteYes,
-                numberOfVoteNo: o.numberOfVoteNo
+                numberOfVoteNo: o.numberOfVoteNo,
+                expriedTime: (o.endTime - o.startTime) * 1000
             }
         })
     }
