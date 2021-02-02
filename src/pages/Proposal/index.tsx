@@ -37,7 +37,7 @@ const Proposal = () => {
                         className="kai-button-gray"
                         style={{ marginBottom: 10 }}
                         onClick={() => { setShowCurrentNetwork(true) }}>
-                        Current Network
+                        Network Profile
                     </Button>
                     <Button
                         size={isMobile ? "normal" : "big"}
@@ -50,7 +50,7 @@ const Proposal = () => {
 
             <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={24} style={{ marginBottom: isMobile ? '15px' : '0' }}>
-                    <ListProposal currentNetworkParams={currentNetworkParams} />
+                    <ListProposal/>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <CurrentNetwork showModal={showCurrentNetwork} setShowModal={setShowCurrentNetwork} currentNetworkParams={currentNetworkParams} />

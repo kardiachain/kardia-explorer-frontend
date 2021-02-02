@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Panel, Placeholder, Progress } from 'rsuite';
+import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, List, Panel, Placeholder, Progress } from 'rsuite';
 import { RenderStatus } from '.';
 import { dateToUTCString, renderHashString } from '../../common/utils/string';
-import { getCurrentNetworkParams, getProposalDetails, parseLabelNameByKey } from '../../service/kai-explorer';
+import { getProposalDetails } from '../../service/kai-explorer';
 import ButtomCustom from '../../common/components/Button';
 import { isLoggedIn } from '../../service/wallet';
-import { convertProposalValue } from '../../service/kai-explorer/proposal';
 
 const { Paragraph } = Placeholder;
 const { Line } = Progress;
@@ -16,7 +15,6 @@ const ProposalDetails = () => {
     const [loading, setLoading] = useState(true);
     const { proposalId }: any = useParams();
     const [proposal, setProposal] = useState<Proposal>({} as Proposal);
-    const [currentNetworkParams, setCurrentNetworkParams] = useState<NetworkParams>({} as NetworkParams);
     const history = useHistory();
 
     useEffect(() => {
@@ -24,10 +22,8 @@ const ProposalDetails = () => {
             setLoading(true)
             const rs = await Promise.all([
                 getProposalDetails(proposalId),
-                getCurrentNetworkParams()
             ]);
             setProposal(rs[0])
-            setCurrentNetworkParams(rs[1])
             setLoading(false)
         })()
     }, [proposalId])
@@ -96,23 +92,23 @@ const ProposalDetails = () => {
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>
-                                {/* <List.Item>
+                                <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Current Vote</div>
+                                            <div className="property-title">Vote</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <ButtonToolbar>
                                                 <Button color="blue" style={{ marginRight: 10 }}>
-                                                    <Icon icon="thumbs-up" /> Yes {numberFormat(proposal?.voteYes, 2)} %
-                                            </Button>
+                                                    <Icon icon="thumbs-up" /> Yes {proposal?.numberOfVoteYes}
+                                                </Button>
                                                 <Button color="red" >
-                                                    <Icon icon="thumbs-down" /> No {numberFormat(proposal?.voteNo, 2)} %
-                                            </Button>
+                                                    <Icon icon="thumbs-down" /> No {proposal?.numberOfVoteNo}
+                                                </Button>
                                             </ButtonToolbar>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
-                                </List.Item> */}
+                                </List.Item>
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
@@ -134,7 +130,7 @@ const ProposalDetails = () => {
                                             <div className="property-content">
                                                 {
                                                     proposal.params ?
-                                                        Object.keys(proposal.params).map(function (key: string, index: number) {
+                                                        proposal.params.map((item: ProposalParams, index: number) => {
                                                             return (
                                                                 <div key={index} style={{
                                                                     marginBottom: 10
@@ -143,16 +139,12 @@ const ProposalDetails = () => {
                                                                         marginRight: 10,
                                                                         display: 'inline-block',
                                                                         width: 200
-                                                                    }}>{parseLabelNameByKey(key)}</span>
+                                                                    }}>{item.labelName}</span>
                                                                     <span style={{
                                                                         marginRight: 10,
                                                                         minWidth: 100,
                                                                         textAlign: 'center'
-                                                                    }}>
-                                                                        {
-                                                                            key in currentNetworkParams ? (currentNetworkParams as any)[key] : ''
-                                                                        }
-                                                                    </span>
+                                                                    }}>{item.fromValue}</span>
                                                                     <Icon className="cyan-highlight" style={{
                                                                         marginRight: 10
                                                                     }} icon="long-arrow-right" />
@@ -163,11 +155,7 @@ const ProposalDetails = () => {
                                                                             fontWeight: 600,
                                                                             color: 'aqua'
                                                                         }}
-                                                                    >
-                                                                        {
-                                                                            key in proposal.params ? convertProposalValue(key, (proposal.params as any)[key]) : ''
-                                                                        }
-                                                                    </span>
+                                                                    >{item.toValue}</span>
                                                                 </div>
                                                             )
                                                         }) : <></>

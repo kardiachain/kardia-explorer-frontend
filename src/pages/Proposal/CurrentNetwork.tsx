@@ -17,7 +17,7 @@ const CurrentNetwork = ({ showModal, setShowModal, currentNetworkParams }: {
                 setShowModal(false)
             }}>
             <Modal.Header>
-                <Modal.Title>Current network</Modal.Title>
+                <Modal.Title>Current Network Profile</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <List bordered={false}>

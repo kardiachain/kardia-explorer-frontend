@@ -1,21 +1,18 @@
 import React, { useState } from 'react'
 import { Col, FlexboxGrid, Panel, Table, Icon, Progress } from 'rsuite';
 import { useEffect } from 'react';
-import { getCurrentNetworkParams, getProposals, parseLabelNameByKey } from '../../service/kai-explorer';
+import { getCurrentNetworkParams, getProposals } from '../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../config';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { RenderStatus } from '.';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../common/components/Button';
 import { isLoggedIn } from '../../service/wallet';
-import { convertProposalValue } from '../../service/kai-explorer/proposal';
 
 const { Column, HeaderCell, Cell } = Table;
 const { Line } = Progress;
 
-const ListProposal = ({ currentNetworkParams }: {
-    currentNetworkParams: NetworkParams
-}) => {
+const ListProposal = () => {
 
     const [proposals, setProposals] = useState([] as Proposal[])
     const [page, setPage] = useState(TABLE_CONFIG.page)
@@ -67,7 +64,7 @@ const ListProposal = ({ currentNetworkParams }: {
 
                                                     {
                                                         rowData.params ?
-                                                            Object.keys(rowData.params).map(function (key: string, index: number) {
+                                                        rowData.params.map((item: ProposalParams, index: number) => {
                                                                 return (
                                                                     <div key={index} style={{
                                                                         marginBottom: 10
@@ -77,15 +74,13 @@ const ListProposal = ({ currentNetworkParams }: {
                                                                             marginRight: 10,
                                                                             display: 'inline-block',
                                                                             width: 200
-                                                                        }}>{parseLabelNameByKey(key)}</span>
+                                                                        }}>{item.labelName}</span>
                                                                         <span style={{
                                                                             marginRight: 10,
                                                                             minWidth: 100,
                                                                             textAlign: 'center'
                                                                         }}>
-                                                                            {
-                                                                                key in currentNetworkParams ? (currentNetworkParams as any)[key] : ''
-                                                                            }
+                                                                            { item.fromValue }
                                                                         </span>
                                                                         <Icon className="cyan-highlight" style={{
                                                                             marginRight: 10
@@ -99,9 +94,7 @@ const ListProposal = ({ currentNetworkParams }: {
                                                                                 color: 'aqua'
                                                                             }}
                                                                         >
-                                                                            {
-                                                                                key in rowData.params ? convertProposalValue(key, (rowData.params as any)[key]) : ''
-                                                                            }
+                                                                            { item.toValue }
                                                                         </span>
                                                                     </div>
                                                                 )

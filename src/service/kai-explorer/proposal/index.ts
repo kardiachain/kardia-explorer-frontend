@@ -20,7 +20,16 @@ const getProposals = async (page: number, size: number): Promise<ProposalsRespon
                 voteYes: o.voteYes ? Number(weiToKAI(o.voteYes)) * 10000 : 0,
                 voteNo: o.voteNo ? Number(weiToKAI(o.voteNo)) * 10000 : 0,
                 voteAbstain: o.voteAbstain,
-                params: o.params
+                params: o.params && o.params.length > 0 ? o.params.map((item: any) => {
+                    return {
+                        labelName: parseLabelNameByKey(item.labelName),
+                        fromValue: convertProposalValue(item.labelName, item.fromValue),
+                        toValue: convertProposalValue(item.labelName, item.toValue)
+                    } as ProposalParams
+                }) : [] as ProposalParams[],
+                numberOfVoteAbstain: o.numberOfVoteAbstain,
+                numberOfVoteYes: o.numberOfVoteYes,
+                numberOfVoteNo: o.numberOfVoteNo
             }
         })
     }
@@ -44,7 +53,16 @@ const getProposalDetails = async (id: number): Promise<Proposal> => {
         voteYes: data.voteYes ? Number(weiToKAI(data.voteYes)) * 10000 : 0,
         voteNo: data.voteNo ? Number(weiToKAI(data.voteNo)) * 10000 : 0,
         voteAbstain: data.voteAbstain,
-        params: data.params
+        params: data.params && data.params.length > 0 ? data.params.map((item: any) => {
+            return {
+                labelName: parseLabelNameByKey(item.labelName),
+                fromValue: convertProposalValue(item.labelName, item.fromValue),
+                toValue: convertProposalValue(item.labelName, item.toValue)
+            } as ProposalParams
+        }) : [] as ProposalParams[],
+        numberOfVoteAbstain: data.numberOfVoteAbstain,
+        numberOfVoteYes: data.numberOfVoteYes,
+        numberOfVoteNo: data.numberOfVoteNo
     } as Proposal;
 }
 
