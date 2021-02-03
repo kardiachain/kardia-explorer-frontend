@@ -68,7 +68,7 @@ const ListProposal = () => {
                                         }}
                                     </Cell>
                                 </Column>
-                                <Column flexGrow={2} minWidth={500} verticalAlign="middle">
+                                <Column flexGrow={2} minWidth={300} verticalAlign="middle">
                                     <HeaderCell>Params</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
@@ -83,11 +83,11 @@ const ListProposal = () => {
                                                                         <span style={{
                                                                             marginRight: 10,
                                                                             display: 'inline-block',
-                                                                            width: 200
+                                                                            width: 100
                                                                         }}>{item.labelName}</span>
                                                                         <span style={{
                                                                             marginRight: 10,
-                                                                            minWidth: 100,
+                                                                            minWidth: 50,
                                                                             textAlign: 'center'
                                                                         }}>
                                                                             { item.fromValue }
@@ -97,7 +97,7 @@ const ListProposal = () => {
                                                                         }} icon="long-arrow-right" />
                                                                         <span
                                                                             style={{
-                                                                                minWidth: 100,
+                                                                                minWidth: 50,
                                                                                 textAlign: 'center',
                                                                                 display: 'inline-block',
                                                                                 fontWeight: 600,
@@ -121,7 +121,7 @@ const ListProposal = () => {
                                         {(rowData: Proposal) => {
                                             return (
                                                 <div>
-                                                    <Line percent={Number(parseFloat(String(rowData.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
+                                                    <Line percent={Number(parseFloat(String(rowData.validatorVotes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                                 </div>
                                             );
                                         }}

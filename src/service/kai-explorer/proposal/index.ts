@@ -7,6 +7,7 @@ const getProposals = async (page: number, size: number): Promise<ProposalsRespon
     const response = await fetch(`${END_POINT}proposal?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
+    const nowTime = (new Date()).getTime();
     return {
         total: responseJSON?.data?.total || 0,
         proposal: rawTxs.map((o: any) => {
@@ -30,7 +31,8 @@ const getProposals = async (page: number, size: number): Promise<ProposalsRespon
                 numberOfVoteAbstain: o.numberOfVoteAbstain,
                 numberOfVoteYes: o.numberOfVoteYes,
                 numberOfVoteNo: o.numberOfVoteNo,
-                expriedTime: (o.endTime - o.startTime) * 1000
+                expriedTime: ((o.endTime * 1000) - nowTime),
+                validatorVotes: o.voteYes / (o.voteNo + o.voteYes + o.voteAbstain) * 100
             }
         })
     }
@@ -63,7 +65,8 @@ const getProposalDetails = async (id: number): Promise<Proposal> => {
         }) : [] as ProposalParams[],
         numberOfVoteAbstain: data.numberOfVoteAbstain,
         numberOfVoteYes: data.numberOfVoteYes,
-        numberOfVoteNo: data.numberOfVoteNo
+        numberOfVoteNo: data.numberOfVoteNo,
+        validatorVotes: data.voteYes / (data.voteNo + data.voteYes + data.voteAbstain) * 100
     } as Proposal;
 }
 

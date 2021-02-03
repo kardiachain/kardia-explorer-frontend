@@ -178,7 +178,7 @@ const Vote = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content" style={{width: 200}}>
-                                                <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
+                                                <Line percent={Number(parseFloat(String(proposal.validatorVotes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -200,11 +200,11 @@ const Vote = () => {
                                                                     <span style={{
                                                                         marginRight: 10,
                                                                         display: 'inline-block',
-                                                                        width: 200
+                                                                        width: 100
                                                                     }}>{item.labelName}</span>
                                                                     <span style={{
                                                                         marginRight: 10,
-                                                                        minWidth: 100,
+                                                                        minWidth: 50,
                                                                         textAlign: 'center'
                                                                     }}>{item.fromValue}</span>
                                                                     <Icon className="cyan-highlight" style={{
@@ -212,7 +212,7 @@ const Vote = () => {
                                                                     }} icon="long-arrow-right" />
                                                                     <span
                                                                         style={{
-                                                                            minWidth: 100,
+                                                                            minWidth: 50,
                                                                             textAlign: 'center',
                                                                             fontWeight: 600,
                                                                             color: 'aqua'
