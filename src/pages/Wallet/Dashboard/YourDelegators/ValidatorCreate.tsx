@@ -178,7 +178,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
         setMaxChangeRateErr('');
     }
 
-    const submitValidator = async  () => {
+    const submitValidator = async () => {
         if (!validateGasPrice(gasPrice) ||
             !validateValName(valName) ||
             !validateGasLimit(gasLimit) ||
@@ -347,7 +347,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={yourDelAmount}
-                            placeholder="Must be at least 25,000 KAI"
+                            placeholder="Must be at least 1,000 KAI"
                             className="input"
                             onChange={(event) => {
                                 setYourDelAmount(event.value);
@@ -429,7 +429,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                                     </div>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
-                        </List.Item>    
+                        </List.Item>
                     </List>
                 </Modal.Body>
                 <Modal.Footer>

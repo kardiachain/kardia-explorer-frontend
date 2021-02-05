@@ -54,7 +54,7 @@ const DelegatorCreate = () => {
 
     const [indicator, setIndicator] = useState({
         percentage: 0,
-        color: '#f04f43' 
+        color: '#f04f43'
     })
 
     useEffect(() => {
@@ -65,7 +65,7 @@ const DelegatorCreate = () => {
             setDelegators(val.delegators)
             setIndicator({
                 percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
-                color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43' 
+                color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43'
             })
             setTableLoading(false)
         })();
@@ -407,7 +407,7 @@ const DelegatorCreate = () => {
                                                 color: 'white'
                                             }}>
                                                 <Circle percent={indicator.percentage}
-                                                strokeColor={indicator.color} />
+                                                    strokeColor={indicator.color} />
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -450,7 +450,7 @@ const DelegatorCreate = () => {
                                                         <ControlLabel className="color-white">Delegation amount (required)</ControlLabel>
                                                         <NumberInputFormat
                                                             value={delAmount}
-                                                            placeholder="Must be at least 25,000 KAI"
+                                                            placeholder="Must be at least 1,000 KAI"
                                                             className="input"
                                                             onChange={(event) => {
                                                                 setDelAmount(event.value);
@@ -526,7 +526,7 @@ const DelegatorCreate = () => {
                     <Modal.Title>Confirmation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                        <div className="confirm-letter">{InforMessage.DelegationConfirm}</div>
+                    <div className="confirm-letter">{InforMessage.DelegationConfirm}</div>
                     <List>
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
