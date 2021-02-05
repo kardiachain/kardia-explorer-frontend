@@ -68,8 +68,7 @@ export const RenderStatus = ({ status }: {
     switch (status) {
         case 0:
             return (
-                // <Tag color="green" className="tab tab-pending">ON GOING</Tag>
-                <Tag color="green" className="tab tab-success">SUCCESS</Tag>
+                <Tag color="green" className="tab tab-pending">ON GOING</Tag>
             )
         case 1:
             return (
