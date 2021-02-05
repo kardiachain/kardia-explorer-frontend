@@ -270,6 +270,7 @@ interface Proposal {
     numberOfVoteNo: number;
     numberOfVoteAbstain: number;
     expriedTime: number;
+    validatorVotes: number;
 }
 
 interface ProposalParams {
