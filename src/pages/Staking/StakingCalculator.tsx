@@ -62,13 +62,13 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
             return false
         }
 
-        if (Number(amount) < 25000) {
-            setAmountErr("The minimun amount is 25,000")
+        if (Number(amount) < 1000) {
+            setAmountErr("The minimum amount is 1,000")
             return false
         }
 
         if (Number(amount) > 1000000000) {
-            setAmountErr("The maximun amount is 1,000,000,000")
+            setAmountErr("The maximum amount is 1,000,000,000")
             return false
         }
 
@@ -98,7 +98,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
             const netWorkStakedAmount = totalStakedAmount ? Number(weiToKAI(totalStakedAmount)) + Number(amount) : Number(weiToKAI(totalStakedAmount));
 
             const votingPower = validatorStakedAmount / netWorkStakedAmount;
-            
+
             // Calculate reward for all delegator of validator for each block
             const delegatorsReward = blockReward * (1 - commission) * votingPower;
 
@@ -168,7 +168,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                 <ControlLabel className="color-white">Enter your KAI amount (required)</ControlLabel>
                                 <NumberInputFormat
                                     value={amount}
-                                    placeholder="Minimum amount is 25,000"
+                                    placeholder="Minimum amount is 1,000"
                                     className="input"
                                     onChange={(event) => {
                                         setAmount(event.value);

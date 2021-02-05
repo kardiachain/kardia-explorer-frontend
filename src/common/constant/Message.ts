@@ -20,7 +20,7 @@ export const ErrorMessage = {
     MinSelfDelegationBelowMinimum: 'The minimum self delegation amount is 10M',
     ValueNotMoreThanStakedAmount: 'The value not be more than your staked amount.',
     StakedAmountNotEnough: 'Your stake amount not enough 12.5M KAI to start become validator.',
-    BelowMinimumDelegationAmount: 'The minimum delegation amount is 25K KAI',
+    BelowMinimumDelegationAmount: 'The minimum delegation amount is 1K KAI',
     CommissionMoreThanMaximunRateRangeChange: 'Change commission cannot be more than the maximum rate range.',
     PassWordNotLongEnough: 'Password not long enough',
     PassCodeNotLongEnough: 'Pass code not long enough',
@@ -38,9 +38,9 @@ export const InforMessage = {
     SendTxConfirm: 'Carefully verify your transaction before sending the transaction',
     CreateValidatorConfirm: 'Carefully verify your stats before confirm create a validator',
     ClaimRewardConfirm: 'Are you sure you want to withdraw all your rewarded token',
-    WithdrawStakedAmountConfirm :'Are you sure you want to withdraw your staked token',
+    WithdrawStakedAmountConfirm: 'Are you sure you want to withdraw your staked token',
     ConfirmStartingValidator: 'Are you sure you want to starting to become validator',
     WithdrawCommissionRewardsConfirm: 'Are you sure you want to withdraw all your commission reward tokens',
-    StartValidatorCondition : '* Your staked amount must be at least 12.5M KAI to become a validator.',
-    CreateProposalCondition : '* Your staked amount must be at least 500K KAI to create proposal.'
+    StartValidatorCondition: '* Your staked amount must be at least 12.5M KAI to become a validator.',
+    CreateProposalCondition: '* Your staked amount must be at least 500K KAI to create proposal.'
 }
