@@ -229,10 +229,10 @@ const Vote = () => {
                             </List>
                             <FlexboxGrid style={{ marginTop: 30 }}>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                    <ButtomCustom disable={true} size="big" style={{ minWidth: 200, marginLeft: 0 }} onClick={() => { vote(1) }}>
+                                    <ButtomCustom size="big" style={{ minWidth: 200, marginLeft: 0 }} onClick={() => { vote(1) }}>
                                         <Icon icon="thumbs-up" /> Vote Yes
                                     </ButtomCustom>
-                                    <ButtomCustom disable={true} size="big" style={{ minWidth: 200 }} onClick={() => { vote(2) }} className="kai-button-gray">
+                                    <ButtomCustom size="big" style={{ minWidth: 200 }} onClick={() => { vote(2) }} className="kai-button-gray">
                                         <Icon icon="thumbs-down" /> Vote No
                                     </ButtomCustom>
                                 </FlexboxGrid.Item>
