@@ -24,7 +24,7 @@ const Vote = () => {
     const [showModelConfirm, setShowModelConfirm] = useState(false)
     const [voteOption, setVoteOption] = useState(1)
     const [submitLoading, setSubmitLoading] = useState(false)
-    
+
     const walletLocalState = useRecoilValue(walletState)
 
     useEffect(() => {
@@ -177,8 +177,13 @@ const Vote = () => {
                                             <div className="property-title">Validator Votes</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+
+                                            <div className="property-content" style={{ width: 200 }}>
+                                                <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
+
                                             <div className="property-content" style={{width: 200}}>
                                                 <Line percent={Number(parseFloat(String(proposal.validatorVotes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
+
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -189,10 +194,10 @@ const Vote = () => {
                                             <div className="property-title">Proposal</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                                <div className="property-content">
+                                            <div className="property-content">
                                                 {
                                                     proposal.params ?
-                                                    proposal.params.map((item: ProposalParams, index: number) => {
+                                                        proposal.params.map((item: ProposalParams, index: number) => {
                                                             return (
                                                                 <div key={index} style={{
                                                                     marginBottom: 10
@@ -227,12 +232,12 @@ const Vote = () => {
                                     </FlexboxGrid>
                                 </List.Item>
                             </List>
-                            <FlexboxGrid style={{marginTop: 30}}>
+                            <FlexboxGrid style={{ marginTop: 30 }}>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                    <ButtomCustom size="big" style={{ minWidth: 200, marginLeft: 0}} onClick={() => {vote(1)}}>
+                                    <ButtomCustom size="big" style={{ minWidth: 200, marginLeft: 0 }} onClick={() => { vote(1) }}>
                                         <Icon icon="thumbs-up" /> Vote Yes
                                     </ButtomCustom>
-                                    <ButtomCustom size="big" style={{ minWidth: 200 }} onClick={() => {vote(2)}} className="kai-button-gray">
+                                    <ButtomCustom size="big" style={{ minWidth: 200 }} onClick={() => { vote(2) }} className="kai-button-gray">
                                         <Icon icon="thumbs-down" /> Vote No
                                     </ButtomCustom>
                                 </FlexboxGrid.Item>
