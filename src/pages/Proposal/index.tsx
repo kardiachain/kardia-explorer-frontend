@@ -50,7 +50,7 @@ const Proposal = () => {
 
             <FlexboxGrid justify="space-between" align="middle" style={{ marginBottom: '10px' }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={24} style={{ marginBottom: isMobile ? '15px' : '0' }}>
-                    <ListProposal/>
+                    <ListProposal />
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <CurrentNetwork showModal={showCurrentNetwork} setShowModal={setShowCurrentNetwork} currentNetworkParams={currentNetworkParams} />
@@ -68,7 +68,8 @@ export const RenderStatus = ({ status }: {
     switch (status) {
         case 0:
             return (
-                <Tag color="green" className="tab tab-pending">ON GOING</Tag>
+                // <Tag color="green" className="tab tab-pending">ON GOING</Tag>
+                <Tag color="green" className="tab tab-success">SUCCESS</Tag>
             )
         case 1:
             return (
