@@ -180,10 +180,10 @@ const Vote = () => {
 
                                             <div className="property-content" style={{ width: 200 }}>
                                                 <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
+                                            </div>
 
                                             <div className="property-content" style={{width: 200}}>
                                                 <Line percent={Number(parseFloat(String(proposal.validatorVotes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
-
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
