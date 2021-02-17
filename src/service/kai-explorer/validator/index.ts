@@ -1,15 +1,20 @@
 import { colors } from "../../../common/constant"
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
+import { getCache, setCache } from "../../../plugin/localCache";
 
 export const getValidators = async (): Promise<Validators> => {
     try {
+        const cacheKey = 'VALIDATORS_LIST';
+        const cacheResponse = getCache(cacheKey);
+        if (cacheResponse) {
+            return cacheResponse;
+        }
         const response = await fetch(`${END_POINT}validators`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const raw = responseJSON.data || []
         const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
-    
-        return {
+        const responseData: Validators = {
             totalValidators: raw.totalValidators,
             totalDelegators: raw.totalDelegators,
             totalStakedAmount: raw.totalStakedAmount,
@@ -36,7 +41,9 @@ export const getValidators = async (): Promise<Validators> => {
                     role: checkValidatorRole(v.role),
                 }
             }) : []
-        } as Validators
+        }
+        setCache(cacheKey, responseData);
+        return responseData
     } catch (error) {
         return {} as Validators
     }
@@ -44,13 +51,18 @@ export const getValidators = async (): Promise<Validators> => {
 
 export const getValidator = async (valAddr: string, page: number, limit: number): Promise<Validator> => {
     try {
+        const cacheKey = `VALIDATOR_DATA_${valAddr}_${page}_${limit}`;
+        const cacheResponse = getCache(cacheKey);
+        if (cacheResponse) {
+            return cacheResponse;
+        }
         const response = await fetch(`${END_POINT}validators/${valAddr}?page=${page-1}&limit=${limit}`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const val = responseJSON?.data?.data || {}
         if (!val) {
             return {} as Validator
         }
-        return {
+        const responseData: Validator = {
             address: val.address ? toChecksum(val.address.toLowerCase()) : '',
             votingPower: val.votingPowerPercentage,
             stakedAmount: val.stakedAmount,
@@ -84,7 +96,9 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
                     rewardsAmount: del.reward
                 } as Delegator 
             }) : []
-        } as Validator
+        }
+        setCache(cacheKey, responseData)
+        return responseData
     } catch (error) {
         return {} as Validator 
     }
@@ -92,11 +106,16 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
 
 export const getCandidates = async (): Promise<Candidate[]> => {
     try {
+        const cacheKey = 'CANDIDATES_LIST';
+        const cacheResponse = getCache(cacheKey);
+        if (cacheResponse) {
+            return cacheResponse;
+        }
+
         const response = await fetch(`${END_POINT}validators/candidates`, GET_REQUEST_OPTION)
         const responseJSON = await response.json();
         const candidates = responseJSON?.data?.validators || [];
-    
-        return candidates.map((v: any, index: number) => {
+        const responseData = candidates.map((v: any, index: number) => {
             return {
                 rank: index + 1,
                 name: v.name,
@@ -113,7 +132,10 @@ export const getCandidates = async (): Promise<Candidate[]> => {
                 maxRate: v.maxRate,
                 maxChangeRate: v.maxChangeRate
             } as Candidate
-        }) || [];
+        })
+    
+        setCache(cacheKey, responseData);
+        return responseData;
     } catch (error) {
         return [];
     }
@@ -121,11 +143,16 @@ export const getCandidates = async (): Promise<Candidate[]> => {
 
 export const getValidatorByDelegator = async (delAddr: string): Promise<YourValidator[]> => {
     try {
+        const cacheKey = `VALIDATOR_OF_DELEGATOR_${delAddr}`;
+        const cacheResponse = getCache(cacheKey);
+        if (cacheResponse) {
+            return cacheResponse;
+        }
         const response = await fetch(`${END_POINT}delegators/${delAddr}/validators`, GET_REQUEST_OPTION);
         const responseJSON = await response.json();
         const vals = responseJSON.data || [];
-    
-        return vals ? vals.map((v: any) => {
+
+        const responseData = vals ? vals.map((v: any) => {
             return {
                 validatorName: v.name || '',
                 validatorAddr: v.validator ? toChecksum(v.validator.toLowerCase()) : '',
@@ -137,6 +164,9 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
                 role: checkValidatorRole(v.validatorRole),
             } as YourValidator
         }) : []
+    
+        setCache(cacheKey, responseData);
+        return responseData
     } catch (error) {
         return []
     }
@@ -148,10 +178,10 @@ export const checkIsValidator = async (valAddr: string): Promise<boolean> => {
         if (response.status === 200) {
             return true
         }
+        return false;
     } catch (error) {
         return false;
     }
-    return false;
 }
 
 
