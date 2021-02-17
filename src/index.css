@@ -614,3 +614,8 @@ a:hover {
 .rs-modal-backdrop.in {
   opacity: 0.9 !important;
 }
+
+.maximum-amount {
+  cursor: pointer;
+  color: rgb(0, 196, 245);
+}
