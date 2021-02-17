@@ -79,6 +79,11 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                                     validatePass(value)
                                                     setPassword(value)
                                                 }}
+                                                onKeyPress={(event: any) => {
+                                                    if (event && event.charCode === 13) {
+                                                        confirmPassword()
+                                                    }
+                                                }}
                                             />
                                             <ErrMessage message={passwordErr} />
                                         </FlexboxGrid.Item>
