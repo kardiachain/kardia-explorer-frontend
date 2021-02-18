@@ -40,6 +40,7 @@ const deleteCache = (key: string) => {
   if (!cacheObj) return true
   try {
     delete cacheObj[key]
+    setLocalStorageObj(cacheObj);
     return true
   } catch (error) {
     throw new Error('Invalid local cache key');

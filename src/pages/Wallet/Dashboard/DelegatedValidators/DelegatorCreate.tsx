@@ -16,6 +16,7 @@ import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
 import { renderHashString } from '../../../../common/utils/string';
 import { TABLE_CONFIG } from '../../../../config';
+import { clearCache } from '../../../../plugin/localCache';
 import { delegateByEW } from '../../../../service/extensionWallet';
 import { getValidator } from '../../../../service/kai-explorer';
 import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
@@ -183,6 +184,7 @@ const DelegatorCreate = () => {
                     callback: () => { window.open(`/tx/${delegate.transactionHash}`) },
                     seeTxdetail: true
                 });
+                clearCache();
                 fetchData();
             } else {
                 NotificationError({
