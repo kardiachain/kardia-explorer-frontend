@@ -276,6 +276,7 @@ const InteracteWithSmc = () => {
         setListFile([] as FileType[])
         setFileUploadErr('')
         setInteractType('')
+        setParamsFields([] as any[])
     }
 
     const handelInputFieldOnchange = (value: any, idx: any) => {
@@ -305,35 +306,6 @@ const InteracteWithSmc = () => {
                         {
                             currentStep === 0 ? (
                                 <>
-                                    <FlexboxGrid style={{ marginBottom: 20 }}>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
-                                            <NumberInputFormat
-                                                value={gasLimit}
-                                                placeholder="Gas Limit"
-                                                className="input"
-                                                onChange={(event) => {
-                                                    setGasLimit(event.value);
-                                                    validateGasLimit(event.value)
-                                                }} />
-                                            <ErrMessage message={gasLimitErr} />
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                            <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
-                                            <SelectPicker
-                                                className="dropdown-custom w100"
-                                                data={gasPriceOption}
-                                                searchable={false}
-                                                value={gasPrice}
-                                                onChange={(value) => {
-                                                    setGasPrice(value)
-                                                    validateGasPrice(value)
-                                                }}
-                                                style={{ width: 250 }}
-                                            />
-                                            <ErrMessage message={gasPriceErr} />
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginBottom: 20 }}>
                                             <ControlLabel className="color-white">Contract Address (required)</ControlLabel>
@@ -400,98 +372,131 @@ const InteracteWithSmc = () => {
                                     </FlexboxGrid>
                                 </>
                             ) : (
-                                    <FlexboxGrid>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                            <Button className="kai-button-gray"
-                                                style={{ marginBottom: '25px' }}
-                                                onClick={() => {
-                                                    setCurrentStep(0)
-                                                    resetAll()
-                                                }}
-                                            >
-                                                <Icon icon="angle-double-left" /><Icon icon="angle-double-left" /> Back
+                                    <>
+                                        <FlexboxGrid>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                                <Button className="kai-button-gray"
+                                                    style={{ marginBottom: '25px' }}
+                                                    onClick={() => {
+                                                        setCurrentStep(0)
+                                                        resetAll()
+                                                    }}
+                                                >
+                                                    <Icon icon="angle-double-left" /><Icon icon="angle-double-left" /> Back
                                             </Button>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="color-white">Interact With Contract</ControlLabel>
-                                            <SelectPicker
-                                                placeholder="Select a function"
-                                                data={smcFuncList}
-                                                searchable={false}
-                                                className="dropdown-custom"
-                                                style={{ width: "100%" }}
-                                                onChange={(value) => {
-                                                    selectFunction(value)
-                                                }}
-                                            />
-                                        </FlexboxGrid.Item>
-                                        {
-                                            paramsFields && paramsFields.length > 0 ? (
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                    <ControlLabel className="color-white">Params: </ControlLabel>
-                                                    {
-                                                        paramsFields.map((field: any, idx: any) => {
-                                                            return (
-                                                                <FormControl
-                                                                    key={idx}
-                                                                    style={{
-                                                                        marginBottom: 10,
-                                                                    }}
-                                                                    type="text"
-                                                                    className="input"
-                                                                    name={field.name}
-                                                                    placeholder={`${field.type} ${field.name}`}
-                                                                    value={field.value}
-                                                                    onChange={(value) => {
-                                                                        handelInputFieldOnchange(value, idx)
-                                                                    }} />
-                                                            )
-                                                        })
-                                                    }
-                                                </FlexboxGrid.Item>
-                                            ) : <></>
-                                        }
-                                        {
-                                            payableFunction ?
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                    <ControlLabel className="label color-white">Payable Amount: </ControlLabel>
-                                                    <FormControl
-                                                        name="payableAmount"
-                                                        placeholder="Payable Amount"
-                                                        className="input"
-                                                        value={payableAmount}
-                                                        onChange={(value) => {
-                                                            if (onlyInteger(value)) {
-                                                                setPayableAmount(value)
-                                                            }
-                                                        }
-                                                        } />
-                                                </FlexboxGrid.Item> : <></>
-                                        }
-
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
-                                            <Button size="big" style={{ width: '250px' }} loading={loadingExecute} onClick={executeFunction}>Execute</Button>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                        <FlexboxGrid style={{marginBottom: 10}}>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={24}>
+                                                <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                                <NumberInputFormat
+                                                    value={gasLimit}
+                                                    placeholder="Gas Limit"
+                                                    className="input"
+                                                    onChange={(event) => {
+                                                        setGasLimit(event.value);
+                                                        validateGasLimit(event.value)
+                                                    }} />
+                                                <ErrMessage message={gasLimitErr} />
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={24}>
+                                                <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                                <SelectPicker
+                                                    className="dropdown-custom w100"
+                                                    data={gasPriceOption}
+                                                    searchable={false}
+                                                    value={gasPrice}
+                                                    onChange={(value) => {
+                                                        setGasPrice(value)
+                                                        validateGasPrice(value)
+                                                    }}
+                                                    style={{ width: '100%' }}
+                                                />
+                                                <ErrMessage message={gasPriceErr} />
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                        <FlexboxGrid>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
+                                                <ControlLabel className="color-white">Interact With Contract</ControlLabel>
+                                                <SelectPicker
+                                                    placeholder="Select a function"
+                                                    data={smcFuncList}
+                                                    searchable={false}
+                                                    className="dropdown-custom"
+                                                    style={{ width: "100%" }}
+                                                    onChange={(value) => {
+                                                        selectFunction(value)
+                                                    }}
+                                                />
+                                            </FlexboxGrid.Item>
                                             {
-                                                showResult ? <>
-                                                    {
-                                                        interactType === "call" ?
-                                                            <ControlLabel className="label"><ReactJson name={false} src={{ txResult }} theme="ocean" /></ControlLabel> :
-                                                            (
-                                                                interactType === "send" ? (
-                                                                    <>
-                                                                        <Button className="kai-button-gray" onClick={() => { setShowTxDetailModal(true) }}>
-                                                                            <Icon icon="file-text-o" style={{ marginRight: 10 }} />View Transaction Details
-                                                                        </Button>
-                                                                    </>
-                                                                ) : <></>
-                                                            )
-                                                    }
-                                                </> : <></>
+                                                paramsFields && paramsFields.length > 0 ? (
+                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                                        <ControlLabel className="color-white">Params: </ControlLabel>
+                                                        {
+                                                            paramsFields.map((field: any, idx: any) => {
+                                                                return (
+                                                                    <FormControl
+                                                                        key={idx}
+                                                                        style={{
+                                                                            marginBottom: 10,
+                                                                        }}
+                                                                        type="text"
+                                                                        className="input"
+                                                                        name={field.name}
+                                                                        placeholder={`${field.type} ${field.name}`}
+                                                                        value={field.value}
+                                                                        onChange={(value) => {
+                                                                            handelInputFieldOnchange(value, idx)
+                                                                        }} />
+                                                                )
+                                                            })
+                                                        }
+                                                    </FlexboxGrid.Item>
+                                                ) : <></>
                                             }
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
+                                            {
+                                                payableFunction ?
+                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                                        <ControlLabel className="label color-white">Payable Amount: </ControlLabel>
+                                                        <FormControl
+                                                            name="payableAmount"
+                                                            placeholder="Payable Amount"
+                                                            className="input"
+                                                            value={payableAmount}
+                                                            onChange={(value) => {
+                                                                if (onlyInteger(value)) {
+                                                                    setPayableAmount(value)
+                                                                }
+                                                            }
+                                                            } />
+                                                    </FlexboxGrid.Item> : <></>
+                                            }
+
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
+                                                <Button size="big" style={{ width: '250px' }} loading={loadingExecute} onClick={executeFunction}>Execute</Button>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px' }}>
+                                                {
+                                                    showResult ? <>
+                                                        {
+                                                            interactType === "call" ?
+                                                                <ControlLabel className="label"><ReactJson name={false} src={{ txResult }} theme="ocean" /></ControlLabel> :
+                                                                (
+                                                                    interactType === "send" ? (
+                                                                        <>
+                                                                            <Button className="kai-button-gray" onClick={() => { setShowTxDetailModal(true) }}>
+                                                                                <Icon icon="file-text-o" style={{ marginRight: 10 }} />View Transaction Details
+                                                                        </Button>
+                                                                        </>
+                                                                    ) : <></>
+                                                                )
+                                                        }
+                                                    </> : <></>
+                                                }
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </>
                                 )
                         }
 
