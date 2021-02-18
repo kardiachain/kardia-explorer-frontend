@@ -177,13 +177,11 @@ const Vote = () => {
                                             <div className="property-title">Validator Votes</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-
                                             <div className="property-content" style={{ width: 200 }}>
                                                 <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
-
+                                            </div>
                                             <div className="property-content" style={{width: 200}}>
                                                 <Line percent={Number(parseFloat(String(proposal.validatorVotes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
-
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

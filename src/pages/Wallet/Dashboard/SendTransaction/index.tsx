@@ -14,6 +14,7 @@ import { renderHashString } from '../../../../common/utils/string'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom'
 import { generateTxForEW } from '../../../../service/extensionWallet'
+import { weiToKAI } from '../../../../common/utils/amount'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -165,6 +166,18 @@ const SendTransaction = () => {
         setSendBntLoading(false)
     }
 
+    const setMaximumAmount = () => {
+        try {
+            const balance = getStoredBalance();
+            const maxFee = weiToKAI(gasLimit * gasPrice * 10**9);
+            const validableBalance = balance > Number(maxFee) ? balance - Number(maxFee) : 0;
+            setAmount(String(validableBalance))
+            validateAmount(validableBalance)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <div className="send-txs-container">
             <div style={{ marginBottom: 16 }}>
@@ -193,7 +206,14 @@ const SendTransaction = () => {
                                         <ErrMessage message={toAddressErr} />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">Amount (KAI - required)</ControlLabel>
+                                        <FlexboxGrid justify="space-between" align="middle">
+                                            <ControlLabel className="color-white">Amount (KAI - required)</ControlLabel>
+                                            <span 
+                                            className="maximum-amount"
+                                            onClick={() => {
+                                                setMaximumAmount()
+                                            }}>Maximum</span>
+                                        </FlexboxGrid>
                                         <NumberInputFormat
                                             value={amount}
                                             placeholder="Ex. 1000"

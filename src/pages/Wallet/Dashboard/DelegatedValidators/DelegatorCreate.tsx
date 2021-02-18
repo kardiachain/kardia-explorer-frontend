@@ -215,6 +215,20 @@ const DelegatorCreate = () => {
         setErrorMessage('');
     }
 
+    const setMaximumAmount = () => {
+        try {
+            const balance = getStoredBalance();
+            const maxFee = weiToKAI(gasLimit * gasPrice * 10**9);
+            const validableBalance = balance > Number(maxFee) ? balance - Number(maxFee) : 0;
+            setDelAmount(String(validableBalance))
+            validateDelAmount(validableBalance)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
+
     return (
         <>
             <FlexboxGrid>
@@ -447,7 +461,14 @@ const DelegatorCreate = () => {
                                                         <ErrMessage message={gasPriceErr} />
                                                     </FlexboxGrid.Item>
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
-                                                        <ControlLabel className="color-white">Delegation amount (required)</ControlLabel>
+                                                        <FlexboxGrid justify="space-between" align="middle">
+                                                            <ControlLabel className="color-white">Delegation amount (KAI - required)</ControlLabel>
+                                                            <span 
+                                                            className="maximum-amount"
+                                                            onClick={() => {
+                                                                setMaximumAmount()
+                                                            }}>Maximum</span>
+                                                        </FlexboxGrid>
                                                         <NumberInputFormat
                                                             value={delAmount}
                                                             placeholder="Must be at least 1,000 KAI"
