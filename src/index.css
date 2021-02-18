@@ -22,6 +22,7 @@
   --link-color: #00C4F5;
   --link-error-color: #E00000;
 
+  --icon-error-color: #631414;
 
   --box-shadow-color: rgba(0,0,0,.05);
   --border-color: #e7eaf3;
@@ -618,4 +619,8 @@ a:hover {
 .maximum-amount {
   cursor: pointer;
   color: rgb(0, 196, 245);
+}
+
+.icon-tx-error {
+  background-color: var(--icon-error-color);
 }
