@@ -1,5 +1,5 @@
 const LOCAL_STORAGE_KEY = 'kardia_local_cache'
-const DEFAULT_TTL = 24 * 60 * 60 * 1000;
+const DEFAULT_TTL = process.env.REACT_APP_DEFAULT_TTL;
 
 const getLocalStorageObj = (): Record<string, any> | null => {
   const value = localStorage.getItem(LOCAL_STORAGE_KEY)
