@@ -202,6 +202,7 @@ const InteracteWithSmc = () => {
     const selectFunction = (value: any) => {
         setShowResult(false)
         setPayableFunction(false)
+        setPayableAmount(0)
         try {
             setParamsFields([])
             if (value.inputs && value.inputs.length > 0) {
