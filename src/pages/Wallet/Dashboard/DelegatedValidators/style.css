@@ -13,5 +13,10 @@
     font-style: italic;
     font-weight: normal;
     color: rgb(255, 255, 255);
-    margin-left: 10px;
+    margin-left: 2px;
+}
+
+.custom-tooltip.unbondedtime .rs-tooltip-inner {
+    text-align: left !important;
+    max-width: none !important;
 }

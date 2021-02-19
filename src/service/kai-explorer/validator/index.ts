@@ -159,7 +159,7 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
                 yourStakeAmount: v.stakedAmount,
                 validatorSmcAddr: v.validatorContractAddr ? toChecksum(v.validatorContractAddr.toLowerCase()) : '',
                 claimableAmount: v.claimableRewards || 0,
-                unbondedAmount: v.unbondedAmount,
+                unbondedAmount: v.totalUnbondedAmount,
                 withdrawableAmount: v.totalWithdrawableAmount,
                 role: checkValidatorRole(v.validatorRole),
                 unbondedRecords: v.unbondedRecords && v.unbondedRecords.length > 0 ? v.unbondedRecords.filter((r: any) => (Number(r.completionTime) * 1000) > nowTime).map((r: any) => {
