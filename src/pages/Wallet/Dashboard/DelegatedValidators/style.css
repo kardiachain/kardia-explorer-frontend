@@ -1,0 +1,22 @@
+.undelegate-note {
+    color: rgb(255, 133, 133);
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+.undelegate-model-container .rs-modal-body {
+    margin-top: 0 !important;
+}
+
+.unbonded-note {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: normal;
+    color: rgb(255, 255, 255);
+    margin-left: 2px;
+}
+
+.custom-tooltip.unbondedtime .rs-tooltip-inner {
+    text-align: left !important;
+    max-width: none !important;
+}

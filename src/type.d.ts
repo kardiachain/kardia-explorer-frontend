@@ -99,6 +99,12 @@ interface YourValidator {
     withdrawableAmount: number;
     unbondedAmount: number;
     role: ValidatorRole;
+    unbondedRecords: UnbondedRecord[]
+}
+
+interface UnbondedRecord {
+    balance: any;
+    completionTime: any;
 }
 interface Delegator {
     owner: boolean;
