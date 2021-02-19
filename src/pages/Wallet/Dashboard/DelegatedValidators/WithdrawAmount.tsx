@@ -11,13 +11,14 @@ import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage, NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
+import { millisecondToDay, renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { undelegateAll, undelegateWithAmount, withdrawDelegatedAmount } from '../../../../service/smc/staking';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { isExtensionWallet } from '../../../../service/wallet';
 import { undelegateAllByEW, undelegateWithAmountByEW, withdrawDelegatedAmountByEW } from '../../../../service/extensionWallet';
+import './style.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -178,7 +179,6 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 data={yourValidators}
                 hover={false}
                 wordWrap
-                rowHeight={() => 80}
             >
                 <Column flexGrow={2} minWidth={250} verticalAlign="middle">
                     <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
@@ -236,12 +236,26 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} minWidth={110} verticalAlign="middle">
-                    <HeaderCell>Unbonded (KAI)</HeaderCell>
+                <Column flexGrow={2} minWidth={300} verticalAlign="middle">
+                    <HeaderCell>Unbonded</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)}</div>
+                                <div>
+                                    {
+                                        rowData.unbondedRecords && rowData.unbondedRecords.length > 0 ? 
+                                        rowData.unbondedRecords.map((item: UnbondedRecord, index: number) => {
+                                            return (
+                                                <div style={{marginBottom: 5}}>
+                                                    <span>#{index + 1}: {numberFormat(weiToKAI(item.balance), 2)} KAI</span>
+                                                    <span className="unbonded-note">
+                                                        (Time release: in {millisecondToDay(Number(item.completionTime || 0))})
+                                                    </span>
+                                                </div>
+                                            )
+                                        }) : <span>No data</span>
+                                    }
+                                </div>
                             )
                         }}
                     </Cell>
@@ -256,26 +270,27 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={200} verticalAlign="middle">
+                <Column flexGrow={1} minWidth={250} verticalAlign="middle">
                     <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <div style={{ marginBottom: 10, display: "flex" }}>
-                                    <Button className="kai-button-gray" onClick={() => {
-                                        resetUndelegateForm()
-                                        setShowUndelegateModel(true)
-                                        setValidatorActive(rowData)
-                                    }}>Undelegate
-                                        </Button>
+                                    <Button className="kai-button-gray" 
+                                        disable={rowData.yourStakeAmount == 0}
+                                        onClick={() => {
+                                            resetUndelegateForm()
+                                            setShowUndelegateModel(true)
+                                            setValidatorActive(rowData)
+                                        }}>Undelegate</Button>
                                     {
                                         rowData.withdrawableAmount > 0 ?
-                                            <Button className="withdraw-button"
-                                                onClick={() => {
-                                                    setShowConfirmWithdrawModal(true)
-                                                    setValidatorActive(rowData)
-                                                }}>Withdraw
-                                            </Button> : <></>
+                                        <Button className="withdraw-button"
+                                            onClick={() => {
+                                                setShowConfirmWithdrawModal(true)
+                                                setValidatorActive(rowData)
+                                            }}>Withdraw
+                                        </Button> : <></>
                                     }
                                 </div>
                             )

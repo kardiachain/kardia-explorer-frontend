@@ -148,23 +148,28 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
         if (cacheResponse) {
             return cacheResponse;
         }
-        const response = await fetch(`${END_POINT}delegators/${delAddr}/validators`, GET_REQUEST_OPTION);
+        const response = await fetch(`${END_POINT}delegators/${delAddr}/validators`, GET_REQUEST_OPTION);   
         const responseJSON = await response.json();
         const vals = responseJSON.data || [];
-
+        const nowTime = (new Date()).getTime();
         const responseData = vals ? vals.map((v: any) => {
             return {
                 validatorName: v.name || '',
                 validatorAddr: v.validator ? toChecksum(v.validator.toLowerCase()) : '',
                 yourStakeAmount: v.stakedAmount,
                 validatorSmcAddr: v.validatorContractAddr ? toChecksum(v.validatorContractAddr.toLowerCase()) : '',
-                claimableAmount: v.claimableRewards,
+                claimableAmount: v.claimableRewards || 0,
                 unbondedAmount: v.unbondedAmount,
-                withdrawableAmount: v.withdrawableAmount,
+                withdrawableAmount: v.totalWithdrawableAmount,
                 role: checkValidatorRole(v.validatorRole),
+                unbondedRecords: v.unbondedRecords && v.unbondedRecords.length > 0 ? v.unbondedRecords.filter((r: any) => (Number(r.completionTime) * 1000) > nowTime).map((r: any) => {
+                    return {
+                        balance: r.balance,
+                        completionTime: ((Number(r.completionTime) * 1000) - nowTime)
+                    } as UnbondedRecord
+                }) : []
             } as YourValidator
         }) : []
-    
         setCache(cacheKey, responseData);
         return responseData
     } catch (error) {

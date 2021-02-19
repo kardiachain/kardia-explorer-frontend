@@ -4,7 +4,7 @@ import { getValidatorByDelegator } from '../../../../service/kai-explorer';
 import { getAccount } from '../../../../service/wallet';
 import ClaimRewards from './ClaimRewards';
 import WithdrawAmount from './WithdrawAmount';
-import './stype.css';
+import './style.css';
 import { deleteCache } from '../../../../plugin/localCache';
 
 const Delegator = () => {

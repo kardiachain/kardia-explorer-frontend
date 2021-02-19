@@ -7,3 +7,11 @@
 .undelegate-model-container .rs-modal-body {
     margin-top: 0 !important;
 }
+
+.unbonded-note {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: normal;
+    color: rgb(255, 255, 255);
+    margin-left: 10px;
+}
