@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Col, ControlLabel, FlexboxGrid, Form, Modal, Radio, RadioGroup, Table } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, Icon, Modal, Radio, RadioGroup, Table, Tooltip, Whisper } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import NumberInputFormat from '../../../../common/components/FormInput';
 import Helper from '../../../../common/components/Helper';
@@ -11,13 +11,14 @@ import { HelperMessage } from '../../../../common/constant/HelperMessage';
 import { ErrorMessage, NotifiMessage, InforMessage } from '../../../../common/constant/Message';
 import { weiToKAI } from '../../../../common/utils/amount';
 import { numberFormat } from '../../../../common/utils/number';
-import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
+import { millisecondToDay, renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
 import { useViewport } from '../../../../context/ViewportContext';
 import { undelegateAll, undelegateWithAmount, withdrawDelegatedAmount } from '../../../../service/smc/staking';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { isExtensionWallet } from '../../../../service/wallet';
 import { undelegateAllByEW, undelegateWithAmountByEW, withdrawDelegatedAmountByEW } from '../../../../service/extensionWallet';
+import './style.css'
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -181,37 +182,37 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 rowHeight={() => 80}
             >
                 <Column flexGrow={2} minWidth={250} verticalAlign="middle">
-                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{ marginLeft: 50 }}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <Link to={`/validator/${rowData?.validatorAddr}`}>
-                                <div>
-                                    <div style={{ display: 'inline-block', width: 50 }}>
-                                        <StakingIcon
-                                            color={rowData?.role?.classname}
-                                            character={rowData?.role?.character}
-                                            size='normal' style={{ marginRight: 5 }} />
-                                    </div>
-                                    <div className="validator-info color-white">
-                                        <div className="validator-name">
-                                            {
-                                                renderStringAndTooltip({
-                                                    str: rowData.validatorName,
-                                                    headCount: isMobile ? 12 : 20,
-                                                    showTooltip: true
-                                                })
-                                            }
+                                    <div>
+                                        <div style={{ display: 'inline-block', width: 50 }}>
+                                            <StakingIcon
+                                                color={rowData?.role?.classname}
+                                                character={rowData?.role?.character}
+                                                size='normal' style={{ marginRight: 5 }} />
                                         </div>
-                                        {renderHashStringAndTooltip(
-                                            rowData.validatorAddr,
-                                            isMobile ? 10 : 15,
-                                            4,
-                                            true
-                                        )}
+                                        <div className="validator-info color-white">
+                                            <div className="validator-name">
+                                                {
+                                                    renderStringAndTooltip({
+                                                        str: rowData.validatorName,
+                                                        headCount: isMobile ? 12 : 20,
+                                                        showTooltip: true
+                                                    })
+                                                }
+                                            </div>
+                                            {renderHashStringAndTooltip(
+                                                rowData.validatorAddr,
+                                                isMobile ? 10 : 15,
+                                                4,
+                                                true
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
+                                </Link>
                             )
                         }}
                     </Cell>
@@ -241,7 +242,29 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
-                                <div>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)}</div>
+                                <div>
+                                    <span style={{ marginRight: 5 }}>{numberFormat(weiToKAI(rowData.unbondedAmount), 2)}</span>
+                                    {
+                                        rowData.unbondedRecords && rowData.unbondedRecords.length > 0 ?
+                                            <Whisper placement="autoVertical" trigger="hover"
+                                                speaker={
+                                                    <Tooltip className="custom-tooltip unbondedtime">
+                                                        {
+                                                            rowData.unbondedRecords.map((item: UnbondedRecord, index: number) => {
+                                                                return (
+                                                                    <div style={{ marginBottom: 5 }}>
+                                                                        <span>#{index + 1}: {numberFormat(weiToKAI(item.balance), 0)} KAI</span>
+                                                                        <span className="unbonded-note">
+                                                                            (Release time: in {millisecondToDay(Number(item.completionTime || 0))})
+                                                                        </span>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Tooltip>
+                                                }><Icon icon="info" /></Whisper> : <></>
+                                    }
+                                </div>
                             )
                         }}
                     </Cell>
@@ -256,18 +279,19 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={2} minWidth={200} verticalAlign="middle">
+                <Column width={250} verticalAlign="middle">
                     <HeaderCell></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
                                 <div style={{ marginBottom: 10, display: "flex" }}>
-                                    <Button className="kai-button-gray" onClick={() => {
-                                        resetUndelegateForm()
-                                        setShowUndelegateModel(true)
-                                        setValidatorActive(rowData)
-                                    }}>Undelegate
-                                        </Button>
+                                    <Button className="kai-button-gray"
+                                        disable={Number(rowData.yourStakeAmount) === 0}
+                                        onClick={() => {
+                                            resetUndelegateForm()
+                                            setShowUndelegateModel(true)
+                                            setValidatorActive(rowData)
+                                        }}>Undelegate</Button>
                                     {
                                         rowData.withdrawableAmount > 0 ?
                                             <Button className="withdraw-button"
@@ -275,7 +299,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                                     setShowConfirmWithdrawModal(true)
                                                     setValidatorActive(rowData)
                                                 }}>Withdraw
-                                            </Button> : <></>
+                                        </Button> : <></>
                                     }
                                 </div>
                             )
