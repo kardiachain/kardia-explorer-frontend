@@ -114,7 +114,7 @@ export const getCandidates = async (): Promise<Candidate[]> => {
 
         const response = await fetch(`${END_POINT}validators/candidates`, GET_REQUEST_OPTION)
         const responseJSON = await response.json();
-        const candidates = responseJSON?.data?.validators || [];
+        const candidates = responseJSON?.data || [];
         const responseData = candidates.map((v: any, index: number) => {
             return {
                 rank: index + 1,
