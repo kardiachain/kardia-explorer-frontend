@@ -25,6 +25,7 @@ import UpdateCommissionRate from './UpdateCommissionRate';
 import UnJailValidator from './UnJailValidator';
 import VaidatorStart from './VaidatorStart';
 import WithdrawCommission from './WithdrawCommission';
+import { deleteCache } from '../../../../plugin/localCache';
 
 const { Circle } = Progress;
 
@@ -107,6 +108,9 @@ const YourDelegators = () => {
         setIsVal(isVal)
         setStatePending(false)
         if (isVal) {
+            const cacheKey = `VALIDATOR_DATA_${myAccount.publickey}_${page}_${limit}`;
+            deleteCache(cacheKey);
+            
             const val = await getValidator(myAccount.publickey, page, limit);
             setValidator(val)
             setIndicator({

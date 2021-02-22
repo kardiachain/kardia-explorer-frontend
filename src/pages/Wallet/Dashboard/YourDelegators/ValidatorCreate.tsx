@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, List, Modal, SelectPicker } from 'rsuite';
 import Button from '../../../../common/components/Button';
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
+import { gasPriceOption, MIN_SELF_DELEGATION } from '../../../../common/constant';
 import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
 import { numberFormat } from '../../../../common/utils/number';
 import { createValidator } from '../../../../service/smc/staking';
@@ -23,7 +23,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
     const [maxRate, setMaxRate] = useState('')
     const [maxChangeRate, setMaxChangeRate] = useState('')
     const [valName, setValName] = useState('')
-    const [yourDelAmount, setYourDelAmount] = useState(`${MIN_DELEGATION_AMOUNT}`)
+    const [yourDelAmount, setYourDelAmount] = useState(MIN_SELF_DELEGATION)
 
     const [commissionRateErr, setCommissionRateErr] = useState('')
     const [maxRateErr, setMaxRateErr] = useState('')
@@ -136,12 +136,12 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
             return
         }
 
-        if (Number(value) < MIN_DELEGATION_AMOUNT) {
-            setYourDelAmountErr(ErrorMessage.BelowMinimumDelegationAmount)
+        if (Number(value) < MIN_SELF_DELEGATION) {
+            setYourDelAmountErr(ErrorMessage.BelowMinimumMinSelfDelegation)
             return false
         }
         const balance = getStoredBalance();
-        if (balance === 0 || balance < MIN_DELEGATION_AMOUNT) {
+        if (balance === 0 || balance < MIN_SELF_DELEGATION) {
             setYourDelAmountErr(ErrorMessage.BalanceNotEnough)
             return false
         }
@@ -347,7 +347,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                         </ControlLabel>
                         <NumberInputFormat
                             value={yourDelAmount}
-                            placeholder="Must be at least 1,000 KAI"
+                            placeholder="Must be at least 25,000 KAI"
                             className="input"
                             onChange={(event) => {
                                 setYourDelAmount(event.value);

@@ -25,7 +25,8 @@ export const ErrorMessage = {
     PassWordNotLongEnough: 'Password not long enough',
     PassCodeNotLongEnough: 'Pass code not long enough',
     ConfirmPasswordNotMatch: 'Confirm pass code don\'t match',
-    PasswordIncorrect: 'Incorrect pass code'
+    PasswordIncorrect: 'Incorrect pass code',
+    BelowMinimumMinSelfDelegation: 'The minimum delegation amount is 25K KAI',
 }
 
 export const NotifiMessage = {

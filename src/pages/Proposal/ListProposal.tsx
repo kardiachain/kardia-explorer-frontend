@@ -60,9 +60,12 @@ const ListProposal = () => {
                                     <HeaderCell>Deadline</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
+                                            if (rowData?.status !== 0) {
+                                                return 'Ended'
+                                            }
                                             return (
                                                 <>
-                                                    {millisecondToDay(rowData.expriedTime)}
+                                                 {millisecondToDay(rowData.expriedTime)}
                                                 </>
                                             );
                                         }}
