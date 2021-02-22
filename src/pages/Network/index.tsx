@@ -7,6 +7,9 @@ import { getNodes } from '../../service/kai-explorer/network';
 import './network.css'
 import { ForceGraph3D } from 'react-force-graph';
 import SearchSection from '../../common/components/Header/SearchSection';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -17,6 +20,7 @@ const Network = () => {
     const fgRef = useRef({} as any);
     const distance = 250;
     const peerSimolation = 3;
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         fgRef && fgRef.current && fgRef.current.cameraPosition && fgRef.current.cameraPosition({ z: distance });
@@ -88,7 +92,7 @@ const Network = () => {
                 <SearchSection />
                 <div style={{ marginBottom: 16 }}>
                     <div className="title header-title">
-                        Network
+                        {getLanguageString(language, 'NETWORK', 'TEXT')}
                     </div>
                 </div>
                 <FlexboxGrid>
@@ -104,7 +108,7 @@ const Network = () => {
                                         wordWrap
                                     >
                                         <Column flexGrow={2} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
-                                            <HeaderCell><span style={{ marginLeft: 40 }}>Name</span></HeaderCell>
+                                            <HeaderCell><span style={{ marginLeft: 40 }}>{getLanguageString(language, 'NAME', 'TEXT')}</span></HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
                                                     return (
@@ -127,7 +131,7 @@ const Network = () => {
                                             </Cell>
                                         </Column>
                                         <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                            <HeaderCell>Address</HeaderCell>
+                                            <HeaderCell>{getLanguageString(language, 'ADDRESS', 'TEXT')}</HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
                                                     return (
@@ -145,7 +149,7 @@ const Network = () => {
                                             </Cell>
                                         </Column>
                                         <Column flexGrow={1} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
-                                            <HeaderCell>Peer count</HeaderCell>
+                                            <HeaderCell>{getLanguageString(language, 'PEER_COUNT', 'TEXT')}</HeaderCell>
                                             <Cell dataKey="peerCount" />
                                         </Column>
                                     </Table>

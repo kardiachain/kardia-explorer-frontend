@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Alert, Input, InputGroup } from 'rsuite';
+import languageAtom from '../../../atom/language.atom';
 import { getTxByHash } from '../../../service/kai-explorer';
 import { getBlockBy } from '../../../service/kai-explorer/block';
+import { getLanguageString } from '../../utils/lang';
 import { onlyInteger } from '../../utils/number';
 import { addressValid, hashValid } from '../../utils/validate';
 import Button from '../Button';
@@ -14,6 +17,8 @@ const SearchSection = () => {
     const handleOnchange = (value: string) => {
         setSearchInput(value.trim())
     }
+
+    const language = useRecoilValue(languageAtom)
 
     // Search apply for many case
     // -- search by address --> show address details
@@ -83,12 +88,14 @@ const SearchSection = () => {
         <div className="search-wrapper">
             <InputGroup inside>
                 <Input
-                    placeholder="Search by Address / TxHash / BlockHash ..."
+                    placeholder={getLanguageString(language, 'SEARCH', 'PLACE_HOLDER')}
                     value={searchInput}
                     onChange={(value: string) => {handleOnchange(value) }}
                     onPressEnter={search}
                 />
-                    <Button onClick={search} className="btn-search kai-button-violet-gradient" style={{margin:0}}>Search</Button>
+                    <Button onClick={search} className="btn-search kai-button-violet-gradient" style={{margin:0}}>
+                        {getLanguageString(language, 'SEARCH', 'BUTTON')}
+                    </Button>
             </InputGroup>
         </div>
     )

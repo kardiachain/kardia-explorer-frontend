@@ -14,6 +14,9 @@ import SearchSection from '../../common/components/Header/SearchSection';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import Button from '../../common/components/Button';
 import { numberFormat } from '../../common/utils/number';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 
 const Home = () => {
@@ -27,6 +30,7 @@ const Home = () => {
     const [tokenInfor, setTokenInfor] = useState({} as KaiToken)
 
     const history = useHistory();
+    const language = useRecoilValue(languageAtom)
 
     const { isMobile } = useViewport()
 
@@ -82,8 +86,8 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="rocket" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Symbol</p>
-                                        <p className="mt0 fw700 color-white fs-15">KAI</p>
+                                        <p className="color-graylight fs-12">{getLanguageString(language, 'SYMBOL', 'TEXT')}</p>
+                                        <p className="mt0 fw700 color-white fs-15">{getLanguageString(language, 'KAI', 'TEXT')}</p>
                                     </div>
                                 </div>
                                 <div className="token-infor">
@@ -91,7 +95,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="usd" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Price ($)</p>
+                                        <p className="color-graylight fs-12">{getLanguageString(language, 'PRICE', 'TEXT')} ($)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
                                     </div>
                                 </div>
@@ -100,7 +104,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="signal" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Volume 24h ($)</p>
+                                        <p className="color-graylight fs-12">{getLanguageString(language, 'VOLUMN_24H', 'TEXT')} ($)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
                                     </div>
                                 </div>
@@ -109,7 +113,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Market Cap ($)</p>
+                                        <p className="color-graylight fs-12">{getLanguageString(language, 'MARKET_CAP', 'TEXT')} ($)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
@@ -118,7 +122,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="database" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Total Supply (KAI)</p>
+                                        <p className="color-graylight fs-12">{getLanguageString(language, 'TOTAL_SUPPLY', 'TEXT')} (KAI)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
                                     </div>
                                 </div>
@@ -127,7 +131,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="coincide" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Total Rewards (KAI)</p>
+                                        <p className="color-graylight fs-12">{getLanguageString(language, 'TOTAL_REWAEDS', 'TEXT')} (KAI)</p>
                                         <p className="mt0" style={{wordBreak: 'break-all'}}>
                                             <span className="fw700 color-white fs-15 word-break-all">{tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : 0}</span>
                                         </p>
@@ -146,18 +150,18 @@ const Home = () => {
                     <FlexboxGrid.Item className="section-left" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <p className="title color-white fs-24">Latest Blocks</p>
+                                <p className="title color-white fs-24">{getLanguageString(language, 'LATEST_BLOCKS', 'TEXT')}</p>
                             </div>
-                            <Button className="transparent-btn" onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>{getLanguageString(language, 'VIEW_ALL', 'BUTTON')}</Button>
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item className="section-right" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <p className="title color-white fs-24">Latest Transactions</p>
+                                <p className="title color-white fs-24">{getLanguageString(language, 'LATEST_TRANSACTIONS', 'TEXT')}</p>
                             </div>
-                            <Button className="transparent-btn" onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>{getLanguageString(language, 'VIEW_ALL', 'BUTTON')}</Button>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper, Tag } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
+import languageAtom from '../../atom/language.atom';
 import { StakingIcon } from '../../common/components/IconCustom';
 import { weiToKAI } from '../../common/utils/amount';
+import { getLanguageString } from '../../common/utils/lang';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashString, renderHashToRedirect, renderHashStringAndTooltip } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
@@ -24,6 +27,7 @@ const AddressDetail = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { address }: any = useParams()
     const [holderAccount, setHolderAccount] = useState<HolderAccount>();
+    const language = useRecoilValue(languageAtom)
 
 
     useEffect(() => {
@@ -45,14 +49,14 @@ const AddressDetail = () => {
                 holderAccount?.isContract ? (
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Contract Detail
+                            {getLanguageString(language, 'CONTRACT_DETAILS', 'TEXT')}
                         </div>
                     </div>
                 ) : (
                         <div style={{ marginBottom: 16 }}>
                             <div className="title header-title">
-                                Address Detail
-                        </div>
+                                {getLanguageString(language, 'ADDRESS_DETAILS', 'TEXT')}
+                            </div>
                         </div>
                     )
             }
@@ -63,7 +67,7 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="property-title">Address: </div>
+                                        <div className="property-title">{getLanguageString(language, 'ADDRESS', 'TEXT')}: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
                                         <div className="property-content">
@@ -77,7 +81,7 @@ const AddressDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                                <div className="property-title">Name: </div>
+                                                <div className="property-title">{getLanguageString(language, 'NAME', 'TEXT')}: </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
                                                 <div className="property-content">
@@ -97,7 +101,7 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="property-title">Balance: </div>
+                                        <div className="property-title">{getLanguageString(language, 'BALANCE', 'TEXT')}: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
                                         <div className="property-content">{numberFormat(weiToKAI(holderAccount?.balance))} KAI</div>
@@ -112,10 +116,10 @@ const AddressDetail = () => {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                             <div style={{ marginBottom: 16 }}>
                                 <div className="title header-title">
-                                    Transaction History
+                                    {getLanguageString(language, 'TRANSACTION_HISTORY', 'TEXT')}
                                 </div>
                                 <div className="sub-title">
-                                    {numberFormat(totalTxs)} transactions found
+                                    {numberFormat(totalTxs)} {getLanguageString(language, 'TRANSACTIONS_FOUND', 'TEXT')}
                                 </div>
                             </div>
                         </FlexboxGrid.Item>

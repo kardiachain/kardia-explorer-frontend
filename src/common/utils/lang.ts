@@ -14,7 +14,7 @@ const getLanguageString = (langKey: string, key: string, typeKey: string) => {
         return key;
     }
     const langObj = (lang as Record<string, any>)[langKey] as Language;
-    if (!langObj.mapping[typeKey][key]) {
+    if (!langObj.mapping[typeKey] || !langObj.mapping[typeKey][key]) {
         return key;
     }
     return langObj.mapping[typeKey][key]

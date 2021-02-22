@@ -9,6 +9,9 @@ import { Link, useHistory } from 'react-router-dom';
 import CustomButton from '../../common/components/Button';
 import { isLoggedIn } from '../../service/wallet';
 import { millisecondToDay } from '../../common/utils/string';
+import { getLanguageString } from '../../common/utils/lang';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../atom/language.atom';
 
 const { Column, HeaderCell, Cell } = Table;
 const { Line } = Progress;
@@ -20,6 +23,7 @@ const ListProposal = () => {
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalProposal, setTotalProposal] = useState(0)
     const history = useHistory()
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         (async () => {
@@ -45,7 +49,7 @@ const ListProposal = () => {
                                 wordWrap
                             >
                                 <Column width={110} verticalAlign="middle">
-                                    <HeaderCell>Proposal ID</HeaderCell>
+                                    <HeaderCell>{getLanguageString(language, 'PROPOSAL_ID', 'TEXT')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -57,7 +61,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column width={110} verticalAlign="middle">
-                                    <HeaderCell>Deadline</HeaderCell>
+                                    <HeaderCell>{getLanguageString(language, 'DEADLINE', 'TEXT')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             if (rowData?.status !== 0) {
@@ -72,7 +76,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={2} minWidth={300} verticalAlign="middle">
-                                    <HeaderCell>Params</HeaderCell>
+                                    <HeaderCell>{getLanguageString(language, 'PARAMS', 'TEXT')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -119,7 +123,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} minWidth={200} verticalAlign="middle">
-                                    <HeaderCell>Validator Votes</HeaderCell>
+                                    <HeaderCell>{getLanguageString(language, 'VALIDATOR_VOTES', 'TEXT')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -131,7 +135,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} minWidth={250} verticalAlign="middle">
-                                    <HeaderCell>Community Votes</HeaderCell>
+                                    <HeaderCell>{getLanguageString(language, 'COMMUNITY_VOTES', 'TEXT')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -150,7 +154,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column minWidth={110} verticalAlign="middle">
-                                    <HeaderCell>Status</HeaderCell>
+                                    <HeaderCell>{getLanguageString(language, 'STATUS', 'TEXT')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -174,7 +178,7 @@ const ListProposal = () => {
                                                                 <CustomButton className="kai-button-gray"
                                                                     onClick={() => {
                                                                         isLoggedIn() ? history.push(`/wallet/proposal-vote/${rowData.id}`) : history.push('/wallet')
-                                                                    }}>Vote</CustomButton>
+                                                                    }}>{getLanguageString(language, 'VOTE', 'BUTTON')}</CustomButton>
                                                             ) : <></>
 
                                                     }

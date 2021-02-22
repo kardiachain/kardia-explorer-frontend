@@ -17,6 +17,9 @@ import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage'
 import { hashValid, jsonValid } from '../../common/utils/validate';
 import { ErrorMessage } from '../../common/constant/Message';
 import { StakingIcon } from '../../common/components/IconCustom';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -36,6 +39,7 @@ const TxDetail = () => {
     const [fileUploadErr, setFileUploadErr] = useState('');
     const [decodeErr, setDecodeErr] = useState('');
     const [showMore, setShowMore] = useState(false)
+    const language = useRecoilValue(languageAtom)
 
 
     useEffect(() => {
@@ -144,7 +148,7 @@ const TxDetail = () => {
         <div className="container tx-detail-container">
             <div style={{ marginBottom: 16 }}>
                 <div className="title header-title">
-                    Transaction Details
+                    {getLanguageString(language, 'TRANSACTION_DETAILS', 'TEXT')}
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -154,7 +158,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Transaction Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'TRANSACTION_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{renderHashString(txDetail?.txHash || '', 64)}</div>
@@ -164,7 +168,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Block Number</div>
+                                        <div className="property-title">{getLanguageString(language, 'BLOCK_NUMBER', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
@@ -176,7 +180,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Block Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'BLOCK_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
@@ -195,7 +199,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Status</div>
+                                        <div className="property-title">{getLanguageString(language, 'STATUS', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         {
@@ -214,7 +218,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">TimeStamp</div>
+                                        <div className="property-title">{getLanguageString(language, 'TIME_STAMP', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{millisecondToHMS(txDetail?.age || 0)} ({txDetail?.time ? dateToUTCString(txDetail?.time) : ''})</div>
@@ -224,7 +228,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">From</div>
+                                        <div className="property-title">{getLanguageString(language, 'FROM', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
@@ -243,7 +247,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">To</div>
+                                        <div className="property-title">{getLanguageString(language, 'TO', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         {
@@ -293,7 +297,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Value</div>
+                                        <div className="property-title">{getLanguageString(language, 'VALUE', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(weiToKAI(txDetail?.value))} KAI</div>
@@ -303,7 +307,7 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Transaction Fee</div>
+                                        <div className="property-title">{getLanguageString(language, 'TRANSACTION_FEE', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(weiToKAI(txDetail?.txFee || 0))} KAI</div>
@@ -314,7 +318,7 @@ const TxDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Gas Price</div>
+                                            <div className="property-title">{getLanguageString(language, 'GAS_PRICE', 'TEXT')}</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content">{numberFormat(weiToOXY(txDetail?.gasPrice || 0))} OXY</div>
@@ -324,7 +328,7 @@ const TxDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Gas Limit</div>
+                                            <div className="property-title">{getLanguageString(language, 'GAS_LIMIT', 'TEXT')}</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content">{numberFormat(txDetail?.gas || 0)}</div>
@@ -334,7 +338,7 @@ const TxDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Gas Used</div>
+                                            <div className="property-title">{getLanguageString(language, 'GAS_USED', 'TEXT')}</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)} ({txDetail?.gasUsedPercent}%)</div>
@@ -344,7 +348,7 @@ const TxDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Nonce</div>
+                                            <div className="property-title">{getLanguageString(language, 'NONCE', 'TEXT')}</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content">{numberFormat(txDetail?.nonce || 0)}</div>
@@ -354,7 +358,7 @@ const TxDetail = () => {
                                 <List.Item>
                                     <FlexboxGrid justify="start" align="middle">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Transaction Index</div>
+                                            <div className="property-title">{getLanguageString(language, 'TRANSACTION_INDEX', 'TEXT')}</div>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                             <div className="property-content">{txDetail?.transactionIndex}</div>
@@ -366,7 +370,7 @@ const TxDetail = () => {
                                         <List.Item>
                                             <FlexboxGrid justify="start" align="middle">
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                                    <div className="property-title">Input Data</div>
+                                                    <div className="property-title">{getLanguageString(language, 'INPUT_DATA', 'TEXT')}</div>
                                                 </FlexboxGrid.Item>
                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                                     {
@@ -382,7 +386,7 @@ const TxDetail = () => {
                                                                 {
                                                                     txDetail.to !== "0x" ?
                                                                         <Button className="kai-button-gray" onClick={() => originStep()} style={{ margin: 0, marginTop: 20 }}>
-                                                                            Decode Data
+                                                                            {getLanguageString(language, 'DECODE_DATA', 'BUTTON')}
                                                                         </Button> : <></>
                                                                 }
                                                             </div>) :
@@ -399,7 +403,9 @@ const TxDetail = () => {
                                                                         </Panel>
                                                                     </FlexboxGrid.Item>
                                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                                                        <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20 }}> <Icon style={{ marginRight: 10 }} icon="reply" /> Switch Back</Button>
+                                                                        <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20 }}> <Icon style={{ marginRight: 10 }} icon="reply" /> 
+                                                                            {getLanguageString(language, 'SWITCH_BACK', 'BUTTON')}
+                                                                        </Button>
                                                                     </FlexboxGrid.Item>
                                                                 </FlexboxGrid>
                                                             ) : (
@@ -440,8 +446,12 @@ const TxDetail = () => {
                                                                                         <ErrMessage message={abiErr} />
                                                                                     </FlexboxGrid.Item>
                                                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                                                                        <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20, marginRight: 15 }}>Back</Button>
-                                                                                        <Button className="kai-button-gray" onClick={() => decodeABI()} style={{ margin: 0, marginTop: 20 }}>Decode</Button>
+                                                                                        <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20, marginRight: 15 }}>
+                                                                                            {getLanguageString(language, 'BACK', 'BUTTON')}
+                                                                                        </Button>
+                                                                                        <Button className="kai-button-gray" onClick={() => decodeABI()} style={{ margin: 0, marginTop: 20 }}>
+                                                                                            {getLanguageString(language, 'DECODE', 'BUTTON')}
+                                                                                        </Button>
                                                                                     </FlexboxGrid.Item>
                                                                                     <ErrMessage message={decodeErr} />
                                                                                 </FlexboxGrid>
@@ -465,8 +475,8 @@ const TxDetail = () => {
                                             className="click-show-more"
                                         >
                                             {
-                                                !showMore ? <> Click to see more <Icon icon="angle-double-down" /> </> :
-                                                    <> Click to see less <Icon icon="angle-double-up" /> </>
+                                                !showMore ? <> {getLanguageString(language, 'CLICK_TO_SEE_MORE', 'TEXT')} <Icon icon="angle-double-down" /> </> :
+                                                    <> {getLanguageString(language, 'CLICK_TO_SEE_LESS', 'TEXT')} <Icon icon="angle-double-up" /> </>
                                             }
                                         </span>
                                     </FlexboxGrid.Item>

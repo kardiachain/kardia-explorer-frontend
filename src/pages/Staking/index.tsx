@@ -14,6 +14,9 @@ import ValidatorList from './ValidatorList';
 import { StakingIcon } from '../../common/components/IconCustom';
 import CandidateList from './CandidateList';
 import StakingCalculator from './StakingCalculator';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 const Validators = () => {
     let history = useHistory();
@@ -33,6 +36,7 @@ const Validators = () => {
     const [isVal, setIsVal] = useState(false)
     const [activeKey, setActiveKey] = useState('validators')
     const [stakingCalculator, setStakingCalculator] = useState(false);
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         (async () => {
@@ -94,20 +98,20 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{ marginBottom: isMobile ? '15px' : '0' }}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Staking
+                            {getLanguageString(language, 'STAKING', 'TEXT')}
                         </div>
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
                     <Button size={isMobile ? "normal" : "big"} className="kai-button-gray" style={{marginBottom: 10}} onClick={() => { setStakingCalculator(true) }}>
-                        Staking Calculator
+                        {getLanguageString(language, 'STAKING_CALCULATOR', 'TEXT')}
                     </Button>
                     {
                         !isVal ?
                             <Button size={isMobile ? "normal" : "big"} style={{marginBottom: 10}}
                                 onClick={() => { isLoggedIn() ? history.push("/wallet/staking/for-validator") : history.push('/wallet') }}
                             >
-                                Register to become validator
+                                {getLanguageString(language, 'REGISTER_TO_BECOME_VALIDATOR', 'BUTTON')}
                             </Button> : <></>
                     }
                 </FlexboxGrid.Item>
@@ -116,7 +120,9 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray">
                         <div className="color-white" style={{ fontWeight: 600 }}>
-                            <span style={{ fontSize: 24 }}>Proposers</span>
+                            <span style={{ fontSize: 24 }}>
+                                {getLanguageString(language, 'PROPOSERS', 'TEXT')}
+                            </span>
                         </div>
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>
@@ -124,8 +130,8 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray" style={{ marginBottom: '10px' }}>
                         <div className="color-white" style={{ fontWeight: 600 }}>
-                            <span style={{ fontSize: 24 }}>Total Staked </span>
-                            <div style={{ opacity: 0.6 }}>Amount: {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
+                            <span style={{ fontSize: 24 }}>{getLanguageString(language, 'TOTAL_STAKED', 'TEXT')}</span>
+                            <div style={{ opacity: 0.6 }}>{getLanguageString(language, 'AMOUNT', 'TEXT')}: {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
                         </div>
                         <StakedPieChart dataForChart={dataForStakedPieChart || {}} />
                     </Panel>
@@ -139,7 +145,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalProposer}</div>
                                         <div className="title color-graylight">
-                                            Proposers
+                                            {getLanguageString(language, 'PROPOSERS', 'TEXT')}
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +158,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalValidator}</div>
                                         <div className="title color-graylight">
-                                            Validators
+                                            {getLanguageString(language, 'VALIDATORS', 'TEXT')}
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +171,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalCandidate}</div>
                                         <div className="title color-graylight">
-                                            Candidates
+                                            {getLanguageString(language, 'CANDIDATES', 'TEXT')}
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +184,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalDelegator}</div>
                                         <div className="title color-graylight">
-                                            Delegators
+                                            {getLanguageString(language, 'DELEGATORS', 'TEXT')}
                                         </div>
                                     </div>
                                 </div>
@@ -197,10 +203,10 @@ const Validators = () => {
                                 onSelect={setActiveKey}
                                 style={{ marginBottom: 20 }}>
                                 <Nav.Item eventKey="validators">
-                                    {`Validators (${validators.length})`}
+                                    {`${getLanguageString(language, 'VALIDATORS', 'TEXT')} (${validators.length})`}
                                 </Nav.Item>
                                 <Nav.Item eventKey="candidates">
-                                    {`Candidates (${candidates.length})`}
+                                    {`${getLanguageString(language, 'CANDIDATES', 'TEXT')} (${candidates.length})`}
                                 </Nav.Item>
                             </Nav>
                         </div>
