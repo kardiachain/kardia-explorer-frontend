@@ -10,6 +10,9 @@ import { getTxsByAddress } from '../../../../service/kai-explorer/transaction';
 import { getAccount } from '../../../../service/wallet';
 import { numberFormat } from '../../../../common/utils/number';
 import { StakingIcon } from '../../../../common/components/IconCustom';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../../../atom/language.atom';
+import { getLanguageString } from '../../../../common/utils/lang';
 const { Column, HeaderCell, Cell } = Table;
 
 const TransactionHistory = () => {
@@ -20,6 +23,7 @@ const TransactionHistory = () => {
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
     const myAccount = getAccount() as Account
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         (async () => {
@@ -37,10 +41,10 @@ const TransactionHistory = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Transactions history
+                            {getLanguageString(language, 'TRANSACTION_HISTORY', 'TEXT')}
                         </div>
                         <div className="sub-title">
-                            {numberFormat(totalTxs)} transactions found
+                            {numberFormat(totalTxs)} {getLanguageString(language, 'TRANSACTIONS_FOUND', 'TEXT')}
                         </div>
                     </div>
 
@@ -61,7 +65,7 @@ const TransactionHistory = () => {
                                     wordWrap
                                 >
                                     <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Hash</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TX_HASH', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -87,7 +91,7 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={1} verticalAlign="middle">
-                                        <HeaderCell>Block</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'BLOCK', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -99,7 +103,7 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>From</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'FROM', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -131,7 +135,7 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>To</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TO', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -170,7 +174,7 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value (KAI)</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'VALUE_KAI', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -182,7 +186,7 @@ const TransactionHistory = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TX_FEE_KAI', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (

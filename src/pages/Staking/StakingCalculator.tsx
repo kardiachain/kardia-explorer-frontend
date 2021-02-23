@@ -154,9 +154,11 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                     <FormGroup>
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24} style={{ marginBottom: 10 }}>
-                                <ControlLabel className="color-white">Validator (required)</ControlLabel>
+                                <ControlLabel className="color-white">
+                                    {getLanguageString(language, 'VALIDATOR_REQUIRED', 'LABEL')}
+                                </ControlLabel>
                                 <SelectPicker
-                                    placeholder="Choose validator"
+                                    placeholder={getLanguageString(language, 'CHOOSE_VALIDATOR', 'PLACE_HOLDER')}
                                     className="dropdown-custom"
                                     data={validatorSelectList}
                                     searchable={true}
@@ -171,10 +173,12 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                 <ErrMessage message={validatorErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24} style={{ marginBottom: 20 }}>
-                                <ControlLabel className="color-white">Enter your KAI amount (required)</ControlLabel>
+                                <ControlLabel className="color-white">
+                                    {getLanguageString(language, 'ENTER_YOUR_KAI_AMOUNT_REQUIRED', 'LABEL')}
+                                </ControlLabel>
                                 <NumberInputFormat
                                     value={amount}
-                                    placeholder="Minimum amount is 1,000"
+                                    placeholder={getLanguageString(language, 'STAKING_CALCULATOR_MINIMUM_AMOUNT', 'PLACE_HOLDER')}
                                     className="input"
                                     onChange={(event) => {
                                         setAmount(event.value);

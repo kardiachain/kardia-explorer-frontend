@@ -77,7 +77,7 @@ const Header = () => {
                                             setShowMenu(false)
                                         }}>{getLanguageString(language, 'HOME', 'MENU')}</Nav.Item>
                                     <Dropdown eventKey="blockchain" icon={<Icon className="gray-highlight" icon="unlink" />}
-                                     title={getLanguageString(language, 'BLOCKCHAIN', 'MENU')}>
+                                        title={getLanguageString(language, 'BLOCKCHAIN', 'MENU')}>
                                         <Dropdown.Item onClick={() => {
                                             history.push("/txs")
                                             setShowMenu(false)
@@ -91,17 +91,17 @@ const Header = () => {
                                             setShowMenu(false)
                                         }}>{getLanguageString(language, 'VIEW_ACCOUNTS', 'MENU')}</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
-                                        onClick={() => {
+                                    <Dropdown eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
+                                        title={getLanguageString(language, 'NETWORK', 'MENU')}>
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/network")
                                             setShowMenu(false)
-                                        }}>{getLanguageString(language, 'NETWORK', 'MENU')}</Nav.Item>
-                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
-                                    <Nav.Item eventKey="proposal" icon={<Icon className="gray-highlight" icon="data-increase" />}
-                                        onClick={() => {
+                                        }}>{getLanguageString(language, 'VIEW_NETWORK', 'MENU')}</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/proposals")
                                             setShowMenu(false)
-                                        }}>{getLanguageString(language, 'PROPOSAL', 'MENU')}</Nav.Item>
+                                        }}>{getLanguageString(language, 'NETWORK_PROPOSAL', 'MENU')}</Dropdown.Item>
+                                    </Dropdown>
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
                                         onClick={() => {
                                             history.push("/staking")
@@ -163,6 +163,7 @@ const Header = () => {
                                     }
                                     {/* <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item> */}
                                     <NetworkSelect />
+                                    <LanguageSelect setShowMenu={setShowMenu} />
                                     {
                                         isLoggedIn() ? <Nav.Item eventKey="logout-wallet" icon={<Icon icon="sign-out" />} onClick={logout}>{getLanguageString(language, 'LOGOUT_WALLET', 'MENU')}</Nav.Item> : <></>
                                     }
@@ -201,12 +202,20 @@ const Header = () => {
                         {/* Hidden dropdown item */}
                         <Dropdown.Item eventKey="blockchain" style={{ display: "none" }}></Dropdown.Item>
                     </Dropdown>
-                    <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>
+                    <Dropdown title={getLanguageString(language, 'NETWORK', 'MENU')} style={{ marginRight: '10px' }}>
+                        <Dropdown.Item eventKey="network" onClick={() => { history.push("/network") }}>
+                            {getLanguageString(language, 'VIEW_NETWORK', 'MENU')}
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>
+                            {getLanguageString(language, 'NETWORK_PROPOSAL', 'MENU')}
+                        </Dropdown.Item>
+                    </Dropdown>
+                    {/* <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>
                         {getLanguageString(language, 'NETWORK', 'MENU')}
-                    </Nav.Item>
-                    <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>
+                    </Nav.Item> */}
+                    {/* <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>
                         {getLanguageString(language, 'PROPOSAL', 'MENU')}
-                    </Nav.Item>
+                    </Nav.Item> */}
                     {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                     <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>
                         {getLanguageString(language, 'STAKING', 'MENU')}
@@ -239,7 +248,7 @@ const Header = () => {
                                 </Dropdown.Item>
                             </Dropdown>
                         ) : (
-                                <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>Wallet</Nav.Item>
+                                <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>{getLanguageString(language, 'WALLET', 'MENU')}</Nav.Item>
                             )
                     }
                     {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
@@ -248,7 +257,7 @@ const Header = () => {
                     <NetworkSelect />
                 </Nav>
                 <Nav>
-                    <LanguageSelect />
+                    <LanguageSelect setShowMenu={setShowMenu} />
                 </Nav>
             </Navbar.Body>
         </Navbar>

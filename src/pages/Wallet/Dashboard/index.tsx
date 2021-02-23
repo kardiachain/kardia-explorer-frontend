@@ -19,6 +19,8 @@ import ConfirmPassword from '../ConfirmPassword';
 import { isExtensionWallet, useWalletStorage } from '../../../service/wallet';
 import CreateProposal from './Proposal';
 import Vote from './Proposal/Vote';
+import languageAtom from '../../../atom/language.atom';
+import { getLanguageString } from '../../../common/utils/lang';
 
 const DashboardWallet = () => {
 
@@ -30,6 +32,7 @@ const DashboardWallet = () => {
     const walletLocalState = useRecoilValue(walletState)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [walletStored, setWalletStored] = useWalletStorage();
+    const language = useRecoilValue(languageAtom)
 
     // Handle Kardia Extension Wallet change account
     window && window.kardiachain && window.kardiachain.on('accountsChanged', (accounts: any) => {
@@ -67,33 +70,33 @@ const DashboardWallet = () => {
                                         eventKey="dashboard"
                                         active={activeKey === "4"}
                                         onClick={() => { history.push("/wallet/dashboard") }}
-                                        icon={<Icon icon="order-form" />} > Dashboard
+                                        icon={<Icon icon="order-form" />} > {getLanguageString(language, 'DASHBOARD', 'MENU')}
                                     </Nav.Item>
                                     <Nav.Item
                                         eventKey="send-transaction"
                                         active={activeKey === "1"}
                                         onClick={() => { history.push("/wallet/send-transaction") }}
-                                        icon={<Icon icon="send" />}> Send Transaction
+                                        icon={<Icon icon="send" />}> {getLanguageString(language, 'SEND_TRANSACTION', 'MENU')}
                                     </Nav.Item>
-                                    <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking">
+                                    <Dropdown eventKey="staking" icon={<Icon icon="group" />} title={getLanguageString(language, 'STAKING', 'MENU')}>
                                         <Dropdown.Item
                                             eventKey="for-validator"
-                                            onClick={() => { history.push("/wallet/staking/for-validator") }}>For Validator
+                                            onClick={() => { history.push("/wallet/staking/for-validator") }}>{getLanguageString(language, 'FOR_VALIDATOR', 'MENU')}
                                         </Dropdown.Item>
                                         <Dropdown.Item
                                             eventKey="for-delegator"
-                                            onClick={() => { history.push("/wallet/staking/for-delegator") }}>For Delegator
+                                            onClick={() => { history.push("/wallet/staking/for-delegator") }}>{getLanguageString(language, 'FOR_DELEGATOR', 'MENU')}
                                         </Dropdown.Item>
                                     </Dropdown>
-                                    <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract">
+                                    <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title={getLanguageString(language, 'SMART_CONTRACT', 'MENU')}>
                                         {/* <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item> */}
                                         <Dropdown.Item
                                             eventKey="byte-code-deployment"
-                                            onClick={() => { history.push("/wallet/smc/byte-code-deployment") }}>Deploy Contract
+                                            onClick={() => { history.push("/wallet/smc/byte-code-deployment") }}>{getLanguageString(language, 'DEPLOY_CONTRACT', 'MENU')}
                                         </Dropdown.Item>
                                         <Dropdown.Item
                                             eventKey="interaction"
-                                            onClick={() => { history.push("/wallet/smc/interaction") }}>Interact With Contract
+                                            onClick={() => { history.push("/wallet/smc/interaction") }}>{getLanguageString(language, 'INTERACT_WITH_CONTRACT', 'MENU')}
                                          </Dropdown.Item>
                                     </Dropdown>
                                 </Nav>

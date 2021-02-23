@@ -6,6 +6,9 @@ import './createWallet.css'
 import { copyToClipboard } from '../../../common/utils/string';
 import Button from '../../../common/components/Button';
 import { isLoggedIn } from '../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../../atom/language.atom';
+import { getLanguageString } from '../../../common/utils/lang';
 
 const CreateByPrivateKey = () => {
 
@@ -16,6 +19,7 @@ const CreateByPrivateKey = () => {
     const [showPrivKey, setShowPrivKey] = useState(false)
     const [wallet, setWallet] = useState({} as WalletStore)
     let history = useHistory();
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         if (isLoggedIn()) {
@@ -51,7 +55,7 @@ const CreateByPrivateKey = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
-                            <h3 className="color-white">PRIVATE KEY</h3>
+                            <h3 className="color-white">{getLanguageString(language, 'PRIVATE_KEY', 'TEXT')}</h3>
                         </FlexboxGrid>
                         {
                             !wallet.privatekey ? (
@@ -63,13 +67,15 @@ const CreateByPrivateKey = () => {
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginTop: '20px'}}>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="kai-button-gray">Back</Button>
+                                                <Button size="big" className="kai-button-gray">
+                                                    {getLanguageString(language, 'BACK', 'BUTTON')}
+                                                </Button>
                                             </Link>
                                             <Button 
                                             className="btn-access"
                                                 size="big"
                                                 onClick={handleGenerate}>
-                                                Create wallet
+                                                {getLanguageString(language, 'CREATE_WALLET', 'BUTTON')}
                                             </Button>
                                         </div>
                                     </FlexboxGrid.Item>
@@ -95,9 +101,13 @@ const CreateByPrivateKey = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="kai-button-gray">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">
+                                                        {getLanguageString(language, 'BACK', 'BUTTON')}
+                                                    </Button>
                                                 </Link>
-                                                <Button className="btn-access" size="big" onClick={accessWalletNow}>Access Now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWalletNow}>
+                                                    {getLanguageString(language, 'ACCESS_NOW', 'BUTTON')}
+                                                </Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

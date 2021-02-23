@@ -137,7 +137,7 @@ const AddressDetail = () => {
                                     wordWrap
                                 >
                                     <Column flexGrow={3} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                        <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>{getLanguageString(language, 'TX_HASH', 'TEXT')}</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -163,7 +163,7 @@ const AddressDetail = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Block Height</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'BLOCK_HEIGHT', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -175,7 +175,7 @@ const AddressDetail = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                        <HeaderCell>From</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'FROM', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -209,7 +209,7 @@ const AddressDetail = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
-                                        <HeaderCell>To</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TO', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -251,7 +251,7 @@ const AddressDetail = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value (KAI)</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'VALUE_KAI', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -263,7 +263,7 @@ const AddressDetail = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TX_FEE_KAI', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (

@@ -92,6 +92,41 @@ export const lang: Language = {
             ESTIMATED_EARNINGS: 'Estimated Earnings',
             VOTING_POWER: 'Voting Power',
             COMMISSION: 'Commission',
+            CREATE_A_NEW_WALLET: 'Create a new wallet',
+            ACCESS_MY_WALLET: 'Access my wallet',
+            CREATE_WITH_PRIVATE_KEY: 'CREATE WITH PRIVATE KEY',
+            CREATE_WITH_KEYSTORED_FILE:'CREATE WITH KEYSTORED FILE',
+            CREATE_WITH_MNEMONIC_PHRASE: 'CREATE WITH MNEMONIC PHRASE',
+            YOU_ALREADY_HAVE_WALLET: 'You already have a wallet.',
+            PRIVATE_KEY: 'PRIVATE KEY',
+            KEYSTORED_FILE: 'KEYSTORED FILE',
+            MNEMONIC_PHRASE: 'MNEMONIC PHRASE',
+            YOUR_12_MNEMONIC_PHRASE: 'Your 12 Mnemonic Phrase',
+            ACCESS_WALLET: 'Access wallet',
+            ACCESS_WALLET_UPPER: 'ACCESS WALLET',
+            DO_NOT_HAVE_WALLET: 'Do not have a wallet?',
+            CREATE_A_NEW_PASSCODE: 'Create A New Pass Code',
+            VERIFY_PASSCPDE: 'Verify pass code to access wallet',
+            YOUR_WALLET_ADDRESS: 'Your Wallet Address',
+            YOUR_PRIVATE_KEY: 'Your Private Key'
+        },
+        DESCRIPTION: {
+            CREATE_A_NEW_WALLET_DES: 'Our user-friendly application will enable wallet creation and user\'s interaction with Kardiachain',
+            ACCESS_MY_WALLET_DES: 'Send your KAI and interact with Kardiachain blockchain platform',
+            CREATE_WITH_PRIVATE_KEY_DES_P1: 'A unique private key will be generated for you.',
+            CREATE_WITH_PRIVATE_KEY_DES_P2: 'Remember to save your private key! If you lose your private key, you will not able to recover your wallet.',
+            CREATE_WITH_KEYSTORED_FILE_DES: 'You must be DOWNLOAD and SAVE the following Keystore File. You will need it and your password to access your wallet.',
+            CREATE_WITH_MNEMONIC_PHRASE_DES: 'REMEMBER to save your mnemonic phrase. You will need this to access your wallet.',
+            CREATE_WITH_MNEMONIC_PHRASE_SUCCESS: 'Create wallet success, you can access wallet now.'
+        },
+        MESSAGE: {
+            WHAT_IS_A_PASSCODE: 'What is a pass code?',
+            WHAT_IS_A_PASSCODE_ANSWER: 'Pass Code is a protection layer to encrypt user Wallets to local storage, It prevents others can accessing your Wallet.',
+            WHAT_IF_I_LOSE_MY_PASSCODE: 'What if I lose my Pass Code?',
+            WHAT_IF_I_LOSE_MY_PASSCODE_ANSWER: 'You can easily remove the Pass Code and create a new one, you will have to access to your Wallet again.'
+        },
+        ERROR_MESSAGE: {
+
         },
         MENU: {
             HOME: 'Home',
@@ -100,6 +135,8 @@ export const lang: Language = {
             VIEW_BLOCKS: 'View Blocks',
             VIEW_ACCOUNTS: 'View Accounts',
             NETWORK: 'Network',
+            VIEW_NETWORK: 'View Network',
+            NETWORK_PROPOSAL: 'Network Proposal',
             PROPOSAL: 'Proposal',
             STAKING: 'Staking',
             WALLET: 'Wallet',
@@ -109,7 +146,9 @@ export const lang: Language = {
             FOR_DELEGATOR: 'For Delegator',
             DEPLOY_CONTRACT: 'Deploy Contract',
             INTERACT_WITH_CONTRACT: 'Interact With Contract',
-            LOGOUT_WALLET: 'Logout Wallet'
+            LOGOUT_WALLET: 'Logout Wallet',
+            SMART_CONTRACT: 'Smart Contract'
+
         },
         BUTTON: {
             SEARCH: 'Search',
@@ -127,6 +166,25 @@ export const lang: Language = {
             DELEGATE: 'Delegate',
             RESET: 'Reset',
             CALCULATE: 'Calculate',
+            GET_STARTED: 'Get Started',
+            ACCESS_NOW: 'Access now',
+            GO: 'Go',
+            CREATE_WALLET: 'Create wallet',
+            DOWNLOAD_KEYSTORE: 'Download Keystore',
+            UPLOAD_KEYSTORE: 'Upload Keystore',
+            COPY: 'Copy',
+            CHANGE_PHRASE: 'Change phrase',
+            PRIVATE_KEY: 'Private Key',
+            KEYSTORE_FILE: 'Keystore File',
+            MNEMONIC_PHRASE: 'Mnemonic Phrase',
+            CREATE_ONE: 'Create one',
+            KARDIA_EXTENSION_WALLET_CONNECT: 'Kardia Extension Wallet Connect',
+            CREATE: 'Create',
+            ACCESS: 'Access',
+            BACK_TO_HOME: 'Back to home',
+            RELOAD_BALANCE: 'Reload balance',
+            MAXIMUM: 'Maximum',
+            SEND_KAI: 'Send KAI'
         },
         FORM: {
 
@@ -136,9 +194,25 @@ export const lang: Language = {
             COMMISSION: 'Commission',
             STAKED_AMOUNT_KAI: 'Staked Amount (KAI)',
             VOTING_POWER: 'Voting Power',
+            VALIDATOR_REQUIRED: 'Validator (required)',
+            ENTER_YOUR_KAI_AMOUNT_REQUIRED: 'Enter your KAI amount (required)',
+            CREATE_KEYSTORE_PASSWORD_REQUIRED: 'Key store password (minimum 8 characters) (required)',
+            KEYSTORE_PASSWORD_REQUIRED: 'Key store password (required)',
+            NEW_PASSCODE_REQUIRED: 'New Pass Code (minimum 8 characters) (required)',
+            CONFIRM_PASSCODE_REQUIRED: 'Confirm Pass Code (required)',
+            PRIVATE_KEY_REQUIRE: 'Private Key (required)',
+            ENTER_WORDS_PHRASE_REQUIRED: 'Enter your secret 12 or 24 words phrase (required)',
+            ENTER_PASSCODE_REQUIRED: 'Enter pass code (required)',
+            TO_ADDRESS_REQUIRED: 'To Address (required)',
+            AMOUNT_KAI_REQUIRED: 'Amount (KAI - required)',
+            GAS_LIMIT_REQUIRED: 'Gas Limit (required)',
+            GAS_PRIRCE_REQUIRED: 'Gas Price (required)',
         },
         PLACE_HOLDER: {
-            SEARCH: 'Search by Address / TxHash / BlockHash ...'
+            SEARCH: 'Search by Address / TxHash / BlockHash ...',
+            CHOOSE_VALIDATOR: 'Choose validator',
+            STAKING_CALCULATOR_MINIMUM_AMOUNT: 'Minimum amount is 1,000',
+            ENTER_WORDS_PHRASE: 'Separate each word with a single space'
         }
     }
 }

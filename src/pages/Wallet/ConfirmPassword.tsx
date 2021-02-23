@@ -4,10 +4,12 @@ import Button from '../../common/components/Button';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
 import { getAccount, getPkByPassword, logoutWallet } from '../../service/wallet';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import walletState from '../../atom/wallet.atom';
 import './wallet.css'
 import { useHistory } from 'react-router-dom';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 const ConfirmPassword = ({ showModal, setShowModal }: {
     showModal: boolean;
@@ -20,6 +22,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
     const myAccount: Account = getAccount();
 
     const [walletLocalState, setWalletState] = useRecoilState(walletState)
+    const language = useRecoilValue(languageAtom);
 
     const validatePass = (pass: string) => {
         if (!pass) {
@@ -59,7 +62,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
     return (
         <Modal backdropClassName="password-modal" backdrop="static" size="xs" enforceFocus={true} show={showModal}>
             <Modal.Header closeButton={false}>
-                <Modal.Title>Verify pass code to access wallet</Modal.Title>
+                <Modal.Title>{getLanguageString(language, 'VERIFY_PASSCPDE', 'TEXT')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
@@ -69,7 +72,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                            <ControlLabel className="color-white">Enter pass code (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{getLanguageString(language, 'ENTER_PASSCODE_REQUIRED', 'LABEL')}</ControlLabel>
                                             <FormControl
                                                 name="password"
                                                 type="password"
@@ -106,10 +109,10 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
             </Modal.Body>
             <Modal.Footer style={{ textAlign: 'center' }}>
                 <Button className="kai-button-gray" onClick={() => {history.push('/')}}>
-                    Back to home
+                    {getLanguageString(language, 'BACK_TO_HOME', 'BUTTON')}
                 </Button>
                 <Button className="kai-button-violet-gradient" onClick={confirmPassword}>
-                    Access
+                    {getLanguageString(language, 'ACCESS', 'BUTTON')}
                 </Button>
             </Modal.Footer>
         </Modal>

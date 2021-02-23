@@ -6,11 +6,15 @@ import './createWallet.css'
 import Button from '../../../common/components/Button';
 import { copyToClipboard } from '../../../common/utils/string';
 import { isLoggedIn } from '../../../service/wallet';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../../atom/language.atom';
+import { getLanguageString } from '../../../common/utils/lang';
 
 const CreateByMnemonic = () => {
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
     let history = useHistory();
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         if (isLoggedIn()) {
@@ -43,7 +47,7 @@ const CreateByMnemonic = () => {
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <h3 className="title color-white">MNEMONIC PHRASE</h3>
+                                <h3 className="title color-white">{getLanguageString(language, 'MNEMONIC_PHRASE', 'TEXT')}</h3>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
@@ -52,13 +56,17 @@ const CreateByMnemonic = () => {
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                             <div style={{ textAlign: 'center', marginTop: 32 }} className="color-white">
-                                                <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle' }} icon='check-circle' /> Create wallet success, you can access wallet now.
+                                                <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle' }} icon='check-circle' /> {getLanguageString(language, 'CREATE_WITH_MNEMONIC_PHRASE_SUCCESS', 'DESCRIPTION')}
                                             </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="kai-button-gray">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">
+                                                        {getLanguageString(language, 'BACK', 'BUTTON')}
+                                                    </Button>
                                                 </Link>
-                                                <Button className="btn-access" size="big" onClick={accessWallet}>Access Now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWallet}>
+                                                    {getLanguageString(language, 'ACCESS_NOW', 'BUTTON')}
+                                                </Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -67,7 +75,9 @@ const CreateByMnemonic = () => {
                                     <>
                                         <FlexboxGrid justify="center">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={24}>
-                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your 12 Mnemonic Phrase</div>
+                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                                                    {getLanguageString(language, 'YOUR_12_MNEMONIC_PHRASE', 'TEXT')}
+                                                </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                         <FlexboxGrid justify="center">
@@ -92,10 +102,10 @@ const CreateByMnemonic = () => {
                                                                 Alert.success('Copied to clipboard.')
                                                             }
                                                             copyToClipboard(mnemonic, onSuccess)
-                                                        }}>Copy <Icon icon="copy-o" />
+                                                        }}>{getLanguageString(language, 'COPY', 'BUTTON')} <Icon icon="copy-o" />
                                                     </Button>
                                                     <Button className="kai-button-gray" onClick={() => randomPhrase()} style={{ marginBottom: 5 }}>
-                                                        Change phrase <Icon icon="refresh" />
+                                                    {getLanguageString(language, 'CHANGE_PHRASE', 'BUTTON')} <Icon icon="refresh" />
                                                     </Button>
                                                 </div>
                                             </FlexboxGrid.Item>
@@ -103,9 +113,13 @@ const CreateByMnemonic = () => {
                                         <div className="color-white">Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="kai-button-gray">Back</Button>
+                                                <Button size="big" className="kai-button-gray">
+                                                    {getLanguageString(language, 'BACK', 'BUTTON')}
+                                                </Button>
                                             </Link>
-                                            <Button className="btn-access" size="big" onClick={createWallet}>Create wallet</Button>
+                                            <Button className="btn-access" size="big" onClick={createWallet}>
+                                                {getLanguageString(language, 'CREATE_WALLET', 'BUTTON')}
+                                            </Button>
                                         </div>
                                     </>
                                 )

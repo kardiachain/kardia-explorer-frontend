@@ -15,6 +15,8 @@ import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom'
 import { generateTxForEW } from '../../../../service/extensionWallet'
 import { weiToKAI } from '../../../../common/utils/amount'
+import languageAtom from '../../../../atom/language.atom'
+import { getLanguageString } from '../../../../common/utils/lang'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -31,6 +33,7 @@ const SendTransaction = () => {
     const [gasPriceErr, setGasPriceErr] = useState('')
 
     const walletLocalState = useRecoilValue(walletState)
+    const language = useRecoilValue(languageAtom)
 
 
     const validateAmount = (amount: any): boolean => {
@@ -182,7 +185,7 @@ const SendTransaction = () => {
         <div className="send-txs-container">
             <div style={{ marginBottom: 16 }}>
                 <div className="title header-title">
-                    Transactions
+                    {getLanguageString(language, 'TRANSACTION', 'TEXT')}
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -192,7 +195,9 @@ const SendTransaction = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">To Address (required)</ControlLabel>
+                                        <ControlLabel className="color-white">
+                                            {getLanguageString(language, 'TO_ADDRESS_REQUIRED', 'LABEL')}
+                                        </ControlLabel>
                                         <FormControl
                                             placeholder="Ex. 0x..."
                                             name="toAddress"

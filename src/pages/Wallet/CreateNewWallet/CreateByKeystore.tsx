@@ -6,6 +6,9 @@ import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessa
 import { ErrorMessage } from '../../../common/constant/Message';
 import Button from '../../../common/components/Button';
 import { isLoggedIn } from '../../../service/wallet';
+import { getLanguageString } from '../../../common/utils/lang';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../../atom/language.atom';
 
 const CreateByKeystore = () => {
     const [password, setPassword] = useState('');
@@ -14,6 +17,7 @@ const CreateByKeystore = () => {
     const [isLoading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     let history = useHistory();
+    const language = useRecoilValue(languageAtom)
     
     useEffect(() => {
         if (isLoggedIn()) {
@@ -65,14 +69,14 @@ const CreateByKeystore = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
-                            <h3 className="color-white">KEYSTORED FILE</h3>
+                            <h3 className="color-white">{getLanguageString(language, 'KEYSTORED_FILE', 'TEXT')}</h3>
                         </FlexboxGrid>
                         {
                             !blobUrl ? (
                                 <FlexboxGrid justify="center">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                         <div className="text-container">
-                                        <ControlLabel className="color-white">Key store password (minimum 8 characters) (required)</ControlLabel>
+                                        <ControlLabel className="color-white">{getLanguageString(language, 'CREATE_KEYSTORE_PASSWORD_REQUIRED', 'LABEL')}</ControlLabel>
                                             <Form fluid>
                                                 <FormGroup style={{ marginBottom: '12px' }}>
                                                     <FormControl
@@ -91,9 +95,13 @@ const CreateByKeystore = () => {
                                         </div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="kai-button-gray">Back</Button>
+                                                <Button size="big" className="kai-button-gray">
+                                                    {getLanguageString(language, 'BACK', 'BUTTON')}
+                                                </Button>
                                             </Link>
-                                            <Button className="btn-access" size="big" loading={isLoading} onClick={createWallet}>Create wallet</Button>
+                                            <Button className="btn-access" size="big" loading={isLoading} onClick={createWallet}>
+                                                {getLanguageString(language, 'CREATE_WALLET', 'BUTTON')}
+                                            </Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -104,14 +112,18 @@ const CreateByKeystore = () => {
                                             <div className="color-white"> You will need it and <span className="note">your password</span> to access your wallet.</div>
                                             <div className="download-keystore-file">
                                                 <a href={blobUrl} download={keystoreFilename}>
-                                                <Icon icon="download" size={"lg"}/> Download Keystore
+                                                <Icon icon="download" size={"lg"}/> {getLanguageString(language, 'DOWNLOAD_KEYSTORE', 'BUTTON')}
                                             </a>
                                             </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="kai-button-gray">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">
+                                                        {getLanguageString(language, 'BACK', 'BUTTON')}
+                                                    </Button>
                                                 </Link>
-                                                <Button className="btn-access" size="big" onClick={accessWallet}>Access now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWallet}>
+                                                    {getLanguageString(language, 'ACCESS_NOW', 'BUTTON')}
+                                                </Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

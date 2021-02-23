@@ -13,6 +13,8 @@ import { ControlLabel } from 'rsuite';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import CreateNewPassword from '../CreateNewPassword';
+import languageAtom from '../../../atom/language.atom';
+import { getLanguageString } from '../../../common/utils/lang';
 
 const AccessByPrivateKey = () => {
     let history = useHistory();
@@ -24,6 +26,7 @@ const AccessByPrivateKey = () => {
     const walletLocalState: WalletState = useRecoilValue(walletState);
     
     const [createNewPassCode, setCreateNewPassCode] = useState(true)
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         if (isLoggedIn()) {
@@ -75,13 +78,13 @@ const AccessByPrivateKey = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                         <Panel shaded className="panel-bg-gray">
                             <FlexboxGrid justify="start">
-                                <h3 className="color-white">ACCESS WALLET</h3>
+                                <h3 className="color-white">{getLanguageString(language, 'ACCESS_WALLET_UPPER', 'TEXT')}</h3>
                             </FlexboxGrid>
                             <FlexboxGrid justify="center">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                     <Form fluid>
                                         <FormGroup>
-                                            <ControlLabel className="color-white">Private Key (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{getLanguageString(language, 'PRIVATE_KEY_REQUIRE', 'LABEL')}</ControlLabel>
                                             <FormControl placeholder="Ex. 0x..."
                                                 name="password"
                                                 type="password"
@@ -96,9 +99,13 @@ const AccessByPrivateKey = () => {
                                     </Form>
                                     <div className="button-container">
                                         <Link to="/access-wallet">
-                                            <Button size="big" className="kai-button-gray" >Back</Button>
+                                            <Button size="big" className="kai-button-gray" >
+                                                {getLanguageString(language, 'BACK', 'BUTTON')}
+                                            </Button>
                                         </Link>
-                                        <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
+                                        <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>
+                                            {getLanguageString(language, 'ACCESS_NOW', 'BUTTON')}
+                                        </Button>
                                     </div>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
