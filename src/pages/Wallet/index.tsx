@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Col, FlexboxGrid, Panel, Icon } from 'rsuite';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 import { useViewport } from '../../context/ViewportContext';
 import { isLoggedIn } from '../../service/wallet';
 import './wallet.css';
@@ -8,6 +11,7 @@ import './wallet.css';
 const Wallet = () => {
     let history = useHistory();
     const { isMobile } = useViewport()
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         if (isLoggedIn()) {
@@ -28,10 +32,10 @@ const Wallet = () => {
                                             <Icon icon="cogs" size="lg" />
                                         </div>
                                         {
-                                            isMobile ? <h3>Create a new wallet</h3> : <h2>Create a new wallet</h2>
+                                            isMobile ? <h3>{getLanguageString(language, 'CREATE_A_NEW_WALLET', 'TEXT')}</h3> : <h2>{getLanguageString(language, 'CREATE_A_NEW_WALLET', 'TEXT')}</h2>
                                         }
-                                        <p>Our user-friendly application will enable wallet creation and user's interaction with Kardiachain</p>
-                                        <div className="move">Get Started &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
+                                        <p>{getLanguageString(language, 'CREATE_A_NEW_WALLET_DES', 'DESCRIPTION')}</p>
+                                        <div className="move">{getLanguageString(language, 'GET_STARTED', 'BUTTON')} &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </Panel>
@@ -46,10 +50,10 @@ const Wallet = () => {
                                             <Icon icon="character-area" size="lg" />
                                         </div>
                                         {
-                                            isMobile ? <h3>Access my wallet</h3> : <h2>Access my wallet</h2>
+                                            isMobile ? <h3>{getLanguageString(language, 'ACCESS_MY_WALLET', 'TEXT')}</h3> : <h2>{getLanguageString(language, 'ACCESS_MY_WALLET', 'TEXT')}</h2>
                                         }
-                                        <p>Send your KAI and interact with Kardiachain blockchain platform</p>
-                                        <div className="move">Access Now &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
+                                        <p>{getLanguageString(language, 'ACCESS_MY_WALLET_DES', 'DESCRIPTION')}</p>
+                                        <div className="move">{getLanguageString(language, 'ACCESS_NOW', 'BUTTON')} &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </Panel>

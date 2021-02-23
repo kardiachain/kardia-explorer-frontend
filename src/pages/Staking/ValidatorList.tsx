@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Table } from 'rsuite';
+import languageAtom from '../../atom/language.atom';
 import Button from '../../common/components/Button';
 import { StakingIcon } from '../../common/components/IconCustom';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
+import { getLanguageString } from '../../common/utils/lang';
 import { numberFormat } from '../../common/utils/number';
 import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -18,6 +21,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
 }) => {
     let history = useHistory();
     const { isMobile } = useViewport();
+    const language = useRecoilValue(languageAtom)
 
     return (
         <div>
@@ -30,7 +34,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                 loading={loading}
             >
                 <Column flexGrow={3} minWidth={isMobile ? 200 : 250} verticalAlign="middle">
-                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{marginLeft: 50}}>{getLanguageString(language, 'VALIDATOR', 'TEXT')}</span></HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -66,7 +70,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} verticalAlign="middle">
-                    <HeaderCell>Rank</HeaderCell>
+                    <HeaderCell>{getLanguageString(language, 'RANK', 'TEXT')}</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -78,7 +82,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
-                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
+                    <HeaderCell>{getLanguageString(language, 'STAKED_AMOUNT_KAI', 'TEXT')}</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -88,7 +92,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
-                    <HeaderCell>Voting power (%)</HeaderCell>
+                    <HeaderCell>{getLanguageString(language, 'VOTING_POWER', 'TEXT')} (%)</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -98,7 +102,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
-                    <HeaderCell>Delegators</HeaderCell>
+                    <HeaderCell>{getLanguageString(language, 'DELEGATORS', 'TEXT')}</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -108,7 +112,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={100} verticalAlign="middle">
-                    <HeaderCell>Commission (%)</HeaderCell>
+                    <HeaderCell>{getLanguageString(language, 'COMMISSION', 'TEXT')} (%)</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -122,7 +126,9 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <Button className="kai-button-gray delegate-btn" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                <Button className="kai-button-gray delegate-btn" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>
+                                    {getLanguageString(language, 'DELEGATE', 'BUTTON')}
+                                </Button>
                             );
                         }}
                     </Cell>

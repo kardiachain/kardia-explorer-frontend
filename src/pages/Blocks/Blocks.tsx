@@ -11,6 +11,9 @@ import { numberFormat } from '../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
 import SearchSection from '../../common/components/Header/SearchSection';
 import { weiToKAI } from '../../common/utils/amount';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -21,6 +24,7 @@ const Blocks = () => {
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const { isMobile } = useViewport()
     const [loading, setLoading] = useState(false)
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         (async () => {
@@ -50,7 +54,7 @@ const Blocks = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{marginBottom: 16}}>
                         <div className="title header-title">
-                            Blocks
+                            {getLanguageString(language, 'BLOCKS', 'TEXT')}
                         </div>
                         <div className="sub-title">
                             Block #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} to #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)
@@ -73,7 +77,7 @@ const Blocks = () => {
                                     loading={loading}
                                 >
                                     <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                        <HeaderCell><span style={{marginLeft: 40}}>Block</span></HeaderCell>
+                                        <HeaderCell><span style={{marginLeft: 40}}>{getLanguageString(language, 'BLOCK', 'TEXT')}</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -91,7 +95,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 110 : 250} verticalAlign="middle">
-                                        <HeaderCell>Proposer</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'PROPOSER', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -113,7 +117,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={1} verticalAlign="middle">
-                                        <HeaderCell>Txs</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TXS', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -128,7 +132,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Gas Used</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'GAS_USED', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -140,7 +144,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Gas Limit</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'GAS_LIMIT', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -152,7 +156,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Rewards (KAI)</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'REWARDS_KAI', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (

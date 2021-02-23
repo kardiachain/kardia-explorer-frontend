@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite';
 import Button from '../../common/components/Button';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { ErrorMessage } from '../../common/constant/Message';
 import walletState from '../../atom/wallet.atom';
 import './wallet.css'
 import { useHistory } from 'react-router-dom';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 const CreateNewPassword = ({ show, setShow }: {
     show: boolean;
@@ -18,6 +20,7 @@ const CreateNewPassword = ({ show, setShow }: {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [confirmPasswordErr, setConfirmPasswordErr] = useState('')
     const history = useHistory()
+    const language = useRecoilValue(languageAtom)
 
     const setWalletState = useSetRecoilState(walletState)
 
@@ -77,21 +80,21 @@ const CreateNewPassword = ({ show, setShow }: {
                         <FlexboxGrid.Item componentclass={Col} colspan={22} sm={24} >
                             <Panel shaded className="panel-bg-gray">
                                 <FlexboxGrid justify="center" style={{ marginBottom: 20 }}>
-                                    <h2 className="color-white" style={{ fontSize: 20 }}>Create A New Pass Code</h2>
+                                    <h2 className="color-white" style={{ fontSize: 20 }}>{getLanguageString(language, 'CREATE_A_NEW_PASSCODE', 'TEXT')}</h2>
                                 </FlexboxGrid>
                                 <FlexboxGrid style={{ marginBottom: 20 }}>
                                     <div style={{ padding: '0 5px' }}>
                                         <div className="createpass-note">
-                                            <b>What is a pass code?</b> <br />
-                                            <span>Pass Code is a protection layer to encrypt user Wallets to local storage, It prevents others can accessing your Wallet.</span> <br />
-                                            <b>What if I lose my Pass Code?</b> <br />
-                                            <span>You can easily remove the Pass Code and create a new one, you will have to access to your Wallet again.</span>
+                                            <b>{getLanguageString(language, 'WHAT_IS_A_PASSCODE', 'MESSAGE')}</b> <br />
+                                            <span>{getLanguageString(language, 'WHAT_IS_A_PASSCODE_ANSWER', 'MESSAGE')}</span> <br />
+                                            <b>{getLanguageString(language, 'WHAT_IF_I_LOSE_MY_PASSCODE', 'MESSAGE')}</b> <br />
+                                            <span>{getLanguageString(language, 'WHAT_IF_I_LOSE_MY_PASSCODE_ANSWER', 'MESSAGE')}</span>
                                         </div>
                                     </div>
                                 </FlexboxGrid>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentclass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                        <ControlLabel className="color-white">New Pass Code (minimum 8 characters) (required)</ControlLabel>
+                                        <ControlLabel className="color-white">{getLanguageString(language, 'NEW_PASSCODE_REQUIRED', 'LABEL')}</ControlLabel>
                                         <FormControl
                                             name="password"
                                             type="password"
@@ -105,7 +108,7 @@ const CreateNewPassword = ({ show, setShow }: {
                                         <ErrMessage message={passwordErr} />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentclass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">Confirm Pass Code (required)</ControlLabel>
+                                        <ControlLabel className="color-white">{getLanguageString(language, 'CONFIRM_PASSCODE_REQUIRED', 'LABEL')}</ControlLabel>
                                         <FormControl
                                             name="confirmPassword"
                                             type="password"
@@ -120,9 +123,11 @@ const CreateNewPassword = ({ show, setShow }: {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid justify="center" style={{ margin: '30px auto 20px auto' }}>
                                         <Button className="kai-button-gray" size="big" onClick={() => { history.push('/access-wallet') }}>
-                                            Back
+                                            {getLanguageString(language, 'BACK', 'BUTTON')}
                                         </Button>
-                                        <Button className="btn-access" size="big" onClick={createNewPassword} >Create</Button>
+                                        <Button className="btn-access" size="big" onClick={createNewPassword} >
+                                            {getLanguageString(language, 'CREATE', 'BUTTON')}
+                                        </Button>
                                     </FlexboxGrid>
                                 </FlexboxGrid>
                             </Panel>

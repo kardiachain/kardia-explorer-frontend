@@ -12,6 +12,9 @@ import './txList.css'
 import SearchSection from '../../common/components/Header/SearchSection';
 import { numberFormat } from '../../common/utils/number';
 import { StakingIcon } from '../../common/components/IconCustom';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../atom/language.atom';
+import { getLanguageString } from '../../common/utils/lang';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -25,6 +28,7 @@ const TxList = () => {
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
     const [loading, setLoading] = useState(false)
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         (async () => {
@@ -65,10 +69,10 @@ const TxList = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Transactions
+                            {getLanguageString(language, 'TRANSACTIONS', 'TEXT')}
                         </div>
                         <div className="sub-title">
-                            {numberFormat(totalTxs)} transactions found
+                            {numberFormat(totalTxs)} {getLanguageString(language, 'TXS_FOUND', 'TEXT')}
                         </div>
                     </div>
                 </FlexboxGrid.Item>
@@ -88,7 +92,7 @@ const TxList = () => {
                                     wordWrap
                                 >
                                     <Column flexGrow={3} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
-                                        <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>{getLanguageString(language, 'TX_HASH', 'TEXT')}</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -114,7 +118,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 70 : 100} verticalAlign="middle">
-                                        <HeaderCell>Block</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'BLOCK', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -126,7 +130,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
-                                        <HeaderCell>From</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'FROM', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -162,7 +166,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
-                                        <HeaderCell>To</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TO', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -209,7 +213,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value (KAI)</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'VALUE_KAI', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -221,7 +225,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
+                                        <HeaderCell>{getLanguageString(language, 'TX_FEE_KAI', 'TEXT')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (

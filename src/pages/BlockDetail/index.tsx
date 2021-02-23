@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Col, FlexboxGrid, Icon, List, Panel, Placeholder } from 'rsuite'
+import languageAtom from '../../atom/language.atom';
 import { weiToKAI } from '../../common/utils/amount';
+import { getLanguageString } from '../../common/utils/lang';
 import { numberFormat } from '../../common/utils/number';
 import { dateToUTCString, millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { getBlockBy } from '../../service/kai-explorer/block';
@@ -13,6 +16,7 @@ const BlockDetail = () => {
     const [blockDetail, setBlockDetail] = useState<KAIBlockDetails>()
     const { block }: any = useParams();
     const [loading, setLoading] = useState(true)
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         (async () => {
@@ -30,7 +34,7 @@ const BlockDetail = () => {
         <div className="container block-detail-container">
             <div style={{ marginBottom: 16 }}>
                 <div className="title header-title">
-                    Block Details
+                    {getLanguageString(language, 'BLOCK_DETAILS', 'TEXT')}
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -40,7 +44,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Height</div>
+                                        <div className="property-title">{getLanguageString(language, 'HEIGHT', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(blockDetail?.blockHeight)}</div>
@@ -50,7 +54,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Block Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'BLOCK_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{renderHashString(blockDetail?.blockHash || '', 64)}</div>
@@ -60,7 +64,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">TimeStamp</div>
+                                        <div className="property-title">{getLanguageString(language, 'TIME_STAMP', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content"><Icon className="orange-highlight" icon="clock-o" style={{ marginRight: 5 }} />{millisecondToHMS(blockDetail?.age || 0)} ({blockDetail?.time ? dateToUTCString(blockDetail?.time) : ''})</div>
@@ -70,7 +74,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Number of Tx</div>
+                                        <div className="property-title">{getLanguageString(language, 'NUMBER_OF_TXS', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
@@ -84,7 +88,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Block Rewards</div>
+                                        <div className="property-title">{getLanguageString(language, 'BLOCK_REWARDS', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
@@ -96,7 +100,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Gas Limit</div>
+                                        <div className="property-title">{getLanguageString(language, 'GAS_LIMIT', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(blockDetail?.gasLimit || 0)}</div>
@@ -106,7 +110,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Gas Used</div>
+                                        <div className="property-title">{getLanguageString(language, 'GAS_USED', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(blockDetail?.gasUsed || 0)} ({blockDetail?.gasUsedPercent}%)</div>
@@ -116,7 +120,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Last Block Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'LAST_BLOCK_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
@@ -135,7 +139,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Commit Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'COMMIT_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{renderHashString(blockDetail?.commitHash || '', 64)}</div>
@@ -145,7 +149,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Proposer</div>
+                                        <div className="property-title">{getLanguageString(language, 'PROPOSER', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
@@ -167,7 +171,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Validators Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'VALIDATORS_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{renderHashString(blockDetail?.validatorHash || '', 64)}</div>
@@ -177,7 +181,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Next Validators Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'NEXT_VALIDATORS_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{renderHashString(blockDetail?.nextValidatorHash || '', 64)}</div>
@@ -187,7 +191,7 @@ const BlockDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Data Hash</div>
+                                        <div className="property-title">{getLanguageString(language, 'DATA_HASH', 'TEXT')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{renderHashString(blockDetail?.dataHash || '', 64)}</div>

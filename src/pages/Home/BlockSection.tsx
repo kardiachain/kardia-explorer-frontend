@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
+import languageAtom from '../../atom/language.atom';
 import { weiToKAI } from '../../common/utils/amount';
+import { getLanguageString } from '../../common/utils/lang';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -13,6 +16,7 @@ const BlockSection = ({ blockList = [] }: {
     blockList: KAIBlock[]
 }) => {
     const { isMobile } = useViewport()
+    const language = useRecoilValue(languageAtom)
     return (
         <Panel shaded className="panel-bg-gray">
             <FlexboxGrid justify="space-between">
@@ -26,8 +30,8 @@ const BlockSection = ({ blockList = [] }: {
                         autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                            <HeaderCell><span style={{ marginLeft: 40 }}>Block Height</span></HeaderCell>
-                            <Cell dataKey="blockHeight" >
+                            <HeaderCell><span style={{ marginLeft: 40 }}>{getLanguageString(language, 'BLOCK_HEIGHT', 'TEXT')}</span></HeaderCell>
+                            <Cell>
                                 {(rowData: KAIBlock) => {
                                     return (
                                         <div>
@@ -44,7 +48,7 @@ const BlockSection = ({ blockList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={2} minWidth={150}>
-                            <HeaderCell>Proposer</HeaderCell>
+                            <HeaderCell>{getLanguageString(language, 'PROPOSER', 'TEXT')}</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {
                                     return (
@@ -74,7 +78,7 @@ const BlockSection = ({ blockList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={2} minWidth={110} align="right" verticalAlign="middle">
-                            <HeaderCell>Rewards (KAI)</HeaderCell>
+                            <HeaderCell>{getLanguageString(language, 'REWARDS_KAI', 'TEXT')}</HeaderCell>
                             <Cell dataKey="transactions">
                                 {(rowData: KAIBlock) => {
                                     return (

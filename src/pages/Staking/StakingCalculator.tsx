@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, SelectPicker } from 'rsuite';
+import languageAtom from '../../atom/language.atom';
 import Button from '../../common/components/Button';
 import NumberInputFormat from '../../common/components/FormInput';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { ErrorMessage } from '../../common/constant/Message';
 import { formatAmount, weiToKAI } from '../../common/utils/amount';
+import { getLanguageString } from '../../common/utils/lang';
 import { numberFormat } from '../../common/utils/number';
 import { useViewport } from '../../context/ViewportContext';
 import { getLatestBlock } from '../../service/kai-explorer';
@@ -39,6 +42,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
     const [calcResult, setCalcResult] = useState<CalcResult>()
     const [blockReward, setBlockReward] = useState(0);
     const { isMobile } = useViewport()
+    const language = useRecoilValue(languageAtom)
 
     useEffect(() => {
         // Get blocks
@@ -141,16 +145,20 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                 reset()
             }}>
             <Modal.Header>
-                <Modal.Title>Staking Calculator</Modal.Title>
+                <Modal.Title>
+                    {getLanguageString(language, 'STAKING_CALCULATOR', 'TEXT')}
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24} style={{ marginBottom: 10 }}>
-                                <ControlLabel className="color-white">Validator (required)</ControlLabel>
+                                <ControlLabel className="color-white">
+                                    {getLanguageString(language, 'VALIDATOR_REQUIRED', 'LABEL')}
+                                </ControlLabel>
                                 <SelectPicker
-                                    placeholder="Choose validator"
+                                    placeholder={getLanguageString(language, 'CHOOSE_VALIDATOR', 'PLACE_HOLDER')}
                                     className="dropdown-custom"
                                     data={validatorSelectList}
                                     searchable={true}
@@ -165,10 +173,12 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                 <ErrMessage message={validatorErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24} style={{ marginBottom: 20 }}>
-                                <ControlLabel className="color-white">Enter your KAI amount (required)</ControlLabel>
+                                <ControlLabel className="color-white">
+                                    {getLanguageString(language, 'ENTER_YOUR_KAI_AMOUNT_REQUIRED', 'LABEL')}
+                                </ControlLabel>
                                 <NumberInputFormat
                                     value={amount}
-                                    placeholder="Minimum amount is 1,000"
+                                    placeholder={getLanguageString(language, 'STAKING_CALCULATOR_MINIMUM_AMOUNT', 'PLACE_HOLDER')}
                                     className="input"
                                     onChange={(event) => {
                                         setAmount(event.value);
@@ -189,14 +199,18 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                                <div className="property-title fs-24" >Validator's Stats</div>
+                                                <div className="property-title fs-24" >
+                                                    {getLanguageString(language, 'VALIDATOR_STATS', 'TEXT')}
+                                                </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </List.Item>
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">Validator Name</div>
+                                                <div className="property-title">
+                                                    {getLanguageString(language, 'VALIDATOR_NAME', 'LABEL')}
+                                                </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
@@ -208,7 +222,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">Commission (%)</div>
+                                                <div className="property-title">{getLanguageString(language, 'COMMISSION', 'LABEL')} (%)</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
@@ -220,7 +234,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">Staked Amount (KAI)</div>
+                                                <div className="property-title">{getLanguageString(language, 'STAKED_AMOUNT_KAI', 'LABEL')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
@@ -232,7 +246,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">Voting Power (%)</div>
+                                                <div className="property-title">{getLanguageString(language, 'VOTING_POWER', 'LABEL')} (%)</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
@@ -253,14 +267,14 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                                <div className="property-title fs-24">Estimated Earnings</div>
+                                                <div className="property-title fs-24">{getLanguageString(language, 'ESTIMATED_EARNINGS', 'TEXT')}</div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </List.Item>
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">30 days</div>
+                                                <div className="property-title">30 {getLanguageString(language, 'DAYS', 'TEXT')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
@@ -272,7 +286,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">90 days</div>
+                                                <div className="property-title">90 {getLanguageString(language, 'DAYS', 'TEXT')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
@@ -284,7 +298,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">180 days</div>
+                                                <div className="property-title">180 {getLanguageString(language, 'DAYS', 'TEXT')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">
@@ -296,7 +310,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
-                                                <div className="property-title">365 days</div>
+                                                <div className="property-title">365 {getLanguageString(language, 'DAYS', 'TEXT')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24}>
                                                 <div className="property-content">

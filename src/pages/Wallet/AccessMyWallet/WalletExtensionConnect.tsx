@@ -5,12 +5,16 @@ import { useWalletStorage } from '../../../service/wallet';
 import kardiaIcon from '../../../resources/kardia_logo_icon.png';
 import './accessWallet.css';
 import { kardiaExtensionWalletEnabled } from '../../../service/extensionWallet';
+import { useRecoilValue } from 'recoil';
+import languageAtom from '../../../atom/language.atom';
+import { getLanguageString } from '../../../common/utils/lang';
 
 
 const WalletExtensionConnect = () => {
 
     const history = useHistory();
     const setWalletStored = useWalletStorage(() => history.push('/wallet/dashboard'))[1];
+    const language = useRecoilValue(languageAtom)
 
     const walletConnect = async () => {
         if (!kardiaExtensionWalletEnabled()) {
@@ -33,7 +37,7 @@ const WalletExtensionConnect = () => {
     return (
         <Button size="lg" block onClick={walletConnect} style={{whiteSpace: 'break-spaces'}} >
             <img src={kardiaIcon} className="kardia-extension-wallet-icon" alt="Kardia block explorer" /> 
-            <span>Kardia Extension Wallet Connect</span>
+            <span>{getLanguageString(language, 'KARDIA_EXTENSION_WALLET_CONNECT', 'BUTTON')}</span>
         </Button>
     )
 }

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
+import languageAtom from '../../atom/language.atom';
 import { weiToKAI } from '../../common/utils/amount';
+import { getLanguageString } from '../../common/utils/lang';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
@@ -13,6 +16,7 @@ const TransactionSection = ({ transactionList = [] }: {
     transactionList: KAITransaction[]
 }) => {
     const { isMobile } = useViewport();
+    const language = useRecoilValue(languageAtom)
     return (
         <Panel shaded className="panel-bg-gray">
             <FlexboxGrid justify="space-between">
@@ -26,7 +30,7 @@ const TransactionSection = ({ transactionList = [] }: {
                         autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                            <HeaderCell><span style={{marginLeft: 40}}>Tx Hash</span></HeaderCell>
+                            <HeaderCell><span style={{marginLeft: 40}}>{getLanguageString(language, 'TX_HASH', 'TEXT')}</span></HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
@@ -49,7 +53,7 @@ const TransactionSection = ({ transactionList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={2} minWidth={180} verticalAlign="middle">
-                            <HeaderCell>Detail</HeaderCell>
+                            <HeaderCell>{getLanguageString(language, 'DETAILS', 'TEXT')}</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
@@ -100,7 +104,7 @@ const TransactionSection = ({ transactionList = [] }: {
                             </Cell>
                         </Column>
                         <Column align="right" verticalAlign="middle" flexGrow={1} minWidth={70}>
-                            <HeaderCell>Value (KAI)</HeaderCell>
+                            <HeaderCell>{getLanguageString(language, 'REWARDS_KAI', 'VALUE_KAI')}</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (

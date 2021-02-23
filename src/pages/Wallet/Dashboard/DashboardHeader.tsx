@@ -10,6 +10,8 @@ import { numberFormat } from '../../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
+import languageAtom from '../../../atom/language.atom';
+import { getLanguageString } from '../../../common/utils/lang';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -18,6 +20,7 @@ const DashboardHeader = () => {
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
     const walletLocalState = useRecoilValue(walletState)
+    const language = useRecoilValue(languageAtom)
     useEffect(() => {
         (async () => {
             if (!account.publickey) {
@@ -81,7 +84,9 @@ const DashboardHeader = () => {
                 <Col md={12} sm={24} xs={24}>
                     <Panel shaded className="wallet-info-card address panel-bg-gray">
                         <div className="card-body">
-                            <div className="title color-white"><Icon className="icon gray-highlight" icon="views-authorize" />Address</div>
+                            <div className="title color-white"><Icon className="icon gray-highlight" icon="views-authorize" />
+                                {getLanguageString(language, 'ADDRESS', 'TEXT')}
+                            </div>
                             <div className="content color-white" style={{ wordBreak: 'break-all', fontWeight: 'bold', paddingLeft: '42px' }}>{account.publickey}</div>
                         </div>
                         <div className="card-footer">
@@ -102,11 +107,13 @@ const DashboardHeader = () => {
                 <Col md={12} sm={24} xs={24}>
                     <Panel shaded className="wallet-info-card balance panel-bg-gray">
                         <div className="card-body">
-                            <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
+                            <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />
+                                {getLanguageString(language, 'BALANCE', 'TEXT')}
+                            </div>
                             <div className="content color-white" style={{ paddingLeft: '42px' }}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
                         </div>
                         <div className="card-footer">
-                            <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance
+                            <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />{getLanguageString(language, 'RELOAD_BALANCE', 'BUTTON')}
                         </div>
                     </Panel>
                 </Col>
@@ -114,7 +121,7 @@ const DashboardHeader = () => {
             {/* Modal show wallet address */}
             <Modal size="sm" show={showAddress} onHide={() => { setShowAddress(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Your Wallet Address</Modal.Title>
+                    <Modal.Title>{getLanguageString(language, 'YOUR_WALLET_ADDRESS', 'TEXT')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ display: 'flex', justifyContent: 'center' }}>
                     <QRCode
@@ -131,7 +138,7 @@ const DashboardHeader = () => {
             {/* Modal show private key */}
             <Modal size="sm" show={showPrivateKey} onHide={() => { setShowPrivateKey(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Your Private Key</Modal.Title>
+                    <Modal.Title>{getLanguageString(language, 'YOUR_PRIVATE_KEY', 'TEXT')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ textAlign: 'center', wordBreak: 'break-all' }}>

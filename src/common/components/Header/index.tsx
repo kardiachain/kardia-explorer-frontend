@@ -6,8 +6,11 @@ import logo from '../../../resources/Logo-dark.svg';
 import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
 import NetworkSelect from './NetworkSelect';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
+import languageAtom from '../../../atom/language.atom';
+import { getLanguageString } from '../../utils/lang';
+import LanguageSelect from './LanguageSelect';
 
 const Header = () => {
     const [activeKey, setActiveKey] = useState('home');
@@ -16,8 +19,10 @@ const Header = () => {
 
     const location = useLocation()
     let history = useHistory();
+    const language = useRecoilValue(languageAtom)
 
     const setWalletState = useSetRecoilState(walletState);
+
 
     useEffect(() => {
         if (location.pathname.indexOf("/address/") > -1 ||
@@ -70,95 +75,97 @@ const Header = () => {
                                         onClick={() => {
                                             history.push("/")
                                             setShowMenu(false)
-                                        }}>Home</Nav.Item>
-                                    <Dropdown eventKey="blockchain" icon={<Icon className="gray-highlight" icon="unlink" />} title="Blockchain">
+                                        }}>{getLanguageString(language, 'HOME', 'MENU')}</Nav.Item>
+                                    <Dropdown eventKey="blockchain" icon={<Icon className="gray-highlight" icon="unlink" />}
+                                        title={getLanguageString(language, 'BLOCKCHAIN', 'MENU')}>
                                         <Dropdown.Item onClick={() => {
                                             history.push("/txs")
                                             setShowMenu(false)
-                                        }}>View Transactions</Dropdown.Item>
+                                        }}>{getLanguageString(language, 'VIEW_TRANSACTIONS', 'MENU')}</Dropdown.Item>
                                         <Dropdown.Item onClick={() => {
                                             history.push("/blocks")
                                             setShowMenu(false)
-                                        }}>View Blocks</Dropdown.Item>
+                                        }}>{getLanguageString(language, 'VIEW_BLOCKS', 'MENU')}</Dropdown.Item>
                                         <Dropdown.Item onClick={() => {
                                             history.push("/accounts")
                                             setShowMenu(false)
-                                        }}>View Accounts</Dropdown.Item>
+                                        }}>{getLanguageString(language, 'VIEW_ACCOUNTS', 'MENU')}</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
-                                        onClick={() => {
+                                    <Dropdown eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
+                                        title={getLanguageString(language, 'NETWORK', 'MENU')}>
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/network")
                                             setShowMenu(false)
-                                        }}>Network</Nav.Item>
-                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
-                                    <Nav.Item eventKey="proposal" icon={<Icon className="gray-highlight" icon="data-increase" />}
-                                        onClick={() => {
+                                        }}>{getLanguageString(language, 'VIEW_NETWORK', 'MENU')}</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/proposals")
                                             setShowMenu(false)
-                                        }}>Proposal</Nav.Item>
+                                        }}>{getLanguageString(language, 'NETWORK_PROPOSAL', 'MENU')}</Dropdown.Item>
+                                    </Dropdown>
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
                                         onClick={() => {
                                             history.push("/staking")
                                             setShowMenu(false)
-                                        }} >Staking</Nav.Item>
+                                        }} >{getLanguageString(language, 'STAKING', 'MENU')}</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
-                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} 
-                                            onClick={() => { 
-                                                history.push("/wallet-login")
-                                                setShowMenu(false)
-                                             }}>Wallet</Nav.Item>
+                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />}
+                                                onClick={() => {
+                                                    history.push("/wallet-login")
+                                                    setShowMenu(false)
+                                                }}>{getLanguageString(language, 'WALLET', 'MENU')}</Nav.Item>
                                         ) : (
-                                                <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
+                                                <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title={getLanguageString(language, 'WALLET', 'MENU')}>
                                                     <Dropdown.Item
                                                         onClick={() => {
                                                             history.push("/wallet/dashboard")
                                                             setShowMenu(false)
                                                         }}>
-                                                        Dashboard
+                                                        {getLanguageString(language, 'DASHBOARD', 'MENU')}
                                                     </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
                                                             history.push("/wallet/send-transaction")
                                                             setShowMenu(false)
                                                         }}>
-                                                        Send transaction
+                                                        {getLanguageString(language, 'SEND_TRANSACTION', 'MENU')}
                                                     </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
                                                             history.push("/wallet/staking/for-validator")
                                                             setShowMenu(false)
                                                         }}>
-                                                        For Validator
+                                                        {getLanguageString(language, 'FOR_VALIDATOR', 'MENU')}
                                                     </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
                                                             history.push("/wallet/staking/for-delegator")
                                                             setShowMenu(false)
                                                         }}>
-                                                        For Delegator
+                                                        {getLanguageString(language, 'FOR_DELEGATOR', 'MENU')}
                                                         </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
                                                             history.push("/wallet/smc/byte-code-deployment")
                                                             setShowMenu(false)
                                                         }}>
-                                                        Deploy Contract
+                                                        {getLanguageString(language, 'DEPLOY_CONTRACT', 'MENU')}
                                                         </Dropdown.Item>
                                                     <Dropdown.Item
                                                         onClick={() => {
                                                             history.push("/wallet/smc/interaction")
                                                             setShowMenu(false)
                                                         }}>
-                                                        Interact With Contract
+                                                        {getLanguageString(language, 'INTERACT_WITH_CONTRACT', 'MENU')}
                                                         </Dropdown.Item>
                                                 </Dropdown>
                                             )
                                     }
                                     {/* <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item> */}
                                     <NetworkSelect />
+                                    <LanguageSelect setShowMenu={setShowMenu} />
                                     {
-                                        isLoggedIn() ? <Nav.Item eventKey="logout-wallet" icon={<Icon icon="sign-out" />} onClick={logout}>Logout wallet</Nav.Item> : <></>
+                                        isLoggedIn() ? <Nav.Item eventKey="logout-wallet" icon={<Icon icon="sign-out" />} onClick={logout}>{getLanguageString(language, 'LOGOUT_WALLET', 'MENU')}</Nav.Item> : <></>
                                     }
                                 </Nav>
                             </Sidenav.Body>
@@ -179,39 +186,78 @@ const Header = () => {
             </Navbar.Header>
             <Navbar.Body>
                 <Nav className="kardia-nav" activeKey={activeKey}>
-                    <Nav.Item eventKey="" onClick={() => { history.push("/") }}>Home</Nav.Item>
-                    <Dropdown title="Blockchain" style={{ marginRight: '10px' }}>
-                        <Dropdown.Item eventKey="txs" onClick={() => { history.push("/txs") }}>View Transactions</Dropdown.Item>
-                        <Dropdown.Item eventKey="blocks" onClick={() => { history.push("/blocks") }}>View Blocks</Dropdown.Item>
-                        <Dropdown.Item eventKey="accounts" onClick={() => { history.push("/accounts") }}>View Accounts</Dropdown.Item>
+                    <Nav.Item eventKey="" onClick={() => { history.push("/") }}>
+                        {getLanguageString(language, 'HOME', 'MENU')}
+                    </Nav.Item>
+                    <Dropdown title={getLanguageString(language, 'BLOCKCHAIN', 'MENU')} style={{ marginRight: '10px' }}>
+                        <Dropdown.Item eventKey="txs" onClick={() => { history.push("/txs") }}>
+                            {getLanguageString(language, 'VIEW_TRANSACTIONS', 'MENU')}
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="blocks" onClick={() => { history.push("/blocks") }}>
+                            {getLanguageString(language, 'VIEW_BLOCKS', 'MENU')}
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="accounts" onClick={() => { history.push("/accounts") }}>
+                            {getLanguageString(language, 'VIEW_ACCOUNTS', 'MENU')}
+                        </Dropdown.Item>
                         {/* Hidden dropdown item */}
                         <Dropdown.Item eventKey="blockchain" style={{ display: "none" }}></Dropdown.Item>
                     </Dropdown>
-                    <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item>
-                    <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item>
+                    <Dropdown title={getLanguageString(language, 'NETWORK', 'MENU')} style={{ marginRight: '10px' }}>
+                        <Dropdown.Item eventKey="network" onClick={() => { history.push("/network") }}>
+                            {getLanguageString(language, 'VIEW_NETWORK', 'MENU')}
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>
+                            {getLanguageString(language, 'NETWORK_PROPOSAL', 'MENU')}
+                        </Dropdown.Item>
+                    </Dropdown>
+                    {/* <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>
+                        {getLanguageString(language, 'NETWORK', 'MENU')}
+                    </Nav.Item> */}
+                    {/* <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>
+                        {getLanguageString(language, 'PROPOSAL', 'MENU')}
+                    </Nav.Item> */}
                     {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
-                    <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
+                    <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>
+                        {getLanguageString(language, 'STAKING', 'MENU')}
+                    </Nav.Item>
                     {
                         isLoggedIn() ? (
                             <Dropdown
-                                title="Wallet"
+                                title={getLanguageString(language, 'WALLET', 'MENU')}
                                 placement="bottomEnd">
-                                <Dropdown.Item eventKey="dashboard" onClick={() => { history.push("/wallet/dashboard") }}>Dashboard</Dropdown.Item>
-                                <Dropdown.Item eventKey="send-transaction" onClick={() => { history.push("/wallet/send-transaction") }}>Send transaction</Dropdown.Item>
-                                <Dropdown.Item eventKey="for-validator" onClick={() => { history.push("/wallet/staking/for-validator") }} >For Validator</Dropdown.Item>
-                                <Dropdown.Item eventKey="for-delegator" onClick={() => { history.push("/wallet/staking/for-delegator") }} >For Delegator</Dropdown.Item>
-                                <Dropdown.Item eventKey="byte-code-deployment" onClick={() => { history.push("/wallet/smc/byte-code-deployment") }} >Deploy Contract</Dropdown.Item>
-                                <Dropdown.Item eventKey="interaction" onClick={() => { history.push("/wallet/smc/interaction") }} >Interact With Contract</Dropdown.Item>
-                                <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
+                                <Dropdown.Item eventKey="dashboard" onClick={() => { history.push("/wallet/dashboard") }}>
+                                    {getLanguageString(language, 'DASHBOARD', 'MENU')}
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="send-transaction" onClick={() => { history.push("/wallet/send-transaction") }}>
+                                    {getLanguageString(language, 'SEND_TRANSACTION', 'MENU')}
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="for-validator" onClick={() => { history.push("/wallet/staking/for-validator") }} >
+                                    {getLanguageString(language, 'FOR_VALIDATOR', 'MENU')}
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="for-delegator" onClick={() => { history.push("/wallet/staking/for-delegator") }} >
+                                    {getLanguageString(language, 'FOR_DELEGATOR', 'MENU')}
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="byte-code-deployment" onClick={() => { history.push("/wallet/smc/byte-code-deployment") }} >
+                                    {getLanguageString(language, 'DEPLOY_CONTRACT', 'MENU')}
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="interaction" onClick={() => { history.push("/wallet/smc/interaction") }} >
+                                    {getLanguageString(language, 'INTERACT_WITH_CONTRACT', 'MENU')}
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>
+                                    {getLanguageString(language, 'LOGOUT_WALLET', 'MENU')}
+                                </Dropdown.Item>
                             </Dropdown>
                         ) : (
-                                <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>Wallet</Nav.Item>
+                                <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>{getLanguageString(language, 'WALLET', 'MENU')}</Nav.Item>
                             )
                     }
                     {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
                 </Nav>
                 <Nav className="kardia-nav" pullRight>
                     <NetworkSelect />
+                </Nav>
+                <Nav>
+                    <LanguageSelect setShowMenu={setShowMenu} />
                 </Nav>
             </Navbar.Body>
         </Navbar>
