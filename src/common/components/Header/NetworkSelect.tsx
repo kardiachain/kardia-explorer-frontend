@@ -6,16 +6,16 @@ import { useViewport } from '../../../context/ViewportContext';
 const mainnetMode = process.env.REACT_APP_MAINNET_MODE === 'true' ? true : false;
 const mainnetDisable = process.env.REACT_APP_MAINNET_DISABLE === 'true' ? true : false;
 const mainnetLink = process.env.REACT_APP_MAINNET_LINK || ''
-const testnetDisable = process.env.REACT_APP_TESTNET_DISABLE === 'true' ? true : false;
-const testnetLink = process.env.REACT_APP_TESTNET_LINK || ''
+// const testnetDisable = process.env.REACT_APP_TESTNET_DISABLE === 'true' ? true : false;
+// const testnetLink = process.env.REACT_APP_TESTNET_LINK || ''
 
 const networkList = [
-    {
-        label: 'Fengari Testnet 3.0',
-        value: 'testnet-3.0',
-        disabled: testnetDisable,
-        link: testnetLink
-    },
+    // {
+    //     label: 'Fengari Testnet 3.0',
+    //     value: 'testnet-3.0',
+    //     disabled: testnetDisable,
+    //     link: testnetLink
+    // },
     {
         label: 'Aris Mainnet 1.0',
         value: 'mainnet',
