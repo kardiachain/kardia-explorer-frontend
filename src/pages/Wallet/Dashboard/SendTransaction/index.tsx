@@ -67,7 +67,7 @@ const SendTransaction = () => {
             setToAddressErr(ErrorMessage.AddressInvalid)
             return false
         }
-        if (addr.toLocaleLowerCase() === myAccount.publickey.toLocaleLowerCase()) {
+        if (myAccount.publickey && addr.toLocaleLowerCase() === myAccount.publickey.toLocaleLowerCase()) {
             setToAddressErr(ErrorMessage.CannotSendKAIToYourSelf)
             return false;
         }
