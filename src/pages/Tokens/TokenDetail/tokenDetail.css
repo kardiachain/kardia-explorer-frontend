@@ -1,0 +1,38 @@
+.row{
+    border-bottom:1px solid gray;
+    padding:12px 0px;
+    display:flex;
+}
+
+.rs-panel-heading{
+    padding:12px 32px;
+    border-bottom:1px solid gray;
+}
+
+.rs-panel-heading{
+    color:white;
+}
+
+.rs-panel-body{
+    padding:12px 32px;
+}
+
+.no-border{
+    border:none !important;
+}
+
+.social{
+    margin-bottom:0;
+}
+
+.social > li + li{
+    margin-left:12px;
+}
+
+.flex3{
+    flex:4
+}
+
+.flex9{
+    flex:8;
+}

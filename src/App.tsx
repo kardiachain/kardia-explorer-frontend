@@ -34,6 +34,8 @@ import AccountList from './pages/AccountList';
 import { RecoilRoot } from 'recoil';
 import Proposal from './pages/Proposal';
 import ProposalDetails from './pages/Proposal/ProposalDetails';
+import Tokens from './pages/Tokens';
+import TokenDetail from './pages/Tokens/TokenDetail';
 
 class App extends Component {
   render() {
@@ -58,6 +60,12 @@ class App extends Component {
                   </Route>
                   <Route path="/staking">
                     <Validators />
+                  </Route>
+                  <Route path="/token/:contractAddress">
+                    <TokenDetail/>
+                  </Route>
+                  <Route path="/tokens">
+                    <Tokens/>
                   </Route>
                   <Route path="/validator/:valAddr">
                     <ValidatorDetail />
