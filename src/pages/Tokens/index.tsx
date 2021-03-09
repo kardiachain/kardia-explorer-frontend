@@ -5,6 +5,9 @@ import { numberFormat } from '../../common/utils/number';
 import { useViewport } from '../../context/ViewportContext';
 import bnb from '../../resources/bnb.webp';
 import { renderHashToRedirect } from '../../common/utils/string';
+import { TABLE_CONFIG } from '../../config';
+import { SortType } from '../../common/constant';
+import { getContractsList } from '../../service/kai-explorer';
 
 import './tokens.css'
 const { Column, HeaderCell, Cell } = Table;
@@ -12,24 +15,37 @@ const { Column, HeaderCell, Cell } = Table;
 
 const Tokens = () => {
     let history = useHistory();
+    const [loading, setLoading] = useState(false);
     const { isMobile } = useViewport();
-    const [tokens, setTokens] = useState([
-        {
-            name: 'BNB',
-            price: 237,
-            change: 5.04,
-            volume: 3078509017,
-            marketCap: 365666886336,
-            holders: 315307,
-            contractAddress: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52'
-        }
-    ])
+
+    const [page, setPage] = useState(TABLE_CONFIG.page);
+    const [size, setSize] = useState(TABLE_CONFIG.limitDefault);
+    const [sortType, setSortType] = useState(SortType.ASC);
+
+
+    const [tokens, setTokens] = useState([])
+    const [totalContract, setTotalContract] = useState(0);
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
+            const rs = await getContractsList(page, size, sortType);
+            console.log('rs', rs);
+            // const contractInfor = await getContractInfor(rs);
 
+            setTokens(rs?.contracts);
+            setTotalContract(rs?.total);
+            setLoading(false);
         })()
-    }, []);
+    }, [page, size, sortType])
+
+    const handleSort = () => {
+        if (sortType === SortType.ASC) {
+            setSortType(SortType.DSC);
+        } else {
+            setSortType(SortType.ASC);
+        }
+    }
 
     return (
         <div className="container txs-container">
