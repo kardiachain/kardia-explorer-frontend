@@ -85,17 +85,20 @@ const Header = () => {
                                             setShowMenu(false)
                                         }}>View Accounts</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
-                                        onClick={() => {
+
+                                    <Dropdown eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} title="Network">
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/network")
                                             setShowMenu(false)
-                                        }}>Network</Nav.Item>
-                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
-                                    <Nav.Item eventKey="proposal" icon={<Icon className="gray-highlight" icon="data-increase" />}
-                                        onClick={() => {
+                                        }}>Network</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/proposals")
                                             setShowMenu(false)
-                                        }}>Proposal</Nav.Item>
+                                        }}>Proposal</Dropdown.Item>
+                                   
+                                    </Dropdown>
+
+                                 
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
                                         onClick={() => {
                                             history.push("/staking")
