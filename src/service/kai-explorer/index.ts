@@ -1,7 +1,7 @@
 export {getBlocks} from './block'
 export {getTransactions} from './transaction'
 export {getTxsByBlockHeight} from './transaction'
-export {getTxByHash} from './transaction'
+export {getTxByHash, getContractEvents} from './transaction'
 export {getValidators} from './validator'
 export {getHolderAccount} from './account'
 export {getLatestBlock} from './block'

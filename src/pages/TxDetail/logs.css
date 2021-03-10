@@ -1,0 +1,44 @@
+.row{
+    display:flex;
+}
+
+.property-title{
+    flex: 1
+}
+
+.property-content{
+    flex: 11;
+}
+
+.topics{
+    padding-left:0;
+    flex:11;
+}
+
+.topics > li + li{
+margin-top:12px;
+}
+
+.num{
+    padding:5px 7px;
+    color:white;
+    background-color: rgba(119,131,143,.1);
+}
+
+.borderNone{
+    border:none !important;
+}
+
+@media only screen and (max-width: 740px) {
+    .property-title{
+        flex:1
+    }
+
+    .property-content{
+        flex:3;
+    }
+
+    .topics{
+        flex:3;
+    }
+  }

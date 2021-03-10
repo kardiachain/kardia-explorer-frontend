@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup } from 'rsuite';
+import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup, Nav } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
 import { weiToKAI, weiToOXY } from '../../common/utils/amount';
@@ -17,6 +17,7 @@ import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage'
 import { hashValid, jsonValid } from '../../common/utils/validate';
 import { ErrorMessage } from '../../common/constant/Message';
 import { StakingIcon } from '../../common/components/IconCustom';
+import Logs from './Logs';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -36,6 +37,7 @@ const TxDetail = () => {
     const [fileUploadErr, setFileUploadErr] = useState('');
     const [decodeErr, setDecodeErr] = useState('');
     const [showMore, setShowMore] = useState(false)
+    const [activeKey, setActiveKey] = useState('overview')
 
 
     useEffect(() => {
@@ -148,333 +150,364 @@ const TxDetail = () => {
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
+                <div className="custom-nav">
+                    <Nav
+                        appearance="subtle"
+                        activeKey={activeKey}
+                        onSelect={setActiveKey}
+                        style={{ marginBottom: 20 }}>
+                        <Nav.Item eventKey="overview">
+                            {`Overview`}
+                        </Nav.Item>
+                        <Nav.Item eventKey="logs">
+                            {`Logs`}
+                        </Nav.Item>
+                    </Nav>
+                </div>
                 {
-                    loading ? <Paragraph style={{ marginTop: 30 }} rows={20} /> :
-                        <List bordered={false}>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Transaction Hash</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{renderHashString(txDetail?.txHash || '', 64)}</div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Block Number</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">
-                                            <Link to={`/block/${txDetail?.blockNumber}`} >{numberFormat(txDetail?.blockNumber)}</Link>
-                                        </div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Block Hash</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">
-                                            {renderHashToRedirect({
-                                                hash: txDetail?.blockHash,
-                                                headCount: 70,
-                                                tailCount: 4,
-                                                showTooltip: false,
-                                                redirectTo: `/block/${txDetail?.blockHash}`,
-                                                showCopy: true
-                                            })}
-                                        </div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Status</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                    (() => {
+                        switch (activeKey) {
+                            case 'overview':
+                                return (
+                                    <Panel shaded className="panel-bg-gray">
                                         {
-                                            txDetail?.status ?
-                                                <div className="property-content"><Tag color="green" className="tab tab-success">SUCCESS</Tag></div> :
-                                                <div className="property-content">
-                                                    <Tag className="tab tab-failed" color="red">FAILED</Tag>
-                                                    {
-                                                        txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
-                                                    }
-                                                </div>
-                                        }
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">TimeStamp</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{millisecondToHMS(txDetail?.age || 0)} ({txDetail?.time ? dateToUTCString(txDetail?.time) : ''})</div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">From</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">
-                                            {renderHashToRedirect({
-                                                hash: txDetail?.from,
-                                                headCount: 50,
-                                                tailCount: 4,
-                                                showTooltip: false,
-                                                redirectTo: `/address/${txDetail?.from}`,
-                                                showCopy: true
-                                            })}
-                                        </div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">To</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        {
-                                            !txDetail?.isSmcInteraction || !txDetail?.toName ? (
-                                                <div className="property-content">{renderHashToRedirect({
-                                                    hash: txDetail?.to,
-                                                    headCount: 50,
-                                                    tailCount: 4,
-                                                    showTooltip: false,
-                                                    redirectTo: `/address/${txDetail?.to}`,
-                                                    showCopy: true
-                                                })}</div>
-                                            ) : (
-                                                    <div className="property-content">
-                                                        <span className="container-icon-left">
-                                                            <Icon icon="file-text-o" className="gray-highlight"/>
-                                                        </span>
-                                                        {renderHashToRedirect({
-                                                            hash: txDetail?.to,
-                                                            headCount: 50,
-                                                            tailCount: 4,
-                                                            showTooltip: false,
-                                                            redirectTo: `/address/${txDetail?.to}`,
-                                                            showCopy: false
-                                                        })} {txDetail.toName}
-                                                        {
-                                                            txDetail.isInValidatorsList ? (
-                                                                <StakingIcon
-                                                                    color={txDetail?.role?.classname}
-                                                                    character={txDetail?.role?.character}
-                                                                    size='small' style={{ marginLeft: 5 }} />
-                                                            ) : <></>
-                                                        }
-                                                        {
-                                                            renderCopyButton({
-                                                                str: txDetail?.to,
-                                                                size: "xs",
-                                                                callback: () => copyToClipboard(txDetail?.to || '', onSuccess)
-                                                            })
-                                                        }
-                                                    </div>
-                                                )
-                                        }
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Value</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(weiToKAI(txDetail?.value))} KAI</div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Transaction Fee</div>
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(weiToKAI(txDetail?.txFee || 0))} KAI</div>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                            {showMore ? <>
-                                <List.Item>
-                                    <FlexboxGrid justify="start" align="middle">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Gas Price</div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">{numberFormat(weiToOXY(txDetail?.gasPrice || 0))} OXY</div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </List.Item>
-                                <List.Item>
-                                    <FlexboxGrid justify="start" align="middle">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Gas Limit</div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">{numberFormat(txDetail?.gas || 0)}</div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </List.Item>
-                                <List.Item>
-                                    <FlexboxGrid justify="start" align="middle">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Gas Used</div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)} ({txDetail?.gasUsedPercent}%)</div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </List.Item>
-                                <List.Item>
-                                    <FlexboxGrid justify="start" align="middle">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Nonce</div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">{numberFormat(txDetail?.nonce || 0)}</div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </List.Item>
-                                <List.Item>
-                                    <FlexboxGrid justify="start" align="middle">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                            <div className="property-title">Transaction Index</div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                            <div className="property-content">{txDetail?.transactionIndex}</div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </List.Item>
-                                {
-                                    !txDetail?.input || txDetail?.input === '0x' ? <></> : (
-                                        <List.Item>
-                                            <FlexboxGrid justify="start" align="middle">
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                                    <div className="property-title">Input Data</div>
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                                    {
-                                                        inputDataActiveKey === "origin" ? (
-                                                            <div style={{ marginTop: 10 }}>
-                                                                <Input
-                                                                    componentClass="textarea"
-                                                                    rows={5}
-                                                                    className="input"
-                                                                    placeholder="resize: 'auto'"
-                                                                    value={txDetail?.input}
-                                                                />
+                                            loading ? <Paragraph style={{ marginTop: 30 }} rows={20} /> :
+                                                <List bordered={false}>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">Transaction Hash</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                <div className="property-content">{renderHashString(txDetail?.txHash || '', 64)}</div>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">Block Number</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                <div className="property-content">
+                                                                    <Link to={`/block/${txDetail?.blockNumber}`} >{numberFormat(txDetail?.blockNumber)}</Link>
+                                                                </div>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">Block Hash</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                <div className="property-content">
+                                                                    {renderHashToRedirect({
+                                                                        hash: txDetail?.blockHash,
+                                                                        headCount: 70,
+                                                                        tailCount: 4,
+                                                                        showTooltip: false,
+                                                                        redirectTo: `/block/${txDetail?.blockHash}`,
+                                                                        showCopy: true
+                                                                    })}
+                                                                </div>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">Status</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                                                 {
-                                                                    txDetail.to !== "0x" ?
-                                                                        <Button className="kai-button-gray" onClick={() => originStep()} style={{ margin: 0, marginTop: 20 }}>
-                                                                            Decode Data
-                                                                        </Button> : <></>
+                                                                    txDetail?.status ?
+                                                                        <div className="property-content"><Tag color="green" className="tab tab-success">SUCCESS</Tag></div> :
+                                                                        <div className="property-content">
+                                                                            <Tag className="tab tab-failed" color="red">FAILED</Tag>
+                                                                            {
+                                                                                txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
+                                                                            }
+                                                                        </div>
                                                                 }
-                                                            </div>) :
-                                                            (inputDataActiveKey === "result" ? (
-                                                                <FlexboxGrid>
-                                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                                                        <Panel bordered style={{ width: '100%' }}>
-                                                                            <ReactJson
-                                                                                style={{
-                                                                                    fontSize: 12,
-                                                                                    color: 'white'
-                                                                                }}
-                                                                                name={false} src={{ inputDataDecode }} theme="ocean" />
-                                                                        </Panel>
-                                                                    </FlexboxGrid.Item>
-                                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                                                        <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20 }}> <Icon style={{ marginRight: 10 }} icon="reply" /> Switch Back</Button>
-                                                                    </FlexboxGrid.Item>
-                                                                </FlexboxGrid>
-                                                            ) : (
-                                                                    <div>
-                                                                        <Form fluid>
-                                                                            <FormGroup>
-                                                                                <FlexboxGrid>
-                                                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                                                        <ControlLabel className="label color-white">{'Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
-                                                                                        <Uploader
-                                                                                            action="//jsonplaceholder.typicode.com/posts/"
-                                                                                            draggable
-                                                                                            fileList={fileList}
-                                                                                            onChange={handleUpload}
-                                                                                            onError={uploadFileFailed}
-                                                                                            onRemove={handleRemoveFile}
-                                                                                        >
-                                                                                            <FormControl name="smcAddr"
-                                                                                                style={{ padding: '11px 12px' }}
-                                                                                                placeholder="Upload Your <contract.json> file:"
-                                                                                            />
-                                                                                        </Uploader>
-                                                                                        <ErrMessage message={fileUploadErr} />
-                                                                                    </FlexboxGrid.Item>
-                                                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                                                                        <ControlLabel className="label color-white">Or Input contract ABI<span className="required-mask">*</span></ControlLabel>
-                                                                                        <FormControl rows={10}
-                                                                                            name="abi"
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">TimeStamp</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                <div className="property-content">{millisecondToHMS(txDetail?.age || 0)} ({txDetail?.time ? dateToUTCString(txDetail?.time) : ''})</div>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">From</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                <div className="property-content">
+                                                                    {renderHashToRedirect({
+                                                                        hash: txDetail?.from,
+                                                                        headCount: 50,
+                                                                        tailCount: 4,
+                                                                        showTooltip: false,
+                                                                        redirectTo: `/address/${txDetail?.from}`,
+                                                                        showCopy: true
+                                                                    })}
+                                                                </div>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">To</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                {
+                                                                    !txDetail?.isSmcInteraction || !txDetail?.toName ? (
+                                                                        <div className="property-content">{renderHashToRedirect({
+                                                                            hash: txDetail?.to,
+                                                                            headCount: 50,
+                                                                            tailCount: 4,
+                                                                            showTooltip: false,
+                                                                            redirectTo: `/address/${txDetail?.to}`,
+                                                                            showCopy: true
+                                                                        })}</div>
+                                                                    ) : (
+                                                                        <div className="property-content">
+                                                                            <span className="container-icon-left">
+                                                                                <Icon icon="file-text-o" className="gray-highlight" />
+                                                                            </span>
+                                                                            {renderHashToRedirect({
+                                                                                hash: txDetail?.to,
+                                                                                headCount: 50,
+                                                                                tailCount: 4,
+                                                                                showTooltip: false,
+                                                                                redirectTo: `/address/${txDetail?.to}`,
+                                                                                showCopy: false
+                                                                            })} {txDetail.toName}
+                                                                            {
+                                                                                txDetail.isInValidatorsList ? (
+                                                                                    <StakingIcon
+                                                                                        color={txDetail?.role?.classname}
+                                                                                        character={txDetail?.role?.character}
+                                                                                        size='small' style={{ marginLeft: 5 }} />
+                                                                                ) : <></>
+                                                                            }
+                                                                            {
+                                                                                renderCopyButton({
+                                                                                    str: txDetail?.to,
+                                                                                    size: "xs",
+                                                                                    callback: () => copyToClipboard(txDetail?.to || '', onSuccess)
+                                                                                })
+                                                                            }
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">Value</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                <div className="property-content">{numberFormat(weiToKAI(txDetail?.value))} KAI</div>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                <div className="property-title">Transaction Fee</div>
+                                                            </FlexboxGrid.Item>
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                <div className="property-content">{numberFormat(weiToKAI(txDetail?.txFee || 0))} KAI</div>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                    {showMore ? <>
+                                                        <List.Item>
+                                                            <FlexboxGrid justify="start" align="middle">
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                    <div className="property-title">Gas Price</div>
+                                                                </FlexboxGrid.Item>
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                    <div className="property-content">{numberFormat(weiToOXY(txDetail?.gasPrice || 0))} OXY</div>
+                                                                </FlexboxGrid.Item>
+                                                            </FlexboxGrid>
+                                                        </List.Item>
+                                                        <List.Item>
+                                                            <FlexboxGrid justify="start" align="middle">
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                    <div className="property-title">Gas Limit</div>
+                                                                </FlexboxGrid.Item>
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                    <div className="property-content">{numberFormat(txDetail?.gas || 0)}</div>
+                                                                </FlexboxGrid.Item>
+                                                            </FlexboxGrid>
+                                                        </List.Item>
+                                                        <List.Item>
+                                                            <FlexboxGrid justify="start" align="middle">
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                    <div className="property-title">Gas Used</div>
+                                                                </FlexboxGrid.Item>
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                    <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)} ({txDetail?.gasUsedPercent}%)</div>
+                                                                </FlexboxGrid.Item>
+                                                            </FlexboxGrid>
+                                                        </List.Item>
+                                                        <List.Item>
+                                                            <FlexboxGrid justify="start" align="middle">
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                    <div className="property-title">Nonce</div>
+                                                                </FlexboxGrid.Item>
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                    <div className="property-content">{numberFormat(txDetail?.nonce || 0)}</div>
+                                                                </FlexboxGrid.Item>
+                                                            </FlexboxGrid>
+                                                        </List.Item>
+                                                        <List.Item>
+                                                            <FlexboxGrid justify="start" align="middle">
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                    <div className="property-title">Transaction Index</div>
+                                                                </FlexboxGrid.Item>
+                                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                    <div className="property-content">{txDetail?.transactionIndex}</div>
+                                                                </FlexboxGrid.Item>
+                                                            </FlexboxGrid>
+                                                        </List.Item>
+                                                        {
+                                                            !txDetail?.input || txDetail?.input === '0x' ? <></> : (
+                                                                <List.Item>
+                                                                    <FlexboxGrid justify="start" align="middle">
+                                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                            <div className="property-title">Input Data</div>
+                                                                        </FlexboxGrid.Item>
+                                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                            {
+                                                                                inputDataActiveKey === "origin" ? (
+                                                                                    <div style={{ marginTop: 10 }}>
+                                                                                        <Input
                                                                                             componentClass="textarea"
-                                                                                            placeholder="ABI"
+                                                                                            rows={5}
                                                                                             className="input"
-                                                                                            value={abi}
-                                                                                            onChange={(value) => {
-                                                                                                setAbi(value)
-                                                                                                validateAbi(value)
-                                                                                            }}
+                                                                                            placeholder="resize: 'auto'"
+                                                                                            value={txDetail?.input}
                                                                                         />
-                                                                                        <ErrMessage message={abiErr} />
-                                                                                    </FlexboxGrid.Item>
-                                                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                                                                        <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20, marginRight: 15 }}>Back</Button>
-                                                                                        <Button className="kai-button-gray" onClick={() => decodeABI()} style={{ margin: 0, marginTop: 20 }}>Decode</Button>
-                                                                                    </FlexboxGrid.Item>
-                                                                                    <ErrMessage message={decodeErr} />
-                                                                                </FlexboxGrid>
-                                                                            </FormGroup>
-                                                                        </Form>
-                                                                    </div>
-                                                                ))
+                                                                                        {
+                                                                                            txDetail.to !== "0x" ?
+                                                                                                <Button className="kai-button-gray" onClick={() => originStep()} style={{ margin: 0, marginTop: 20 }}>
+                                                                                                    Decode Data
+                                                                        </Button> : <></>
+                                                                                        }
+                                                                                    </div>) :
+                                                                                    (inputDataActiveKey === "result" ? (
+                                                                                        <FlexboxGrid>
+                                                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                                                                                <Panel bordered style={{ width: '100%' }}>
+                                                                                                    <ReactJson
+                                                                                                        style={{
+                                                                                                            fontSize: 12,
+                                                                                                            color: 'white'
+                                                                                                        }}
+                                                                                                        name={false} src={{ inputDataDecode }} theme="ocean" />
+                                                                                                </Panel>
+                                                                                            </FlexboxGrid.Item>
+                                                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                                                                                <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20 }}> <Icon style={{ marginRight: 10 }} icon="reply" /> Switch Back</Button>
+                                                                                            </FlexboxGrid.Item>
+                                                                                        </FlexboxGrid>
+                                                                                    ) : (
+                                                                                        <div>
+                                                                                            <Form fluid>
+                                                                                                <FormGroup>
+                                                                                                    <FlexboxGrid>
+                                                                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
+                                                                                                            <ControlLabel className="label color-white">{'Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
+                                                                                                            <Uploader
+                                                                                                                action="//jsonplaceholder.typicode.com/posts/"
+                                                                                                                draggable
+                                                                                                                fileList={fileList}
+                                                                                                                onChange={handleUpload}
+                                                                                                                onError={uploadFileFailed}
+                                                                                                                onRemove={handleRemoveFile}
+                                                                                                            >
+                                                                                                                <FormControl name="smcAddr"
+                                                                                                                    style={{ padding: '11px 12px' }}
+                                                                                                                    placeholder="Upload Your <contract.json> file:"
+                                                                                                                />
+                                                                                                            </Uploader>
+                                                                                                            <ErrMessage message={fileUploadErr} />
+                                                                                                        </FlexboxGrid.Item>
+                                                                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                                                                                            <ControlLabel className="label color-white">Or Input contract ABI<span className="required-mask">*</span></ControlLabel>
+                                                                                                            <FormControl rows={10}
+                                                                                                                name="abi"
+                                                                                                                componentClass="textarea"
+                                                                                                                placeholder="ABI"
+                                                                                                                className="input"
+                                                                                                                value={abi}
+                                                                                                                onChange={(value) => {
+                                                                                                                    setAbi(value)
+                                                                                                                    validateAbi(value)
+                                                                                                                }}
+                                                                                                            />
+                                                                                                            <ErrMessage message={abiErr} />
+                                                                                                        </FlexboxGrid.Item>
+                                                                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                                                                                                            <Button className="kai-button-gray" onClick={() => setInputDataActiveKey('origin')} style={{ margin: 0, marginTop: 20, marginRight: 15 }}>Back</Button>
+                                                                                                            <Button className="kai-button-gray" onClick={() => decodeABI()} style={{ margin: 0, marginTop: 20 }}>Decode</Button>
+                                                                                                        </FlexboxGrid.Item>
+                                                                                                        <ErrMessage message={decodeErr} />
+                                                                                                    </FlexboxGrid>
+                                                                                                </FormGroup>
+                                                                                            </Form>
+                                                                                        </div>
+                                                                                    ))
+                                                                            }
+                                                                        </FlexboxGrid.Item>
+                                                                    </FlexboxGrid>
+                                                                </List.Item>
+                                                            )
+                                                        }
+                                                    </> : <></>
                                                     }
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </List.Item>
-                                    )
-                                }
-                            </> : <></>
-                            }
-                            <List.Item>
-                                <FlexboxGrid justify="start" align="middle">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
-                                        <span
-                                            onClick={() => setShowMore(!showMore)}
-                                            className="click-show-more"
-                                        >
-                                            {
-                                                !showMore ? <> Click to see more <Icon icon="angle-double-down" /> </> :
-                                                    <> Click to see less <Icon icon="angle-double-up" /> </>
-                                            }
-                                        </span>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                        </List>
+                                                    <List.Item>
+                                                        <FlexboxGrid justify="start" align="middle">
+                                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24}>
+                                                                <span
+                                                                    onClick={() => setShowMore(!showMore)}
+                                                                    className="click-show-more"
+                                                                >
+                                                                    {
+                                                                        !showMore ? <> Click to see more <Icon icon="angle-double-down" /> </> :
+                                                                            <> Click to see less <Icon icon="angle-double-up" /> </>
+                                                                    }
+                                                                </span>
+                                                            </FlexboxGrid.Item>
+                                                        </FlexboxGrid>
+                                                    </List.Item>
+                                                </List>
+                                        }
+                                    </Panel>
+                                );
+                            case 'logs':
+                                return (
+                                    <Logs/>
+                                )
+                        }
+                    })()
                 }
             </Panel>
+
+
         </div>
     )
 }
