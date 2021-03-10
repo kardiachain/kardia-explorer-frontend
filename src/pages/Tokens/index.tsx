@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper } from 'rsuite';
+import { Col, FlexboxGrid, Panel, Table} from 'rsuite';
 import { numberFormat } from '../../common/utils/number';
 import { useViewport } from '../../context/ViewportContext';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { SortType } from '../../common/constant';
-import { getContractsList, getContractInfor } from '../../service/kai-explorer';
+import { getContractsList } from '../../service/kai-explorer';
+import TablePagination from 'rsuite/lib/Table/TablePagination';
 
 import './tokens.css'
 const { Column, HeaderCell, Cell } = Table;
@@ -110,7 +111,7 @@ const Tokens = () => {
                                             {(rowData: any) => {
                                                 return (
                                                     <div>
-                                                        $ {numberFormat(rowData.volume)}
+                                                        
                                                     </div>
                                                 );
                                             }}
@@ -153,7 +154,14 @@ const Tokens = () => {
                                         </Cell>
                                     </Column>
                                 </Table>
-
+                                <TablePagination
+                                lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                activePage={page}
+                                displayLength={size}
+                                total={totalContract}
+                                onChangePage={setPage}
+                                onChangeLength={setSize}
+                            />
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </Panel>

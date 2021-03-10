@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper, Nav } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Panel, Nav } from 'rsuite';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { useViewport } from '../../../context/ViewportContext';
-import bnb from '../../../resources/bnb.webp';
 import './style.css'
 import { numberFormat } from '../../../common/utils/number';
 import Transfers from './Transfers';
 import { getContractInfor } from '../../../service/kai-explorer';
-
-const { Column, HeaderCell, Cell } = Table;
-
 
 const TokenDetail = () => {
     const { contractAddress }: any = useParams()
@@ -24,7 +20,6 @@ const TokenDetail = () => {
         (async () => {
             setLoading(true);
             const rs = await getContractInfor(contractAddress);
-            console.log('rs', rs);
             setTokenInfor(rs);
             setLoading(false);
         })()
