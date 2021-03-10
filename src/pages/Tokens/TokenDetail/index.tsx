@@ -7,6 +7,7 @@ import './style.css'
 import { numberFormat } from '../../../common/utils/number';
 import Transfers from './Transfers';
 import { getContractInfor } from '../../../service/kai-explorer';
+import { renderHashToRedirect } from '../../../common/utils/string';
 
 const TokenDetail = () => {
     const { contractAddress }: any = useParams()
@@ -58,7 +59,7 @@ const TokenDetail = () => {
                         <div className="row no-border">
                             <p className="flex3 color-graylight">Transfers:</p>
                             <span className="flex9 color-graylight">
-                                
+
                             </span>
                         </div>
 
@@ -69,7 +70,17 @@ const TokenDetail = () => {
                     <Panel bordered header="Profile Summary">
                         <div className="row">
                             <p className="flex3 color-graylight">Contract:</p>
-                            <span className="flex9 color-graylight">{tokenInfor.address}</span>
+                            <span className="flex9 color-graylight">
+                                {
+                                    renderHashToRedirect({
+                                        hash: tokenInfor.address,
+                                        headCount: isMobile ? 5 : 20,
+                                        tailCount: 15,
+                                        showTooltip: false,
+                                        redirectTo: `/address/${tokenInfor.address}`
+                                    })
+                                }
+                            </span>
                         </div>
 
                         <div className="row">
@@ -121,7 +132,7 @@ const TokenDetail = () => {
                                 switch (activeKey) {
                                     case 'validators':
                                         return (
-                                            <Transfers/>
+                                            <Transfers />
                                         );
 
                                 }
