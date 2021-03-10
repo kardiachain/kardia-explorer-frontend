@@ -14,4 +14,6 @@ export {getValidatorByDelegator} from './validator'
 export {checkValidatorRole} from './validator'
 export {getCandidates} from './validator'
 export {getAccounts} from './account'
+export {getContractsList, getContractInfor} from './tokens'
+
 export {getCurrentNetworkParams, getProposals, getProposalDetails, parseLabelNameByKey} from './proposal'

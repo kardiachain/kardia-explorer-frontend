@@ -85,17 +85,20 @@ const Header = () => {
                                             setShowMenu(false)
                                         }}>View Accounts</Dropdown.Item>
                                     </Dropdown>
-                                    <Nav.Item eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />}
-                                        onClick={() => {
+
+                                    <Dropdown eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} title="Network">
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/network")
                                             setShowMenu(false)
-                                        }}>Network</Nav.Item>
-                                    {/* <Nav.Item eventKey="documentation" icon={<Icon className="gray-highlight" icon="book" />} href="/documentation">Documentation</Nav.Item> */}
-                                    <Nav.Item eventKey="proposal" icon={<Icon className="gray-highlight" icon="data-increase" />}
-                                        onClick={() => {
+                                        }}>Network</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/proposals")
                                             setShowMenu(false)
-                                        }}>Proposal</Nav.Item>
+                                        }}>Proposal</Dropdown.Item>
+                                   
+                                    </Dropdown>
+
+                                 
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
                                         onClick={() => {
                                             history.push("/staking")
@@ -187,8 +190,16 @@ const Header = () => {
                         {/* Hidden dropdown item */}
                         <Dropdown.Item eventKey="blockchain" style={{ display: "none" }}></Dropdown.Item>
                     </Dropdown>
-                    <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item>
-                    <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item>
+
+                    <Dropdown title="Network" style={{ marginRight: '10px' }}>
+                        <Dropdown.Item eventKey="network" onClick={() => { history.push("/network") }}>View Network</Dropdown.Item>
+                        <Dropdown.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Dropdown.Item>
+                    </Dropdown>
+
+                    <Nav.Item eventKey="tokens" onClick={() => { history.push("/tokens") }}>Tokens</Nav.Item>
+
+                    {/* <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item> */}
+                    {/* <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item> */}
                     {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                     <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
                     {
