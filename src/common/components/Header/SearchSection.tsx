@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Alert, Input, InputGroup } from 'rsuite';
 import { getTxByHash } from '../../../service/kai-explorer';
 import { getBlockBy } from '../../../service/kai-explorer/block';
+import { searchAll } from '../../../service/kai-explorer/search';
+import { SearchItem } from '../../../service/kai-explorer/search/type';
 import { onlyInteger } from '../../utils/number';
 import { addressValid, hashValid } from '../../utils/validate';
 import Button from '../Button';
@@ -10,9 +12,35 @@ import Button from '../Button';
 const SearchSection = () => {
     const [searchInput, setSearchInput] = useState('')
     const history = useHistory()
+    const [suggestData, setSuggestData] = useState<SearchItem[]>([] as SearchItem[])
 
-    const handleOnchange = (value: string) => {
-        setSearchInput(value.trim())
+    /**
+     *  Handle case click outside suggestion container
+     */
+    const wrapperRef = useRef(null);
+    useEffect(() => {
+        function handleClickOutside(event: any) {
+            if (wrapperRef.current && !(wrapperRef.current as any).contains(event.target)) {
+                setSuggestData([] as SearchItem[])
+            }
+        }
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [wrapperRef])
+
+    const handleOnchange = async (value: string) => {
+        setSearchInput(value)
+        if (!value || (value.startsWith('0x') && value.length < 4) || value.length < 2) {
+            setSuggestData([] as SearchItem[])
+            return
+        }
+        const _suggestData = await searchAll(value)
+        
+        setSuggestData(_suggestData)
     }
 
     // Search apply for many case
@@ -21,19 +49,19 @@ const SearchSection = () => {
     // -- search by block hash or block height ---> show block details
     const search = async () => {
         if (!searchInput) return;
-        const searchType = await checkSearchType(searchInput);
+        const searchType = await checkSearchType(searchInput.trim());
         switch (searchType) {
             case 'blockheight':
-                history.push(`/block/${searchInput}`)
+                history.push(`/block/${searchInput.trim()}`)
                 break;
             case 'txhash':
-                history.push(`/tx/${searchInput}`)
+                history.push(`/tx/${searchInput.trim()}`)
                 break;
             case 'blockhash':
-                history.push(`/block/${searchInput}`)
+                history.push(`/block/${searchInput.trim()}`)
                 break
             case 'address':
-                history.push(`/address/${searchInput}`)
+                history.push(`/address/${searchInput.trim()}`)
                 break;
             default:
                 setSearchInput('')
@@ -41,6 +69,19 @@ const SearchSection = () => {
                 break;
         }
         setSearchInput('')
+    }
+
+    const handleClickSuggestItem = (item: SearchItem) => {
+
+        switch (item.type) {
+            case 'KRC20':
+            case 'KRC721':
+                history.push(`/token/${item.address}`)
+                break;
+            default:
+                history.push(`/address/${item.address}`)
+                break;
+        }
     }
 
     const checkSearchType = async (input: string): Promise<string> => {
@@ -52,7 +93,7 @@ const SearchSection = () => {
         if (hashValid(input) && isTxHash) {
             return 'txhash'
         }
-        
+
         const isBlock = await blockHashAvailable(input)
         if (hashValid(input) && isBlock) {
             return 'blockhash'
@@ -65,7 +106,7 @@ const SearchSection = () => {
 
     const txHashAvailable = async (hash: string): Promise<boolean> => {
         const tx = await getTxByHash(hash);
-        if(tx.txHash) {
+        if (tx.txHash) {
             return true
         }
         return false
@@ -73,7 +114,7 @@ const SearchSection = () => {
 
     const blockHashAvailable = async (hash: string): Promise<boolean> => {
         const block = await getBlockBy(hash)
-        if(block.blockHash) {
+        if (block.blockHash) {
             return true
         }
         return false
@@ -81,15 +122,45 @@ const SearchSection = () => {
 
     return (
         <div className="search-wrapper">
-            <InputGroup inside>
-                <Input
-                    placeholder="Search by Address / TxHash / BlockHash ..."
-                    value={searchInput}
-                    onChange={(value: string) => {handleOnchange(value) }}
-                    onPressEnter={search}
-                />
-                    <Button onClick={search} className="btn-search kai-button-violet-gradient" style={{margin:0}}>Search</Button>
-            </InputGroup>
+            <div className="autocomplete-box">
+                <InputGroup inside>
+                    <Input
+                        placeholder="Search by Address / TxHash / BlockHash ..."
+                        value={searchInput}
+                        onChange={(value: string) => { handleOnchange(value) }}
+                        onPressEnter={search}
+                    />
+                    <Button onClick={search} className="btn-search kai-button-violet-gradient" style={{ margin: 0 }}>Search</Button>
+
+                </InputGroup>
+                {
+                    suggestData && suggestData.length > 0 ? (
+                        <div className="suggest-container" ref={wrapperRef}>
+                            {suggestData.map((item: SearchItem, index: number) => (
+                                <div className="suggest-item" key={index} onClick={() => handleClickSuggestItem(item)}>
+                                    <img
+                                        className="token-icon"
+                                        src={item.logo}
+                                        alt="_k" />
+                                    <div style={{
+                                        display: 'inline-block',
+                                        width: 'calc(100% - 100px)',
+                                        verticalAlign: 'center'
+                                    }}>
+                                        {item.name ? (
+                                            <div className="token-name">{item.name}
+                                                <span>{item.symbol ? `(${item.symbol})` : ''}</span>
+                                            </div>
+                                        ) : <></>}
+                                        <div className="token-address">{item.address}</div>
+                                        <div className="token-info">{item.info ? `${item.info.length > 100 ? item.info.substr(0, 100) + '...' : item.info}` : ''}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : <></>
+                }
+            </div>
         </div>
     )
 };
