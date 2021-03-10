@@ -1,48 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Col, FlexboxGrid, Panel, Table} from 'rsuite';
-import { numberFormat } from '../../common/utils/number';
+import { Link } from 'react-router-dom';
+import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
-import { renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
-import { SortType } from '../../common/constant';
 import { getContractsList } from '../../service/kai-explorer';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-
 import './tokens.css'
+import { ITokenContract } from '../../service/kai-explorer/tokens/type';
 const { Column, HeaderCell, Cell } = Table;
 
-
 const Tokens = () => {
-    let history = useHistory();
     const [loading, setLoading] = useState(false);
     const { isMobile } = useViewport();
 
     const [page, setPage] = useState(TABLE_CONFIG.page);
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault);
-    const [sortType, setSortType] = useState(SortType.ASC);
 
 
-    const [tokens, setTokens] = useState([])
+    const [tokens, setTokens] = useState<ITokenContract[]>([] as ITokenContract[])
     const [totalContract, setTotalContract] = useState(0);
 
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const rs = await getContractsList(page, size, sortType);
-            setTokens(rs?.contracts);
+            const rs = await getContractsList(page, size);
+            setTokens(rs.contracts);
             setTotalContract(rs?.total);
             setLoading(false);
         })()
-    }, [page, size, sortType])
-
-    const handleSort = () => {
-        if (sortType === SortType.ASC) {
-            setSortType(SortType.DSC);
-        } else {
-            setSortType(SortType.ASC);
-        }
-    }
+    }, [page, size])
 
     return (
         <div className="container txs-container">
@@ -62,92 +48,41 @@ const Tokens = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
                                     rowHeight={60}
-                                    height={400}
                                     data={tokens}
                                     autoHeight
                                     hover={false}
                                     wordWrap
+                                    loading={loading}
                                 >
-                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
+                                    <Column flexGrow={4} minWidth={250} verticalAlign="middle">
                                         <HeaderCell>Token</HeaderCell>
                                         <Cell>
-                                            {(rowData: any) => {
+                                            {(rowData: ITokenContract) => {
                                                 return (
                                                     <div>
-                                                        <img src={rowData.logo} style={{ width: '19px', height:'19px', marginRight:'10px' }} alt="logo" />
+                                                        <img
+                                                            className="token-logo"
+                                                            src={rowData.logo}
+                                                            alt="kardiachain" />
                                                         <span className="container-content-right">
-                                                            <div className="sub-text">
-                                                                {
-                                                                renderHashToRedirect({
-                                                                    hash: rowData.name,
-                                                                    headCount: isMobile ? 5 : 10,
-                                                                    tailCount: 4,
-                                                                    showTooltip: false,
-                                                                    redirectTo: `/token/${rowData.address}`
-                                                                })
-                                                                }
-                                                                </div>
+                                                            <Link className="token-name" to={`/token/${rowData?.address}`}>{rowData.name}</Link>
+                                                            <div className="token-address">{rowData.address}</div>
+                                                            <div className="token-info">
+                                                                {rowData.info && rowData.info.length > 100 ? `${rowData.info.substr(0, 100)}...` : rowData.info}
+                                                            </div>
                                                         </span>
                                                     </div>
                                                 );
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 70 : 100} verticalAlign="middle">
-                                        <HeaderCell>Price</HeaderCell>
+                                    <Column flexGrow={1} minWidth={isMobile ? 70 : 100} verticalAlign="middle">
+                                        <HeaderCell>Type</HeaderCell>
                                         <Cell>
-                                            {(rowData: any) => {
+                                            {(rowData: ITokenContract) => {
                                                 return (
                                                     <div>
-                                                        $ {numberFormat(rowData.price)}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
-                                        <HeaderCell>Change(%)</HeaderCell>
-                                        <Cell>
-                                            {(rowData: any) => {
-                                                return (
-                                                    <div>
-                                                        
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
-                                        <HeaderCell>Volume(24H)</HeaderCell>
-                                        <Cell>
-                                            {(rowData: any) => {
-                                                return (
-                                                    <div>
-                                                        $ {numberFormat(rowData.volume)}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Market Cap</HeaderCell>
-                                        <Cell>
-                                            {(rowData: any) => {
-                                                return (
-                                                    <div>
-                                                        $ {numberFormat(rowData.marketCap)}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Holders</HeaderCell>
-                                        <Cell>
-                                            {(rowData: any) => {
-                                                return (
-                                                    <div>
-                                                        {numberFormat(rowData.holders)}
+                                                        {rowData.type}
                                                     </div>
                                                 );
                                             }}
@@ -155,13 +90,13 @@ const Tokens = () => {
                                     </Column>
                                 </Table>
                                 <TablePagination
-                                lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                activePage={page}
-                                displayLength={size}
-                                total={totalContract}
-                                onChangePage={setPage}
-                                onChangeLength={setSize}
-                            />
+                                    lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
+                                    activePage={page}
+                                    displayLength={size}
+                                    total={totalContract}
+                                    onChangePage={setPage}
+                                    onChangeLength={setSize}
+                                />
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                     </Panel>
