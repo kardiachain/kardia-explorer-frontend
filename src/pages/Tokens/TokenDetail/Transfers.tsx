@@ -10,17 +10,7 @@ const { Column, HeaderCell, Cell } = Table;
 function Transfers() {
     let history = useHistory();
     const { isMobile } = useViewport();
-    const [tokens, setTokens] = useState([
-        {
-            name: 'BNB',
-            price: 237,
-            change: 5.04,
-            volume: 3078509017,
-            marketCap: 365666886336,
-            holders: 315307,
-            contractAddress: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52'
-        }
-    ])
+    const [tokens, setTokens] = useState([])
 
     return (
         <FlexboxGrid justify="space-between">

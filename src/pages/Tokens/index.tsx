@@ -3,11 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import { numberFormat } from '../../common/utils/number';
 import { useViewport } from '../../context/ViewportContext';
-import bnb from '../../resources/bnb.webp';
 import { renderHashToRedirect } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
 import { SortType } from '../../common/constant';
-import { getContractsList } from '../../service/kai-explorer';
+import { getContractsList, getContractInfor } from '../../service/kai-explorer';
 
 import './tokens.css'
 const { Column, HeaderCell, Cell } = Table;
@@ -30,9 +29,6 @@ const Tokens = () => {
         (async () => {
             setLoading(true);
             const rs = await getContractsList(page, size, sortType);
-            console.log('rs', rs);
-            // const contractInfor = await getContractInfor(rs);
-
             setTokens(rs?.contracts);
             setTotalContract(rs?.total);
             setLoading(false);
@@ -77,7 +73,7 @@ const Tokens = () => {
                                             {(rowData: any) => {
                                                 return (
                                                     <div>
-                                                        <img src={bnb} style={{ width: '19px', height:'19px', marginRight:'10px' }} alt="logo" />
+                                                        <img src={rowData.logo} style={{ width: '19px', height:'19px', marginRight:'10px' }} alt="logo" />
                                                         <span className="container-content-right">
                                                             <div className="sub-text">
                                                                 {
@@ -86,7 +82,7 @@ const Tokens = () => {
                                                                     headCount: isMobile ? 5 : 10,
                                                                     tailCount: 4,
                                                                     showTooltip: false,
-                                                                    redirectTo: `/token/${rowData.contractAddress}`
+                                                                    redirectTo: `/token/${rowData.address}`
                                                                 })
                                                                 }
                                                                 </div>
@@ -114,7 +110,7 @@ const Tokens = () => {
                                             {(rowData: any) => {
                                                 return (
                                                     <div>
-                                                        {rowData.change}
+                                                        $ {numberFormat(rowData.volume)}
                                                     </div>
                                                 );
                                             }}

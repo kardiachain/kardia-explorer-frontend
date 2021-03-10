@@ -8,7 +8,6 @@ export const getContractsList = async (page: number, size: number, sort: any): P
     return {
         total: responseJSON?.data?.total || 0,
         contracts: raws.map((item: any, index: number) => {
-            console.log('item', item);
             return {
                 address: item.address,
                 info: item.info,
@@ -16,21 +15,37 @@ export const getContractsList = async (page: number, size: number, sort: any): P
                 type: item.type,
             }
         })
+
+
     }
 }
 
-export const getContractInfo = async (contractAddress: string): Promise<any> => {
+export const getContractInfor = async (contractAddress: string): Promise<any> => {
     const response = await fetch(`${END_POINT}contracts/${contractAddress}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
-    const raws = responseJSON?.data?.data || [];
+    const raws = responseJSON?.data || [];
     return {
-        total: responseJSON?.data?.total || 0,
-        contracts: raws.map((item: any, index: number) => {
-            console.log('item', item);
-            return {
-          
-            }
-        })
+                abi: raws.abi || '',
+                address: raws.address || '',
+                balance: raws.balance || '',
+                bytecode: raws.bytecode || '',
+                createdAt: raws.createdAt || '',
+                decimals: raws.decimals || '',
+                holderCount: raws.holderCount || '',
+                info: raws.info || '',
+                internalTxCount: raws.internalTxCount || '',
+                isContract: raws.isContract || '',
+                logo: raws.logo || '',
+                name: raws.name || '',
+                ownerAddress: raws.ownerAddress || '',
+                tokenName: raws.tokenName || '',
+                tokenSymbol: raws.tokenSymbol || '',
+                tokenTxCount: raws.tokenTxCount || '',
+                totalSupply: raws.totalSupply || '',
+                txCount: raws.txCount || '',
+                txHash: raws.txHash || '',
+                type: raws.type || '',
+                updatedAt: raws.updatedAt || '',
     }
 }
 
