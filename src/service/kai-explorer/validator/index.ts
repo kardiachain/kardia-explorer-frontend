@@ -143,11 +143,6 @@ export const getCandidates = async (): Promise<Candidate[]> => {
 
 export const getValidatorByDelegator = async (delAddr: string): Promise<YourValidator[]> => {
     try {
-        const cacheKey = `VALIDATOR_OF_DELEGATOR_${delAddr}`;
-        const cacheResponse = getCache(cacheKey);
-        if (cacheResponse) {
-            return cacheResponse;
-        }
         const response = await fetch(`${END_POINT}delegators/${delAddr}/validators`, GET_REQUEST_OPTION);   
         const responseJSON = await response.json();
         const vals = responseJSON.data || [];
@@ -170,7 +165,6 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
                 }) : []
             } as YourValidator
         }) : []
-        setCache(cacheKey, responseData);
         return responseData
     } catch (error) {
         return []
