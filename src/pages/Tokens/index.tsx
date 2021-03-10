@@ -8,6 +8,7 @@ import { TABLE_CONFIG } from '../../config';
 import { SortType } from '../../common/constant';
 import { getContractsList } from '../../service/kai-explorer';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
+import logodefault from '../../resources/logodefault.svg';
 
 import './tokens.css'
 const { Column, HeaderCell, Cell } = Table;
@@ -74,7 +75,7 @@ const Tokens = () => {
                                             {(rowData: any) => {
                                                 return (
                                                     <div>
-                                                        <img src={rowData.logo} style={{ width: '19px', height:'19px', marginRight:'10px' }} alt="logo" />
+                                                        <img src={rowData.logo ? rowData.logo : logodefault} style={{ width: '19px', height:'19px', marginRight:'10px' }} alt="logo" />
                                                         <span className="container-content-right">
                                                             <div className="sub-text">
                                                                 {

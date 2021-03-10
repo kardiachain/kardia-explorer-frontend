@@ -8,6 +8,7 @@ import { numberFormat } from '../../../common/utils/number';
 import Transfers from './Transfers';
 import { getContractInfor } from '../../../service/kai-explorer';
 import { renderHashToRedirect } from '../../../common/utils/string';
+import logodefault from '../../../resources/logodefault.svg';
 
 const TokenDetail = () => {
     const { contractAddress }: any = useParams()
@@ -29,7 +30,7 @@ const TokenDetail = () => {
     return (
         <div className="container txs-container">
             <div style={{ marginBottom: 10 }}>
-                <img src={tokenInfor.logo} style={{ width: '28px', height: '28px', marginRight: '10px' }} alt="logo" />
+                <img src={tokenInfor.logo ? tokenInfor.logo : logodefault} style={{ width: '28px', height: '28px', marginRight: '10px' }} alt="logo" />
                 <span className="color-white">Token {tokenInfor.tokenSymbol}</span>
             </div>
 

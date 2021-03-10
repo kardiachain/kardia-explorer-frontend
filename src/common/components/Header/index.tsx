@@ -98,6 +98,12 @@ const Header = () => {
                                    
                                     </Dropdown>
 
+                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="list-ul" />}
+                                        onClick={() => {
+                                            history.push("/tokens")
+                                            setShowMenu(false)
+                                        }}>Tokens</Nav.Item>
+
                                  
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
                                         onClick={() => {
