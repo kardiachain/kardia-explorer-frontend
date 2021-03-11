@@ -36,8 +36,6 @@ const TxDetailOverview = ({ txDetail, loading }: {
     const [fileUploadErr, setFileUploadErr] = useState('');
     const [decodeErr, setDecodeErr] = useState('');
 
-
-
     const uploadFileFailed = (response: Object, file: FileType) => {
         setListFile([]);
         Alert.error('Uploaded failed.');
@@ -302,8 +300,10 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                                                     className="token-logo-small"
                                                                     src={item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64}
                                                                     alt="kardiachain" />
-                                                                <span style={{ marginRight: 5 }}>{item.tokenName ? item.tokenName : ''}</span>
-                                                                <span style={{ marginRight: 5 }}>{item.tokenSymbol ? `(${item.tokenSymbol})` : ''}</span>
+                                                                <Link to={`/token/${item.address}`}>
+                                                                    <span style={{ marginRight: 5 }}>{item.tokenName ? item.tokenName : ''}</span>
+                                                                    <span style={{ marginRight: 5 }}>{item.tokenSymbol ? `(${item.tokenSymbol})` : ''}</span>
+                                                                </Link>
                                                             </span>
                                                         </div>
                                                     )

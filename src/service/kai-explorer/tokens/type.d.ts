@@ -34,6 +34,7 @@ export interface ITokenTranferTx {
     to: string;
     value: any;
     age: any;
+    decimals: number;
 }
 
 export interface ITokenTranferTxList {
