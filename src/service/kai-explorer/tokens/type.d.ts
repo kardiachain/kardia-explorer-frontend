@@ -27,3 +27,16 @@ export interface ITokenDetails {
     totalSupply: number;
     updatedAt: string;
 }
+
+export interface ITokenTranferTx {
+    txHash: string;
+    from: string;
+    to: string;
+    value: any;
+    age: any;
+}
+
+export interface ITokenTranferTxList {
+    total: number;
+    txs: ITokenTranferTx[]
+}

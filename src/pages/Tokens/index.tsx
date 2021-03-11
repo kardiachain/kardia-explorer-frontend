@@ -47,7 +47,7 @@ const Tokens = () => {
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
-                                    rowHeight={60}
+                                    rowHeight={100}
                                     data={tokens}
                                     autoHeight
                                     hover={false}
