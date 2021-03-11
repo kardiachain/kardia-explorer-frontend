@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper, Tag } from 'rsuite';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper, Tag, SelectPicker } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { StakingIcon } from '../../common/components/IconCustom';
 import { weiToKAI } from '../../common/utils/amount';
@@ -9,7 +9,7 @@ import { millisecondToHMS, renderHashString, renderHashToRedirect, renderHashStr
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getHolderAccount } from '../../service/kai-explorer';
-import { getTxsByAddress } from '../../service/kai-explorer/transaction';
+import { getTokens, getTxsByAddress } from '../../service/kai-explorer/transaction';
 import './addressDetail.css'
 
 
@@ -24,6 +24,8 @@ const AddressDetail = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
     const { address }: any = useParams()
     const [holderAccount, setHolderAccount] = useState<HolderAccount>();
+    const [tokens, setTokens] = useState([]);
+    let history = useHistory();
 
 
     useEffect(() => {
@@ -31,12 +33,14 @@ const AddressDetail = () => {
             setLoading(true);
             const rs = await Promise.all([
                 getTxsByAddress(address, page, size),
-                getHolderAccount(address)
+                getHolderAccount(address),
+                getTokens(address, page, size)
             ]);
             setLoading(false);
             setTransactionList(rs[0].transactions);
             setTotalTxs(rs[0].totalTxs);
             setHolderAccount(rs[1]);
+            setTokens(rs[2].tokens);
         })()
     }, [page, size, address])
     return (
@@ -49,15 +53,15 @@ const AddressDetail = () => {
                         </div>
                     </div>
                 ) : (
-                        <div style={{ marginBottom: 16 }}>
-                            <div className="title header-title">
-                                Address Detail
+                    <div style={{ marginBottom: 16 }}>
+                        <div className="title header-title">
+                            Address Detail
                         </div>
-                        </div>
-                    )
+                    </div>
+                )
             }
             <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '25px' }}>
                     <Panel className="overview panel-bg-gray" shaded>
                         <List bordered={false}>
                             <List.Item>
@@ -101,6 +105,36 @@ const AddressDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
                                         <div className="property-content">{numberFormat(weiToKAI(holderAccount?.balance))} KAI</div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            </List.Item>
+
+                            <List.Item>
+                                <FlexboxGrid justify="start" align="middle">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
+                                        <div className="property-title">Token: </div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
+                                        <SelectPicker
+                                            placeholder="Search for Token name"
+                                            className="dropdown-custom"
+                                            data={tokens}
+                                            style={{ width: '100%' }}
+                                            renderMenuItem={(label, item: any) => {
+                                                return (
+                                                    <div className="rowToken" onClick={() => {
+                                                        history.push(`/token/${item.contractAddress}`)
+                                                    } }>
+                                                        <div className="flex">
+                                                            <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{marginRight:'4px'}}/>
+                                                            <p>{item.tokenSymbol}</p>
+                                                        </div>
+                                                        <span>{numberFormat(item.balance / 10**item.tokenDecimals)}</span>
+                                                    </div>
+                                                );
+                                            }}
+
+                                        />
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
@@ -148,7 +182,7 @@ const AddressDetail = () => {
                                                                     headCount: isMobile ? 5 : 10,
                                                                     tailCount: 4,
                                                                     showTooltip: false,
-                                                                    redirectTo:`/tx/${rowData.txHash}`
+                                                                    redirectTo: `/tx/${rowData.txHash}`
                                                                 })
                                                             }
                                                             <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
@@ -219,27 +253,27 @@ const AddressDetail = () => {
                                                                             headCount: isMobile ? 5 : 12,
                                                                             tailCount: 4,
                                                                             showTooltip: true,
-                                                                            redirectTo:`/address/${rowData.to}`
+                                                                            redirectTo: `/address/${rowData.to}`
                                                                         })}
                                                                 </>
                                                             ) : (
-                                                                    <>
-                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to || '0x'}</Tooltip>}>
-                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.to}`}>
-                                                                                {rowData.toName}
-                                                                            </Link>
-                                                                        </Whisper>
-                                                                        {
-                                                                            rowData.isInValidatorsList ? (
-                                                                                <StakingIcon
-                                                                                    color={rowData?.role?.classname}
-                                                                                    character={rowData?.role?.character}
-                                                                                    size='small' style={{ marginLeft: 5 }} />
-                                                                            ) : <></>
-                                                                        }
-                                                                    </>
+                                                                <>
+                                                                    <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to || '0x'}</Tooltip>}>
+                                                                        <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.to}`}>
+                                                                            {rowData.toName}
+                                                                        </Link>
+                                                                    </Whisper>
+                                                                    {
+                                                                        rowData.isInValidatorsList ? (
+                                                                            <StakingIcon
+                                                                                color={rowData?.role?.classname}
+                                                                                character={rowData?.role?.character}
+                                                                                size='small' style={{ marginLeft: 5 }} />
+                                                                        ) : <></>
+                                                                    }
+                                                                </>
 
-                                                                )
+                                                            )
                                                         }
                                                     </div>
                                                 );
