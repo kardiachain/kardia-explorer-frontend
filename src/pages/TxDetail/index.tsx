@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup, Nav } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
-import { weiToKAI, weiToOXY } from '../../common/utils/amount';
+import { convertValueFollowDecimal, weiToKAI, weiToOXY } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToUTCString, millisecondToHMS, renderCopyButton, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';

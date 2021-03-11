@@ -16,7 +16,7 @@ interface KAITransaction {
     gas: number;
     gasLimit: number;
     input: string;
-    logs: string;
+    logs: any;
     gasUsed: number;
     gasUsedPercent: any;
     txFee: number;
