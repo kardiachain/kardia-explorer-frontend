@@ -18,6 +18,7 @@ import { hashValid, jsonValid } from '../../common/utils/validate';
 import { ErrorMessage } from '../../common/constant/Message';
 import { StakingIcon } from '../../common/components/IconCustom';
 import Logs from './Logs';
+import { UNKNOW_AVARTAR_DEFAULT_BASE64 } from '../../common/constant';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -265,11 +266,11 @@ const TxDetail = () => {
                                                     <List.Item>
                                                         <FlexboxGrid justify="start" align="middle">
                                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                                                <div className="property-title">To</div>
+                                                                <div className="property-title">{txDetail?.isSmcInteraction || txDetail?.isContractCreation ? 'Interacted With (To)' : 'To'}</div>
                                                             </FlexboxGrid.Item>
                                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                                                 {
-                                                                    !txDetail?.isSmcInteraction || !txDetail?.toName ? (
+                                                                    !(txDetail?.isSmcInteraction || txDetail?.isContractCreation) ? (
                                                                         <div className="property-content">{renderHashToRedirect({
                                                                             hash: txDetail?.to,
                                                                             headCount: 50,
@@ -312,6 +313,60 @@ const TxDetail = () => {
                                                             </FlexboxGrid.Item>
                                                         </FlexboxGrid>
                                                     </List.Item>
+                                                    {
+                                                        txDetail?.logs && txDetail.logs.length > 0 ? (
+                                                            <List.Item>
+                                                                <FlexboxGrid justify="start" align="middle">
+                                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                                        <div className="property-title">Tokens Transferred</div>
+                                                                    </FlexboxGrid.Item>
+                                                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                                        {
+                                                                            txDetail?.logs.map((item: any, index: number) => {
+                                                                                return (
+                                                                                    <div className="property-content" key={index} style={{ marginBottom: 5 }}>
+                                                                                        <span>
+                                                                                            <span className="text-bold" style={{ marginRight: 5 }}>From</span>
+                                                                                            {item.arguments && item.arguments.from ?
+                                                                                                renderHashToRedirect({
+                                                                                                    hash: item.arguments.from,
+                                                                                                    headCount: 7,
+                                                                                                    tailCount: 4,
+                                                                                                    showTooltip: true,
+                                                                                                    redirectTo: `/address/${item.arguments.from}`
+                                                                                                }) : ''}
+                                                                                        </span>
+                                                                                        <span>
+                                                                                            <span className="text-bold" style={{ marginRight: 5 }}>To</span>
+                                                                                            {item.arguments && item.arguments.to ?
+                                                                                                renderHashToRedirect({
+                                                                                                    hash: item.arguments.to,
+                                                                                                    headCount: 7,
+                                                                                                    tailCount: 4,
+                                                                                                    showTooltip: true,
+                                                                                                    redirectTo: `/address/${item.arguments.to}`
+                                                                                                }) : ''}
+                                                                                        </span>
+                                                                                        <span>
+                                                                                            <span className="text-bold" style={{ marginRight: 5 }}>For</span>
+                                                                                            <span style={{ marginRight: 5 }}>{item.arguments && item.arguments.value ? numberFormat(convertValueFollowDecimal(item.arguments.value, item.decimals)) : ''}</span>
+                                                                                            <img
+                                                                                                style={{ marginRight: 5 }}
+                                                                                                className="token-logo-small"
+                                                                                                src={item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64}
+                                                                                                alt="kardiachain" />
+                                                                                            <span style={{ marginRight: 5 }}>{item.tokenName ? item.tokenName : ''}</span>
+                                                                                            <span style={{ marginRight: 5 }}>{item.tokenSymbol ? `(${item.tokenSymbol})` : ''}</span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </FlexboxGrid.Item>
+                                                                </FlexboxGrid>
+                                                            </List.Item>
+                                                        ) : <></>
+                                                    }
                                                     <List.Item>
                                                         <FlexboxGrid justify="start" align="middle">
                                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
@@ -500,7 +555,7 @@ const TxDetail = () => {
                                 );
                             case 'logs':
                                 return (
-                                    <Logs/>
+                                    <Logs />
                                 )
                         }
                     })()

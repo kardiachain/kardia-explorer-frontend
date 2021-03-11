@@ -50,6 +50,22 @@ const oxyToKAI = (value: any): any => {
   return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
 };
 
+const convertValueFollowDecimal = (value: any, decimals: number): any => {
+  if (!value || value === '0') {
+    return 0
+  }
+  
+  value = value.toLocaleString('en-US', { useGrouping: false });
+  if (!decimals) {
+    decimals = 18
+  }
+
+  const cellString = value.toString().padStart(decimals*2, '0');
+  const numString = parseInt(cellString.slice(0, decimals));
+  const decimalString = cellString.slice(-decimals);
+  return `${removeTrailingZeros(`${numString}.${decimalString}`)}`;
+};
+
 const formatFullAmount = (amount: string) => {
   try {
     return amount && amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
@@ -114,4 +130,4 @@ const formatAmountwithPlus = (value: number) => {
 
 
 
-export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus, formatFullAmount, weiToOXY, oxyToKAI}
+export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus, formatFullAmount, weiToOXY, oxyToKAI, convertValueFollowDecimal}
