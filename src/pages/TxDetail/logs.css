@@ -1,5 +1,10 @@
+.body {
+    padding: 12px 32px;
+}
+
 .row{
     display:flex;
+    border-bottom: var(--border) !important;
 }
 
 .property-title{
@@ -29,16 +34,22 @@ margin-top:12px;
     border:none !important;
 }
 
+.right{
+    flex: 11;
+    display:flex;
+    flex-direction: column;
+}
+
 @media only screen and (max-width: 740px) {
+    .body{
+        padding:0
+    }
+     
     .property-title{
         flex:1
     }
 
-    .property-content{
-        flex:3;
-    }
-
-    .topics{
+    .property-content, .topics, .right{
         flex:3;
     }
   }
