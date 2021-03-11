@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'rsuite';
-import { useViewport } from '../../context/ViewportContext';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getContractEvents } from '../../service/kai-explorer';
 import './logs.css'
 import { renderHashToRedirect } from '../../common/utils/string';
 
 function Logs() {
     const { txHash }: any = useParams();
-    let history = useHistory();
-    const { isMobile } = useViewport();
-    const [loading, setLoading] = useState(false);
-
     const [logs, setLogs] = useState({} as any);
     const [data, setData] = useState();
 
     useEffect(() => {
         (async () => {
-            setLoading(true);
             const data = await getContractEvents(1, 10, txHash);
             setLogs(data);
             setData(data.data);
-            setLoading(false);
         })()
-    }, [])
+    }, [txHash])
 
     const dec = () => {
         const newData = parseInt(logs.data as any, 16);
