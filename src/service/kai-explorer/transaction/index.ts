@@ -9,7 +9,7 @@ interface TransactionsResponse {
 }
 
 export const getTransactions = async (page: number, size: number): Promise<TransactionsResponse> => {
-    const response = await fetch(`${END_POINT}txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime();
@@ -20,23 +20,23 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
             const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
             return {
                 txHash: o.hash,
-                from:  o.from,
+                from: o.from,
                 to: !isContractCreation ? o.to : o.contractAddress,
                 value: o.value,
                 time: o.time,
                 blockNumber: o.blockNumber,
-                blockHash:  o.blockHash,
+                blockHash: o.blockHash,
                 status: o.status === 1,
                 failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
-                contractAddress:  o.contractAddress,
+                contractAddress: o.contractAddress,
                 gasPrice: o.gasPrice,
                 gas: o.gas,
                 gasLimit: o.gas,
-                input:  o.input,
-                logs:  o.logs,
+                input: o.input,
+                logs: o.logs,
                 txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice),
                 role: checkValidatorRole(o.role),
                 isInValidatorsList: o.isInValidatorsList,
@@ -49,8 +49,8 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
     }
 }
 
-export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: number) : Promise<TransactionsResponse> => {
-    const response = await fetch(`${END_POINT}block/${blockHeight}/txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
+export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: number): Promise<TransactionsResponse> => {
+    const response = await fetch(`${END_POINT}block/${blockHeight}/txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime()
@@ -62,23 +62,23 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
             const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
             return {
                 txHash: o.hash,
-                from:  o.from,
+                from: o.from,
                 to: !isContractCreation ? o.to : o.contractAddress,
                 value: o.value,
                 time: o.time,
                 blockNumber: o.blockNumber,
-                blockHash:  o.blockHash,
+                blockHash: o.blockHash,
                 status: o.status === 1,
                 failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
-                contractAddress:  o.contractAddress,
+                contractAddress: o.contractAddress,
                 gasPrice: o.gasPrice,
                 gas: o.gas,
                 gasLimit: o.gas,
-                input:  o.input,
-                logs:  o.logs,
+                input: o.input,
+                logs: o.logs,
                 txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice),
                 role: checkValidatorRole(o.role),
                 isInValidatorsList: o.isInValidatorsList,
@@ -94,9 +94,9 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
 export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     const response = await fetch(`${END_POINT}txs/${txHash}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
-    
+
     const tx = responseJSON?.data || {};
-    if(!tx) {
+    if (!tx) {
         return {} as KAITransaction
     }
     const nowTime = (new Date()).getTime()
@@ -104,21 +104,21 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     const gasUsedPercent = numberFormat(tx.gasUsed / tx.gas * 100, 3);
     const isContractCreation = tx.contractAddress && tx.contractAddress !== '0x';
     return {
-        txHash:tx.hash,
+        txHash: tx.hash,
         from: tx.from,
         to: !isContractCreation ? tx.to : tx.contractAddress,
-        value:tx.value,
-        time:tx.time,
-        blockNumber:tx.blockNumber,
+        value: tx.value,
+        time: tx.time,
+        blockNumber: tx.blockNumber,
         blockHash: tx.blockHash,
         status: tx.status === 1,
         failedReason: defineFailedReason(tx.status === 1, tx.gasUsed, tx.gas),
-        nonce:tx.nonce,
+        nonce: tx.nonce,
         age: (nowTime - createdTime),
-        transactionIndex:tx.transactionIndex,
+        transactionIndex: tx.transactionIndex,
         contractAddress: tx.contractAddress,
-        gasPrice:tx.gasPrice,
-        gas:tx.gas,
+        gasPrice: tx.gasPrice,
+        gas: tx.gas,
         gasUsed: tx.gasUsed,
         gasLimit: tx.gas,
         input: tx.input,
@@ -128,7 +128,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         decodedInputData: tx.decodedInputData,
         role: checkValidatorRole(tx.role),
         isInValidatorsList: tx.isInValidatorsList,
-        toName: tx.toName ? tx.toName :  (isContractCreation ? 'Contract Creation' : ''),
+        toName: tx.toName ? tx.toName : (isContractCreation ? 'Contract Creation' : ''),
         fromName: tx.fromName ? tx.fromName : '',
         isSmcInteraction: tx.input && tx.input !== '0x',
         isContractCreation: isContractCreation,
@@ -137,7 +137,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
     const checkSumAddr = address ? toChecksum(address.toLowerCase()) : '';
-    const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime()
@@ -149,23 +149,23 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
             const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
             return {
                 txHash: o.hash,
-                from:  o.from,
+                from: o.from,
                 to: !isContractCreation ? o.to : o.contractAddress,
                 value: o.value,
                 time: o.time,
                 blockNumber: o.blockNumber,
-                blockHash:  o.blockHash,
+                blockHash: o.blockHash,
                 status: o.status === 1,
                 failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
-                contractAddress:  o.contractAddress,
+                contractAddress: o.contractAddress,
                 gasPrice: o.gasPrice,
                 gas: o.gas,
                 gasLimit: o.gas,
-                input:  o.input,
-                logs:  o.logs,
+                input: o.input,
+                logs: o.logs,
                 txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice),
                 role: checkValidatorRole(o.role),
                 isInValidatorsList: o.isInValidatorsList,
@@ -183,4 +183,29 @@ const defineFailedReason = (status: boolean, gasUsed: number, gasLimit: number):
         return 'Transacsion error: Out of gas.'
     }
     return '';
+}
+
+export const getContractEvents = async (page: number, size: number, txHash: string): Promise<any> => {
+    const response = await fetch(`${END_POINT}contracts/events?page=${page - 1}&limit=${size}&txHash=${txHash}`, GET_REQUEST_OPTION);
+    const responseJSON = await response.json();
+    if (responseJSON.data.data.length > 0) {
+        const it = responseJSON.data.data[0];
+        return {
+            address: it.address || '',
+            methodName: it.methodName || '',
+            argumentsName: it.argumentsName || '',
+            arguments: it.arguments || '',
+            topics: it.topics || '',
+            data: it.data || '',
+            blockHeight: it.blockHeight || '',
+            transactionHash: it.transactionHash || '',
+            transactionIndex: it.transactionIndex || '',
+            blockHash: it.blockHash || '',
+            logIndex: it.logIndex || '',
+            removed: it.remove || ''
+        }
+    }
+
+    return {}
+
 }

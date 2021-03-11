@@ -2,3 +2,7 @@
     text-align: right;
     font-weight: 600;
 }
+
+.rs-panel-shaded{
+box-shadow:none !important;
+}
