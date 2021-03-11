@@ -6,17 +6,17 @@ import * as serviceWorker from './serviceWorker';
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 
-// Sentry.init({
-//   dsn: "https://95cf929f53bd4ead85d8d918cc2e2ba5@o497910.ingest.sentry.io/5574725",
-//   autoSessionTracking: true,
-//   integrations: [
-//     new Integrations.BrowserTracing(),
-//   ],
+Sentry.init({
+  dsn: "https://95cf929f53bd4ead85d8d918cc2e2ba5@o497910.ingest.sentry.io/5574725",
+  autoSessionTracking: true,
+  integrations: [
+    new Integrations.BrowserTracing(),
+  ],
 
-//   // We recommend adjusting this value in production, or using tracesSampler
-//   // for finer control
-//   tracesSampleRate: 1.0,
-// });
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+});
 
 ReactDOM.render(
   <React.StrictMode>
