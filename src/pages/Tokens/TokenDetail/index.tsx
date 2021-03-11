@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Col, FlexboxGrid, Panel, Nav, Placeholder } from 'rsuite';
+import { Col, FlexboxGrid, Panel, Nav, Placeholder, List } from 'rsuite';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { useViewport } from '../../../context/ViewportContext';
 import './style.css'
 import { getTokenContractInfor } from '../../../service/kai-explorer';
 import { renderHashToRedirect } from '../../../common/utils/string';
-import { ITokenDetails } from '../../../service/kai-explorer/tokens/type';
+import { ITokenDetails, ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
 import { convertValueFollowDecimal } from '../../../common/utils/amount';
 import { numberFormat } from '../../../common/utils/number';
 import TokenTransfers from './TokenTransfers';
+import { TABLE_CONFIG } from '../../../config';
+import { getTokenTransferTx } from '../../../service/kai-explorer/tokens';
 
 const { Paragraph } = Placeholder;
 
@@ -17,8 +19,13 @@ const TokenDetail = () => {
     const { contractAddress }: any = useParams()
     const { isMobile } = useViewport();
     const [loading, setLoading] = useState(false);
-    const [activeKey, setActiveKey] = useState('validators')
+    const [activeKey, setActiveKey] = useState('transfer')
     const [tokenInfor, setTokenInfor] = useState<ITokenDetails>({} as ITokenDetails);
+    const [transferTxs, setTransferTxs] = useState<ITokenTranferTx[]>([] as ITokenTranferTx[])
+    const [totalTransferTxs, setTotalTransferTxs] = useState(0)
+    const [transferTxsPage, setTransferTxsPage] = useState(TABLE_CONFIG.page)
+    const [transferTxsSize, setTransferTxsSize] = useState(TABLE_CONFIG.limitDefault)
+    const [transferTxsLoading, setTransferTxsLoading] = useState(false)
 
     useEffect(() => {
         (async () => {
@@ -29,57 +36,90 @@ const TokenDetail = () => {
         })()
     }, [contractAddress])
 
+    useEffect(() => {
+        (async () => {
+            setTransferTxsLoading(true)
+            const rs = await getTokenTransferTx(contractAddress, transferTxsPage, transferTxsSize)
+            setTotalTransferTxs(rs.total)
+            setTransferTxs(rs.txs)
+            setTransferTxsLoading(false)
+        })()
+    }, [transferTxsSize, transferTxsPage, contractAddress])
+
     return (
-        <div className="container txs-container">
+        <div className="container token-details-container">
             <div style={{ marginBottom: 10 }}>
                 <img src={tokenInfor.logo} style={{ width: '28px', height: '28px', marginRight: '10px' }} alt="logo" />
                 <span className="color-white"><span className="fs-18">Token</span> {tokenInfor.tokenName} {tokenInfor.symbol ? `[${tokenInfor.symbol}]` : ''}</span>
             </div>
 
-            <FlexboxGrid>
-                <FlexboxGridItem colspan={24} md={24} sm={24} style={{ marginRight: !isMobile ? 5 : 0, borderRadius: 8 }} className="wrap-token">
-                    <Panel header="Overview [KRC-20]">
+            <FlexboxGrid justify="space-between">
+                <FlexboxGridItem  componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
+                    <Panel className="overview panel-bg-gray" header="Overview [KRC-20]">
                         {
                             loading ? <Paragraph style={{ marginBottom: 15 }} rows={5} /> : (
-                                <div>
-                                    <div className="row">
-                                        <p className="flex3 color-graylight">Token name:</p>
-                                        <span className="flex9 color-graylight">
-                                            {tokenInfor.tokenName}
-                                        </span>
-                                    </div>
-                                    <div className="row">
-                                        <p className="flex3 color-graylight">Contract:</p>
-                                        <span className="flex9 color-graylight">
-                                            {
-                                                renderHashToRedirect({
-                                                    hash: tokenInfor.address,
-                                                    headCount: isMobile ? 5 : 50,
-                                                    tailCount: 15,
-                                                    showTooltip: false,
-                                                    redirectTo: `/address/${tokenInfor.address}`,
-                                                    showCopy: true
-                                                })
-                                            }
-                                        </span>
-                                    </div>
-                                    <div className="row" style={{ borderBottom: 'none' }}>
-                                        <p className="flex3 color-graylight">Decimals:</p>
-                                        <span className="flex9 color-graylight">{tokenInfor.decimals}</span>
-                                    </div>
-                                    <div className="row" style={{ borderBottom: 'none' }}>
-                                        <p className="flex3 color-graylight">Total supply:</p>
-                                        <span className="flex9 color-graylight">{numberFormat(convertValueFollowDecimal(tokenInfor.totalSupply, tokenInfor.decimals))} {tokenInfor.symbol}</span>
-                                    </div>
-                                </div>
+                                <List bordered={false}>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                                <div className="property-title">Token name</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                                <div className="property-content">{tokenInfor.tokenName}</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                                <div className="property-title">Contract</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                                <div className="property-content">
+                                                    {
+                                                        renderHashToRedirect({
+                                                            hash: tokenInfor.address,
+                                                            headCount: isMobile ? 5 : 50,
+                                                            tailCount: 15,
+                                                            showTooltip: false,
+                                                            redirectTo: `/address/${tokenInfor.address}`,
+                                                            showCopy: true
+                                                        })
+                                                    }</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                                <div className="property-title">Decimals</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                                <div className="property-content">
+                                                    {tokenInfor.decimals}
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                                <div className="property-title">Total supply</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                                <div className="property-content">
+                                                    {numberFormat(convertValueFollowDecimal(tokenInfor.totalSupply, tokenInfor.decimals))} {tokenInfor.symbol}
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                </List>
                             )
                         }
                     </Panel>
                 </FlexboxGridItem>
-            </FlexboxGrid>
 
-            <FlexboxGrid justify="space-between">
-                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
                     <Panel shaded className="panel-bg-gray">
                         <div className="custom-nav">
                             <Nav
@@ -87,17 +127,24 @@ const TokenDetail = () => {
                                 activeKey={activeKey}
                                 onSelect={setActiveKey}
                                 style={{ marginBottom: 20 }}>
-                                <Nav.Item eventKey="validators">
-                                    {`Transfers`}
+                                <Nav.Item eventKey="transfer">
+                                    {`Transfers (${totalTransferTxs})`}
                                 </Nav.Item>
                             </Nav>
                         </div>
                         {
                             (() => {
                                 switch (activeKey) {
-                                    case 'validators':
+                                    case 'transfer':
                                         return (
-                                            <TokenTransfers tokenAddr={tokenInfor.address} decimals={tokenInfor.decimals} />
+                                            <TokenTransfers 
+                                                txs={transferTxs}
+                                                totalTx={totalTransferTxs}
+                                                loading={transferTxsLoading}
+                                                size={transferTxsSize}
+                                                setSize={setTransferTxsSize}
+                                                page={transferTxsPage}
+                                                setPage={setTransferTxsPage} />
                                         );
 
                                 }

@@ -1,23 +1,19 @@
-.row{
-    border-bottom:1px solid gray;
-    padding:12px 0px;
-    display:flex;
-}
 
-.rs-panel-heading{
+.token-details-container .rs-panel-heading{
     padding:12px 32px;
     border-bottom:1px solid gray;
+    background: #3e3a3a;
 }
 
-.rs-panel-heading{
+.token-details-container .rs-panel-heading{
     color:white;
 }
 
-.rs-panel-body{
+.token-details-container .rs-panel-body{
     padding:12px 32px;
 }
 
-.no-border{
+.token-details-container .no-border{
     border:none !important;
 }
 

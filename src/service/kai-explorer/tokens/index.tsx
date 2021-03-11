@@ -62,7 +62,8 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
                 from: item.arguments && item.arguments.from ? item.arguments.from : '',
                 to: item.arguments && item.arguments.to ? item.arguments.to : '',
                 value: item.arguments && item.arguments.value ? item.arguments.value : '0',
-                age: (nowTime - createdTime)
+                age: (nowTime - createdTime),
+                decimals: item.decimals ? item.decimals : 18
             }
         })
     }
