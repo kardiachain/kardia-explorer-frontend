@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Panel, Tag, Placeholder, Icon, Alert, Input, ControlLabel, Uploader, FormControl, Form, FormGroup } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
-import { weiToKAI, weiToOXY } from '../../common/utils/amount';
+import { convertValueFollowDecimal, weiToKAI, weiToOXY } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { copyToClipboard, dateToUTCString, millisecondToHMS, renderCopyButton, renderHashString, renderHashToRedirect } from '../../common/utils/string';
 import { STAKING_SMC_ADDRESS, TIME_INTERVAL_MILISECONDS } from '../../config/api';
@@ -17,6 +17,7 @@ import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage'
 import { hashValid, jsonValid } from '../../common/utils/validate';
 import { ErrorMessage } from '../../common/constant/Message';
 import { StakingIcon } from '../../common/components/IconCustom';
+import { UNKNOW_AVARTAR_DEFAULT_BASE64 } from '../../common/constant';
 
 const onSuccess = () => {
     Alert.success('Copied to clipboard.')
@@ -259,7 +260,7 @@ const TxDetail = () => {
                                             ) : (
                                                     <div className="property-content">
                                                         <span className="container-icon-left">
-                                                            <Icon icon="file-text-o" className="gray-highlight"/>
+                                                            <Icon icon="file-text-o" className="gray-highlight" />
                                                         </span>
                                                         {renderHashToRedirect({
                                                             hash: txDetail?.to,
@@ -290,6 +291,60 @@ const TxDetail = () => {
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
+                            {
+                                txDetail?.logs && txDetail.logs.length > 0 ? (
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
+                                                <div className="property-title">Tokens Transferred</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
+                                                {
+                                                    txDetail?.logs.map((item: any, index: number) => {
+                                                        return (
+                                                            <div className="property-content" key={index} style={{marginBottom: 5}}>
+                                                                <span>
+                                                                    <span className="text-bold" style={{ marginRight: 5 }}>From</span>
+                                                                    {item.arguments && item.arguments.from ?
+                                                                        renderHashToRedirect({
+                                                                            hash: item.arguments.from,
+                                                                            headCount: 7,
+                                                                            tailCount: 4,
+                                                                            showTooltip: true,
+                                                                            redirectTo: `/address/${item.arguments.from}`
+                                                                        }) : ''}
+                                                                </span>
+                                                                <span>
+                                                                    <span className="text-bold" style={{ marginRight: 5 }}>To</span>
+                                                                    {item.arguments && item.arguments.to ?
+                                                                        renderHashToRedirect({
+                                                                            hash: item.arguments.to,
+                                                                            headCount: 7,
+                                                                            tailCount: 4,
+                                                                            showTooltip: true,
+                                                                            redirectTo: `/address/${item.arguments.to}`
+                                                                        }) : ''}
+                                                                </span>
+                                                                <span>
+                                                                    <span className="text-bold" style={{ marginRight: 5 }}>For</span>
+                                                                    <span style={{ marginRight: 5 }}>{item.arguments && item.arguments.value ? numberFormat(convertValueFollowDecimal(item.arguments.value, item.decimals)) : ''}</span>
+                                                                    <img
+                                                                        style={{ marginRight: 5 }}
+                                                                        className="token-logo-small"
+                                                                        src={item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64}
+                                                                        alt="kardiachain" />
+                                                                    <span style={{ marginRight: 5 }}>{item.tokenName ? item.tokenName : ''}</span>
+                                                                    <span style={{ marginRight: 5 }}>{item.tokenSymbol ? `(${item.tokenSymbol})` : ''}</span>
+                                                                </span>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                ) : <></>
+                            }
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>

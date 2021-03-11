@@ -14,3 +14,8 @@
     background: white;
     border-radius: 8px;
 }
+.token-logo-small {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}

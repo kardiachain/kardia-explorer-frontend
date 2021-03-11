@@ -122,7 +122,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         gasUsed: tx.gasUsed,
         gasLimit: tx.gas,
         input: tx.input,
-        logs: tx.logs,
+        logs: tx.logs && tx.logs.length > 0 ? tx.logs.filter((item: any) => item.methodName === 'Transfer') : [],
         gasUsedPercent: gasUsedPercent,
         txFee: tx.txFee ? tx.txFee : (tx.gasUsed * tx.gasPrice),
         decodedInputData: tx.decodedInputData,
