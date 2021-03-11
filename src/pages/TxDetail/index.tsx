@@ -243,11 +243,11 @@ const TxDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">To</div>
+                                        <div className="property-title">{txDetail?.isSmcInteraction || txDetail?.isContractCreation ? 'Interacted With (To)' : 'To'}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         {
-                                            !txDetail?.isSmcInteraction || !txDetail?.toName ? (
+                                            !(txDetail?.isSmcInteraction || txDetail?.isContractCreation) ? (
                                                 <div className="property-content">{renderHashToRedirect({
                                                     hash: txDetail?.to,
                                                     headCount: 50,

@@ -51,16 +51,18 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
     const raws = responseJSON?.data?.data || [];
     
     if (!raws || raws.length < 1) return {} as ITokenTranferTxList
+    const nowTime = (new Date()).getTime()
 
     return {
         total: responseJSON?.data?.total || 0,
         txs: raws.map((item: any) => {
+            const createdTime = (new Date(item.time)).getTime()
             return {
                 txHash: item.transactionHash ? item.transactionHash : '',
                 from: item.arguments && item.arguments.from ? item.arguments.from : '',
                 to: item.arguments && item.arguments.to ? item.arguments.to : '',
                 value: item.arguments && item.arguments.value ? item.arguments.value : '0',
-                age: 3000
+                age: (nowTime - createdTime)
             }
         })
     }
