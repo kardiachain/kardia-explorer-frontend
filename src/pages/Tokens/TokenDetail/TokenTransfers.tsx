@@ -25,7 +25,7 @@ const TokenTransfers = ({txs, loading, totalTx, page, setPage, size, setSize }: 
         <FlexboxGrid justify="space-between">
             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                 <Table
-                    rowHeight={60}
+                    rowHeight={() => 60}
                     height={200}
                     data={txs}
                     autoHeight
@@ -96,7 +96,7 @@ const TokenTransfers = ({txs, loading, totalTx, page, setPage, size, setSize }: 
                         </Cell>
                     </Column>
                     <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                        <HeaderCell>Value (KAI)</HeaderCell>
+                        <HeaderCell>Balance</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (

@@ -6,12 +6,13 @@ import { useViewport } from '../../../context/ViewportContext';
 import './style.css'
 import { getTokenContractInfor } from '../../../service/kai-explorer';
 import { renderHashToRedirect } from '../../../common/utils/string';
-import { ITokenDetails, ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
+import { ITokenDetails, ITokenHoldersByToken, ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
 import { convertValueFollowDecimal } from '../../../common/utils/amount';
 import { numberFormat } from '../../../common/utils/number';
 import TokenTransfers from './TokenTransfers';
 import { TABLE_CONFIG } from '../../../config';
-import { getTokenTransferTx } from '../../../service/kai-explorer/tokens';
+import { getTokenHoldersByToken, getTokenTransferTx } from '../../../service/kai-explorer/tokens';
+import TokenHolder from './TokenHolder';
 
 const { Paragraph } = Placeholder;
 
@@ -26,6 +27,12 @@ const TokenDetail = () => {
     const [transferTxsPage, setTransferTxsPage] = useState(TABLE_CONFIG.page)
     const [transferTxsSize, setTransferTxsSize] = useState(TABLE_CONFIG.limitDefault)
     const [transferTxsLoading, setTransferTxsLoading] = useState(false)
+
+    const [holders, setHolders] = useState<ITokenHoldersByToken[]>([] as ITokenHoldersByToken[])
+    const [totalHolder, setTotalHolder] = useState(0)
+    const [holdersSize, setHoldersSize] = useState(TABLE_CONFIG.limitDefault)
+    const [holdersPage, setHoldersPage] = useState(TABLE_CONFIG.page)
+    const [holdersLoading, setHoldersLoading] = useState(false)
 
     useEffect(() => {
         (async () => {
@@ -46,6 +53,16 @@ const TokenDetail = () => {
         })()
     }, [transferTxsSize, transferTxsPage, contractAddress])
 
+    useEffect(() => {
+        (async () => {
+            setHoldersLoading(true)
+            const rs = await getTokenHoldersByToken(contractAddress, holdersPage, holdersSize)
+            setTotalHolder(rs.total)        
+            setHolders(rs.holders)
+            setHoldersLoading(false)
+        })()
+    }, [holdersSize, holdersPage, contractAddress])
+
     return (
         <div className="container token-details-container">
             <div style={{ marginBottom: 10 }}>
@@ -54,7 +71,7 @@ const TokenDetail = () => {
             </div>
 
             <FlexboxGrid justify="space-between">
-                <FlexboxGridItem  componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
+                <FlexboxGridItem componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
                     <Panel className="overview panel-bg-gray" header="Overview [KRC-20]">
                         {
                             loading ? <Paragraph style={{ marginBottom: 15 }} rows={5} /> : (
@@ -130,6 +147,9 @@ const TokenDetail = () => {
                                 <Nav.Item eventKey="transfer">
                                     {`Transfers (${totalTransferTxs})`}
                                 </Nav.Item>
+                                <Nav.Item eventKey="holders">
+                                    {`Holders (${totalHolder})`}
+                                </Nav.Item> 
                             </Nav>
                         </div>
                         {
@@ -137,7 +157,7 @@ const TokenDetail = () => {
                                 switch (activeKey) {
                                     case 'transfer':
                                         return (
-                                            <TokenTransfers 
+                                            <TokenTransfers
                                                 txs={transferTxs}
                                                 totalTx={totalTransferTxs}
                                                 loading={transferTxsLoading}
@@ -146,6 +166,18 @@ const TokenDetail = () => {
                                                 page={transferTxsPage}
                                                 setPage={setTransferTxsPage} />
                                         );
+                                    case 'holders':
+                                        return (
+                                            <TokenHolder
+                                                holders={holders}
+                                                totalHolder={totalHolder}
+                                                size={holdersSize}
+                                                page={holdersPage}
+                                                setSize={setHoldersSize}
+                                                setPage={setHoldersPage}
+                                                loading={holdersLoading}
+                                            />
+                                        )
 
                                 }
                             })()

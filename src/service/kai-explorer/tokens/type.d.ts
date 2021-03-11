@@ -41,3 +41,14 @@ export interface ITokenTranferTxList {
     total: number;
     txs: ITokenTranferTx[]
 }
+
+export interface ITokenHoldersByToken {
+    holderAddress: string;
+    balance: any;
+    tokenDecimals: numbber;
+}
+
+export interface ITokenHolderByTokenList {
+    total: number;
+    holders: ITokenHoldersByToken[]
+}
