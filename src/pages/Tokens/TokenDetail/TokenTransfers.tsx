@@ -1,42 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Col, FlexboxGrid, Icon, Table } from 'rsuite';
 import { numberFormat } from '../../../common/utils/number';
 import { useViewport } from '../../../context/ViewportContext';
 import { ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
 import { TABLE_CONFIG } from '../../../config';
-import { getTokenTransferTx } from '../../../service/kai-explorer/tokens';
 import { millisecondToHMS, renderHashToRedirect } from '../../../common/utils/string';
 import { convertValueFollowDecimal } from '../../../common/utils/amount';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 
 const { Column, HeaderCell, Cell } = Table;
 
-const TokenTransfers = ({ tokenAddr, decimals }: {
-    tokenAddr: string;
-    decimals: number
+const TokenTransfers = ({txs, loading, totalTx, page, setPage, size, setSize }: {
+    txs: ITokenTranferTx[];
+    totalTx: number;
+    loading: boolean;
+    page: number;
+    setPage: (page: number) => void;
+    size: number;
+    setSize: (size: number) => void;
 }) => {
     const { isMobile } = useViewport()
-    const [txs, setTxs] = useState<ITokenTranferTx[]>([] as ITokenTranferTx[])
-    const [totalTx, setTotalTx] = useState(0)
-    const [page, setPage] = useState(TABLE_CONFIG.page)
-    const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
-    const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        (async () => {
-            setLoading(true)
-            const rs = await getTokenTransferTx(tokenAddr, page, size)
-            setTotalTx(rs.total)
-            setTxs(rs.txs)
-            setLoading(false)
-        })()
-    }, [size, page, tokenAddr])
 
     return (
         <FlexboxGrid justify="space-between">
             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                 <Table
-                    rowHeight={60}
+                    rowHeight={() => 60}
                     height={200}
                     data={txs}
                     autoHeight
@@ -107,12 +96,12 @@ const TokenTransfers = ({ tokenAddr, decimals }: {
                         </Cell>
                     </Column>
                     <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                        <HeaderCell>Value (KAI)</HeaderCell>
+                        <HeaderCell>Balance</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (
                                     <div>
-                                        {numberFormat(convertValueFollowDecimal(rowData.value, decimals))}
+                                        {numberFormat(convertValueFollowDecimal(rowData.value, rowData.decimals))}
                                     </div>
                                 );
                             }}

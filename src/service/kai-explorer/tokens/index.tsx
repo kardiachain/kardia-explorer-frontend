@@ -1,6 +1,6 @@
 import { KRC20, UNKNOW_AVARTAR_DEFAULT_BASE64 } from "../../../common/constant";
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
-import { IContractList, ITokenContract, ITokenDetails, ITokenTranferTxList } from "./type";
+import { IContractList, ITokenContract, ITokenDetails, ITokenHolderByTokenList, ITokenTranferTxList } from "./type";
 
 export const getContractsList = async (page: number, size: number): Promise<IContractList> => {
     const response = await fetch(`${END_POINT}contracts?page=${page - 1}&limit=${size}&type=${KRC20}`, GET_REQUEST_OPTION);
@@ -62,7 +62,26 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
                 from: item.arguments && item.arguments.from ? item.arguments.from : '',
                 to: item.arguments && item.arguments.to ? item.arguments.to : '',
                 value: item.arguments && item.arguments.value ? item.arguments.value : '0',
-                age: (nowTime - createdTime)
+                age: (nowTime - createdTime),
+                decimals: item.decimals ? item.decimals : 18
+            }
+        })
+    }
+}
+
+export const getTokenHoldersByToken = async (tokenAddr: string, page: number, size: number) : Promise<ITokenHolderByTokenList> => {
+    const response = await fetch(`${END_POINT}token/holders/${tokenAddr}?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+    const responseJSON = await response.json();
+    const raws = responseJSON?.data?.data || [];
+    if (!raws || raws.length < 1) return {} as ITokenHolderByTokenList
+
+    return {
+        total: responseJSON?.data?.total || 0,
+        holders: raws.map((item: any) => {
+            return {
+                holderAddress: item.holderAddress ? item.holderAddress : '',
+                balance: item.balance ? item.balance : '',
+                tokenDecimals: item.tokenDecimals ? item.tokenDecimals : 18
             }
         })
     }
