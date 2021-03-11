@@ -30,8 +30,8 @@ function Logs() {
 
     return (
         Object.keys(logs).length > 0 ? <div>
-            <div className="body">
-                <div className="row">
+            <div className="logBody">
+                <div className="logRow">
                     <p className="property-title">Address</p>
                     <span className="property-content">
                         {renderHashToRedirect({
@@ -45,12 +45,12 @@ function Logs() {
                     </span>
                 </div>
 
-                <div className="row">
+                <div className="logRow">
                     <p className="property-title">Name</p>
                     <span className="property-content">{logs.methodName} ({logs.argumentsName})</span>
                 </div>
 
-                <div className="row">
+                <div className="logRow">
                     <p className="property-title">Topics</p>
                     <ul className="topics">
                         {logs.topics.map((it: any, index: any) => {
@@ -63,7 +63,7 @@ function Logs() {
                     </ul>
                 </div>
 
-                <div className="row borderNone">
+                <div className="logRow borderNone">
                     <p className="property-title">Data</p>
                     <div className="right">
                         <span className="property-content">{data}</span>

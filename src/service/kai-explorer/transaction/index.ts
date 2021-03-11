@@ -209,3 +209,27 @@ export const getContractEvents = async (page: number, size: number, txHash: stri
     return {}
 
 }
+
+export const getTokens = async (address: string, page: number, size: number): Promise<any> => {
+    const response = await fetch(`${END_POINT}addresses/${address}/tokens?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION);
+    const responseJSON = await response.json();
+    if (responseJSON.data.data != null) {
+        return {
+            tokens: responseJSON.data.data.map((it: any) => {
+                return {
+                    balance: it.balance,
+                    contractAddress: it.contractAddress,
+                    holderAddress: it.holderAddress,
+                    logo: it.logo,
+                    tokenDecimals: it.tokenDecimals,
+                    label: it.tokenName,
+                    value: it.tokenName,
+                    tokenSymbol: it.tokenSymbol,
+                    updatedAt: it.updatedAt,
+                }
+            })
+        }
+    }
+    return {}
+}
+
