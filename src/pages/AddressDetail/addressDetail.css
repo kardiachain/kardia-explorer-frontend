@@ -12,7 +12,7 @@
 
 .rowToken{
     padding:4px 8px;
-    border-bottom: var(--gray-border) !important;
+    /* border-bottom: var(--gray-border) !important; */
 }
 
 .flex{
