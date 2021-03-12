@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row, SelectPicker } from 'rsuite';
-import { weiToKAI } from '../../../common/utils/amount';
+import { convertValueFollowDecimal, weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getHolderAccount } from '../../../service/kai-explorer';
 import { getAccount, useBalanceStorage, isExtensionWallet } from '../../../service/wallet';
@@ -128,7 +128,7 @@ const DashboardHeader = () => {
                                                 <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
                                                 <p>{item.tokenSymbol}</p>
                                             </div>
-                                            <span>{numberFormat(item.balance / 10 ** item.tokenDecimals)}</span>
+                                            <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
                                         </div>
                                     );
                                 }}

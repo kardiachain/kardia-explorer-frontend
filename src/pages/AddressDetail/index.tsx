@@ -3,7 +3,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, List, Panel, Table, Tooltip, Whisper, Tag, SelectPicker } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { StakingIcon } from '../../common/components/IconCustom';
-import { weiToKAI } from '../../common/utils/amount';
+import { convertValueFollowDecimal, weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { millisecondToHMS, renderHashString, renderHashToRedirect, renderHashStringAndTooltip } from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
@@ -129,7 +129,7 @@ const AddressDetail = () => {
                                                             <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{marginRight:'4px'}}/>
                                                             <p>{item.tokenSymbol}</p>
                                                         </div>
-                                                        <span>{numberFormat(item.balance / 10**item.tokenDecimals)}</span>
+                                                        <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
                                                     </div>
                                                 );
                                             }}
