@@ -70,7 +70,7 @@ const Tokens = () => {
                                                         <span className="container-content-right">
                                                             <Link className="token-name" to={`/token/${rowData?.address}`}>{rowData.name}</Link>
                                                             <div className="token-info">
-                                                                {rowData.info && rowData.info.length > 100 ? `${rowData.info.substr(0, 100)}...` : rowData.info}
+                                                                {rowData.info && rowData.info.length > 100 ? `${rowData.info.substr(0, 50)} ...` : rowData.info}
                                                             </div>
                                                         </span>
                                                     </div>
@@ -128,7 +128,7 @@ const Tokens = () => {
                                             {(rowData: ITokenContract) => {
                                                 return (
                                                     <div>
-                                                        { numberFormat(convertValueFollowDecimal(rowData.tokenSymbol, rowData.decimal)) }
+                                                        { numberFormat(convertValueFollowDecimal(rowData.totalSupply, rowData.decimal)) }
                                                     </div>
                                                 );
                                             }}
