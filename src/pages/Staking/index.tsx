@@ -14,6 +14,8 @@ import ValidatorList from './ValidatorList';
 import { StakingIcon } from '../../common/components/IconCustom';
 import CandidateList from './CandidateList';
 import StakingCalculator from './StakingCalculator';
+import { getValidatorStats } from '../../service/kai-explorer/validator';
+import { ValidatorStats } from '../../service/kai-explorer/validator/type';
 
 const Validators = () => {
     let history = useHistory();
@@ -50,17 +52,18 @@ const Validators = () => {
             // fetch data validator and candidate
             const fetchData = await Promise.all([
                 getValidators(),
-                getCandidates()
+                getCandidates(),
+                getValidatorStats()
             ]);
 
-            setCandidates(fetchData[1]);
-            const stakingData = fetchData[0];
-            const valDetails = stakingData?.validators || [] as Validator[];
-            setValidators(stakingData?.validators || [] as Validator[]);
+            const validatorStats: ValidatorStats = fetchData[2];
+            setCandidates(fetchData[1] || [] as Candidate[]);
+            setValidators(fetchData[0] || [] as Validator[]);
+
 
             // Calculate data for chart
             const dataForValidatorsChart = [] as any[];
-            valDetails.filter(v => v.isProposer).forEach((value: Validator, index: number) => {
+            fetchData[0] && fetchData[0].length > 0 && fetchData[0].filter(v => v.isProposer).forEach((value: Validator, index: number) => {
                 dataForValidatorsChart.push({
                     custom: value.address,
                     name: value.name || truncate(value.address, 5, 3),
@@ -72,17 +75,18 @@ const Validators = () => {
 
             setDataForValidatorsChart(dataForValidatorsChart)
             setDataForStakedPieChart({
-                totalVals: stakingData?.totalValidators,
-                totalDels: stakingData?.totalDelegators,
-                totalStakedAmont: weiToKAI(stakingData?.totalStakedAmount),
-                totalValidatorStakedAmount: weiToKAI(stakingData?.totalValidatorStakedAmount),
-                totalDelegatorStakedAmount: weiToKAI(stakingData?.totalDelegatorStakedAmount)
+                totalVals: validatorStats?.totalValidators,
+                totalDels: validatorStats?.totalDelegators,
+                totalStakedAmont: weiToKAI(validatorStats?.totalStakedAmount),
+                totalValidatorStakedAmount: weiToKAI(validatorStats?.totalValidatorStakedAmount),
+                totalDelegatorStakedAmount: weiToKAI(validatorStats?.totalDelegatorStakedAmount)
             });
-            setTotalStakedAmount(stakingData.totalStakedAmount)
-            setTotalValidator(stakingData.totalValidators)
-            setTotalDelegator(stakingData.totalDelegators)
-            setTotalProposer(stakingData.totalProposer)
-            setTotalCandidate(stakingData.totalCandidates)
+
+            setTotalStakedAmount(validatorStats.totalStakedAmount)
+            setTotalValidator(validatorStats.totalValidators)
+            setTotalDelegator(validatorStats.totalDelegators)
+            setTotalProposer(validatorStats.totalProposers)
+            setTotalCandidate(validatorStats.totalCandidates)
             setValidatorsLoading(false);
             setCandidatesLoading(false)
         })()

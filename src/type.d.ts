@@ -127,13 +127,6 @@ interface Account {
 }
 
 interface Validators {
-    totalValidators: number;
-    totalDelegators: number;
-    totalStakedAmount: number;
-    totalValidatorStakedAmount: number;
-    totalDelegatorStakedAmount: number;
-    totalProposer: number;
-    totalCandidates: number;
     validators: Validator[]
 }
 
