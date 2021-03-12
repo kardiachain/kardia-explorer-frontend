@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Panel, SelectPicker, Nav } from 'rsuite';
 import { StakingIcon } from '../../common/components/IconCustom';
+import { convertValueFollowDecimal, weiToKAI } from '../../common/utils/amount';
 import Krc20Txs from '../../common/components/txs/Krc20Txs';
 import TransactionHistoryList from '../../common/components/txs/TransactionHistory';
-import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
 import { renderHashString} from '../../common/utils/string';
 import { TABLE_CONFIG } from '../../config';
@@ -40,7 +40,7 @@ const AddressDetail = () => {
             const rs = await Promise.all([
                 getTxsByAddress(address, page, size),
                 getHolderAccount(address),
-                getTokens(address, page, size)
+                getTokens(address)
             ]);
             setLoading(false);
             setTransactionList(rs[0].transactions);
@@ -146,7 +146,7 @@ const AddressDetail = () => {
                                                             <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
                                                             <p>{item.tokenSymbol}</p>
                                                         </div>
-                                                        <span>{numberFormat(item.balance / 10 ** item.tokenDecimals)}</span>
+                                                        <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
                                                     </div>
                                                 );
                                             }}

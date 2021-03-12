@@ -32,6 +32,16 @@
     margin-right: 15px;
 }
 
+.balanceSection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.balanceSelect{
+    width:220px;
+}
+
 
 /* Style for left menu */
 
@@ -71,6 +81,16 @@
     .wallet-info-card .rs-panel-body {
         padding: 0 !important;
     }    
+    
+    .balanceSection{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .balanceSelect{
+        margin-top:12px;
+        width:100%;
+    }
 }
 
 
