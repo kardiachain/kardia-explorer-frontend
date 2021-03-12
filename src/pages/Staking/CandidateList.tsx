@@ -74,16 +74,6 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
-                    <HeaderCell>Voting power (%)</HeaderCell>
-                    <Cell>
-                        {(rowData: Candidate) => {
-                            return (
-                                <div>{rowData.votingPower || '0'}</div>
-                            );
-                        }}
-                    </Cell>
-                </Column>
-                <Column flexGrow={2} minWidth={140} verticalAlign="middle">
                     <HeaderCell>Total Delegators</HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
