@@ -36,13 +36,13 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                         <div className="value color-white">{numberFormat(tps)}</div>
                     </div>
 
-                    {/* <div className="stat">
+                    <div className="stat">
                         <div className="icon">
                             <Icon className="gray-highlight" icon="exchange" size={"lg"} />
                         </div>
                         <div className="title color-graylight">Transactions</div>
                         <div className="value color-white">{numberFormat(totalTxs)}</div>
-                    </div> */}
+                    </div>
 
                     <div className="stat">
                         <div className="icon">

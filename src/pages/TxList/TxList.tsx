@@ -67,9 +67,9 @@ const TxList = () => {
                         <div className="title header-title">
                             Transactions
                         </div>
-                        {/* <div className="sub-title">
+                        <div className="sub-title">
                             {numberFormat(totalTxs)} transactions found
-                        </div> */}
+                        </div>
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
