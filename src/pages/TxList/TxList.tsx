@@ -119,7 +119,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
+                                                        <Link className="text-link" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
                                                     </div>
                                                 );
                                             }}
@@ -144,7 +144,7 @@ const TxList = () => {
                                                                 </>
                                                             ) : (
                                                                 <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.from}</Tooltip>}>
-                                                                    <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.from}`}>
+                                                                    <Link className="text-link" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.from}`}>
                                                                         {
                                                                             renderStringAndTooltip({
                                                                                 str: rowData.fromName,
@@ -180,17 +180,27 @@ const TxList = () => {
                                                                 </>
                                                             ) : (
                                                                     <>
-                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
-                                                                            <Link className="color-white" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.to}`}>
-                                                                                {
-                                                                                    renderStringAndTooltip({
-                                                                                        str: rowData.toName,
-                                                                                        headCount: isMobile ? 12 : 20,
-                                                                                        showTooltip: false
-                                                                                    })
-                                                                                }
-                                                                            </Link>
-                                                                        </Whisper>
+                                                                        {
+                                                                            rowData.to ? (
+                                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
+                                                                                    <Link className="text-link" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.to}`}>
+                                                                                        {
+                                                                                            renderStringAndTooltip({
+                                                                                                str: 'asdiasuhdhasduih',
+                                                                                                headCount: isMobile ? 12 : 20,
+                                                                                                showTooltip: false
+                                                                                            })
+                                                                                        }
+                                                                                    </Link>
+                                                                                </Whisper>
+                                                                            ) : (
+                                                                                renderStringAndTooltip({
+                                                                                    str: rowData.toName,
+                                                                                    headCount: isMobile ? 12 : 20,
+                                                                                    showTooltip: false
+                                                                                })
+                                                                            )
+                                                                        }
                                                                         {
                                                                             rowData.isInValidatorsList ? (
                                                                                 <StakingIcon

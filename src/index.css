@@ -153,7 +153,11 @@ body {
 .text-link a,
 .text-link a:active,
 .text-link a:hover,
-.text-link a:focus {
+.text-link a:focus,
+a.text-link,
+a:active.text-link,
+a:hover.text-link,
+a:focus.text-link {
   font-weight: 600;
   color: var(--link-color);
 }
