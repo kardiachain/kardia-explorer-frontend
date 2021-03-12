@@ -186,7 +186,7 @@ const TxList = () => {
                                                                                     <Link className="text-link" style={{ fontSize: 12, fontWeight: 'bold' }} to={`/address/${rowData.to}`}>
                                                                                         {
                                                                                             renderStringAndTooltip({
-                                                                                                str: 'asdiasuhdhasduih',
+                                                                                                str: rowData.toName,
                                                                                                 headCount: isMobile ? 12 : 20,
                                                                                                 showTooltip: false
                                                                                             })
