@@ -215,8 +215,8 @@ export const getContractEvents = async (page: number, size: number, txHash: stri
 
 }
 
-export const getTokens = async (address: string, page: number, size: number): Promise<any> => {
-    const response = await fetch(`${END_POINT}addresses/${address}/tokens?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION);
+export const getTokens = async (address: string): Promise<any> => {
+    const response = await fetch(`${END_POINT}addresses/${address}/tokens`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     if (responseJSON.data.data != null) {
         return {

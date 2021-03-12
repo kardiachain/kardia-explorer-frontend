@@ -40,7 +40,7 @@ const AddressDetail = () => {
             const rs = await Promise.all([
                 getTxsByAddress(address, page, size),
                 getHolderAccount(address),
-                getTokens(address, page, size)
+                getTokens(address)
             ]);
             setLoading(false);
             setTransactionList(rs[0].transactions);
