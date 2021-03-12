@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { getContractEvents } from '../../service/kai-explorer';
 import './logs.css'
 import { renderHashToRedirect } from '../../common/utils/string';
+import { NotificationError } from '../../common/components/Notification';
+import { NotifiMessage } from '../../common/constant/Message';
 
 function Logs() {
     const { txHash }: any = useParams();
@@ -12,9 +14,15 @@ function Logs() {
 
     useEffect(() => {
         (async () => {
-            const data = await getContractEvents(1, 10, txHash);
-            setLogs(data);
-            setData(data.data);
+            try {
+                const data = await getContractEvents(1, 10, txHash);
+                setLogs(data);
+                setData(data.data);
+            } catch(e){
+                NotificationError({
+                    description: `${NotifiMessage.TransactionError} Error: ${e.message}`
+                });
+            }
         })()
     }, [txHash])
 
