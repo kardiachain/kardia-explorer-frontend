@@ -9,3 +9,13 @@
     background: linear-gradient(137.34deg,#7b7b82 14.41%,#a0a0a9 116.67%);
     font-weight: bold;
 }
+
+.rowToken{
+    padding:4px 8px;
+    /* border-bottom: var(--gray-border) !important; */
+}
+
+.flex{
+    display:flex;
+    align-items: center;
+}

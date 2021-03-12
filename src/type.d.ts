@@ -16,7 +16,7 @@ interface KAITransaction {
     gas: number;
     gasLimit: number;
     input: string;
-    logs: string;
+    logs: any;
     gasUsed: number;
     gasUsedPercent: any;
     txFee: number;
@@ -33,10 +33,8 @@ interface KAIBlock {
     blockHash?: string;
     blockHeight: number;
     transactions?: number;
-    validator: {
-        label?: string;
-        hash: string;
-    };
+    proposalName: string;
+    proposalAddress: string;
     time: Date;
     age?: number;
     gasLimit: number;
@@ -129,13 +127,6 @@ interface Account {
 }
 
 interface Validators {
-    totalValidators: number;
-    totalDelegators: number;
-    totalStakedAmount: number;
-    totalValidatorStakedAmount: number;
-    totalDelegatorStakedAmount: number;
-    totalProposer: number;
-    totalCandidates: number;
     validators: Validator[]
 }
 

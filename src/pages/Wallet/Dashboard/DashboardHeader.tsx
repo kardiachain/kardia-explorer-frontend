@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row } from 'rsuite';
-import { weiToKAI } from '../../../common/utils/amount';
+import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row, SelectPicker } from 'rsuite';
+import { convertValueFollowDecimal, weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getHolderAccount } from '../../../service/kai-explorer';
 import { getAccount, useBalanceStorage, isExtensionWallet } from '../../../service/wallet';
@@ -10,6 +10,7 @@ import { numberFormat } from '../../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
+import { getTokens } from '../../../service/kai-explorer/transaction';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -18,7 +19,11 @@ const DashboardHeader = () => {
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
     const walletLocalState = useRecoilValue(walletState)
+
+    const [tokens, setTokens] = useState([]);
+
     useEffect(() => {
+
         (async () => {
             if (!account.publickey) {
                 return;
@@ -37,6 +42,18 @@ const DashboardHeader = () => {
 
         return () => clearInterval(fetchBalance);
     }, [account.publickey, setBalance])
+
+    useEffect(() => {
+        (async () => {
+            if (!account.publickey) {
+                return;
+            }
+            const listTokens = await getTokens(account.publickey)
+            setTokens(listTokens.tokens);
+        })();
+
+    }, [account.publickey])
+
 
     const onSuccess = () => {
         Alert.success('Copied to clipboard.')
@@ -101,9 +118,30 @@ const DashboardHeader = () => {
                 </Col>
                 <Col md={12} sm={24} xs={24}>
                     <Panel shaded className="wallet-info-card balance panel-bg-gray">
-                        <div className="card-body">
-                            <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
-                            <div className="content color-white" style={{ paddingLeft: '42px' }}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
+                        <div className="card-body balanceSection">
+                            <div>
+                                <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
+                                <div className="content color-white" style={{ paddingLeft: '42px' }}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
+                            </div>
+
+                            {tokens ? <SelectPicker
+                                placeholder="Your KRC20 token"
+                                className="dropdown-custom balanceSelect"
+                                data={tokens}
+                                renderMenuItem={(label, item: any) => {
+                                    return (
+                                        <div className="rowToken">
+                                            <div className="flex">
+                                                <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
+                                                <p>{item.tokenSymbol}</p>
+                                            </div>
+                                            <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
+                                        </div>
+                                    );
+                                }}
+                            />
+                            : <></>
+                            }
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance

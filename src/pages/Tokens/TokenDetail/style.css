@@ -1,0 +1,34 @@
+
+.token-details-container .rs-panel-heading{
+    padding:12px 32px;
+    border-bottom:1px solid gray;
+    background: #3e3a3a;
+}
+
+.token-details-container .rs-panel-heading{
+    color:white;
+}
+
+.token-details-container .rs-panel-body{
+    padding:12px 32px;
+}
+
+.token-details-container .no-border{
+    border:none !important;
+}
+
+.social{
+    margin-bottom:0;
+}
+
+.social > li + li{
+    margin-left:12px;
+}
+
+.flex3{
+    flex:4
+}
+
+.flex9{
+    flex:8;
+}
