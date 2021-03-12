@@ -11,7 +11,7 @@ export const getValidators = async (): Promise<Validator[]> => {
         // if (cacheResponse) {
         //     return cacheResponse;
         // }
-        const response = await fetch(`${END_POINT}validators`, GET_REQUEST_OPTION)
+        const response = await fetch(`${END_POINT}staking/validators`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const raw = responseJSON.data || []
         
@@ -124,7 +124,7 @@ export const getCandidates = async (): Promise<Candidate[]> => {
             return cacheResponse;
         }
 
-        const response = await fetch(`${END_POINT}validators/candidates`, GET_REQUEST_OPTION)
+        const response = await fetch(`${END_POINT}staking/candidates`, GET_REQUEST_OPTION)
         const responseJSON = await response.json();
         const candidates = responseJSON?.data || [];
         const responseData = candidates.map((v: any, index: number) => {
