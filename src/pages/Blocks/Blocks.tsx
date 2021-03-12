@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Panel, FlexboxGrid, Table, Icon, Col, Whisper, Tooltip } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { getBlocks } from '../../service/kai-explorer';
-import { millisecondToHMS, renderStringAndTooltip } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../config';
@@ -82,7 +82,7 @@ const Blocks = () => {
                                                             <Icon icon="cubes" className="gray-highlight"/>
                                                         </span>
                                                         <span className="container-content-right text-link">
-                                                            <Link className="color-white text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
+                                                            <Link className="text-link text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
                                                             <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
                                                         </span>
                                                     </div>
@@ -96,17 +96,29 @@ const Blocks = () => {
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.validator?.hash || ''}</Tooltip>}>
-                                                            <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>
-                                                                {
-                                                                    renderStringAndTooltip({
-                                                                        str: rowData?.validator?.label || '',
-                                                                        headCount: isMobile ? 12 : 25,
-                                                                        showTooltip: true
-                                                                    })
-                                                                }
-                                                            </Link>
-                                                        </Whisper>
+                                                        {
+                                                            rowData.proposalName ? (
+                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.proposalAddress || ''}</Tooltip>}>
+                                                                    <Link className="text-link text-bold" to={`/address/${rowData?.proposalAddress || ''}`}>
+                                                                        {
+                                                                            renderStringAndTooltip({
+                                                                                str: rowData?.proposalName || '',
+                                                                                headCount: isMobile ? 12 : 25,
+                                                                                showTooltip: true
+                                                                            })
+                                                                        }
+                                                                    </Link>
+                                                                </Whisper>
+                                                            ) : (
+                                                                renderHashToRedirect({
+                                                                    hash: rowData.proposalAddress,
+                                                                    headCount: isMobile ? 5 : 10,
+                                                                    tailCount: 4,
+                                                                    showTooltip: true,
+                                                                    redirectTo: `/address/${rowData.proposalAddress}`
+                                                                })
+                                                            )
+                                                        }
                                                     </div>
                                                 );
                                             }}

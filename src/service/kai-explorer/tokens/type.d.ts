@@ -4,6 +4,9 @@ export interface ITokenContract {
     info: string;
     logo: string;
     type: string;
+    tokenSymbol: string;
+    totalSupply: any;
+    decimal: number;
 }
 
 export interface IContractList {
@@ -35,6 +38,11 @@ export interface ITokenTranferTx {
     value: any;
     age: any;
     decimals: number;
+    tokenName?: string;
+    tokenType?: string;
+    tokenSymbol?: string;
+    logo?: string;
+    tokenAddress?: string; 
 }
 
 export interface ITokenTranferTxList {

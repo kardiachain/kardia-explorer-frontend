@@ -145,10 +145,10 @@ const TokenDetail = () => {
                                 onSelect={setActiveKey}
                                 style={{ marginBottom: 20 }}>
                                 <Nav.Item eventKey="transfer">
-                                    {`Transfers (${totalTransferTxs})`}
+                                    {`Transfers (${totalTransferTxs || 0})`}
                                 </Nav.Item>
                                 <Nav.Item eventKey="holders">
-                                    {`Holders (${totalHolder})`}
+                                    {`Holders (${totalHolder || 0})`}
                                 </Nav.Item> 
                             </Nav>
                         </div>

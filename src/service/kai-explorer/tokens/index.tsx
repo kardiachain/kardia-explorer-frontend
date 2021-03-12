@@ -17,7 +17,10 @@ export const getContractsList = async (page: number, size: number): Promise<ICon
                 info: item.info ? item.info : '',
                 name: item.name ? item.name : '',
                 type: item.type ? item.type : '',
-                logo: item.logo ? `data:image/jpeg;base64,${item.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64
+                logo: item.logo ? `data:image/jpeg;base64,${item.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
+                totalSupply: item.totalSupply ? item.totalSupply : '0',
+                decimal: item.decimal ? item.decimal : 18
             } as ITokenContract
         })
     }
@@ -46,7 +49,7 @@ export const getTokenContractInfor = async (contractAddress: string): Promise<IT
 }
 
 export const getTokenTransferTx = async (tokenAddr: string, page: number, size: number): Promise<ITokenTranferTxList> => {
-    const response = await fetch(`${END_POINT}contracts/events?page=${page-1}&limit=${size}&methodName=Transfer&contractAddress=${tokenAddr}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}token/txs?contractAddress=${tokenAddr}&page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
     
@@ -59,11 +62,45 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
             const createdTime = (new Date(item.time)).getTime()
             return {
                 txHash: item.transactionHash ? item.transactionHash : '',
-                from: item.arguments && item.arguments.from ? item.arguments.from : '',
-                to: item.arguments && item.arguments.to ? item.arguments.to : '',
-                value: item.arguments && item.arguments.value ? item.arguments.value : '0',
+                from: item.from? item.from : '',
+                to: item.to ? item.to : '',
+                value: item.value ? item.value : '0',
                 age: (nowTime - createdTime),
-                decimals: item.decimals ? item.decimals : 18
+                decimals: item.decimals ? item.decimals : 18,
+                tokenName: item.tokenName ? item.tokenName : '',
+                tokenType: item.tokenType ? item.tokenType : '',
+                tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
+                logo: item.logo ? `data:image/jpeg;base64,${item.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                tokenAddress: item.address ? item.address : ''
+            }
+        })
+    }
+}
+
+export const getKrc20Txs = async (address: string, page: number, size: number): Promise<ITokenTranferTxList> => {
+    const response = await fetch(`${END_POINT}token/txs?address=${address}&page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+    const responseJSON = await response.json();
+    const raws = responseJSON?.data?.data || [];
+    
+    if (!raws || raws.length < 1) return {} as ITokenTranferTxList
+    const nowTime = (new Date()).getTime()
+
+    return {
+        total: responseJSON?.data?.total || 0,
+        txs: raws.map((item: any) => {
+            const createdTime = (new Date(item.time)).getTime()
+            return {
+                txHash: item.transactionHash ? item.transactionHash : '',
+                from: item.from? item.from : '',
+                to: item.to ? item.to : '',
+                value: item.value ? item.value : '0',
+                age: (nowTime - createdTime),
+                decimals: item.decimals ? item.decimals : 18,
+                tokenName: item.tokenName ? item.tokenName : '',
+                tokenType: item.tokenType ? item.tokenType : '',
+                tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
+                logo: item.logo ? `data:image/jpeg;base64,${item.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                tokenAddress: item.address ? item.address : ''
             }
         })
     }

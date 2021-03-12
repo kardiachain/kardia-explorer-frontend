@@ -7,6 +7,9 @@ import { getContractsList } from '../../service/kai-explorer';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import './tokens.css'
 import { ITokenContract } from '../../service/kai-explorer/tokens/type';
+import { renderHashToRedirect } from '../../common/utils/string';
+import { convertValueFollowDecimal } from '../../common/utils/amount';
+import { numberFormat } from '../../common/utils/number';
 const { Column, HeaderCell, Cell } = Table;
 
 const Tokens = () => {
@@ -47,14 +50,14 @@ const Tokens = () => {
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                 <Table
-                                    rowHeight={100}
+                                    rowHeight={() => 80}
                                     data={tokens}
                                     autoHeight
                                     hover={false}
                                     wordWrap
                                     loading={loading}
                                 >
-                                    <Column flexGrow={4} minWidth={250} verticalAlign="middle">
+                                    <Column flexGrow={3} minWidth={250} verticalAlign="middle">
                                         <HeaderCell>Token</HeaderCell>
                                         <Cell>
                                             {(rowData: ITokenContract) => {
@@ -66,7 +69,6 @@ const Tokens = () => {
                                                             alt="kardiachain" />
                                                         <span className="container-content-right">
                                                             <Link className="token-name" to={`/token/${rowData?.address}`}>{rowData.name}</Link>
-                                                            <div className="token-address">{rowData.address}</div>
                                                             <div className="token-info">
                                                                 {rowData.info && rowData.info.length > 100 ? `${rowData.info.substr(0, 100)}...` : rowData.info}
                                                             </div>
@@ -76,13 +78,57 @@ const Tokens = () => {
                                             }}
                                         </Cell>
                                     </Column>
-                                    <Column flexGrow={1} minWidth={isMobile ? 70 : 100} verticalAlign="middle">
-                                        <HeaderCell>Type</HeaderCell>
+                                    <Column flexGrow={2} minWidth={150} verticalAlign="middle">
+                                        <HeaderCell>Token adress</HeaderCell>
                                         <Cell>
                                             {(rowData: ITokenContract) => {
                                                 return (
                                                     <div>
-                                                        {rowData.type}
+                                                        {
+                                                            renderHashToRedirect({
+                                                                hash: rowData.address,
+                                                                headCount: isMobile ? 5 : 12,
+                                                                tailCount: 4,
+                                                                showTooltip: true,
+                                                                redirectTo: `/address/${rowData.address}`
+                                                            })
+                                                        }
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={1} minWidth={100} verticalAlign="middle">
+                                        <HeaderCell>Decimals</HeaderCell>
+                                        <Cell>
+                                            {(rowData: ITokenContract) => {
+                                                return (
+                                                    <div>
+                                                        {rowData.decimal}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={1} minWidth={100} verticalAlign="middle">
+                                        <HeaderCell>Symbol</HeaderCell>
+                                        <Cell>
+                                            {(rowData: ITokenContract) => {
+                                                return (
+                                                    <div>
+                                                        {rowData.tokenSymbol}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Cell>
+                                    </Column>
+                                    <Column flexGrow={2} minWidth={100} verticalAlign="middle">
+                                        <HeaderCell>Total Supply</HeaderCell>
+                                        <Cell>
+                                            {(rowData: ITokenContract) => {
+                                                return (
+                                                    <div>
+                                                        { numberFormat(convertValueFollowDecimal(rowData.tokenSymbol, rowData.decimal)) }
                                                     </div>
                                                 );
                                             }}
