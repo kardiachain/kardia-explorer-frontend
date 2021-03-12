@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row } from 'rsuite';
+import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row, SelectPicker } from 'rsuite';
 import { weiToKAI } from '../../../common/utils/amount';
 import { copyToClipboard } from '../../../common/utils/string';
 import { getHolderAccount } from '../../../service/kai-explorer';
@@ -10,6 +10,8 @@ import { numberFormat } from '../../../common/utils/number';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
+import { getTokens } from '../../../service/kai-explorer/transaction';
+import { TABLE_CONFIG } from '../../../config';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -18,6 +20,11 @@ const DashboardHeader = () => {
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
     const walletLocalState = useRecoilValue(walletState)
+
+    const [tokens, setTokens] = useState([]);
+    const [page, setPage] = useState(TABLE_CONFIG.page)
+    const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
+
     useEffect(() => {
         (async () => {
             if (!account.publickey) {
@@ -25,6 +32,9 @@ const DashboardHeader = () => {
             }
             const holder = await getHolderAccount(account.publickey);
             setBalance(weiToKAI(holder.balance))
+
+            const listTokens = await getTokens(account.publickey, page, size)
+            setTokens(listTokens.tokens);
         })();
 
         const fetchBalance = setInterval(async () => {
@@ -101,9 +111,30 @@ const DashboardHeader = () => {
                 </Col>
                 <Col md={12} sm={24} xs={24}>
                     <Panel shaded className="wallet-info-card balance panel-bg-gray">
-                        <div className="card-body">
-                            <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
-                            <div className="content color-white" style={{ paddingLeft: '42px' }}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
+                        <div className="card-body balanceSection">
+                            <div>
+                                <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
+                                <div className="content color-white" style={{ paddingLeft: '42px' }}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
+                            </div>
+
+                            {tokens ? <SelectPicker
+                                placeholder="Your KRC20 token"
+                                className="dropdown-custom balanceSelect"
+                                data={tokens}
+                                renderMenuItem={(label, item: any) => {
+                                    return (
+                                        <div className="rowToken">
+                                            <div className="flex">
+                                                <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
+                                                <p>{item.tokenSymbol}</p>
+                                            </div>
+                                            <span>{numberFormat(item.balance / 10 ** item.tokenDecimals)}</span>
+                                        </div>
+                                    );
+                                }}
+                            />
+                            : <></>
+                            }
                         </div>
                         <div className="card-footer">
                             <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance
