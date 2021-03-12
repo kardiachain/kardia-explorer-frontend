@@ -11,7 +11,6 @@ import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import { getTokens } from '../../../service/kai-explorer/transaction';
-import { TABLE_CONFIG } from '../../../config';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -22,19 +21,15 @@ const DashboardHeader = () => {
     const walletLocalState = useRecoilValue(walletState)
 
     const [tokens, setTokens] = useState([]);
-    const [page, setPage] = useState(TABLE_CONFIG.page)
-    const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
 
     useEffect(() => {
+
         (async () => {
             if (!account.publickey) {
                 return;
             }
             const holder = await getHolderAccount(account.publickey);
             setBalance(weiToKAI(holder.balance))
-
-            const listTokens = await getTokens(account.publickey, page, size)
-            setTokens(listTokens.tokens);
         })();
 
         const fetchBalance = setInterval(async () => {
@@ -47,6 +42,18 @@ const DashboardHeader = () => {
 
         return () => clearInterval(fetchBalance);
     }, [account.publickey, setBalance])
+
+    useEffect(() => {
+        (async () => {
+            if (!account.publickey) {
+                return;
+            }
+            const listTokens = await getTokens(account.publickey)
+            setTokens(listTokens.tokens);
+        })();
+
+    }, [account.publickey])
+
 
     const onSuccess = () => {
         Alert.success('Copied to clipboard.')
