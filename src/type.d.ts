@@ -33,10 +33,8 @@ interface KAIBlock {
     blockHash?: string;
     blockHeight: number;
     transactions?: number;
-    validator: {
-        label?: string;
-        hash: string;
-    };
+    proposalName: string;
+    proposalAddress: string;
     time: Date;
     age?: number;
     gasLimit: number;

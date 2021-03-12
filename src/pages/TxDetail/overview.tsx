@@ -115,7 +115,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
 
 
     return (
-        <Panel shaded className="panel-bg-gray">
+        <div>
             {
                 loading ? <Paragraph style={{ marginTop: 30 }} rows={20} /> :
                     <List bordered={false}>
@@ -498,7 +498,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                         </List.Item>
                     </List>
             }
-        </Panel>
+        </div>
     )
 }
 

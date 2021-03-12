@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { weiToKAI } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
-import { millisecondToHMS, renderStringAndTooltip } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 
@@ -50,17 +50,29 @@ const BlockSection = ({ blockList = [] }: {
                                     return (
                                         <div>
                                             <span className="container-content-right">
-                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.validator?.hash || ''}</Tooltip>}>
-                                                    <Link className="color-white text-bold" to={`/address/${rowData?.validator?.hash || ''}`}>
-                                                        {
-                                                            renderStringAndTooltip({
-                                                                str: rowData?.validator?.label || '',
-                                                                headCount: 15,
-                                                                showTooltip: false
-                                                            })
-                                                        }
-                                                    </Link>
-                                                </Whisper>
+                                                {
+                                                    rowData.proposalName ? (
+                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData?.proposalAddress || ''}</Tooltip>}>
+                                                            <Link className="text-link text-bold" to={`/address/${rowData?.proposalAddress || ''}`}>
+                                                                {
+                                                                    renderStringAndTooltip({
+                                                                        str: rowData?.proposalName || '',
+                                                                        headCount: 15,
+                                                                        showTooltip: false
+                                                                    })
+                                                                }
+                                                            </Link>
+                                                        </Whisper>
+                                                    ) : (
+                                                        renderHashToRedirect({
+                                                            hash: rowData.proposalAddress,
+                                                            headCount: isMobile ? 5 : 10,
+                                                            tailCount: 4,
+                                                            showTooltip: false,
+                                                            redirectTo: `/address/${rowData.proposalAddress}`
+                                                        })
+                                                    )
+                                                }
                                                 <div>
                                                     {
                                                         !rowData.transactions ? <span className="sub-text">0 Txns</span> :

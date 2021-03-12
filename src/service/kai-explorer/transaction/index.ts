@@ -17,7 +17,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
-            const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
+            const isContractCreation = (o.input && o.input !== '0x') && ((o.contractAddress && o.contractAddress !== '0x') || (!o.contractAddress || o.to === '0x'));
             return {
                 txHash: o.hash,
                 from: o.from,
@@ -59,7 +59,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
-            const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
+            const isContractCreation = (o.input && o.input !== '0x') && ((o.contractAddress && o.contractAddress !== '0x') || (!o.contractAddress || o.to === '0x'));
             return {
                 txHash: o.hash,
                 from: o.from,
@@ -102,7 +102,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(tx.time)).getTime()
     const gasUsedPercent = numberFormat(tx.gasUsed / tx.gas * 100, 3);
-    const isContractCreation = tx.contractAddress && tx.contractAddress !== '0x';
+    const isContractCreation = (tx.input && tx.input !== '0x') && ((tx.contractAddress && tx.contractAddress !== '0x') || (!tx.contractAddress || tx.to === '0x'));
     return {
         txHash: tx.hash,
         from: tx.from,
@@ -136,45 +136,50 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 }
 
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
-    const checkSumAddr = address ? toChecksum(address.toLowerCase()) : '';
-    const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
-    const responseJSON = await response.json()
-    const rawTxs = responseJSON?.data?.data || []
-    const nowTime = (new Date()).getTime()
+    try {
+        const checkSumAddr = address ? toChecksum(address.toLowerCase()) : '';
+        const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
+        const responseJSON = await response.json()
+        const rawTxs = responseJSON?.data?.data || []
+        const nowTime = (new Date()).getTime()
 
-    return {
-        totalTxs: responseJSON?.data?.total || 0,
-        transactions: rawTxs.map((o: any) => {
-            const createdTime = (new Date(o.time)).getTime()
-            const isContractCreation = o.contractAddress && o.contractAddress !== '0x';
-            return {
-                txHash: o.hash,
-                from: o.from,
-                to: !isContractCreation ? o.to : o.contractAddress,
-                value: o.value,
-                time: o.time,
-                blockNumber: o.blockNumber,
-                blockHash: o.blockHash,
-                status: o.status === 1,
-                failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
-                nonce: o.nonce,
-                age: (nowTime - createdTime),
-                transactionIndex: o.transactionIndex,
-                contractAddress: o.contractAddress,
-                gasPrice: o.gasPrice,
-                gas: o.gas,
-                gasLimit: o.gas,
-                input: o.input,
-                logs: o.logs,
-                txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice),
-                role: checkValidatorRole(o.role),
-                isInValidatorsList: o.isInValidatorsList,
-                toName: o.toName ? o.toName : (isContractCreation ? 'Contract Creation' : ''),
-                fromName: o.fromName ? o.fromName : '',
-                isSmcInteraction: o.input && o.input !== '0x',
-                isContractCreation: isContractCreation,
-            }
-        })
+        return {
+            totalTxs: responseJSON?.data?.total || 0,
+            transactions: rawTxs.map((o: any) => {
+                const createdTime = (new Date(o.time)).getTime()
+                const isContractCreation = (o.input && o.input !== '0x') && ((o.contractAddress && o.contractAddress !== '0x') || (!o.contractAddress || o.to === '0x'));
+                return {
+                    txHash: o.hash,
+                    from: o.from,
+                    to: !isContractCreation ? o.to : o.contractAddress,
+                    value: o.value,
+                    time: o.time,
+                    blockNumber: o.blockNumber,
+                    blockHash: o.blockHash,
+                    status: o.status === 1,
+                    failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
+                    nonce: o.nonce,
+                    age: (nowTime - createdTime),
+                    transactionIndex: o.transactionIndex,
+                    contractAddress: o.contractAddress,
+                    gasPrice: o.gasPrice,
+                    gas: o.gas,
+                    gasLimit: o.gas,
+                    input: o.input,
+                    logs: o.logs,
+                    txFee: o.txFee ? o.txFee : (o.gasUsed * o.gasPrice),
+                    role: checkValidatorRole(o.role),
+                    isInValidatorsList: o.isInValidatorsList,
+                    toName: o.toName ? o.toName : (isContractCreation ? 'Contract Creation' : ''),
+                    fromName: o.fromName ? o.fromName : '',
+                    isSmcInteraction: o.input && o.input !== '0x',
+                    isContractCreation: isContractCreation,
+                }
+            })
+        }
+
+    } catch (error) {
+        return {} as TransactionsResponse
     }
 }
 

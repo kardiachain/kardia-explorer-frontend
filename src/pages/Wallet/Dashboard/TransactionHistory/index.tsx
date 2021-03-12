@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { FlexboxGrid, Col, Panel, Table, Icon, Whisper, Tooltip, Tag } from 'rsuite';
-import { useViewport } from '../../../../context/ViewportContext';
-import { renderHashToRedirect, millisecondToHMS } from '../../../../common/utils/string';
-import { weiToKAI } from '../../../../common/utils/amount';
-import TablePagination from 'rsuite/lib/Table/TablePagination';
+import { FlexboxGrid, Col, Panel, Nav } from 'rsuite';
 import { TABLE_CONFIG } from '../../../../config';
-import { Link } from 'react-router-dom';
 import { getTxsByAddress } from '../../../../service/kai-explorer/transaction';
 import { getAccount } from '../../../../service/wallet';
-import { numberFormat } from '../../../../common/utils/number';
-import { StakingIcon } from '../../../../common/components/IconCustom';
-const { Column, HeaderCell, Cell } = Table;
+import TransactionHistoryList from '../../../../common/components/txs/TransactionHistory';
+import Krc20Txs from '../../../../common/components/txs/Krc20Txs';
+import { ITokenTranferTx } from '../../../../service/kai-explorer/tokens/type';
+import { getKrc20Txs } from '../../../../service/kai-explorer/tokens';
 
 const TransactionHistory = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
-    const { isMobile } = useViewport()
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(TABLE_CONFIG.page)
     const [size, setSize] = useState(TABLE_CONFIG.limitDefault)
     const [totalTxs, setTotalTxs] = useState(0)
     const myAccount = getAccount() as Account
+    const [activeKey, setActiveKey] = useState('transactions')
+
+    const [krc20Txs, setKrc20Txs] = useState<ITokenTranferTx[]>([] as ITokenTranferTx[])
+    const [totalKrc20Txs, setTotalKrc20Txs] = useState(0)
+    const [krc20TxsPage, setKrc20TxsPage] = useState(TABLE_CONFIG.page)
+    const [krc20TxsSize, setKrc20TxsSize] = useState(TABLE_CONFIG.limitDefault)
+    const [krc20TxsLoading, setKrc20TxsLoading] = useState(false)
 
     useEffect(() => {
+        if (!myAccount.publickey) return;
         (async () => {
             setLoading(true)
             const rs = await getTxsByAddress(myAccount.publickey, page, size);
@@ -31,6 +34,17 @@ const TransactionHistory = () => {
         })()
     }, [myAccount.publickey, page, size])
 
+    useEffect(() => {
+        if (!myAccount.publickey) return;
+        (async () => {
+            setKrc20TxsLoading(true)
+            const rs = await getKrc20Txs(myAccount.publickey, krc20TxsPage, krc20TxsSize)
+            setTotalKrc20Txs(rs.total)
+            setKrc20Txs(rs.txs)
+            setKrc20TxsLoading(false)
+        })()
+    }, [krc20TxsSize, krc20TxsPage, myAccount.publickey])
+
     return (
         <div>
             <FlexboxGrid justify="space-between">
@@ -39,171 +53,55 @@ const TransactionHistory = () => {
                         <div className="title header-title">
                             Transactions history
                         </div>
-                        <div className="sub-title">
-                            {numberFormat(totalTxs)} transactions found
-                        </div>
                     </div>
-
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded className="panel-bg-gray">
-                        <FlexboxGrid justify="space-between">
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Table
-                                    rowHeight={60}
-                                    height={200}
-                                    data={transactionList}
-                                    autoHeight
-                                    hover={false}
-                                    loading={loading}
-                                    wordWrap
-                                >
-                                    <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Hash</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        <span className={`container-icon-left ${!rowData.status ? 'icon-tx-error' : ''}`}>
-                                                            <Icon icon={!rowData.isSmcInteraction ? "exchange" : "file-text-o"} className="gray-highlight" />
-                                                        </span>
-                                                        <span className="container-content-right">
-                                                            {
-                                                                renderHashToRedirect({
-                                                                    hash: rowData.txHash,
-                                                                    headCount: isMobile ? 5 : 10,
-                                                                    tailCount: 4,
-                                                                    showTooltip: false,
-                                                                    redirectTo: `/tx/${rowData.txHash}`
-                                                                })
-                                                            }
-                                                            <div className="sub-text">{millisecondToHMS(rowData.age || 0)}</div>
-                                                        </span>
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={1} verticalAlign="middle">
-                                        <HeaderCell>Block</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        <Link className="color-white" to={`/block/${rowData.blockNumber}`}>{numberFormat(rowData.blockNumber)}</Link>
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>From</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {renderHashToRedirect({
-                                                            hash: rowData.from,
-                                                            headCount: isMobile ? 5 : 12,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            redirectTo: `/address/${rowData.from}`
-                                                        })}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={1} verticalAlign="middle">
-                                        <HeaderCell></HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {
-                                                            myAccount.publickey === rowData.from ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
-                                                        }
-                                                    </div>
-                                                )
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>To</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {
-                                                            !rowData.isSmcInteraction || !rowData.toName ? (
-                                                                <>
-                                                                    {renderHashToRedirect({
-                                                                        hash: rowData.to,
-                                                                        headCount: isMobile ? 5 : 12,
-                                                                        tailCount: 4,
-                                                                        showTooltip: true,
-                                                                        redirectTo: `/address/${rowData.to}`
-                                                                    })}
-                                                                </>
-                                                            ) : (
-                                                                    <>
-                                                                        <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
-                                                                            <Link className="color-white" to={`/address/${rowData.to}`}>{rowData.toName}</Link>
-                                                                        </Whisper>
-                                                                        {
-                                                                            rowData.isInValidatorsList ? (
-                                                                                <StakingIcon
-                                                                                    color={rowData?.role?.classname}
-                                                                                    character={rowData?.role?.character}
-                                                                                    size='small' style={{ marginLeft: 5 }} />
-                                                                            ) : <></>
-                                                                        }
-                                                                    </>
-
-                                                                )
-                                                        }
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value (KAI)</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {numberFormat(weiToKAI(rowData.value))}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
-                                        <Cell>
-                                            {(rowData: KAITransaction) => {
-                                                return (
-                                                    <div>
-                                                        {numberFormat(weiToKAI(rowData.txFee))}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                </Table>
-                                <TablePagination
-                                    lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                    activePage={page}
-                                    displayLength={size}
-                                    total={totalTxs}
-                                    onChangePage={setPage}
-                                    onChangeLength={setSize}
-                                />
-                            </FlexboxGrid.Item>
-                        </FlexboxGrid>
+                        <div className="custom-nav">
+                            <Nav
+                                appearance="subtle"
+                                activeKey={activeKey}
+                                onSelect={setActiveKey}
+                                style={{ marginBottom: 20 }}>
+                                <Nav.Item eventKey="transactions">
+                                    {`Transactions (${totalTxs || 0})`}
+                                </Nav.Item>
+                                <Nav.Item eventKey="krc20">
+                                    {`KRC20 Token Txs (${totalKrc20Txs || 0})`}
+                                </Nav.Item>
+                            </Nav>
+                        </div>
+                        {
+                            (() => {
+                                switch (activeKey) {
+                                    case 'transactions':
+                                        return (
+                                            <TransactionHistoryList
+                                                transactionList={transactionList}
+                                                loading={loading}
+                                                address={myAccount.publickey}
+                                                totalTxs={totalTxs}
+                                                size={size}
+                                                setSize={setSize}
+                                                page={page}
+                                                setPage={setPage} />
+                                        );
+                                    case 'krc20':
+                                        return (
+                                            <Krc20Txs
+                                                txs={krc20Txs}
+                                                totalTx={totalKrc20Txs}
+                                                loading={krc20TxsLoading}
+                                                size={krc20TxsSize}
+                                                setSize={setKrc20TxsSize}
+                                                page={krc20TxsPage}
+                                                setPage={setKrc20TxsPage} />
+                                        )
+                                }
+                            })()
+                        }
                     </Panel>
                 </FlexboxGrid.Item>
             </FlexboxGrid>

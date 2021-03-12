@@ -26,7 +26,7 @@ const TransactionSection = ({ transactionList = [] }: {
                         autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                            <HeaderCell><span style={{marginLeft: 40}}>Tx Hash</span></HeaderCell>
+                            <HeaderCell><span style={{ marginLeft: 40 }}>Tx Hash</span></HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
@@ -77,20 +77,30 @@ const TransactionSection = ({ transactionList = [] }: {
                                                                 })}
                                                             </span>
                                                         ) : (
-                                                            <>
-                                                                <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
-                                                                    <Link className="color-white" style={{ fontSize: 14}} to={`/address/${rowData.to}`}>
-                                                                        {
+                                                                <>
+                                                                    {
+                                                                        rowData.to ? (
+                                                                            <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{rowData.to}</Tooltip>}>
+                                                                                <Link className="text-link" style={{ fontSize: 14 }} to={`/address/${rowData.to}`}>
+                                                                                    {
+                                                                                        renderStringAndTooltip({
+                                                                                            str: rowData.toName,
+                                                                                            headCount: 15,
+                                                                                            showTooltip: false
+                                                                                        })
+                                                                                    }
+                                                                                </Link>
+                                                                            </Whisper>
+                                                                        ) : (
                                                                             renderStringAndTooltip({
                                                                                 str: rowData.toName,
                                                                                 headCount: 15,
                                                                                 showTooltip: false
                                                                             })
-                                                                        }
-                                                                    </Link>
-                                                                </Whisper>
-                                                            </>
-                                                        )
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            )
                                                     }
                                                 </div>
                                             </span>

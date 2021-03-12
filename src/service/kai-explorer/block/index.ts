@@ -20,10 +20,8 @@ export const getBlocks = async (page: number, size: number): Promise<BlocksRespo
                 blockHash: o.hash || '',
                 blockHeight: o.height || 0,
                 transactions: o.numTxs || 0,
-                validator: {
-                    label: o.proposerName || '',
-                    hash: o.proposerAddress || ''
-                },
+                proposalName: o.proposerName || '',
+                proposalAddress: o.proposerAddress || '',
                 time: new Date(o.time),
                 age: (nowTime - createdTime),
                 gasUsed: o.gasUsed || 0,
