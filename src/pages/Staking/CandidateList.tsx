@@ -63,18 +63,6 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                         }}
                     </Cell>
                 </Column>
-                <Column flexGrow={1} verticalAlign="middle">
-                    <HeaderCell>Rank</HeaderCell>
-                    <Cell>
-                        {(rowData: Candidate) => {
-                            return (
-                                <div>
-                                    {rowData.rank}
-                                </div>
-                            );
-                        }}
-                    </Cell>
-                </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
                     <HeaderCell>Staked Amount (KAI)</HeaderCell>
                     <Cell>
