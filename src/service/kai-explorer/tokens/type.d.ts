@@ -53,7 +53,7 @@ export interface ITokenTranferTxList {
 export interface ITokenHoldersByToken {
     holderAddress: string;
     balance: any;
-    tokenDecimals: numbber;
+    tokenDecimals: number;
 }
 
 export interface ITokenHolderByTokenList {

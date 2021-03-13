@@ -118,7 +118,7 @@ export const getTokenHoldersByToken = async (tokenAddr: string, page: number, si
             return {
                 holderAddress: item.holderAddress ? item.holderAddress : '',
                 balance: item.balance ? item.balance : '',
-                tokenDecimals: item.tokenDecimals ? item.tokenDecimals : 18
+                tokenDecimals: item.tokenDecimals ? item.tokenDecimals : 0
             }
         })
     }

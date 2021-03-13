@@ -41,7 +41,7 @@ const TokenHolder = ({holders, totalHolder, size, setSize, page, setPage, loadin
                                                 hash: rowData.holderAddress,
                                                 headCount: 20,
                                                 tailCount: 4,
-                                                showTooltip: false,
+                                                showTooltip: true,
                                                 redirectTo: `/address/${rowData.holderAddress}`
                                             })
                                        }
