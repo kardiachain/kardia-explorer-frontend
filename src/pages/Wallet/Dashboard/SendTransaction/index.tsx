@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './sendTxs.css'
 import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List } from 'rsuite'
 import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message'
@@ -14,7 +14,9 @@ import { renderHashString } from '../../../../common/utils/string'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom'
 import { generateTxForEW } from '../../../../service/extensionWallet'
-import { weiToKAI } from '../../../../common/utils/amount'
+import { convertValueFollowDecimal, weiToKAI } from '../../../../common/utils/amount'
+import KardiaClient from "kardia-dx";
+import { getTokens } from '../../../../service/kai-explorer/transaction'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -32,9 +34,8 @@ const SendTransaction = () => {
 
     const walletLocalState = useRecoilValue(walletState)
 
-
     const validateAmount = (amount: any): boolean => {
-        
+
         if (!amount) {
             setAmountErr(ErrorMessage.Require)
             return false
@@ -128,26 +129,23 @@ const SendTransaction = () => {
         }
     }
 
-    const confirmSend = async () => {
-        if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
-            return
-        }
-        setSendBntLoading(true)
+    const transferKRC20 = async () => {
+        const privateKey = walletLocalState.account.privatekey;
+        const kardiaClient = new KardiaClient({
+            endpoint: 'https://dev-1.kardiachain.io',
+        });
+        const krc20 = kardiaClient.krc20;
+        krc20.address = addressKRC20;
         try {
-            const txHash = await generateTx(walletLocalState.account, toAddress, Number(amount), gasLimit, gasPrice)
-            if (txHash) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${txHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${txHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            const response = await krc20.transfer(privateKey, toAddress, Number(amount), {});
+            NotificationSuccess({
+                description: NotifiMessage.TransactionSuccess,
+                callback: () => { window.open(`/tx/${response.transactionHash}`) },
+                seeTxdetail: true
+            });
+            setShowConfirmModal(false)
+            resetFrom()
+            setSendBntLoading(false)
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -161,15 +159,57 @@ const SendTransaction = () => {
             }
         }
 
-        setShowConfirmModal(false)
-        resetFrom()
-        setSendBntLoading(false)
+    }
+
+    const confirmSend = async () => {
+        if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
+            return
+        }
+
+        setSendBntLoading(true)
+
+        if (addressKRC20) {
+            transferKRC20();
+        } else {
+            try {
+                const txHash = await generateTx(walletLocalState.account, toAddress, Number(amount), gasLimit, gasPrice)
+                if (txHash) {
+                    NotificationSuccess({
+                        description: NotifiMessage.TransactionSuccess,
+                        callback: () => { window.open(`/tx/${txHash}`) },
+                        seeTxdetail: true
+                    });
+                } else {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError,
+                        callback: () => { window.open(`/tx/${txHash}`) },
+                        seeTxdetail: true
+                    });
+                }
+            } catch (error) {
+                try {
+                    const errJson = JSON.parse(error?.message);
+                    NotificationError({
+                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+                    })
+                } catch (error) {
+                    NotificationError({
+                        description: NotifiMessage.TransactionError
+                    });
+                }
+            }
+
+            setShowConfirmModal(false)
+            resetFrom()
+            setSendBntLoading(false)
+        }
+
     }
 
     const setMaximumAmount = () => {
         try {
             const balance = getStoredBalance();
-            const maxFee = weiToKAI(gasLimit * gasPrice * 10**9);
+            const maxFee = weiToKAI(gasLimit * gasPrice * 10 ** 9);
             const validableBalance = balance > Number(maxFee) ? balance - Number(maxFee) : 0;
             setAmount(String(validableBalance))
             validateAmount(validableBalance)
@@ -177,6 +217,21 @@ const SendTransaction = () => {
             console.error(error)
         }
     }
+
+    const [tokens, setTokens] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            if (!myAccount.publickey) {
+                return;
+            }
+            const listTokens = await getTokens(myAccount.publickey)
+            setTokens(listTokens.tokens);
+        })();
+
+    }, [myAccount.publickey])
+
+    const [addressKRC20, setAddressKRC20] = useState("")
 
     return (
         <div className="send-txs-container">
@@ -189,6 +244,29 @@ const SendTransaction = () => {
                 <Form fluid>
                     <FormGroup>
                         <FlexboxGrid>
+                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                <ControlLabel className="color-white">Select token KRC20 (optional)</ControlLabel>
+                                <SelectPicker
+                                    placeholder="Your KRC20 token"
+                                    className="dropdown-custom balanceSelect"
+                                    data={tokens}
+                                    value={addressKRC20}
+                                    onChange={(value, item) => {
+                                        setAddressKRC20(value)
+                                    }}
+                                    renderMenuItem={(label, item: any) => {
+                                        return (
+                                            <div className="rowToken">
+                                                <div className="flex">
+                                                    <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
+                                                    <p>{item.tokenSymbol}</p>
+                                                </div>
+                                                <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
+                                            </div>
+                                        );
+                                    }}
+                                />
+                            </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
@@ -207,12 +285,12 @@ const SendTransaction = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                         <FlexboxGrid justify="space-between" align="middle">
-                                            <ControlLabel className="color-white">Amount (KAI - required)</ControlLabel>
-                                            <span 
-                                            className="maximum-amount"
-                                            onClick={() => {
-                                                setMaximumAmount()
-                                            }}>Maximum</span>
+                                            <ControlLabel className="color-white">Amount (required)</ControlLabel>
+                                            <span
+                                                className="maximum-amount"
+                                                onClick={() => {
+                                                    setMaximumAmount()
+                                                }}>Maximum</span>
                                         </FlexboxGrid>
                                         <NumberInputFormat
                                             value={amount}
@@ -251,7 +329,7 @@ const SendTransaction = () => {
                                         />
                                         <ErrMessage message={gasPriceErr} />
                                     </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginTop: 30}}>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
                                         <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>

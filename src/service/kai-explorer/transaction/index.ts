@@ -228,7 +228,7 @@ export const getTokens = async (address: string): Promise<any> => {
                     logo: it.logo,
                     tokenDecimals: it.tokenDecimals,
                     label: it.tokenName,
-                    value: it.tokenName,
+                    value: it.contractAddress,
                     tokenSymbol: it.tokenSymbol,
                     updatedAt: it.updatedAt,
                 }
