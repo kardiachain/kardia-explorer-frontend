@@ -2,27 +2,21 @@ import { colors } from "../../../common/constant"
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import { getCache, setCache } from "../../../plugin/localCache";
+import { ValidatorStats } from "./type";
 
-export const getValidators = async (): Promise<Validators> => {
+export const getValidators = async (): Promise<Validator[]> => {
     try {
-        const cacheKey = 'VALIDATORS_LIST';
-        const cacheResponse = getCache(cacheKey);
-        if (cacheResponse) {
-            return cacheResponse;
-        }
+        // const cacheKey = 'VALIDATORS_LIST';
+        // const cacheResponse = getCache(cacheKey);
+        // if (cacheResponse) {
+        //     return cacheResponse;
+        // }
         const response = await fetch(`${END_POINT}validators`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const raw = responseJSON.data || []
+        
         const colorIndexRandom = Math.floor(Math.random() * (colors?.length - 1)) || 0;
-        const responseData: Validators = {
-            totalValidators: raw.totalValidators,
-            totalDelegators: raw.totalDelegators,
-            totalStakedAmount: raw.totalStakedAmount,
-            totalValidatorStakedAmount: raw.totalValidatorStakedAmount,
-            totalDelegatorStakedAmount: raw.totalDelegatorStakedAmount,
-            totalProposer: raw.totalProposers,
-            totalCandidates: raw.totalCandidates,
-            validators: raw.validators ? raw.validators.map((v: any, i: number) => {
+        const responseData: Validator[] = raw && raw.length > 0 ? raw.map((v: any, i: number) => {
                 return {
                     rank: i + 1,
                     color: colors[i] || colors[colorIndexRandom],
@@ -41,12 +35,30 @@ export const getValidators = async (): Promise<Validators> => {
                     role: checkValidatorRole(v.role),
                 }
             }) : []
-        }
-        setCache(cacheKey, responseData);
+        
+        // setCache(cacheKey, responseData);
         return responseData
     } catch (error) {
-        return {} as Validators
+        return [] as Validator[]
     }
+}
+
+export const getValidatorStats = async() : Promise<ValidatorStats> => {
+    const response = await fetch(`${END_POINT}staking/stats`, GET_REQUEST_OPTION)
+    const responseJSON = await response.json()
+
+    const data = responseJSON?.data || {}
+    if (!data) return {} as ValidatorStats
+
+    return {
+        totalValidators: data.totalValidators,
+        totalProposers: data.totalProposers,
+        totalCandidates: data.totalCandidates,
+        totalDelegators: data.totalDelegators,
+        totalStakedAmount: data.totalStakedAmount,
+        totalValidatorStakedAmount: data.totalValidatorStakedAmount,
+        totalDelegatorStakedAmount: data.totalDelegatorStakedAmount
+    } as ValidatorStats
 }
 
 export const getValidator = async (valAddr: string, page: number, limit: number): Promise<Validator> => {

@@ -18,10 +18,6 @@ const TokenHolder = ({holders, totalHolder, size, setSize, page, setPage, loadin
     loading: boolean
 }) => {
 
-
-    console.log("Holders", holders);
-    
-
     return (
         <FlexboxGrid justify="space-between">
             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>

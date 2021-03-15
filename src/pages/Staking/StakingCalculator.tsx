@@ -47,12 +47,12 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
             setBlockReward(Number(weiToKAI(block.rewards)));
         })()
 
-        const vals = validators.map((item: Validator) => {
+        const vals = validators && validators.length > 0 ? validators.map((item: Validator) => {
             return {
                 label: `${item.name}`,
                 value: item
             }
-        })
+        }) : [] as ValidatorSelectList[]
         setValidatorSelectList(vals)
     }, [validators]);
 
