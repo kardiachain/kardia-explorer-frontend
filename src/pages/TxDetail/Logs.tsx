@@ -1,39 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button } from 'rsuite';
-import { useParams } from 'react-router-dom';
-import { getContractEvents } from '../../service/kai-explorer';
 import './logs.css'
 import { renderHashToRedirect } from '../../common/utils/string';
-import { NotificationError } from '../../common/components/Notification';
-import { NotifiMessage } from '../../common/constant/Message';
 
-function Logs() {
-    const { txHash }: any = useParams();
-    const [logs, setLogs] = useState({} as any);
-    const [data, setData] = useState();
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const data = await getContractEvents(1, 10, txHash);
-                setLogs(data);
-                setData(data.data);
-            } catch(e){
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${e.message}`
-                });
-            }
-        })()
-    }, [txHash])
+function Logs({logs, data}: {
+    logs: Logs,
+    data: string
+}) {
 
     const dec = () => {
         const newData = parseInt(logs.data as any, 16);
         const formatData = newData.toLocaleString('fullwide', { useGrouping: false });
-        setData(formatData as any);
+        return formatData;
     }
 
     const hex = () => {
-        setData(logs.data);
+        return logs.data;
     }
 
     return (

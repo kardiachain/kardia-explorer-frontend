@@ -280,3 +280,21 @@ interface ProposalsResponse {
     total: number;
     proposal: Proposal[]
 }
+
+interface Logs {
+    address: string,
+    methodName: string,
+    argumentsName: string,
+    arguments: {
+        _amount: string,
+        _delAddr: string
+    },
+    topics: [],
+    data: string,
+    blockHeight: number,
+    transactionHash: string,
+    transactionIndex: string,
+    blockHash: string,
+    logIndex: number,
+    removed: string
+}

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Panel, Nav } from 'rsuite';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
-import { getTxByHash } from '../../service/kai-explorer';
+import { getContractEvents, getTxByHash } from '../../service/kai-explorer';
 import './txDetail.css'
 import { hashValid } from '../../common/utils/validate';
 import Logs from './Logs';
 import TxDetailOverview from './overview';
+import { NotificationError } from '../../common/components/Notification';
+import { NotifiMessage } from '../../common/constant/Message';
 
 const TxDetail = () => {
     const { txHash }: any = useParams();
@@ -14,12 +16,27 @@ const TxDetail = () => {
     const [loading, setLoading] = useState(true)
     const [activeKey, setActiveKey] = useState('overview')
 
+    const [logs, setLogs] = useState<Logs>({} as Logs);
+    const [data, setData] = useState("");
+
 
     useEffect(() => {
         setLoading(true)
         // Refetch txD
         if (hashValid(txHash)) {
             (async () => {
+                try {
+                    const data = await getContractEvents(1, 10, txHash);
+                    setLogs(data);
+                    setData(data.data);
+                } catch(e){
+                    NotificationError({
+                        description: `${NotifiMessage.TransactionError} Error: ${e.message}`
+                    });
+                }
+
+
+
                 let tx = await getTxByHash(txHash);
                 if (tx.txHash) {
                     setTxDetail(tx);
@@ -71,7 +88,7 @@ const TxDetail = () => {
                                 );
                             case 'logs':
                                 return (
-                                    <Logs />
+                                    <Logs logs={logs} data={data}/>
                                 )
                         }
                     })()
