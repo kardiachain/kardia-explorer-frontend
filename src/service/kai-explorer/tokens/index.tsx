@@ -20,7 +20,7 @@ export const getContractsList = async (page: number, size: number): Promise<ICon
                 logo: item.logo ? `data:image/jpeg;base64,${item.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64,
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
                 totalSupply: item.totalSupply ? item.totalSupply : '0',
-                decimal: item.decimal ? item.decimal : 18
+                decimal: item.decimal ? item.decimal : 0
             } as ITokenContract
         })
     }
@@ -34,7 +34,7 @@ export const getTokenContractInfor = async (contractAddress: string): Promise<IT
         address: raw.address || '',
         balance: raw.balance || '',
         createdAt: raw.createdAt || '',
-        decimals: raw.decimals || '',
+        decimals: raw.decimals || 0,
         info: raw.info || '',
         logo: raw.logo ? `data:image/jpeg;base64,${raw.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64,
         name: raw.name || '',
@@ -66,7 +66,7 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
                 to: item.to ? item.to : '',
                 value: item.value ? item.value : '0',
                 age: (nowTime - createdTime),
-                decimals: item.decimals ? item.decimals : 18,
+                decimals: item.decimals ? item.decimals : 0,
                 tokenName: item.tokenName ? item.tokenName : '',
                 tokenType: item.tokenType ? item.tokenType : '',
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
@@ -95,7 +95,7 @@ export const getKrc20Txs = async (address: string, page: number, size: number): 
                 to: item.to ? item.to : '',
                 value: item.value ? item.value : '0',
                 age: (nowTime - createdTime),
-                decimals: item.decimals ? item.decimals : 18,
+                decimals: item.decimals ? item.decimals : 0,
                 tokenName: item.tokenName ? item.tokenName : '',
                 tokenType: item.tokenType ? item.tokenType : '',
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
@@ -118,7 +118,7 @@ export const getTokenHoldersByToken = async (tokenAddr: string, page: number, si
             return {
                 holderAddress: item.holderAddress ? item.holderAddress : '',
                 balance: item.balance ? item.balance : '',
-                tokenDecimals: item.tokenDecimals ? item.tokenDecimals : 18
+                tokenDecimals: item.tokenDecimals ? item.tokenDecimals : 0
             }
         })
     }

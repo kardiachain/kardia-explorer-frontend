@@ -57,7 +57,7 @@ const convertValueFollowDecimal = (value: any, decimals: number): any => {
   
   value = value.toLocaleString('en-US', { useGrouping: false });
   if (!decimals) {
-    decimals = 18
+    return value
   }
 
   const cellString = value.toString().padStart(decimals*2, '0');

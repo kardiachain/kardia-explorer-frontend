@@ -5,7 +5,6 @@ import { getAccount } from '../../../../service/wallet';
 import ClaimRewards from './ClaimRewards';
 import WithdrawAmount from './WithdrawAmount';
 import './style.css';
-import { deleteCache } from '../../../../plugin/localCache';
 
 const Delegator = () => {
     const [yourValidators, setYourValidators] = useState([] as YourValidator[]);
@@ -20,9 +19,6 @@ const Delegator = () => {
     }, [myAccount.publickey]);
 
     const reFetchData = async () => {
-        const cacheKey = `VALIDATOR_OF_DELEGATOR_${myAccount.publickey}`;
-        deleteCache(cacheKey);
-        
         const yourVals = await getValidatorByDelegator(myAccount.publickey)
         setYourValidators(yourVals)
     }
