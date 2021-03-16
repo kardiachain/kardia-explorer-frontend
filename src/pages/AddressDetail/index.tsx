@@ -143,7 +143,7 @@ const AddressDetail = () => {
                                                         history.push(`/token/${item.contractAddress}`)
                                                     }}>
                                                         <div className="flex">
-                                                            <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
+                                                            <img src={item.logo} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
                                                             <p>{item.tokenSymbol}</p>
                                                         </div>
                                                         <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
