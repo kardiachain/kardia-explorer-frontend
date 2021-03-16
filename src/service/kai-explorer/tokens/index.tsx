@@ -3,7 +3,7 @@ import { END_POINT, GET_REQUEST_OPTION } from "../config"
 import { IContractList, ITokenContract, ITokenDetails, ITokenHolderByTokenList, ITokenTranferTxList } from "./type";
 
 export const getContractsList = async (page: number, size: number): Promise<IContractList> => {
-    const response = await fetch(`${END_POINT}contracts?page=${page - 1}&limit=${size}&type=${KRC20}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}contracts?page=${page}&limit=${size}&type=${KRC20}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
 
@@ -49,7 +49,7 @@ export const getTokenContractInfor = async (contractAddress: string): Promise<IT
 }
 
 export const getTokenTransferTx = async (tokenAddr: string, page: number, size: number): Promise<ITokenTranferTxList> => {
-    const response = await fetch(`${END_POINT}token/txs?contractAddress=${tokenAddr}&page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}token/txs?contractAddress=${tokenAddr}&page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
     
@@ -78,7 +78,7 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
 }
 
 export const getKrc20Txs = async (address: string, page: number, size: number): Promise<ITokenTranferTxList> => {
-    const response = await fetch(`${END_POINT}token/txs?address=${address}&page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}token/txs?address=${address}&page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
     
@@ -107,7 +107,7 @@ export const getKrc20Txs = async (address: string, page: number, size: number): 
 }
 
 export const getTokenHoldersByToken = async (tokenAddr: string, page: number, size: number) : Promise<ITokenHolderByTokenList> => {
-    const response = await fetch(`${END_POINT}token/holders/${tokenAddr}?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}token/holders/${tokenAddr}?page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
     if (!raws || raws.length < 1) return {} as ITokenHolderByTokenList

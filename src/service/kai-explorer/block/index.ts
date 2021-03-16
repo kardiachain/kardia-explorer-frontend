@@ -8,7 +8,7 @@ interface BlocksResponse {
 
 export const getBlocks = async (page: number, size: number): Promise<BlocksResponse> => {
 
-    const response = await fetch(`${END_POINT}blocks?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}blocks?page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const rawBlockList = responseJSON?.data?.data || [];
     const nowTime = (new Date()).getTime();
@@ -76,7 +76,7 @@ export const calculateTPS = (blockList: KAIBlock[]) => {
 }
 
 export const getLatestBlock = async (): Promise<KAIBlock> => {
-    const response = await fetch(`${END_POINT}blocks?page=0&limit=1`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}blocks?page=1&limit=1`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawBlockList = responseJSON.data.data || []
 
@@ -86,7 +86,7 @@ export const getLatestBlock = async (): Promise<KAIBlock> => {
 
 export const getBlocksByProposer = async (proposerAddr: string, page: number, size: number): Promise<BlocksResponse> => {
     try {
-        const response = await fetch(`${END_POINT}blocks/proposer/${proposerAddr}?page=${page-1}&limit=${size}`, GET_REQUEST_OPTION);
+        const response = await fetch(`${END_POINT}blocks/proposer/${proposerAddr}?page=${page}&limit=${size}`, GET_REQUEST_OPTION);
         const responseJSON = await response.json();
         const rawBlockList = responseJSON?.data?.data || [];
         const nowTime = (new Date()).getTime();
