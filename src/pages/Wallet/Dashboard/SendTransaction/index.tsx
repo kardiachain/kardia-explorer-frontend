@@ -13,7 +13,7 @@ import NumberInputFormat from '../../../../common/components/FormInput'
 import { renderHashString } from '../../../../common/utils/string'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom'
-import { generateTxForEW } from '../../../../service/extensionWallet'
+import { generateTxForEW, sendKRC20ByExtension } from '../../../../service/extensionWallet'
 import { convertValueFollowDecimal, weiToKAI } from '../../../../common/utils/amount'
 import KardiaClient from "kardia-dx";
 import { getTokens } from '../../../../service/kai-explorer/transaction'
@@ -110,7 +110,11 @@ const SendTransaction = () => {
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
-                await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+                if(addressKRC20){
+                    await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, addressKRC20.contractAddress);
+                } else {
+                    await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+                }
             } catch (error) {
                 try {
                     const errJson = JSON.parse(error?.message);
@@ -135,7 +139,7 @@ const SendTransaction = () => {
             endpoint: 'https://dev-1.kardiachain.io',
         });
         const krc20 = kardiaClient.krc20;
-        krc20.address = addressKRC20;
+        krc20.address = addressKRC20.contractAddress;
         try {
             const response = await krc20.transfer(privateKey, toAddress, Number(amount), {});
             NotificationSuccess({
@@ -143,9 +147,7 @@ const SendTransaction = () => {
                 callback: () => { window.open(`/tx/${response.transactionHash}`) },
                 seeTxdetail: true
             });
-            setShowConfirmModal(false)
-            resetFrom()
-            setSendBntLoading(false)
+        
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -158,6 +160,10 @@ const SendTransaction = () => {
                 });
             }
         }
+
+        setShowConfirmModal(false)
+        resetFrom()
+        setSendBntLoading(false)
 
     }
 
@@ -231,7 +237,7 @@ const SendTransaction = () => {
 
     }, [myAccount.publickey])
 
-    const [addressKRC20, setAddressKRC20] = useState("")
+    const [addressKRC20, setAddressKRC20] = useState(null as any)
 
     return (
         <div className="send-txs-container">
@@ -251,7 +257,7 @@ const SendTransaction = () => {
                                     className="dropdown-custom balanceSelect"
                                     data={tokens}
                                     value={addressKRC20}
-                                    onChange={(value, item) => {
+                                    onChange={(value) => {
                                         setAddressKRC20(value)
                                     }}
                                     renderMenuItem={(label, item: any) => {
@@ -301,6 +307,7 @@ const SendTransaction = () => {
                                                 validateAmount(event.value)
                                             }} />
                                         <ErrMessage message={amountErr} />
+                                        {addressKRC20 ? <p style={{marginTop:'8px'}} className="property-content">Available: {numberFormat(convertValueFollowDecimal(addressKRC20.balance, addressKRC20.tokenDecimals))} {addressKRC20.tokenSymbol}</p> : <></>}
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                         <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
@@ -388,7 +395,7 @@ const SendTransaction = () => {
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
-                                        {numberFormat(amount)} KAI
+                                        {numberFormat(amount)} {addressKRC20 == null ? 'KAI' : addressKRC20.tokenSymbol}
                                     </div>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
