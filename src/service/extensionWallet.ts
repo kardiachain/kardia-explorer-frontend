@@ -70,7 +70,6 @@ const sendKRC20ByExtension = async (toAddress: string, amount: number, gasPrice:
 
             const kardiaContract = kardiaClient.contract;
             kardiaContract.updateAbi(krc20ABI);
-            const data = await kardiaContract.invokeContract("transfer", [toAddress, cellAmountDel]).txData();
 
             const contract = await new window.web3.eth.Contract(
                 krc20ABI,
