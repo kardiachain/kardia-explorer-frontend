@@ -15,7 +15,7 @@ export const searchAll = async (text: string): Promise<SearchItem[]> => {
                 symbol: item.symbol ? item.symbol : '',
                 type: item.type ? item.type : '', 
                 address: item.address ? item.address : '',
-                logo: item.logo ? `data:image/jpeg;base64,${item.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                logo: item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64,
                 info: item.info ? item.info : ''
             }
         })

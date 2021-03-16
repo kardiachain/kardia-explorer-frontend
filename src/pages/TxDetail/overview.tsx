@@ -298,7 +298,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                                                 <img
                                                                     style={{ marginRight: 5 }}
                                                                     className="token-logo-small"
-                                                                    src={item.logo ? `data:image/jpeg;base64,${item.logo}` : UNKNOW_AVARTAR_DEFAULT_BASE64}
+                                                                    src={item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64}
                                                                     alt="kardiachain" />
                                                                 <Link to={`/token/${item.address}`}>
                                                                     <span style={{ marginRight: 5 }}>{item.tokenName ? item.tokenName : ''}</span>
