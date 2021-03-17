@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import './sendTxs.css'
-import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List } from 'rsuite'
+import { Panel, Form, FormGroup, FormControl, FlexboxGrid, Col, Icon, ControlLabel, Modal, SelectPicker, List, Nav } from 'rsuite'
 import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message'
 import { numberFormat } from '../../../../common/utils/number'
 import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage'
 import { addressValid } from '../../../../common/utils/validate'
 import { getAccount, generateTx, getStoredBalance, isExtensionWallet } from '../../../../service/wallet'
 import Button from '../../../../common/components/Button'
-import { gasLimitSendTx, gasPriceOption } from '../../../../common/constant'
+import { gasLimitSendTx, gasPriceOption, gasLimitSendTxKRC20 } from '../../../../common/constant'
 import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification'
 import NumberInputFormat from '../../../../common/components/FormInput'
 import { renderHashString } from '../../../../common/utils/string'
@@ -15,8 +15,8 @@ import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom'
 import { generateTxForEW, sendKRC20ByExtension } from '../../../../service/extensionWallet'
 import { convertValueFollowDecimal, weiToKAI } from '../../../../common/utils/amount'
-import KardiaClient from "kardia-dx";
 import { getTokens } from '../../../../service/kai-explorer/transaction'
+import kardiaClient from '../../../../plugin/kardia-dx'
 
 const SendTransaction = () => {
     const [amount, setAmount] = useState('')
@@ -33,6 +33,8 @@ const SendTransaction = () => {
     const [gasPriceErr, setGasPriceErr] = useState('')
 
     const walletLocalState = useRecoilValue(walletState)
+    const [activeKey, setActiveKey] = useState('native')
+
 
     const validateAmount = (amount: any): boolean => {
 
@@ -110,8 +112,8 @@ const SendTransaction = () => {
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
-                if(addressKRC20){
-                    await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, addressKRC20.contractAddress);
+                if (addressKRC20) {
+                    await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, addressKRC20.contractAddress, addressKRC20.tokenDecimals);
                 } else {
                     await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
                 }
@@ -135,11 +137,10 @@ const SendTransaction = () => {
 
     const transferKRC20 = async () => {
         const privateKey = walletLocalState.account.privatekey;
-        const kardiaClient = new KardiaClient({
-            endpoint: 'https://dev-1.kardiachain.io',
-        });
         const krc20 = kardiaClient.krc20;
         krc20.address = addressKRC20.contractAddress;
+        krc20.decimals = addressKRC20.tokenDecimals;
+
         try {
             const response = await krc20.transfer(privateKey, toAddress, Number(amount), {});
             NotificationSuccess({
@@ -147,7 +148,7 @@ const SendTransaction = () => {
                 callback: () => { window.open(`/tx/${response.transactionHash}`) },
                 seeTxdetail: true
             });
-        
+
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -247,103 +248,213 @@ const SendTransaction = () => {
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
-                <Form fluid>
-                    <FormGroup>
-                        <FlexboxGrid>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                <ControlLabel className="color-white">Select token KRC20 (optional)</ControlLabel>
-                                <SelectPicker
-                                    placeholder="Your KRC20 token"
-                                    className="dropdown-custom balanceSelect"
-                                    data={tokens}
-                                    value={addressKRC20}
-                                    onChange={(value) => {
-                                        setAddressKRC20(value)
-                                    }}
-                                    renderMenuItem={(label, item: any) => {
-                                        return (
-                                            <div className="rowToken">
-                                                <div className="flex">
-                                                    <img src={`data:image/jpeg;base64,${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
-                                                    <p>{item.tokenSymbol}</p>
-                                                </div>
-                                                <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
-                                            </div>
-                                        );
-                                    }}
-                                />
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                <FlexboxGrid>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">To Address (required)</ControlLabel>
-                                        <FormControl
-                                            placeholder="Ex. 0x..."
-                                            name="toAddress"
-                                            className="input"
-                                            value={toAddress}
-                                            onChange={(value) => {
-                                                validateToAddress(value)
-                                                setToAddress(value)
-                                            }}
-                                        />
-                                        <ErrMessage message={toAddressErr} />
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                        <FlexboxGrid justify="space-between" align="middle">
-                                            <ControlLabel className="color-white">Amount (required)</ControlLabel>
-                                            <span
-                                                className="maximum-amount"
-                                                onClick={() => {
-                                                    setMaximumAmount()
-                                                }}>Maximum</span>
-                                        </FlexboxGrid>
-                                        <NumberInputFormat
-                                            value={amount}
-                                            placeholder="Ex. 1000"
-                                            className="input"
-                                            onChange={(event) => {
-                                                setAmount(event.value)
-                                                validateAmount(event.value)
-                                            }} />
-                                        <ErrMessage message={amountErr} />
-                                        {addressKRC20 ? <p style={{marginTop:'8px'}} className="property-content">Available: {numberFormat(convertValueFollowDecimal(addressKRC20.balance, addressKRC20.tokenDecimals))} {addressKRC20.tokenSymbol}</p> : <></>}
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                        <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
-                                        <NumberInputFormat
-                                            value={gasLimit}
-                                            placeholder="Gas limit"
-                                            className="input"
-                                            onChange={(event) => {
-                                                setGasLimit(event.value);
-                                                validateGasLimit(event.value)
-                                            }} />
-                                        <ErrMessage message={gasLimitErr} />
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                        <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
-                                        <SelectPicker
-                                            className="dropdown-custom"
-                                            data={gasPriceOption}
-                                            searchable={false}
-                                            value={gasPrice}
-                                            onChange={(value) => {
-                                                setGasPrice(value)
-                                                validateGasPrice(value)
-                                            }}
-                                            style={{ width: '100%' }}
-                                        />
-                                        <ErrMessage message={gasPriceErr} />
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
-                                        <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </FlexboxGrid.Item>
-                        </FlexboxGrid>
-                    </FormGroup>
-                </Form>
+
+
+                <div className="custom-nav">
+                    <Nav
+                        appearance="subtle"
+                        activeKey={activeKey}
+                        onSelect={(event) => {
+                            if(event == 'krc20') {
+                                setGasLimit(gasLimitSendTxKRC20);
+                            } else {
+                                setGasLimit(gasLimitSendTx);
+                            }
+                            setActiveKey(event)
+                        }}
+                        style={{ marginBottom: 20 }}>
+                        <Nav.Item eventKey="native">
+                            {`Native KAI Token`}
+                        </Nav.Item>
+                        <Nav.Item eventKey="krc20">
+                            {`KRC20 Token`}
+                        </Nav.Item>
+                    </Nav>
+                </div>
+                {
+                    (() => {
+                        switch (activeKey) {
+                            case 'native':
+                                return (
+                                    <Form fluid>
+                                        <FormGroup>
+                                            <FlexboxGrid>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                                    <FlexboxGrid>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                                            <ControlLabel className="color-white">To Address (required)</ControlLabel>
+                                                            <FormControl
+                                                                placeholder="Ex. 0x..."
+                                                                name="toAddress"
+                                                                className="input"
+                                                                value={toAddress}
+                                                                onChange={(value) => {
+                                                                    validateToAddress(value)
+                                                                    setToAddress(value)
+                                                                }}
+                                                            />
+                                                            <ErrMessage message={toAddressErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                                            <FlexboxGrid justify="space-between" align="middle">
+                                                                <ControlLabel className="color-white">Amount (required)</ControlLabel>
+                                                                <span
+                                                                    className="maximum-amount"
+                                                                    onClick={() => {
+                                                                        setMaximumAmount()
+                                                                    }}>Maximum</span>
+                                                            </FlexboxGrid>
+                                                            <NumberInputFormat
+                                                                value={amount}
+                                                                placeholder="Ex. 1000"
+                                                                className="input"
+                                                                onChange={(event) => {
+                                                                    setAmount(event.value)
+                                                                    validateAmount(event.value)
+                                                                }} />
+                                                            <ErrMessage message={amountErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                                            <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                                            <NumberInputFormat
+                                                                value={gasLimit}
+                                                                placeholder="Gas limit"
+                                                                className="input"
+                                                                onChange={(event) => {
+                                                                    setGasLimit(event.value);
+                                                                    validateGasLimit(event.value)
+                                                                }} />
+                                                            <ErrMessage message={gasLimitErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                                            <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                                            <SelectPicker
+                                                                className="dropdown-custom"
+                                                                data={gasPriceOption}
+                                                                searchable={false}
+                                                                value={gasPrice}
+                                                                onChange={(value) => {
+                                                                    setGasPrice(value)
+                                                                    validateGasPrice(value)
+                                                                }}
+                                                                style={{ width: '100%' }}
+                                                            />
+                                                            <ErrMessage message={gasPriceErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
+                                                            <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                                        </FlexboxGrid.Item>
+                                                    </FlexboxGrid>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </FormGroup>
+                                    </Form>
+                                );
+
+                            case 'krc20':
+                                return (
+                                    <Form fluid>
+                                        <FormGroup>
+                                            <FlexboxGrid>
+                                                <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                                    <FlexboxGrid>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
+                                                            <ControlLabel className="color-white">Select token KRC20 (optional)</ControlLabel>
+                                                            <SelectPicker
+                                                                placeholder="Your KRC20 token"
+                                                                className="dropdown-custom balanceSelect"
+                                                                data={tokens}
+                                                                value={addressKRC20}
+                                                                onChange={(value) => {
+                                                                    setAddressKRC20(value)
+                                                                }}
+                                                                renderMenuItem={(label, item: any) => {
+                                                                    return (
+                                                                        <div className="rowToken">
+                                                                            <div className="flex">
+                                                                                <img src={`${item.logo}`} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
+                                                                                <p>{item.tokenSymbol}</p>
+                                                                            </div>
+                                                                            <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
+                                                                        </div>
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </FlexboxGrid.Item>
+
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                                            <ControlLabel className="color-white">To Address (required)</ControlLabel>
+                                                            <FormControl
+                                                                placeholder="Ex. 0x..."
+                                                                name="toAddress"
+                                                                className="input"
+                                                                value={toAddress}
+                                                                onChange={(value) => {
+                                                                    validateToAddress(value)
+                                                                    setToAddress(value)
+                                                                }}
+                                                            />
+                                                            <ErrMessage message={toAddressErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
+                                                            <FlexboxGrid justify="space-between" align="middle">
+                                                                <ControlLabel className="color-white">Amount (required)</ControlLabel>
+                                                                <span
+                                                                    className="maximum-amount"
+                                                                    onClick={() => {
+                                                                        setMaximumAmount()
+                                                                    }}>Maximum</span>
+                                                            </FlexboxGrid>
+                                                            <NumberInputFormat
+                                                                value={amount}
+                                                                placeholder="Ex. 1000"
+                                                                className="input"
+                                                                onChange={(event) => {
+                                                                    setAmount(event.value)
+                                                                    validateAmount(event.value)
+                                                                }} />
+                                                            <ErrMessage message={amountErr} />
+                                                            {addressKRC20 ? <p style={{ marginTop: '8px' }} className="property-content">Available: {numberFormat(convertValueFollowDecimal(addressKRC20.balance, addressKRC20.tokenDecimals))} {addressKRC20.tokenSymbol}</p> : <></>}
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                                            <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                                            <NumberInputFormat
+                                                                value={gasLimit}
+                                                                placeholder="Gas limit"
+                                                                className="input"
+                                                                onChange={(event) => {
+                                                                    setGasLimit(event.value);
+                                                                    validateGasLimit(event.value)
+                                                                }} />
+                                                            <ErrMessage message={gasLimitErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
+                                                            <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                                            <SelectPicker
+                                                                className="dropdown-custom"
+                                                                data={gasPriceOption}
+                                                                searchable={false}
+                                                                value={gasPrice}
+                                                                onChange={(value) => {
+                                                                    setGasPrice(value)
+                                                                    validateGasPrice(value)
+                                                                }}
+                                                                style={{ width: '100%' }}
+                                                            />
+                                                            <ErrMessage message={gasPriceErr} />
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
+                                                            <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                                        </FlexboxGrid.Item>
+                                                    </FlexboxGrid>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </FormGroup>
+                                    </Form>
+                                );
+                        }
+                    })()
+                }
             </Panel>
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
