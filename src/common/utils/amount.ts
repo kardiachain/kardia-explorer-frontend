@@ -76,10 +76,10 @@ const convertValueFollowDecimal = (value: any, decimals: number): any => {
     }
     const DecimalsbigNum = JSBI.BigInt(decimals)
     const TenBigNum = JSBI.BigInt(10)
-    const result = JSBI.divide(ValuebigNum, JSBI.exponentiate(TenBigNum, DecimalsbigNum))
+    const c = JSBI.exponentiate(TenBigNum, DecimalsbigNum)
+    const result = JSBI.toNumber(ValuebigNum) / JSBI.toNumber(c)
     return result.toString();
   } catch (error) {
-    console.error("Error", error);
     return '0'
   }
 };
