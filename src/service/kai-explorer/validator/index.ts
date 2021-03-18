@@ -68,7 +68,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
         if (cacheResponse) {
             return cacheResponse;
         }
-        const response = await fetch(`${END_POINT}validators/${valAddr}?page=${page-1}&limit=${limit}`, GET_REQUEST_OPTION)
+        const response = await fetch(`${END_POINT}validators/${valAddr}?page=${page}&limit=${limit}`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const val = responseJSON?.data?.data || {}
         if (!val) {
@@ -185,7 +185,7 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
 
 export const checkIsValidator = async (valAddr: string): Promise<boolean> => {
     try {
-        const response = await fetch(`${END_POINT}validators/${valAddr}?page=0&limit=10`, GET_REQUEST_OPTION);
+        const response = await fetch(`${END_POINT}validators/${valAddr}?page=1&limit=10`, GET_REQUEST_OPTION);
         if (response.status === 200) {
             return true
         }

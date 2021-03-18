@@ -27,7 +27,7 @@ interface HolderAccountResponse {
 }
 
 export const getAccounts = async (page: number, size: number, sort: any): Promise<HolderAccountResponse> => {
-    const response = await fetch(`${END_POINT}addresses?page=${page-1}&limit=${size}&sort=${sort}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}addresses?page=${page}&limit=${size}&sort=${sort}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
     return {

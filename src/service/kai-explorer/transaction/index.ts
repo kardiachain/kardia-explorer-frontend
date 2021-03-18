@@ -9,7 +9,7 @@ interface TransactionsResponse {
 }
 
 export const getTransactions = async (page: number, size: number): Promise<TransactionsResponse> => {
-    const response = await fetch(`${END_POINT}txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}txs?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime();
@@ -50,7 +50,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
 }
 
 export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: number): Promise<TransactionsResponse> => {
-    const response = await fetch(`${END_POINT}block/${blockHeight}/txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}block/${blockHeight}/txs?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime()
@@ -138,7 +138,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
     try {
         const checkSumAddr = address ? toChecksum(address.toLowerCase()) : '';
-        const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
+        const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const rawTxs = responseJSON?.data?.data || []
         const nowTime = (new Date()).getTime()
@@ -191,7 +191,7 @@ const defineFailedReason = (status: boolean, gasUsed: number, gasLimit: number):
 }
 
 export const getContractEvents = async (page: number, size: number, txHash: string): Promise<any> => {
-    const response = await fetch(`${END_POINT}contracts/events?page=${page - 1}&limit=${size}&txHash=${txHash}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}contracts/events?page=${page}&limit=${size}&txHash=${txHash}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     if (responseJSON.data.data.length > 0) {
         const it = responseJSON.data.data[0];

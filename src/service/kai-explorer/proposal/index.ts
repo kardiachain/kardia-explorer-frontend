@@ -4,7 +4,7 @@ import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 
 const getProposals = async (page: number, size: number): Promise<ProposalsResponse> => {
-    const response = await fetch(`${END_POINT}proposal?page=${page - 1}&limit=${size}`, GET_REQUEST_OPTION)
+    const response = await fetch(`${END_POINT}proposal?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
     const responseJSON = await response.json()
     const rawTxs = responseJSON?.data?.data || []
     const nowTime = (new Date()).getTime();
