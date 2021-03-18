@@ -277,7 +277,7 @@ const SendKrc20Token = ({tokens}: {
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
-                                    <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                    <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send Token<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
                         </FlexboxGrid.Item>
