@@ -70,10 +70,10 @@ const convertValueFollowDecimal = (value: any, decimals: number): any => {
     if (!value || value === '0') {
       return 0
     }
-    const ValuebigNum = JSBI.BigInt(value)
     if (!decimals) {
-      return ValuebigNum.toString
+      return value
     }
+    const ValuebigNum = JSBI.BigInt(value)
     const DecimalsbigNum = JSBI.BigInt(decimals)
     const TenBigNum = JSBI.BigInt(10)
     const c = JSBI.exponentiate(TenBigNum, DecimalsbigNum)
