@@ -194,7 +194,7 @@ const SendKrc20Token = ({tokens}: {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                    <ControlLabel className="color-white">Select token KRC20 (optional)</ControlLabel>
+                                    <ControlLabel className="color-white">Select token KRC20 (required)</ControlLabel>
                                     <SelectPicker
                                         placeholder="Your KRC20 token"
                                         className="dropdown-custom"
