@@ -4,7 +4,7 @@ import { END_POINT, GET_REQUEST_OPTION } from "../config"
 export const getHolderAccount = async (address: string): Promise<HolderAccount> => {
     const response = await fetch(`${END_POINT}addresses/${address}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
-    const raw = responseJSON?.data;
+    const raw = responseJSON?.data ? responseJSON?.data : {};
     return {
         address: raw.address || '',
         name: raw.name || '',

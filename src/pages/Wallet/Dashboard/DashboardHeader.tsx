@@ -124,7 +124,7 @@ const DashboardHeader = () => {
                                 <div className="content color-white" style={{ paddingLeft: '42px' }}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
                             </div>
 
-                            {tokens ? <SelectPicker
+                            {tokens != null && tokens.length > 0 ? <SelectPicker
                                 placeholder="Your KRC20 token"
                                 className="dropdown-custom balanceSelect"
                                 data={tokens}
@@ -140,7 +140,7 @@ const DashboardHeader = () => {
                                     );
                                 }}
                             />
-                            : <></>
+                                : <></>
                             }
                         </div>
                         <div className="card-footer">

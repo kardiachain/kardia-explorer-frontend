@@ -27,6 +27,8 @@
     "ethers": "^5.0.24",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
+    "jsbi": "^3.1.4",
+    "kardia-js-sdk": "^0.2.8",
     "kardia-tool": "0.0.13-3",
     "less": "^3.12.2",
     "less-loader": "^7.0.1",

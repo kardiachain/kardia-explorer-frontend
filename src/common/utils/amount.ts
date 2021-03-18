@@ -1,3 +1,5 @@
+import JSBI from "jsbi";
+
 const cellValue = (kaiValue: any) => {
   let cellString = removeTrailingZeros(kaiValue);
   let decimalStr = cellString.split('.')[1];
@@ -11,11 +13,24 @@ const cellValue = (kaiValue: any) => {
   return cellString;
 };
 
+const cellValueKRC20 = (kaiValue: any, decimal: number) => {
+  let cellString = removeTrailingZeros(kaiValue);
+  let decimalStr = cellString.split('.')[1];
+  let numberStr = cellString.split('.')[0];
+  if (!decimalStr) {
+    numberStr = numberStr.padEnd(decimal + numberStr.length, '0');
+  } else {
+    decimalStr = decimalStr.padEnd(decimal, '0');
+  }
+  cellString = `${numberStr}${decimalStr || ''}`;
+  return cellString;
+};
+
 const weiToKAI = (value: any): any => {
   if (!value || value === '0') {
     return 0
   }
-  
+
   value = value.toLocaleString('en-US', { useGrouping: false });
 
   const cellString = value.toString().padStart(36, '0');
@@ -28,7 +43,7 @@ const weiToOXY = (value: any): any => {
   if (!value || value === '0') {
     return 0
   }
-  
+
   value = value.toLocaleString('en-US', { useGrouping: false });
 
   const cellString = value.toString().padStart(18, '0');
@@ -41,7 +56,7 @@ const oxyToKAI = (value: any): any => {
   if (!value || value === '0') {
     return 0
   }
-  
+
   value = value.toLocaleString('en-US', { useGrouping: false });
 
   const cellString = value.toString().padStart(18, '0');
@@ -51,19 +66,22 @@ const oxyToKAI = (value: any): any => {
 };
 
 const convertValueFollowDecimal = (value: any, decimals: number): any => {
-  if (!value || value === '0') {
-    return 0
+  try {
+    if (!value || value === '0') {
+      return 0
+    }
+    const ValuebigNum = JSBI.BigInt(value)
+    if (!decimals) {
+      return ValuebigNum.toString
+    }
+    const DecimalsbigNum = JSBI.BigInt(decimals)
+    const TenBigNum = JSBI.BigInt(10)
+    const c = JSBI.exponentiate(TenBigNum, DecimalsbigNum)
+    const result = JSBI.toNumber(ValuebigNum) / JSBI.toNumber(c)
+    return result.toString();
+  } catch (error) {
+    return '0'
   }
-  
-  value = value.toLocaleString('en-US', { useGrouping: false });
-  if (!decimals) {
-    return value
-  }
-
-  const cellString = value.toString().padStart(decimals*2, '0');
-  const numString = parseInt(cellString.slice(0, decimals));
-  const decimalString = cellString.slice(-decimals);
-  return `${removeTrailingZeros(`${numString}.${decimalString}`)}`;
 };
 
 const formatFullAmount = (amount: string) => {
@@ -90,7 +108,7 @@ const removeTrailingZeros = (value: any) => {
 
   if (after.indexOf('.') === 0) {
     after = '0' + after
-  } 
+  }
   return after ? after : 0;
 };
 
@@ -130,4 +148,4 @@ const formatAmountwithPlus = (value: number) => {
 
 
 
-export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus, formatFullAmount, weiToOXY, oxyToKAI, convertValueFollowDecimal}
+export { weiToKAI, cellValue, formatAmount, formatAmountwithPlus, formatFullAmount, weiToOXY, oxyToKAI, convertValueFollowDecimal, cellValueKRC20 }
