@@ -2,13 +2,13 @@ import { Alert } from 'rsuite';
 import Web3 from 'web3';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../resources/smc-compile/validator-abi.json';
+import KRC20_API from '../resources/smc-compile/krc20-abi.json'
 import { cellValue, cellValueKRC20 } from '../common/utils/amount';
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
-import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS, RPC_ENDPOINT } from '../config/api';
+import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS } from '../config/api';
 import { gasLimitDefault } from '../common/constant';
 import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 import PROPOSAL_ABI from '../resources/smc-compile/proposal-abi.json';
-import { krc20ABI } from '../config';
 import kardiaClient from '../plugin/kardia-dx';
 
 declare global {
@@ -65,7 +65,7 @@ const sendKRC20ByExtension = async (toAddress: string, amount: number, gasPrice:
             const cellAmountDel = amount ? cellValueKRC20(amount, decimal) : 0;
 
             const kardiaContract = kardiaClient.contract;
-            kardiaContract.updateAbi(krc20ABI);
+            kardiaContract.updateAbi(KRC20_API);
 
             const data = await kardiaContract.invokeContract("transfer", [toAddress, cellAmountDel]).txData();
 
