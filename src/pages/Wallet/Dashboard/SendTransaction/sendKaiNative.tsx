@@ -48,10 +48,7 @@ const SendKaiNative = () => {
             setAmountErr(ErrorMessage.BalanceNotEnough)
             return false
         }
-        if (!amount) {
-            setAmountErr(ErrorMessage.Require)
-            return false
-        }
+        
         setAmountErr('')
         return true
     }

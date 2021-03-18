@@ -1,3 +1,5 @@
+import JSBI from "jsbi";
+
 const cellValue = (kaiValue: any) => {
   let cellString = removeTrailingZeros(kaiValue);
   let decimalStr = cellString.split('.')[1];
@@ -64,19 +66,22 @@ const oxyToKAI = (value: any): any => {
 };
 
 const convertValueFollowDecimal = (value: any, decimals: number): any => {
-  if (!value || value === '0') {
-    return 0
+  try {
+    if (!value || value === '0') {
+      return 0
+    }
+    const ValuebigNum = JSBI.BigInt(value)
+    if (!decimals) {
+      return ValuebigNum.toString
+    }
+    const DecimalsbigNum = JSBI.BigInt(decimals)
+    const TenBigNum = JSBI.BigInt(10)
+    const result = JSBI.divide(ValuebigNum, JSBI.exponentiate(TenBigNum, DecimalsbigNum))
+    return result.toString();
+  } catch (error) {
+    console.error("Error", error);
+    return '0'
   }
-
-  value = value.toLocaleString('en-US', { useGrouping: false });
-  if (!decimals) {
-    return value
-  }
-
-  const cellString = value.toString().padStart(decimals * 2, '0');
-  const numString = parseInt(cellString.slice(0, decimals));
-  const decimalString = cellString.slice(-decimals);
-  return `${removeTrailingZeros(`${numString}.${decimalString}`)}`;
 };
 
 const formatFullAmount = (amount: string) => {

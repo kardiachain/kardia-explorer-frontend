@@ -14,10 +14,12 @@ import { renderHashString } from '../../../../common/utils/string';
 import { addressValid } from '../../../../common/utils/validate';
 import kardiaClient from '../../../../plugin/kardia-dx';
 import { sendKRC20ByExtension } from '../../../../service/extensionWallet';
-import { getAccount, getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
+import { getAccount, isExtensionWallet } from '../../../../service/wallet';
+import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 
-const SendKrc20Token = ({tokens}: {
-    tokens: any[]
+const SendKrc20Token = ({tokens, fetchKrc20Token}: {
+    tokens: any[];
+    fetchKrc20Token: () => void;
 }) => {
 
     const [amount, setAmount] = useState('')
@@ -56,16 +58,6 @@ const SendKrc20Token = ({tokens}: {
 
         if (Number(amount) <= 0) {
             setAmountErr(ErrorMessage.AmountNotZero)
-            return false
-        }
-        const balance = getStoredBalance();
-
-        if (balance === 0 || balance < Number(amount)) {
-            setAmountErr(ErrorMessage.BalanceNotEnough)
-            return false
-        }
-        if (!amount) {
-            setAmountErr(ErrorMessage.Require)
             return false
         }
         setAmountErr('')
@@ -159,15 +151,15 @@ const SendKrc20Token = ({tokens}: {
         const krc20 = kardiaClient.krc20;
         krc20.address = addressKRC20.contractAddress;
         krc20.decimals = addressKRC20.tokenDecimals;
-
+        
         try {
-            const response = await krc20.transfer(privateKey, toAddress, Number(amount), {});
+            const toAddressChecksum = toAddress ? toChecksum(toAddress.toLowerCase()) : ''
+            const response = await krc20.transfer(privateKey, toAddressChecksum, Number(amount), {});
             NotificationSuccess({
                 description: NotifiMessage.TransactionSuccess,
                 callback: () => { window.open(`/tx/${response.transactionHash}`) },
                 seeTxdetail: true
             });
-
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -181,6 +173,7 @@ const SendKrc20Token = ({tokens}: {
             }
         }
 
+        fetchKrc20Token()
         setShowConfirmModal(false)
         resetFrom()
         setSendBntLoading(false)

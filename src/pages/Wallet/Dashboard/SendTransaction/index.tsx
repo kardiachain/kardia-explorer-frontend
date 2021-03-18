@@ -22,6 +22,14 @@ const SendTransaction = () => {
         })();
     }, [myAccount.publickey])
 
+    const fetchListKrc20Token = async () => {
+        if (!myAccount.publickey) {
+            return;
+        }
+        const listTokens = await getTokens(myAccount.publickey)
+        setTokens(listTokens.tokens);
+    }
+
     return (
         <div className="send-txs-container">
             <div style={{ marginBottom: 16 }}>
@@ -57,7 +65,7 @@ const SendTransaction = () => {
                                 );
                             case 'krc20':
                                 return (
-                                    <SendKrc20Token tokens={tokens} />
+                                    <SendKrc20Token tokens={tokens} fetchKrc20Token={fetchListKrc20Token}/>
                                 );
                         }
                     })()
