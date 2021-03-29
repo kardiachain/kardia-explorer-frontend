@@ -1,5 +1,3 @@
-import JSBI from "jsbi";
-
 const cellValue = (kaiValue: any) => {
   let cellString = removeTrailingZeros(kaiValue);
   let decimalStr = cellString.split('.')[1];
@@ -73,13 +71,11 @@ const convertValueFollowDecimal = (value: any, decimals: number): any => {
     if (!decimals) {
       return value
     }
-    const ValuebigNum = JSBI.BigInt(value)
-    const DecimalsbigNum = JSBI.BigInt(decimals)
-    const TenBigNum = JSBI.BigInt(10)
-    const c = JSBI.exponentiate(TenBigNum, DecimalsbigNum)
-    const result = JSBI.toNumber(ValuebigNum) / JSBI.toNumber(c)
-    return result.toString();
+
+    const valueConvert = (Number(value) / 10 ** decimals).toFixed(decimals)
+    return removeTrailingZeros(valueConvert)
   } catch (error) {
+    console.error(error)
     return '0'
   }
 };
