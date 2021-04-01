@@ -8,6 +8,7 @@ import { SearchItem } from '../../../service/kai-explorer/search/type';
 import { onlyInteger } from '../../utils/number';
 import { addressValid, hashValid } from '../../utils/validate';
 import Button from '../Button';
+import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 
 const SearchSection = () => {
     const [searchInput, setSearchInput] = useState('')
@@ -61,7 +62,7 @@ const SearchSection = () => {
                 history.push(`/block/${searchInput.trim()}`)
                 break
             case 'address':
-                history.push(`/address/${searchInput.trim()}`)
+                history.push(`/address/${toChecksum(searchInput ? searchInput.trim().toLowerCase() : '')}`)
                 break;
             default:
                 setSearchInput('')
@@ -76,10 +77,10 @@ const SearchSection = () => {
         switch (item.type) {
             case 'KRC20':
             case 'KRC721':
-                history.push(`/token/${item.address}`)
+                history.push(`/token/${toChecksum(item.address ? item.address.trim().toLowerCase() : '')}`)
                 break;
             default:
-                history.push(`/address/${item.address}`)
+                history.push(`/address/${toChecksum(item.address ? item.address.trim().toLowerCase() : '')}`)
                 break;
         }
     }
