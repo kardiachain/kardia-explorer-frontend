@@ -1,3 +1,7 @@
+interface Fraction {
+    numerator: JSBI;
+    denominator: JSBI;
+}
 interface KAITransaction {
     txHash: string;
     from: string;

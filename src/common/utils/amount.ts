@@ -1,3 +1,5 @@
+import { fractionDivide, toFixed, toFraction } from "./fraction";
+
 const cellValue = (kaiValue: any) => {
   let cellString = removeTrailingZeros(kaiValue);
   let decimalStr = cellString.split('.')[1];
@@ -72,8 +74,8 @@ const convertValueFollowDecimal = (value: any, decimals: number): any => {
       return value
     }
 
-    const valueConvert = (Number(value) / 10 ** decimals).toFixed(decimals)
-    return removeTrailingZeros(valueConvert)
+    const valueConvert = fractionDivide(toFraction(value), toFraction(String(10 ** decimals)))
+    return removeTrailingZeros(toFixed(valueConvert, decimals))
   } catch (error) {
     console.error(error)
     return '0'
