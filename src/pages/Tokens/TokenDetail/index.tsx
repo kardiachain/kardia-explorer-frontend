@@ -130,6 +130,18 @@ const TokenDetail = () => {
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                                <div className="property-title">Description</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                                <div className="property-content" style={{wordBreak: 'break-word'}}>
+                                                    { tokenInfor.info ? tokenInfor.info : '' }
+                                                </div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
                                 </List>
                             )
                         }
