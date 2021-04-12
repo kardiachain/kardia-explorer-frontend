@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from 'rsuite';
-import Button from '../../../../common/components/Button';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage } from '../../../../common/constant/Message';
-import { stopValidator } from '../../../../service/smc/staking';
+import { NotifiMessage, Button, NotificationError, NotificationSuccess } from '../../../../common';
+import { stopValidator } from '../../../../service';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 

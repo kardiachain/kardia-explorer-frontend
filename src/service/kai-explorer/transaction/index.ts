@@ -1,4 +1,4 @@
-import { numberFormat } from "../../../common/utils/number";
+import { numberFormat } from "../../../common";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 import { checkValidatorRole } from "..";

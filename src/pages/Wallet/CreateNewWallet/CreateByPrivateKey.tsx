@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Alert, Col, FlexboxGrid, Icon, Input, InputGroup, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Input, InputGroup, Panel } from 'rsuite';
 import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
-import { copyToClipboard } from '../../../common/utils/string';
-import Button from '../../../common/components/Button';
-import { isLoggedIn } from '../../../service/wallet';
+import { copyToClipboard, Button, onSuccess } from '../../../common';
+import { isLoggedIn } from '../../../service';
 
 const CreateByPrivateKey = () => {
-
-    const onSuccess = () => {
-        Alert.success('Copied to clipboard.')
-    }
 
     const [showPrivKey, setShowPrivKey] = useState(false)
     const [wallet, setWallet] = useState({} as WalletStore)

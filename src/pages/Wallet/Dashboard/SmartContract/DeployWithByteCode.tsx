@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import { Alert, Col, ControlLabel, Divider, FlexboxGrid, Form, FormControl, FormGroup, Icon, InputGroup, Modal, Panel, SelectPicker } from 'rsuite';
-import Button from '../../../../common/components/Button';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { copyToClipboard } from '../../../../common/utils/string';
-import { jsonValid } from '../../../../common/utils/validate';
-import { deploySmartContract } from '../../../../service/smc';
+import { Col, ControlLabel, Divider, FlexboxGrid, Form, FormControl, FormGroup, Icon, InputGroup, Modal, Panel, SelectPicker } from 'rsuite';
+import { deploySmartContract, isExtensionWallet, deploySMCByEW } from '../../../../service';
 import ReactJson from 'react-json-view'
 import './smartContract.css'
-import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
-import NumberInputFormat from '../../../../common/components/FormInput';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
+import {
+    NotificationError,
+    NotificationSuccess,
+    Button,
+    ErrMessage,
+    NumberInputFormat,
+    ErrorMessage,
+    NotifiMessage,
+    gasLimitDefault,
+    copyToClipboard,
+    jsonValid,
+    gasPriceOption,
+    onSuccess
+} from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
-import { isExtensionWallet } from '../../../../service/wallet';
-import { deploySMCByEW } from '../../../../service/extensionWallet';
-
-const onSuccess = () => {
-    Alert.success('Copied to clipboard.')
-}
 
 const DeployWithByteCode = () => {
 
@@ -104,13 +104,13 @@ const DeployWithByteCode = () => {
             if (isExtensionWallet()) {
                 try {
                     const params = construcFields && construcFields.length > 0 ? construcFields.map(item => JSON.parse(item.value)) : []
-                     deploySMCByEW({
-                         abi: abi, 
-                         bytecode: byteCode,
-                         params: params,
-                         gasLimit: gasLimit,
-                         gasPrice: gasPrice
-                     })
+                    deploySMCByEW({
+                        abi: abi,
+                        bytecode: byteCode,
+                        params: params,
+                        gasLimit: gasLimit,
+                        gasPrice: gasPrice
+                    })
                 } catch (error) {
                     try {
                         const errJson = JSON.parse(error?.message);
@@ -144,7 +144,7 @@ const DeployWithByteCode = () => {
                     seeTxdetail: true
                 });
             } else {
-                const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas`: `${NotifiMessage.TransactionError}`
+                const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas` : `${NotifiMessage.TransactionError}`
                 NotificationError({
                     description: errMsg,
                     callback: () => { window.open(`/tx/${result.transactionHash}`) },
@@ -355,7 +355,7 @@ const DeployWithByteCode = () => {
                                                 <InputGroup.Button onClick={() => {
                                                     copyToClipboard(deployedContract, onSuccess)
                                                 }}>
-                                                    <Icon icon="copy" style={{color: 'black'}}/>
+                                                    <Icon icon="copy" style={{ color: 'black' }} />
                                                 </InputGroup.Button>
                                             </InputGroup>
                                         </FlexboxGrid.Item>

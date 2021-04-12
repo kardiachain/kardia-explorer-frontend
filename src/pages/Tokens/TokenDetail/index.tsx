@@ -4,16 +4,16 @@ import { Col, FlexboxGrid, Panel, Nav, Placeholder, List } from 'rsuite';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { useViewport } from '../../../context/ViewportContext';
 import './style.css'
-import { getTokenContractInfor } from '../../../service/kai-explorer';
-import { renderHashToRedirect } from '../../../common/utils/string';
-import { ITokenDetails, ITokenHoldersByToken, ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
-import { convertValueFollowDecimal } from '../../../common/utils/amount';
-import { numberFormat } from '../../../common/utils/number';
+import { getTokenContractInfor, ITokenDetails, ITokenHoldersByToken, ITokenTranferTx, getTokenHoldersByToken, getTokenTransferTx } from '../../../service';
 import TokenTransfers from './TokenTransfers';
 import { TABLE_CONFIG } from '../../../config';
-import { getTokenHoldersByToken, getTokenTransferTx } from '../../../service/kai-explorer/tokens';
 import TokenHolder from './TokenHolder';
-import { UNVERIFY_TOKEN_DEFAULT_BASE64 } from '../../../common/constant';
+import {
+    UNVERIFY_TOKEN_DEFAULT_BASE64,
+    renderHashToRedirect,
+    convertValueFollowDecimal,
+    numberFormat
+} from '../../../common';
 
 const { Paragraph } = Placeholder;
 
@@ -58,7 +58,7 @@ const TokenDetail = () => {
         (async () => {
             setHoldersLoading(true)
             const rs = await getTokenHoldersByToken(contractAddress, holdersPage, holdersSize)
-            setTotalHolder(rs.total)        
+            setTotalHolder(rs.total)
             setHolders(rs.holders)
             setHoldersLoading(false)
         })()
@@ -66,10 +66,10 @@ const TokenDetail = () => {
 
     return (
         <div className="container token-details-container">
-            <FlexboxGrid justify="space-between" style={{marginBottom: 16}}>
+            <FlexboxGrid justify="space-between" style={{ marginBottom: 16 }}>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <img src={tokenInfor.logo ? tokenInfor.logo : UNVERIFY_TOKEN_DEFAULT_BASE64} style={{ width: '28px', height: '28px', marginRight: '10px' }} alt="logo" />
-                    <div style={{display: 'inline-block', verticalAlign: 'middle' }}>
+                    <div style={{ display: 'inline-block', verticalAlign: 'middle' }}>
                         <div className="title header-title">
                             <span>Token</span> {tokenInfor.tokenName} {tokenInfor.symbol ? `[${tokenInfor.symbol}]` : ''}
                         </div>
@@ -163,8 +163,8 @@ const TokenDetail = () => {
                                                 <div className="property-title">Description</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
-                                                <div className="property-content" style={{wordBreak: 'break-word'}}>
-                                                    { tokenInfor.info ? tokenInfor.info : '' }
+                                                <div className="property-content" style={{ wordBreak: 'break-word' }}>
+                                                    {tokenInfor.info ? tokenInfor.info : ''}
                                                 </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
@@ -188,7 +188,7 @@ const TokenDetail = () => {
                                 </Nav.Item>
                                 <Nav.Item eventKey="holders">
                                     {`Holders (${totalHolder || 0})`}
-                                </Nav.Item> 
+                                </Nav.Item>
                             </Nav>
                         </div>
                         {

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, List, Modal, Panel, Placeholder, Progress } from 'rsuite';
-import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
-import { getProposalDetails } from '../../../../service/kai-explorer';
 import { RenderStatus } from '../../../Proposal';
-import ButtomCustom from '../../../../common/components/Button';
-import { voting } from '../../../../service/smc/proposal';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage } from '../../../../common/constant/Message';
-import { proposalVotingByEW } from '../../../../service/extensionWallet';
-import { isExtensionWallet } from '../../../../service/wallet';
+import {
+    NotifiMessage,
+    Button as ButtomCustom,
+    dateToUTCString,
+    renderHashString,
+    NotificationError,
+    NotificationSuccess
+} from '../../../../common';
+import { isExtensionWallet, getProposalDetails, voting, proposalVotingByEW } from '../../../../service';
 
 const { Paragraph } = Placeholder;
 const { Line } = Progress;
@@ -180,7 +181,7 @@ const Vote = () => {
                                             <div className="property-content" style={{ width: 200 }}>
                                                 <Line percent={Number(parseFloat(String(proposal.voteYes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                             </div>
-                                            <div className="property-content" style={{width: 200}}>
+                                            <div className="property-content" style={{ width: 200 }}>
                                                 <Line percent={Number(parseFloat(String(proposal.validatorVotes)).toFixed(0))} status='active' strokeWidth={5} strokeColor={'#ffc107'} />
                                             </div>
                                         </FlexboxGrid.Item>

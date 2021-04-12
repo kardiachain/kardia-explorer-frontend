@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row, SelectPicker } from 'rsuite';
-import { convertValueFollowDecimal, weiToKAI } from '../../../common/utils/amount';
-import { copyToClipboard } from '../../../common/utils/string';
-import { getHolderAccount } from '../../../service/kai-explorer';
-import { getAccount, useBalanceStorage, isExtensionWallet } from '../../../service/wallet';
+import { ButtonGroup, Col, Icon, IconButton, Message, Modal, Panel, Row, SelectPicker } from 'rsuite';
+import { convertValueFollowDecimal, weiToKAI, copyToClipboard, numberFormat, onSuccess, toFraction, fractionAdd, toFixed } from '../../../common';
+import { getAccount, useBalanceStorage, isExtensionWallet, getHolderAccount, getValidatorByDelegator, getTokens } from '../../../service';
 import './dashboard.css';
 import QRCode from 'qrcode.react';
-import { numberFormat } from '../../../common/utils/number';
-import { TIME_INTERVAL_MILISECONDS } from '../../../config/api';
+import { TIME_INTERVAL_MILISECONDS } from '../../../config';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
-import { getTokens } from '../../../service/kai-explorer/transaction';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -19,8 +15,8 @@ const DashboardHeader = () => {
     const [hidePrivKey, setHidePrivKey] = useState(true)
     const [balance, setBalance] = useBalanceStorage()
     const walletLocalState = useRecoilValue(walletState)
-
     const [tokens, setTokens] = useState([]);
+    const [yourStakedAmount, setYourStakedAmount] = useState('0')
 
     useEffect(() => {
 
@@ -44,6 +40,15 @@ const DashboardHeader = () => {
     }, [account.publickey, setBalance])
 
     useEffect(() => {
+        if (!account.publickey) {
+            return;
+        }
+        calculateTotalStaked(account.publickey)
+
+        // eslint-disable-next-line
+    }, [account.publickey])
+
+    useEffect(() => {
         (async () => {
             if (!account.publickey) {
                 return;
@@ -54,10 +59,28 @@ const DashboardHeader = () => {
 
     }, [account.publickey])
 
-
-    const onSuccess = () => {
-        Alert.success('Copied to clipboard.')
+    const calculateTotalStaked = async (addr: string) => {
+        if (!addr) {
+            return;
+        }
+        const validator = await getValidatorByDelegator(account.publickey);
+        let totalStaked = toFraction('0')
+        if (validator && validator.length > 0) {
+            validator.forEach((item: YourValidator) => {
+                if (item.yourStakeAmount && item.yourStakeAmount !== '0') {
+                    totalStaked = fractionAdd(totalStaked, toFraction(String(item.yourStakeAmount)))
+                }
+                if (item.unbondedAmount && item.unbondedAmount !== '0') {
+                    totalStaked = fractionAdd(totalStaked, toFraction(String(item.unbondedAmount)))
+                }
+                if (item.withdrawableAmount && item.withdrawableAmount !== '0') {
+                    totalStaked = fractionAdd(totalStaked, toFraction(String(item.withdrawableAmount)))
+                }
+            });
+        }
+        setYourStakedAmount(toFixed(totalStaked))
     }
+
 
     const reloadBalance = async () => {
         if (!account.publickey) {
@@ -65,6 +88,7 @@ const DashboardHeader = () => {
         }
         const holder = await getHolderAccount(account.publickey);
         setBalance(weiToKAI(holder.balance));
+        calculateTotalStaked(account.publickey)
     }
 
     const renderCredential = () => {
@@ -78,7 +102,7 @@ const DashboardHeader = () => {
 
     const copy = () => {
         copyToClipboard(walletLocalState?.account?.privatekey, () => {
-            Alert.success('Copied to clipboard.')
+            onSuccess()
         })
     }
 
@@ -121,7 +145,14 @@ const DashboardHeader = () => {
                         <div className="card-body balanceSection">
                             <div>
                                 <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
-                                <div className="content color-white" style={{ paddingLeft: '42px' }}><span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI</div>
+                                <div className="content color-white" style={{ paddingLeft: '42px' }}>
+                                    <span style={{marginRight: 5}}>Available:</span>
+                                    <span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI
+                                </div>
+                                <div className="content color-white" style={{ paddingLeft: '42px' }}>
+                                    <span style={{marginRight: 5}}>Staking:</span>
+                                    <span style={{ fontWeight: 'bold' }}>{numberFormat(weiToKAI(yourStakedAmount))}</span> KAI
+                                </div>
                             </div>
 
                             {tokens != null && tokens.length > 0 ? <SelectPicker

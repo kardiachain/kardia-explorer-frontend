@@ -1,4 +1,4 @@
-import { gasLimitDefault } from '../../common/constant';
+import { gasLimitDefault } from '../../common';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 
 const deploySmartContract = async (object: SMCDeployObject) => {
@@ -88,3 +88,5 @@ export {
     invokeCallData,
     invokeSendAction,
 }
+export * from './staking'
+export * from './proposal'

@@ -4,16 +4,13 @@ import { FlexboxGrid, Col, Panel } from 'rsuite';
 import TransactionSection from './TransactionSection';
 import { useHistory } from 'react-router-dom';
 import BlockSection from './BlockSection';
-import { getBlocks, getTransactions, getTokenInfor } from '../../service/kai-explorer';
-import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG } from '../../config';
+import { getBlocks, getTransactions, getTokenInfor } from '../../service';
+import { BLOCK_COUNT_FOR_CHART, BLOCK_NUMBER_FOR_CAL_TPS, RECORDS_NUMBER_SHOW_HOMEPAGE, TABLE_CONFIG, TIME_INTERVAL_MILISECONDS } from '../../config';
 import BlockTimeChart from './BlockTimeChart';
 import StatsSection from './StatsSection';
 import { useViewport } from '../../context/ViewportContext';
 import { Icon } from 'rsuite';
-import SearchSection from '../../common/components/Header/SearchSection';
-import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
-import Button from '../../common/components/Button';
-import { numberFormat } from '../../common/utils/number';
+import { numberFormat, Button, SearchSection } from '../../common';
 
 
 const Home = () => {

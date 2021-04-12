@@ -96,10 +96,10 @@ interface YourValidator {
     validatorName: string;
     validatorAddr: string;
     validatorSmcAddr: string;
-    yourStakeAmount: number;
-    claimableAmount: number;
-    withdrawableAmount: number;
-    unbondedAmount: number;
+    yourStakeAmount: number | string;
+    claimableAmount: number | string;
+    withdrawableAmount: number | string;
+    unbondedAmount: number | string;
     role: ValidatorRole;
     unbondedRecords: UnbondedRecord[]
 }

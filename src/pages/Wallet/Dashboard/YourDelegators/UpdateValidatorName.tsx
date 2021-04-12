@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, SelectPicker } from 'rsuite';
-import Button from '../../../../common/components/Button';
-import NumberInputFormat from '../../../../common/components/FormInput';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { updateValidatorName } from '../../../../service/smc/staking';
-import { getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
+import {
+    ErrorMessage,
+    NotifiMessage,
+    Button,
+    NumberInputFormat,
+    ErrMessage,
+    NotificationError,
+    NotificationSuccess,
+    gasLimitDefault,
+    gasPriceOption
+} from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
-import { updateValidatorNameByEW } from '../../../../service/extensionWallet';
+import { updateValidatorNameByEW, getStoredBalance, isExtensionWallet, updateValidatorName } from '../../../../service';
 
 const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;

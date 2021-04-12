@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite'
-import Button from '../../../common/components/Button';
 import * as Bip39 from 'bip39';
 import { ethers } from "ethers";
-import { isLoggedIn, useWalletStorage } from '../../../service/wallet';
-import { ErrorMessage } from '../../../common/constant/Message';
-import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
+import { isLoggedIn, useWalletStorage } from '../../../service';
+import {ErrMessage, Button, ErrorMessage} from '../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import CreateNewPassword from '../CreateNewPassword';

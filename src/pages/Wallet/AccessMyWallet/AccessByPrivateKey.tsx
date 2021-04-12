@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Form, FormControl, FormGroup, Panel, Alert } from 'rsuite';
-import { isLoggedIn, useWalletStorage } from '../../../service/wallet';
+import { isLoggedIn, useWalletStorage } from '../../../service';
 import Wallet from 'ethereumjs-wallet'
 import * as EthUtil from 'ethereumjs-util'
 import './accessWallet.css'
-import ErrMessage from '../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage } from '../../../common/constant/Message';
-import { privateKeyValid } from '../../../common/utils/validate';
-import Button from '../../../common/components/Button';
+import {Button, ErrMessage, ErrorMessage, privateKeyValid } from '../../../common';
 import { ControlLabel } from 'rsuite';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';

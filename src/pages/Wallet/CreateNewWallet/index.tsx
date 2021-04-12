@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel } from 'rsuite';
-import { isLoggedIn } from '../../../service/wallet';
+import { isLoggedIn } from '../../../service';
 import './createWallet.css'
 
 const CreateNewWallet = () => {

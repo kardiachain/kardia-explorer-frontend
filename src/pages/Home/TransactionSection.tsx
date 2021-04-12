@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
-import { weiToKAI } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip, weiToKAI, numberFormat } from '../../common';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 

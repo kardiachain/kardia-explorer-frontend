@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { FlexboxGrid, Col, Panel, Nav } from 'rsuite';
 import { TABLE_CONFIG } from '../../../../config';
-import { getTxsByAddress } from '../../../../service/kai-explorer/transaction';
-import { getAccount } from '../../../../service/wallet';
-import TransactionHistoryList from '../../../../common/components/txs/TransactionHistory';
-import Krc20Txs from '../../../../common/components/txs/Krc20Txs';
-import { ITokenTranferTx } from '../../../../service/kai-explorer/tokens/type';
-import { getKrc20Txs } from '../../../../service/kai-explorer/tokens';
+import {Krc20Txs, TransactionHistoryList} from '../../../../common';
+import { getKrc20Txs, getTxsByAddress, getAccount, ITokenTranferTx } from '../../../../service';
 
 const TransactionHistory = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])

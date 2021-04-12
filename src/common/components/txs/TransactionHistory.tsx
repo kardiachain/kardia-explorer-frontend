@@ -11,7 +11,7 @@ import { StakingIcon } from '../IconCustom';
 
 const { Column, HeaderCell, Cell } = Table;
 
-const TransactionHistoryList = ({ transactionList, loading, address, totalTxs, size, page, setSize, setPage }: {
+export const TransactionHistoryList = ({ transactionList, loading, address, totalTxs, size, page, setSize, setPage }: {
     transactionList: KAITransaction[];
     loading: boolean;
     address: string;
@@ -186,5 +186,3 @@ const TransactionHistoryList = ({ transactionList, loading, address, totalTxs, s
         </FlexboxGrid>
     )
 }
-
-export default TransactionHistoryList

@@ -2,16 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel, Table, Tooltip, Whisper } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { weiToKAI } from '../../common/utils/amount';
-import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
-import { TABLE_CONFIG } from '../../config';
-import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
+import { TABLE_CONFIG, TIME_INTERVAL_MILISECONDS } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
-import { getTransactions, getTxsByBlockHeight } from '../../service/kai-explorer';
+import { getTransactions, getTxsByBlockHeight } from '../../service';
 import './txList.css'
-import SearchSection from '../../common/components/Header/SearchSection';
-import { numberFormat } from '../../common/utils/number';
-import { StakingIcon } from '../../common/components/IconCustom';
+import { StakingIcon, SearchSection, numberFormat, weiToKAI, millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common';
 
 const { Column, HeaderCell, Cell } = Table;
 

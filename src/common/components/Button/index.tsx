@@ -2,7 +2,7 @@ import React from 'react'
 import { Loader } from 'rsuite'
 import './style.css'
 
-const Button = ({onClick, children, size = "normal", className, style, loading=false, disable=false}: {
+export const Button = ({onClick, children, size = "normal", className, style, loading=false, disable=false}: {
     onClick?: () => void;
     children?: any;
     size?: "normal" | "big";
@@ -22,5 +22,3 @@ const Button = ({onClick, children, size = "normal", className, style, loading=f
     </button>
     )
 }
-
-export default Button

@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Table } from 'rsuite';
-import Button from '../../common/components/Button';
-import { StakingIcon } from '../../common/components/IconCustom';
-import { formatAmount, weiToKAI } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../common/utils/string';
+import {
+    renderHashStringAndTooltip,
+    renderStringAndTooltip,
+    Button,
+    StakingIcon,
+    formatAmount,
+    weiToKAI,
+    numberFormat
+} from '../../common';
 import { useViewport } from '../../context/ViewportContext';
-import { isLoggedIn } from '../../service/wallet';
+import { isLoggedIn } from '../../service';
 import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
@@ -30,13 +34,13 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                 loading={loading}
             >
                 <Column flexGrow={3} minWidth={isMobile ? 200 : 250} verticalAlign="middle">
-                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{ marginLeft: 50 }}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
                                 <Link to={`/validator/${rowData?.address}`}>
                                     <div>
-                                        <div style={{display: 'inline-block', width: 50}}>
+                                        <div style={{ display: 'inline-block', width: 50 }}>
                                             <StakingIcon
                                                 color={rowData?.role?.classname}
                                                 character={rowData?.role?.character}

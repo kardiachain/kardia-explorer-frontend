@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { Col, FlexboxGrid, Panel, Table, Icon, Progress, ButtonToolbar, Button } from 'rsuite';
 import { useEffect } from 'react';
-import { getCurrentNetworkParams, getProposals } from '../../service/kai-explorer';
+import { getCurrentNetworkParams, getProposals, isLoggedIn } from '../../service';
 import { TABLE_CONFIG } from '../../config';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { RenderStatus } from '.';
 import { Link, useHistory } from 'react-router-dom';
-import CustomButton from '../../common/components/Button';
-import { isLoggedIn } from '../../service/wallet';
-import { millisecondToDay } from '../../common/utils/string';
+import { millisecondToDay, Button as CustomButton } from '../../common';
 
 const { Column, HeaderCell, Cell } = Table;
 const { Line } = Progress;

@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal } from 'rsuite'
-import Button from '../../common/components/Button';
-import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage } from '../../common/constant/Message';
-import { getAccount, getPkByPassword, logoutWallet } from '../../service/wallet';
+import { ErrorMessage, ErrMessage, Button } from '../../common';
+import { getAccount, getPkByPassword, logoutWallet } from '../../service';
 import { useRecoilState } from 'recoil';
 import walletState from '../../atom/wallet.atom';
 import './wallet.css'

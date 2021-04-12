@@ -1,10 +1,7 @@
 import React from 'react';
 import { Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { StakingIcon } from '../../../common/components/IconCustom';
-import { weiToKAI } from '../../../common/utils/amount';
-import { numberFormat } from '../../../common/utils/number';
-import { renderHashToRedirect } from '../../../common/utils/string';
+import { renderHashToRedirect, StakingIcon, weiToKAI, numberFormat } from '../../../common';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
 

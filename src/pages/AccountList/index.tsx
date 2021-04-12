@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import SearchSection from '../../common/components/Header/SearchSection';
-import { StakingIcon } from '../../common/components/IconCustom';
-import { SortType } from '../../common/constant';
-import { weiToKAI } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-import { renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
+import {
+    SearchSection,
+    StakingIcon,
+    SortType,
+    weiToKAI,
+    numberFormat,
+    renderHashToRedirect,
+    renderStringAndTooltip
+} from '../../common';
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
-import { getAccounts } from '../../service/kai-explorer';
+import { getAccounts } from '../../service';
 import './style.css';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -88,22 +91,22 @@ const AccountList = () => {
                                         <Cell>
                                             {(rowData: HolderAccount) => {
                                                 return (
-                                                     <div>
-                                                     <span className="container-icon-left">
-                                                         <Icon icon={!rowData.isContract ? "exchange" : "file-text-o"} className="gray-highlight" />
-                                                     </span>
-                                                     <span className="container-content-right middle-vertical">
-                                                        {
-                                                        renderHashToRedirect({
-                                                            hash: rowData.address,
-                                                            headCount: isMobile ? 5 : 20,
-                                                            tailCount: 4,
-                                                            showTooltip: true,
-                                                            redirectTo: `/address/${rowData.address}`
-                                                        })
-                                                        }
-                                                     </span>
-                                                 </div>
+                                                    <div>
+                                                        <span className="container-icon-left">
+                                                            <Icon icon={!rowData.isContract ? "exchange" : "file-text-o"} className="gray-highlight" />
+                                                        </span>
+                                                        <span className="container-content-right middle-vertical">
+                                                            {
+                                                                renderHashToRedirect({
+                                                                    hash: rowData.address,
+                                                                    headCount: isMobile ? 5 : 20,
+                                                                    tailCount: 4,
+                                                                    showTooltip: true,
+                                                                    redirectTo: `/address/${rowData.address}`
+                                                                })
+                                                            }
+                                                        </span>
+                                                    </div>
                                                 );
                                             }}
                                         </Cell>

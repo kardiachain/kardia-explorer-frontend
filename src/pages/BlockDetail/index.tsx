@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, List, Panel, Placeholder } from 'rsuite'
-import { weiToKAI } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-import { dateToUTCString, millisecondToHMS, renderHashString, renderHashToRedirect } from '../../common/utils/string';
-import { getBlockBy } from '../../service/kai-explorer/block';
+import {
+    dateToUTCString,
+    millisecondToHMS,
+    renderHashString,
+    renderHashToRedirect,
+    weiToKAI,
+    numberFormat
+} from '../../common';
+import { getBlockBy } from '../../service';
 import './blockDetail.css'
 
 const { Paragraph } = Placeholder;
@@ -149,7 +154,7 @@ const BlockDetail = () => {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">
-                                            <span className="color-white text-bold" style={{marginRight: 8}} >{blockDetail?.vaidatorName || ''}</span>
+                                            <span className="color-white text-bold" style={{ marginRight: 8 }} >{blockDetail?.vaidatorName || ''}</span>
                                             {
                                                 renderHashToRedirect({
                                                     hash: blockDetail?.validator,

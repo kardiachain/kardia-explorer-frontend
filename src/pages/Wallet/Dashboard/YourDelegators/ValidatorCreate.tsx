@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, List, Modal, SelectPicker } from 'rsuite';
-import Button from '../../../../common/components/Button';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { gasPriceOption, MIN_SELF_DELEGATION } from '../../../../common/constant';
-import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { numberFormat } from '../../../../common/utils/number';
-import { createValidator } from '../../../../service/smc/staking';
-import { getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
+import { getStoredBalance, isExtensionWallet, createValidator, createValidatorByEW } from '../../../../service';
 import './validators.css'
-import Helper from '../../../../common/components/Helper';
-import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import NumberInputFormat from '../../../../common/components/FormInput';
+import {
+    NumberInputFormat,
+    Button,
+    ErrMessage,
+    Helper,
+    numberFormat,
+    ErrorMessage,
+    InforMessage,
+    NotifiMessage,
+    HelperMessage,
+    gasPriceOption,
+    MIN_SELF_DELEGATION,
+    NotificationError,
+    NotificationSuccess
+} from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
-import { createValidatorByEW } from '../../../../service/extensionWallet';
 
 const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 

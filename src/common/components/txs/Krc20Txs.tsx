@@ -3,15 +3,15 @@ import { Col, FlexboxGrid, Icon, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
-import { ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
 import { convertValueFollowDecimal } from '../../utils/amount';
 import { numberFormat } from '../../utils/number';
 import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../utils/string';
 import { Link } from 'react-router-dom';
+import { ITokenTranferTx } from '../../../service';
 
 const { Column, HeaderCell, Cell } = Table;
 
-const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }: {
+export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }: {
     txs: ITokenTranferTx[];
     totalTx: number;
     loading: boolean;
@@ -151,5 +151,3 @@ const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }: {
         </FlexboxGrid>
     )
 }
-
-export default Krc20Txs

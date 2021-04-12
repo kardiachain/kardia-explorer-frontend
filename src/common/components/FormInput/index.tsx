@@ -2,7 +2,7 @@ import React from 'react'
 import NumberFormat from 'react-number-format'
 import './style.css'
 
-const NumberInputFormat = ({ onChange, value, placeholder, className, style }: {
+export const NumberInputFormat = ({ onChange, value, placeholder, className, style }: {
     onChange?: (event?: any) => void;
     value: any;
     placeholder?: any;
@@ -19,5 +19,3 @@ const NumberInputFormat = ({ onChange, value, placeholder, className, style }: {
             thousandSeparator={true} />
     )
 }
-
-export default NumberInputFormat

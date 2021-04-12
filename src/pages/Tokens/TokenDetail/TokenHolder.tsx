@@ -1,11 +1,9 @@
 import React from 'react'
 import { Col, FlexboxGrid, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { convertValueFollowDecimal } from '../../../common/utils/amount';
-import { numberFormat } from '../../../common/utils/number';
-import { renderHashToRedirect } from '../../../common/utils/string';
+import { renderHashToRedirect, convertValueFollowDecimal, numberFormat } from '../../../common';
 import { TABLE_CONFIG } from '../../../config';
-import { ITokenHoldersByToken } from '../../../service/kai-explorer/tokens/type';
+import { ITokenHoldersByToken } from '../../../service';
 const { Column, HeaderCell, Cell } = Table;
 
 const TokenHolder = ({holders, totalHolder, size, setSize, page, setPage, loading}: {
