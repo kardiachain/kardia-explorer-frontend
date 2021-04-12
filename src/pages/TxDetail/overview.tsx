@@ -6,7 +6,7 @@ import { FileType } from 'rsuite/lib/Uploader';
 import Button from '../../common/components/Button';
 import { StakingIcon } from '../../common/components/IconCustom';
 import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
-import { UNKNOW_AVARTAR_DEFAULT_BASE64 } from '../../common/constant';
+import { UNVERIFY_TOKEN_DEFAULT_BASE64 } from '../../common/constant';
 import { ErrorMessage } from '../../common/constant/Message';
 import { convertValueFollowDecimal, weiToKAI, weiToOXY } from '../../common/utils/amount';
 import { numberFormat } from '../../common/utils/number';
@@ -298,7 +298,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                                                 <img
                                                                     style={{ marginRight: 5 }}
                                                                     className="token-logo-small"
-                                                                    src={item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64}
+                                                                    src={item.logo ? item.logo : UNVERIFY_TOKEN_DEFAULT_BASE64}
                                                                     alt="kardiachain" />
                                                                 <Link to={`/token/${item.address}`}>
                                                                     <span style={{ marginRight: 5 }}>{item.tokenName ? item.tokenName : ''}</span>

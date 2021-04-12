@@ -4,7 +4,6 @@ import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
 import { ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
-import { UNKNOW_AVARTAR_DEFAULT_BASE64 } from '../../constant';
 import { convertValueFollowDecimal } from '../../utils/amount';
 import { numberFormat } from '../../utils/number';
 import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../utils/string';
@@ -120,7 +119,7 @@ const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }: {
                                         <img
                                             style={{ marginRight: 5 }}
                                             className="token-logo-small"
-                                            src={rowData.logo ? rowData.logo : UNKNOW_AVARTAR_DEFAULT_BASE64}
+                                            src={rowData.logo ? rowData.logo : ''}
                                             alt="kardiachain" />
                                         <span className="text-link">
                                             <Link to={`/token/${rowData.tokenAddress}`}>
