@@ -5,6 +5,9 @@
 .wallet-header-container {
     margin-bottom: 20px;
 }
+.wallet-info-card .card-body {
+    height: 125px;
+}
 
 .wallet-info-card .card-body,
 .wallet-info-card .card-footer {

@@ -2,22 +2,27 @@ import React, { useState } from 'react'
 import { useRecoilValue } from 'recoil';
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, List, Modal, SelectPicker } from 'rsuite';
 import walletState from '../../../../atom/wallet.atom';
-import Button from '../../../../common/components/Button';
-import NumberInputFormat from '../../../../common/components/FormInput';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { gasLimitSendTxKRC20, gasPriceOption } from '../../../../common/constant';
-import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { convertValueFollowDecimal } from '../../../../common/utils/amount';
-import { numberFormat } from '../../../../common/utils/number';
-import { renderHashString } from '../../../../common/utils/string';
-import { addressValid } from '../../../../common/utils/validate';
+import {
+    addressValid,
+    Button,
+    numberFormat,
+    NumberInputFormat,
+    ErrMessage,
+    renderHashString,
+    NotificationError,
+    NotificationSuccess,
+    gasLimitSendTxKRC20,
+    convertValueFollowDecimal,
+    ErrorMessage,
+    InforMessage,
+    NotifiMessage,
+    gasPriceOption
+} from '../../../../common';
 import kardiaClient from '../../../../plugin/kardia-dx';
-import { sendKRC20ByExtension } from '../../../../service/extensionWallet';
-import { getAccount, isExtensionWallet } from '../../../../service/wallet';
+import { sendKRC20ByExtension, getAccount, isExtensionWallet } from '../../../../service';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 
-const SendKrc20Token = ({tokens, fetchKrc20Token}: {
+const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     tokens: any[];
     fetchKrc20Token: () => void;
 }) => {
@@ -151,7 +156,7 @@ const SendKrc20Token = ({tokens, fetchKrc20Token}: {
         const krc20 = kardiaClient.krc20;
         krc20.address = addressKRC20.contractAddress;
         krc20.decimals = addressKRC20.tokenDecimals;
-        
+
         try {
             const toAddressChecksum = toAddress ? toChecksum(toAddress.toLowerCase()) : ''
             const response = await krc20.transfer(privateKey, toAddressChecksum, Number(amount), {});
@@ -212,7 +217,7 @@ const SendKrc20Token = ({tokens, fetchKrc20Token}: {
                                             );
                                         }}
                                     />
-                                     <ErrMessage message={addressKRC20Err} />
+                                    <ErrMessage message={addressKRC20Err} />
                                 </FlexboxGrid.Item>
 
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>

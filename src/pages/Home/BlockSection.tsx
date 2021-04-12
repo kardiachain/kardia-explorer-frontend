@@ -1,9 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
-import { weiToKAI } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
+import {
+    weiToKAI,
+    numberFormat,
+    millisecondToHMS,
+    renderHashToRedirect,
+    renderStringAndTooltip
+} from '../../common';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
 
@@ -64,14 +68,14 @@ const BlockSection = ({ blockList = [] }: {
                                                             </Link>
                                                         </Whisper>
                                                     ) : (
-                                                        renderHashToRedirect({
-                                                            hash: rowData.proposalAddress,
-                                                            headCount: isMobile ? 5 : 10,
-                                                            tailCount: 4,
-                                                            showTooltip: false,
-                                                            redirectTo: `/address/${rowData.proposalAddress}`
-                                                        })
-                                                    )
+                                                            renderHashToRedirect({
+                                                                hash: rowData.proposalAddress,
+                                                                headCount: isMobile ? 5 : 10,
+                                                                tailCount: 4,
+                                                                showTooltip: false,
+                                                                redirectTo: `/address/${rowData.proposalAddress}`
+                                                            })
+                                                        )
                                                 }
                                                 <div>
                                                     {

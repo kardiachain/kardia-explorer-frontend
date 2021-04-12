@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Panel, FlexboxGrid, Table, Icon, Col, Whisper, Tooltip } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
-import { getBlocks } from '../../service/kai-explorer';
-import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
 import './blocks.css'
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { TABLE_CONFIG } from '../../config';
 import { Link } from 'react-router-dom';
-import { numberFormat } from '../../common/utils/number';
-import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
-import SearchSection from '../../common/components/Header/SearchSection';
-import { weiToKAI } from '../../common/utils/amount';
+import { TIME_INTERVAL_MILISECONDS, TABLE_CONFIG } from '../../config';
+import { getBlocks } from '../../service';
+import {
+    millisecondToHMS,
+    numberFormat,
+    renderHashToRedirect,
+    renderStringAndTooltip,
+    SearchSection,
+    weiToKAI
+} from '../../common';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -48,7 +51,7 @@ const Blocks = () => {
             <SearchSection />
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                    <div style={{marginBottom: 16}}>
+                    <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
                             Blocks
                         </div>
@@ -73,13 +76,13 @@ const Blocks = () => {
                                     loading={loading}
                                 >
                                     <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                        <HeaderCell><span style={{marginLeft: 40}}>Block</span></HeaderCell>
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>Block</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
                                                     <div>
-                                                        <span className="container-icon-left" style={{lineHeight: '28px'}}>
-                                                            <Icon icon="cubes" className="gray-highlight"/>
+                                                        <span className="container-icon-left" style={{ lineHeight: '28px' }}>
+                                                            <Icon icon="cubes" className="gray-highlight" />
                                                         </span>
                                                         <span className="container-content-right text-link">
                                                             <Link className="text-link text-bold" to={`/block/${rowData.blockHeight}`} >{numberFormat(rowData.blockHeight)}</Link>
@@ -110,14 +113,14 @@ const Blocks = () => {
                                                                     </Link>
                                                                 </Whisper>
                                                             ) : (
-                                                                renderHashToRedirect({
-                                                                    hash: rowData.proposalAddress,
-                                                                    headCount: isMobile ? 5 : 10,
-                                                                    tailCount: 4,
-                                                                    showTooltip: true,
-                                                                    redirectTo: `/address/${rowData.proposalAddress}`
-                                                                })
-                                                            )
+                                                                    renderHashToRedirect({
+                                                                        hash: rowData.proposalAddress,
+                                                                        headCount: isMobile ? 5 : 10,
+                                                                        tailCount: 4,
+                                                                        showTooltip: true,
+                                                                        redirectTo: `/address/${rowData.proposalAddress}`
+                                                                    })
+                                                                )
                                                         }
                                                     </div>
                                                 );
@@ -132,7 +135,7 @@ const Blocks = () => {
                                                     <div>
                                                         {
                                                             !rowData.transactions ? <span className="color-white">0</span> :
-                                                            <Link className="color-white" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
+                                                                <Link className="color-white" to={`/txs?block=${rowData.blockHeight}`} >{numberFormat(rowData.transactions)}</Link>
                                                         }
                                                     </div>
                                                 );

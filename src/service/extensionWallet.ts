@@ -3,10 +3,9 @@ import Web3 from 'web3';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../resources/smc-compile/validator-abi.json';
 import KRC20_API from '../resources/smc-compile/krc20-abi.json'
-import { cellValue, cellValueKRC20 } from '../common/utils/amount';
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
 import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS } from '../config/api';
-import { gasLimitDefault } from '../common/constant';
+import { gasLimitDefault, cellValue, cellValueKRC20 } from '../common';
 import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 import PROPOSAL_ABI from '../resources/smc-compile/proposal-abi.json';
 import kardiaClient from '../plugin/kardia-dx';

@@ -1,11 +1,9 @@
 import React from 'react';
 import { Button, Alert } from 'rsuite';
 import { useHistory } from 'react-router-dom';
-import { useWalletStorage } from '../../../service/wallet';
+import { useWalletStorage, kardiaExtensionWalletEnabled } from '../../../service';
 import kardiaIcon from '../../../resources/kardia_logo_icon.png';
 import './accessWallet.css';
-import { kardiaExtensionWalletEnabled } from '../../../service/extensionWallet';
-
 
 const WalletExtensionConnect = () => {
 

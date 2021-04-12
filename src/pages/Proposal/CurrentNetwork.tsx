@@ -1,6 +1,6 @@
 import React from 'react'
 import { Col, FlexboxGrid, List, Modal } from 'rsuite';
-import { numberFormat } from '../../common/utils/number';
+import { numberFormat } from '../../common';
 import { useViewport } from '../../context/ViewportContext';
 
 const CurrentNetwork = ({ showModal, setShowModal, currentNetworkParams }: {

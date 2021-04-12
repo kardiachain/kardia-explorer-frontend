@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Col, FlexboxGrid, Tag } from 'rsuite'
-import Button from '../../common/components/Button';
+import { Button } from '../../common';
 import { useViewport } from '../../context/ViewportContext';
 import ListProposal from './ListProposal';
 import { useHistory } from 'react-router-dom';
-import { isLoggedIn } from '../../service/wallet';
 import CurrentNetwork from './CurrentNetwork';
-import { getCurrentNetworkParams } from '../../service/kai-explorer';
+import { getCurrentNetworkParams, isLoggedIn } from '../../service';
 
 const Proposal = () => {
     const { isMobile } = useViewport();

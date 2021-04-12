@@ -2,9 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { weiToKAI } from '../../../common/utils/amount';
-import { numberFormat } from '../../../common/utils/number';
-import { millisecondToHMS, renderHashToRedirect } from '../../../common/utils/string';
+import { millisecondToHMS, renderHashToRedirect, weiToKAI, numberFormat } from '../../../common';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
 

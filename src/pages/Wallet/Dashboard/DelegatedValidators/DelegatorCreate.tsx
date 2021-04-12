@@ -3,25 +3,30 @@ import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, Nav, Panel, Progress, SelectPicker, Tag } from 'rsuite';
 import walletState from '../../../../atom/wallet.atom';
-import Button from '../../../../common/components/Button';
-import NumberInputFormat from '../../../../common/components/FormInput';
-import Helper from '../../../../common/components/Helper';
-import { StakingIcon } from '../../../../common/components/IconCustom';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { gasLimitDefault, gasPriceOption, MIN_DELEGATION_AMOUNT } from '../../../../common/constant';
-import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat } from '../../../../common/utils/number';
-import { renderHashString } from '../../../../common/utils/string';
+import {
+    numberFormat,
+    weiToKAI,
+    ErrMessage,
+    Button,
+    NumberInputFormat,
+    Helper,
+    NotificationError,
+    NotificationSuccess,
+    gasLimitDefault,
+    gasPriceOption,
+    MIN_DELEGATION_AMOUNT,
+    HelperMessage,
+    ErrorMessage,
+    InforMessage,
+    NotifiMessage,
+    StakingIcon
+} from '../../../../common';
+import {
+    renderHashString,
+} from '../../../../common';
 import { TABLE_CONFIG } from '../../../../config';
 import { clearCache } from '../../../../plugin/localCache';
-import { delegateByEW } from '../../../../service/extensionWallet';
-import { getValidator } from '../../../../service/kai-explorer';
-import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
-import { delegateAction } from '../../../../service/smc/staking';
-import { getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
+import { delegateByEW, getValidator, getBlocksByProposer, delegateAction, getStoredBalance, isExtensionWallet } from '../../../../service';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
 
@@ -220,7 +225,7 @@ const DelegatorCreate = () => {
     const setMaximumAmount = () => {
         try {
             const balance = getStoredBalance();
-            const maxFee = weiToKAI(gasLimit * gasPrice * 10**9);
+            const maxFee = weiToKAI(gasLimit * gasPrice * 10 ** 9);
             const validableBalance = balance > Number(maxFee) ? balance - Number(maxFee) : 0;
             setDelAmount(String(validableBalance))
             validateDelAmount(validableBalance)
@@ -465,11 +470,11 @@ const DelegatorCreate = () => {
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} xs={24} style={{ marginBottom: 15 }}>
                                                         <FlexboxGrid justify="space-between" align="middle">
                                                             <ControlLabel className="color-white">Delegation amount (KAI - required)</ControlLabel>
-                                                            <span 
-                                                            className="maximum-amount"
-                                                            onClick={() => {
-                                                                setMaximumAmount()
-                                                            }}>Maximum</span>
+                                                            <span
+                                                                className="maximum-amount"
+                                                                onClick={() => {
+                                                                    setMaximumAmount()
+                                                                }}>Maximum</span>
                                                         </FlexboxGrid>
                                                         <NumberInputFormat
                                                             value={delAmount}

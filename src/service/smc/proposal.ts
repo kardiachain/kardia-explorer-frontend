@@ -1,5 +1,5 @@
 import { invokeSendAction } from '.';
-import { cellValue } from '../../common/utils/amount';
+import { cellValue } from '../../common';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 import PROPOSAL_ABI from '../../resources/smc-compile/proposal-abi.json';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';

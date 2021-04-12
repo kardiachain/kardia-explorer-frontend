@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import { Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Message, Panel } from 'rsuite';
-import Button from '../../common/components/Button';
-import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
-import { NotificationError, NotificationSuccess, NotificationWarning } from '../../common/components/Notification';
-import { ErrorMessage } from '../../common/constant/Message';
-import { addressValid } from '../../common/utils/validate';
-import { FAUCET_ENDPOINT } from '../../config/api';
+import {
+    ErrorMessage,
+    Button,
+    ErrMessage,
+    NotificationError,
+    NotificationSuccess,
+    NotificationWarning,
+    addressValid
+} from '../../common';
+import { FAUCET_ENDPOINT } from '../../config';
 import './faucet.css';
 
 const Faucet = () => {
-    
+
     const [walletAddress, setWalletAddress] = useState('')
     const [walletAddrErr, setWalletAddrErr] = useState('')
 
@@ -34,7 +38,7 @@ const Faucet = () => {
             };
             const response = await fetch(`${FAUCET_ENDPOINT}/giveFaucet?address=${walletAddress}`, requestOptions)
             const responseJSON = response && await response.json();
-            
+
             if (responseJSON && responseJSON.error) {
                 NotificationError({
                     description: responseJSON.error,
@@ -42,7 +46,7 @@ const Faucet = () => {
                 return
             }
 
-            if(responseJSON && responseJSON.warning) {
+            if (responseJSON && responseJSON.warning) {
                 NotificationWarning({
                     description: responseJSON.warning,
                 });
@@ -78,7 +82,7 @@ const Faucet = () => {
                                     name="walletAddress"
                                     value={walletAddress}
                                     onChange={(value) => {
-                                        if(!value) setWalletAddrErr(ErrorMessage.Require);
+                                        if (!value) setWalletAddrErr(ErrorMessage.Require);
                                         setWalletAddress(value)
                                     }}
                                     type="text" />

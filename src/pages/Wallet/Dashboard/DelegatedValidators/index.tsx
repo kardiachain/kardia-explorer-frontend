@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Nav, Panel } from 'rsuite';
-import { getValidatorByDelegator } from '../../../../service/kai-explorer';
-import { getAccount } from '../../../../service/wallet';
+import { getAccount, getValidatorByDelegator } from '../../../../service';
 import ClaimRewards from './ClaimRewards';
 import WithdrawAmount from './WithdrawAmount';
 import './style.css';

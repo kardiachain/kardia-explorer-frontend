@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { kardiaApi, kardiaCommon } from '../plugin/kardia-tool';
-import { cellValue } from '../common/utils/amount';
+import { cellValue } from '../common';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import CryptoJS from 'crypto-js';
 

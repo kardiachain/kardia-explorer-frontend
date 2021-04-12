@@ -29,7 +29,7 @@ const getNetworkLabel = (value: string) => {
     return networkItem?.label
 }
 
-const NetworkSelect = () => {
+export const NetworkSelect = () => {
     const { isMobile } = useViewport()
     const network = mainnetMode ? 'mainnet' : 'testnet-3.0';
 
@@ -57,5 +57,3 @@ const NetworkSelect = () => {
         </div>
     )
 };
-
-export default NetworkSelect;

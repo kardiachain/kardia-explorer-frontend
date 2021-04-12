@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Panel, Nav } from 'rsuite';
 import { TIME_INTERVAL_MILISECONDS } from '../../config/api';
-import { getContractEvents, getTxByHash } from '../../service/kai-explorer';
+import { getContractEvents, getTxByHash } from '../../service';
 import './txDetail.css'
-import { hashValid } from '../../common/utils/validate';
 import Logs from './Logs';
 import TxDetailOverview from './overview';
-import { NotificationError } from '../../common/components/Notification';
-import { NotifiMessage } from '../../common/constant/Message';
+import { NotifiMessage, hashValid, NotificationError } from '../../common';
 
 const TxDetail = () => {
     const { txHash }: any = useParams();

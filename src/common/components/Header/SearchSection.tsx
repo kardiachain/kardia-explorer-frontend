@@ -1,16 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Alert, Input, InputGroup } from 'rsuite';
-import { getTxByHash } from '../../../service/kai-explorer';
-import { getBlockBy } from '../../../service/kai-explorer/block';
-import { searchAll } from '../../../service/kai-explorer/search';
-import { SearchItem } from '../../../service/kai-explorer/search/type';
 import { onlyInteger } from '../../utils/number';
 import { addressValid, hashValid } from '../../utils/validate';
-import Button from '../Button';
 import { toChecksum } from 'kardia-tool/lib/common/lib/account';
+import { getBlockBy, getTxByHash, searchAll, SearchItem } from '../../../service';
+import { Button } from '../Button';
 
-const SearchSection = () => {
+export const SearchSection = () => {
     const [searchInput, setSearchInput] = useState('')
     const history = useHistory()
     const [suggestData, setSuggestData] = useState<SearchItem[]>([] as SearchItem[])
@@ -165,5 +162,3 @@ const SearchSection = () => {
         </div>
     )
 };
-
-export default SearchSection;

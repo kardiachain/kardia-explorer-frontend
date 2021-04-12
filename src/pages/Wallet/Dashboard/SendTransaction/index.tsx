@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './sendTxs.css'
 import { Panel, Nav } from 'rsuite'
-import { getAccount } from '../../../../service/wallet'
-import { getTokens } from '../../../../service/kai-explorer/transaction'
+import { getAccount, getTokens } from '../../../../service'
 import SendKaiNative from './sendKaiNative'
 import SendKrc20Token from './sendKrc20Token'
 

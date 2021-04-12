@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, List, Modal, SelectPicker } from 'rsuite';
-import Button from '../../common/components/Button';
-import NumberInputFormat from '../../common/components/FormInput';
-import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage } from '../../common/constant/Message';
-import { formatAmount, weiToKAI } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
+import { numberFormat, Button, NumberInputFormat, ErrMessage, ErrorMessage, formatAmount, weiToKAI } from '../../common';
 import { useViewport } from '../../context/ViewportContext';
-import { getLatestBlock } from '../../service/kai-explorer';
+import { getLatestBlock } from '../../service';
 
 interface ValidatorSelectList {
     label: string;

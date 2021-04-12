@@ -3,25 +3,31 @@ import ReactJson from 'react-json-view';
 import { Link } from 'react-router-dom';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Input, List, Panel, Placeholder, Tag, Uploader } from 'rsuite'
 import { FileType } from 'rsuite/lib/Uploader';
-import Button from '../../common/components/Button';
-import { StakingIcon } from '../../common/components/IconCustom';
-import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
-import { UNVERIFY_TOKEN_DEFAULT_BASE64 } from '../../common/constant';
-import { ErrorMessage } from '../../common/constant/Message';
-import { convertValueFollowDecimal, weiToKAI, weiToOXY } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-import { copyToClipboard, dateToUTCString, millisecondToHMS, renderCopyButton, renderHashString, renderHashToRedirect } from '../../common/utils/string'
-import { jsonValid } from '../../common/utils/validate';
-import { STAKING_SMC_ADDRESS } from '../../config/api';
+import {
+    copyToClipboard,
+    dateToUTCString,
+    millisecondToHMS,
+    renderCopyButton,
+    renderHashString,
+    renderHashToRedirect,
+    Button,
+    ErrMessage,
+    StakingIcon,
+    UNVERIFY_TOKEN_DEFAULT_BASE64,
+    ErrorMessage,
+    convertValueFollowDecimal,
+    weiToKAI,
+    weiToOXY,
+    numberFormat,
+    jsonValid,
+    onSuccess
+} from '../../common'
+import { STAKING_SMC_ADDRESS } from '../../config';
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import abiDecoder from 'abi-decoder'
 import './txDetail.css'
 
 const { Paragraph } = Placeholder;
-
-const onSuccess = () => {
-    Alert.success('Copied to clipboard.')
-}
 
 const TxDetailOverview = ({ txDetail, loading }: {
     txDetail: KAITransaction,

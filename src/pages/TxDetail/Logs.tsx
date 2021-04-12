@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'rsuite';
 import './logs.css'
-import { renderHashToRedirect } from '../../common/utils/string';
+import { renderHashToRedirect } from '../../common';
 
 function Logs({logs, data}: {
     logs: Logs,

@@ -1,5 +1,5 @@
-import { cellValue } from '../../common/utils/amount';
-import { STAKING_SMC_ADDRESS } from '../../config/api';
+import { cellValue } from '../../common';
+import { STAKING_SMC_ADDRESS } from '../../config';
 import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../../resources/smc-compile/validator-abi.json';

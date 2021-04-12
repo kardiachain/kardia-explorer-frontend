@@ -2,25 +2,26 @@ import React, { useState } from 'react'
 import ReactJson from 'react-json-view';
 import { Alert, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Icon, Modal, Panel, SelectPicker, Steps, Uploader } from 'rsuite';
 import { FileType } from 'rsuite/lib/Uploader';
-import Button from '../../../../common/components/Button';
-import NumberInputFormat from '../../../../common/components/FormInput';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
-import { ErrorMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { onlyInteger } from '../../../../common/utils/number';
-import { copyToClipboard } from '../../../../common/utils/string';
-import { addressValid, jsonValid } from '../../../../common/utils/validate';
-import { invokeFunctionFromContractAbi } from '../../../../service/smc';
+import {
+    onlyInteger,
+    addressValid,
+    Button,
+    NumberInputFormat,
+    ErrMessage,
+    NotificationError,
+    NotificationSuccess,
+    gasLimitDefault,
+    gasPriceOption,
+    jsonValid,
+    ErrorMessage,
+    NotifiMessage,
+    copyToClipboard,
+    onSuccess
+} from '../../../../common';
+import { invokeFunctionFromContractAbi, isExtensionWallet, invokeSMCByEW } from '../../../../service';
 import './smartContract.css'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
-import { isExtensionWallet } from '../../../../service/wallet';
-import { invokeSMCByEW } from '../../../../service/extensionWallet';
-
-const onSuccess = () => {
-    Alert.success('Copied to clipboard.');
-}
 
 const InteracteWithSmc = () => {
 
@@ -105,7 +106,7 @@ const InteracteWithSmc = () => {
         if (!validateToAddress(smcAddr) || !validateAbi(abi)) {
             return
         }
-        
+
         const abiJson = JSON.parse(abi)
         const smcFuncList = abiJson.length > 0 ? abiJson.filter((item: any) => item.type === "function").map((item: any) => {
             return {
@@ -386,7 +387,7 @@ const InteracteWithSmc = () => {
                                             </Button>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
-                                        <FlexboxGrid style={{marginBottom: 10}}>
+                                        <FlexboxGrid style={{ marginBottom: 10 }}>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={24}>
                                                 <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                                 <NumberInputFormat

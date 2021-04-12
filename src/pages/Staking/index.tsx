@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Nav, Panel } from 'rsuite';
-import { formatAmountwithPlus, weiToKAI } from '../../common/utils/amount';
-import { truncate } from '../../common/utils/string';
 import { useViewport } from '../../context/ViewportContext';
-import { getAccount, isLoggedIn } from '../../service/wallet';
+import { getAccount, isLoggedIn, checkIsValidator, getCandidates, getValidators, getValidatorStats, ValidatorStats } from '../../service';
 import './staking.css'
 import ValidatorsPieChart from './ValidatorsPieChart';
 import StakedPieChart from './StakedPieChart';
-import Button from '../../common/components/Button';
-import { checkIsValidator, getCandidates, getValidators } from '../../service/kai-explorer';
 import ValidatorList from './ValidatorList';
-import { StakingIcon } from '../../common/components/IconCustom';
+import {
+    StakingIcon,
+    Button,
+    truncate,
+    formatAmountwithPlus,
+    weiToKAI
+} from '../../common';
 import CandidateList from './CandidateList';
 import StakingCalculator from './StakingCalculator';
-import { getValidatorStats } from '../../service/kai-explorer/validator';
-import { ValidatorStats } from '../../service/kai-explorer/validator/type';
 
 const Validators = () => {
     let history = useHistory();
@@ -103,12 +103,12 @@ const Validators = () => {
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
-                    <Button size={isMobile ? "normal" : "big"} className="kai-button-gray" style={{marginBottom: 10}} onClick={() => { setStakingCalculator(true) }}>
+                    <Button size={isMobile ? "normal" : "big"} className="kai-button-gray" style={{ marginBottom: 10 }} onClick={() => { setStakingCalculator(true) }}>
                         Staking Calculator
                     </Button>
                     {
                         !isVal ?
-                            <Button size={isMobile ? "normal" : "big"} style={{marginBottom: 10}}
+                            <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }}
                                 onClick={() => { isLoggedIn() ? history.push("/wallet/staking/for-validator") : history.push('/wallet') }}
                             >
                                 Register to become validator

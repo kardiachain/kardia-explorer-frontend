@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Panel, SelectPicker, Nav } from 'rsuite';
-import { StakingIcon } from '../../common/components/IconCustom';
-import { convertValueFollowDecimal, weiToKAI } from '../../common/utils/amount';
-import Krc20Txs from '../../common/components/txs/Krc20Txs';
-import TransactionHistoryList from '../../common/components/txs/TransactionHistory';
-import { numberFormat } from '../../common/utils/number';
-import { renderHashString} from '../../common/utils/string';
+import {
+    StakingIcon,
+    convertValueFollowDecimal,
+    weiToKAI,
+    Krc20Txs,
+    TransactionHistoryList,
+    numberFormat,
+    renderHashString
+} from '../../common';
 import { TABLE_CONFIG } from '../../config';
-import { getHolderAccount } from '../../service/kai-explorer';
-import { getKrc20Txs } from '../../service/kai-explorer/tokens';
-import { ITokenTranferTx } from '../../service/kai-explorer/tokens/type';
-import { getTokens, getTxsByAddress } from '../../service/kai-explorer/transaction';
 import './addressDetail.css'
+import { getHolderAccount, getKrc20Txs, getTokens, getTxsByAddress, ITokenTranferTx } from '../../service';
 
 
 const AddressDetail = () => {

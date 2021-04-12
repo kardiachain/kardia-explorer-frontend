@@ -31,11 +31,12 @@ const renderCopyButton = ({str, size, callback}: {
     )
 }
 
+const onSuccess = () => {
+    Alert.success('Copied to clipboard.')
+}
+
 const renderHashString = (hash: string, headCount?: number, tailCount?: number) => {
     if (!hash) return null;
-    const onSuccess = () => {
-        Alert.success('Copied to clipboard.')
-    }
     return (
         <span className="hex">
             {truncate(hash, headCount || 10, tailCount || 4)}{' '}
@@ -83,9 +84,6 @@ const renderHashToRedirect = ({
     hash: any, headCount?: number, tailCount?: number, showTooltip?: boolean, showCopy?: boolean,
     redirectTo?: string
 }) => {
-    const onSuccess = () => {
-        Alert.success('Copied to clipboard.')
-    }
     return showTooltip ? (
         <Whisper placement="autoVertical" trigger="hover" speaker={<Tooltip className="custom-tooltip">{hash}</Tooltip>}>
             <span className="hex-link" style={{ cursor: 'pointer' }}>
@@ -178,5 +176,6 @@ export {
     randomRGBColor, 
     renderCopyButton,
     renderStringAndTooltip,
-    millisecondToDay
+    millisecondToDay,
+    onSuccess
 }

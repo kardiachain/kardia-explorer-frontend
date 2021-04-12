@@ -2,7 +2,7 @@ import React from 'react';
 import "./footer.css";
 import { Icon } from 'rsuite';
 
-const Footer = () => {
+export const KAIFooter = () => {
     return (
         <div className="kai-footer">
             <div className="footer-container">
@@ -23,5 +23,3 @@ const Footer = () => {
         </div>
     )
 }
-
-export default Footer;

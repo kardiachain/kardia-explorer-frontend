@@ -3,14 +3,10 @@ import { Link } from 'react-router-dom';
 import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { TABLE_CONFIG } from '../../config';
-import { getContractsList } from '../../service/kai-explorer';
+import { getContractsList, ITokenContract } from '../../service';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import './tokens.css'
-import { ITokenContract } from '../../service/kai-explorer/tokens/type';
-import { renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
-import { convertValueFollowDecimal } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-
+import { renderHashToRedirect, renderStringAndTooltip, convertValueFollowDecimal, numberFormat } from '../../common';
 import unverified from '../../resources/unverified.svg';
 
 const { Column, HeaderCell, Cell } = Table;

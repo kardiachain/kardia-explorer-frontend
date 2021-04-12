@@ -1,4 +1,4 @@
-import { KRC20, UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common/constant";
+import { KRC20, UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common";
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 import { IContractList, ITokenContract, ITokenDetails, ITokenHolderByTokenList, ITokenTranferTxList } from "./type";
 

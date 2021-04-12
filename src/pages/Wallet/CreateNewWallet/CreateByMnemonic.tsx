@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel } from 'rsuite'
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel } from 'rsuite'
 import { ethers } from "ethers";
 import { Link, useHistory } from 'react-router-dom';
 import './createWallet.css'
-import Button from '../../../common/components/Button';
-import { copyToClipboard } from '../../../common/utils/string';
-import { isLoggedIn } from '../../../service/wallet';
+import { copyToClipboard, Button, onSuccess } from '../../../common';
+import { isLoggedIn } from '../../../service';
 
 const CreateByMnemonic = () => {
     const [mnemonic, setMnemonic] = useState('');
@@ -88,9 +87,6 @@ const CreateByMnemonic = () => {
                                                 <div style={{ textAlign: 'right', marginTop: 10 }}>
                                                     <Button className="kai-button-gray" style={{ marginBottom: 5 }}
                                                         onClick={() => {
-                                                            const onSuccess = () => {
-                                                                Alert.success('Copied to clipboard.')
-                                                            }
                                                             copyToClipboard(mnemonic, onSuccess)
                                                         }}>Copy <Icon icon="copy-o" />
                                                     </Button>

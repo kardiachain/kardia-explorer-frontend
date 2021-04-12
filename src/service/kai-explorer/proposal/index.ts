@@ -1,4 +1,4 @@
-import { weiToKAI } from "../../../common/utils/amount";
+import { weiToKAI } from "../../../common";
 import { proposalItems } from "../../../pages/Wallet/Dashboard/Proposal/type";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 

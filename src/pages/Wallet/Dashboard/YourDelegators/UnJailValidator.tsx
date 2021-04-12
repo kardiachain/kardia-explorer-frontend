@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { Modal } from 'rsuite';
-import Button from '../../../../common/components/Button';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage } from '../../../../common/constant/Message';
-import { unjailValidator } from '../../../../service/smc/staking';
+import { NotifiMessage, Button, NotificationError, NotificationSuccess } from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
-import { isExtensionWallet } from '../../../../service/wallet';
-import { unjailValidatorByEW } from '../../../../service/extensionWallet';
+import { unjailValidatorByEW, isExtensionWallet, unjailValidator } from '../../../../service';
 
 const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;

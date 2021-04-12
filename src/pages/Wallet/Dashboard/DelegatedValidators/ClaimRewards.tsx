@@ -3,17 +3,21 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Modal, Table } from 'rsuite';
 import walletState from '../../../../atom/wallet.atom';
-import Button from '../../../../common/components/Button';
-import { StakingIcon } from '../../../../common/components/IconCustom';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { NotifiMessage, InforMessage } from '../../../../common/constant/Message';
-import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat } from '../../../../common/utils/number';
-import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
+import {
+    renderHashStringAndTooltip,
+    renderStringAndTooltip,
+    StakingIcon,
+    NotificationError,
+    NotificationSuccess,
+    NotifiMessage,
+    InforMessage,
+    weiToKAI,
+    numberFormat,
+    Button
+} from '../../../../common';
 import { useViewport } from '../../../../context/ViewportContext';
-import { withdrawRewardByEW } from '../../../../service/extensionWallet';
-import { withdrawReward } from '../../../../service/smc/staking';
-import { isExtensionWallet } from '../../../../service/wallet';
+import { withdrawRewardByEW, isExtensionWallet } from '../../../../service';
+import { withdrawReward } from '../../../../service';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -76,7 +80,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 rowHeight={() => 80}
             >
                 <Column flexGrow={2} minWidth={250} verticalAlign="middle">
-                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{ marginLeft: 50 }}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (

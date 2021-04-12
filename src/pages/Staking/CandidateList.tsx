@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Table } from 'rsuite';
-import Button from '../../common/components/Button';
-import { StakingIcon } from '../../common/components/IconCustom';
-import { formatAmount, weiToKAI } from '../../common/utils/amount';
-import { numberFormat } from '../../common/utils/number';
-import { renderHashStringAndTooltip, renderStringAndTooltip } from '../../common/utils/string';
+import {
+    renderHashStringAndTooltip,
+    renderStringAndTooltip,
+    Button,
+    StakingIcon,
+    formatAmount,
+    weiToKAI,
+    numberFormat
+} from '../../common';
 import { useViewport } from '../../context/ViewportContext';
-import { isLoggedIn } from '../../service/wallet';
+import { isLoggedIn } from '../../service';
 import './staking.css'
 
 const { Column, HeaderCell, Cell } = Table;
@@ -28,37 +32,37 @@ const CandidateList = ({ candidates = [] as Candidate[], loading = true }: { can
                 loading={loading}
             >
                 <Column flexGrow={3} minWidth={isMobile ? 200 : 250} verticalAlign="middle">
-                    <HeaderCell><span style={{marginLeft: 50}}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{ marginLeft: 50 }}>Validator</span></HeaderCell>
                     <Cell>
                         {(rowData: Candidate) => {
                             return (
                                 <Link to={`/validator/${rowData?.address}`}>
-                                <div>
-                                    <div style={{display: 'inline-block', width: 50}}>
-                                        <StakingIcon
-                                            color={rowData?.role?.classname}
-                                            character={rowData?.role?.character}
-                                            size='normal' style={{ marginRight: 5 }} />
-                                    </div>
-                                    <div className="validator-info color-white">
-                                        <div className="validator-name">
-                                            {
-                                                renderStringAndTooltip({
-                                                    str: rowData.name,
-                                                    headCount: isMobile ? 12 : 25,
-                                                    showTooltip: false
-                                                })
-                                            }
+                                    <div>
+                                        <div style={{ display: 'inline-block', width: 50 }}>
+                                            <StakingIcon
+                                                color={rowData?.role?.classname}
+                                                character={rowData?.role?.character}
+                                                size='normal' style={{ marginRight: 5 }} />
                                         </div>
-                                        {renderHashStringAndTooltip(
-                                            rowData.address,
-                                            isMobile ? 10 : 15,
-                                            4,
-                                            true
-                                        )}
+                                        <div className="validator-info color-white">
+                                            <div className="validator-name">
+                                                {
+                                                    renderStringAndTooltip({
+                                                        str: rowData.name,
+                                                        headCount: isMobile ? 12 : 25,
+                                                        showTooltip: false
+                                                    })
+                                                }
+                                            </div>
+                                            {renderHashStringAndTooltip(
+                                                rowData.address,
+                                                isMobile ? 10 : 15,
+                                                4,
+                                                true
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
+                                </Link>
                             );
                         }}
                     </Cell>

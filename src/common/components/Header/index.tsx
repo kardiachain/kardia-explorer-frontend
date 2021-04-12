@@ -3,13 +3,13 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
 import logo from '../../../resources/Logo-dark.svg';
-import { isLoggedIn, logoutWallet } from '../../../service/wallet';
 import './header.css';
-import NetworkSelect from './NetworkSelect';
 import { useSetRecoilState } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
+import { isLoggedIn, logoutWallet } from '../../../service';
+import { NetworkSelect } from './NetworkSelect';
 
-const Header = () => {
+export const KAIHeader = () => {
     const [activeKey, setActiveKey] = useState('home');
     const [showMenu, setShowMenu] = useState(false);
     const { isMobile } = useViewport()
@@ -235,4 +235,6 @@ const Header = () => {
     )
 }
 
-export default Header;
+
+export * from './SearchSection'
+export * from './NetworkSelect'

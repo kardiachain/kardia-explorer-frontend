@@ -1,4 +1,4 @@
-import { UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common/constant";
+import { UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { SearchItem } from "./type";
 

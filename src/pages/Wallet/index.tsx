@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Panel, Icon } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
-import { isLoggedIn } from '../../service/wallet';
+import { isLoggedIn } from '../../service';
 import './wallet.css';
 
 const Wallet = () => {

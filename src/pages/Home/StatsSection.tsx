@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Icon, Panel } from 'rsuite';
-import { numberFormat } from '../../common/utils/number';
-import { calculateTPS, getTotalStats } from '../../service/kai-explorer';
+import { numberFormat } from '../../common';
+import { calculateTPS, getTotalStats } from '../../service';
 import './stat.css'
 
 const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {

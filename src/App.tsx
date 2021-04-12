@@ -5,8 +5,6 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import KAIHeader from './common/components/Header';
-import KAIFooter from './common/components/Footer';
 import Home from './pages/Home';
 import TxDetail from './pages/TxDetail';
 import Network from './pages/Network';
@@ -36,6 +34,7 @@ import Proposal from './pages/Proposal';
 import ProposalDetails from './pages/Proposal/ProposalDetails';
 import Tokens from './pages/Tokens';
 import TokenDetail from './pages/Tokens/TokenDetail';
+import { KAIFooter, KAIHeader } from './common';
 
 class App extends Component {
   render() {

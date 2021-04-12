@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Modal, SelectPicker } from "rsuite";
-import Button from "../../../../common/components/Button";
-import NumberInputFormat from "../../../../common/components/FormInput";
-import ErrMessage from "../../../../common/components/InputErrMessage/InputErrMessage";
-import { NotificationError, NotificationSuccess } from "../../../../common/components/Notification";
-import { gasLimitDefault, gasPriceOption } from "../../../../common/constant";
-import { ErrorMessage, NotifiMessage } from "../../../../common/constant/Message";
-import { dateToUTCString } from "../../../../common/utils/string";
-import { updateValidatorCommission } from "../../../../service/smc/staking";
+import { dateToUTCString, Button, NumberInputFormat, ErrMessage, NotificationError, NotificationSuccess, gasLimitDefault, gasPriceOption, ErrorMessage, NotifiMessage } from "../../../../common";
 import './validators.css'
 import { useRecoilValue } from 'recoil';
 import walletState from "../../../../atom/wallet.atom";
-import { isExtensionWallet } from '../../../../service/wallet';
-import { updateValidatorCommissionByEW } from "../../../../service/extensionWallet";
+import { updateValidatorCommissionByEW, updateValidatorCommission, isExtensionWallet } from "../../../../service";
 
 const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -155,7 +147,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                     <Modal.Title>Update Validator Commmission</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form fluid  className="panel-bg-gray">
+                    <Form fluid className="panel-bg-gray">
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>

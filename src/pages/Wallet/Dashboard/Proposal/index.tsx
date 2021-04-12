@@ -2,19 +2,28 @@ import React, { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil';
 import { CheckPicker, Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Panel, SelectPicker } from 'rsuite';
 import walletState from '../../../../atom/wallet.atom';
-import Button from '../../../../common/components/Button';
-import NumberInputFormat from '../../../../common/components/FormInput';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { gasLimitDefault, gasPriceOption } from '../../../../common/constant';
-import { ErrorMessage, InforMessage, NotifiMessage } from '../../../../common/constant/Message';
-import { cellValue } from '../../../../common/utils/amount';
-import { getCurrentNetworkParams } from '../../../../service/kai-explorer';
-import { createNewProposal } from '../../../../service/smc/proposal';
+import {
+    cellValue,
+    Button,
+    NumberInputFormat,
+    NotificationError,
+    NotificationSuccess,
+    gasLimitDefault,
+    gasPriceOption,
+    ErrorMessage,
+    InforMessage,
+    NotifiMessage,
+    ErrMessage
+} from '../../../../common';
 import { proposalItems } from './type';
 import './style.css'
-import { getStoredBalance, isExtensionWallet } from '../../../../service/wallet';
-import { createProposalByEW } from '../../../../service/extensionWallet';
+import {
+    getStoredBalance,
+    isExtensionWallet,
+    getCurrentNetworkParams,
+    createNewProposal,
+    createProposalByEW
+} from '../../../../service';
 
 interface FieldsModal {
     value: string;
@@ -130,7 +139,7 @@ const CreateProposal = () => {
                 await createProposalByEW(paramsKey, paramsValue)
             } else {
                 const rs = await createNewProposal(walletLocalState.account, paramsKey, paramsValue, gasLimit, gasPrice);
-    
+
                 if (rs && rs.status === 1) {
                     NotificationSuccess({
                         description: NotifiMessage.TransactionSuccess,

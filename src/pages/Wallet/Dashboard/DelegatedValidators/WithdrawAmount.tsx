@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, ControlLabel, FlexboxGrid, Form, Icon, Modal, Radio, RadioGroup, Table, Tooltip, Whisper } from 'rsuite';
-import Button from '../../../../common/components/Button';
-import NumberInputFormat from '../../../../common/components/FormInput';
-import Helper from '../../../../common/components/Helper';
-import { StakingIcon } from '../../../../common/components/IconCustom';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { NotificationError, NotificationSuccess } from '../../../../common/components/Notification';
-import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { ErrorMessage, NotifiMessage, InforMessage } from '../../../../common/constant/Message';
-import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat } from '../../../../common/utils/number';
-import { millisecondToDay, renderHashStringAndTooltip, renderStringAndTooltip } from '../../../../common/utils/string';
+import {
+    millisecondToDay,
+    renderHashStringAndTooltip,
+    Button,
+    weiToKAI,
+    numberFormat,
+    NumberInputFormat,
+    StakingIcon,
+    ErrMessage,
+    Helper,
+    NotificationError,
+    NotificationSuccess,
+    HelperMessage,
+    ErrorMessage,
+    NotifiMessage,
+    InforMessage,
+    renderStringAndTooltip
+} from '../../../../common';
 import { useViewport } from '../../../../context/ViewportContext';
-import { undelegateAll, undelegateWithAmount, withdrawDelegatedAmount } from '../../../../service/smc/staking';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
-import { isExtensionWallet } from '../../../../service/wallet';
-import { undelegateAllByEW, undelegateWithAmountByEW, withdrawDelegatedAmountByEW } from '../../../../service/extensionWallet';
+import {
+    isExtensionWallet,
+    undelegateAll,
+    undelegateWithAmount,
+    withdrawDelegatedAmount,
+    undelegateAllByEW,
+    undelegateWithAmountByEW,
+    withdrawDelegatedAmountByEW
+} from '../../../../service';
 import './style.css'
 
 const { Column, HeaderCell, Cell } = Table;

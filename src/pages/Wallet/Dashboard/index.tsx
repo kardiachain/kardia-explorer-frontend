@@ -16,7 +16,7 @@ import InteracteWithSmc from './SmartContract/InteracteWithSmc';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import ConfirmPassword from '../ConfirmPassword';
-import { isExtensionWallet, useWalletStorage } from '../../../service/wallet';
+import { isExtensionWallet, useWalletStorage } from '../../../service';
 import CreateProposal from './Proposal';
 import Vote from './Proposal/Vote';
 

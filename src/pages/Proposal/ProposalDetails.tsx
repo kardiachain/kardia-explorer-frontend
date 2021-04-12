@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { Button, ButtonToolbar, Col, FlexboxGrid, Icon, List, Panel, Placeholder, Progress } from 'rsuite';
 import { RenderStatus } from '.';
-import { dateToUTCString, renderHashString } from '../../common/utils/string';
-import { getProposalDetails } from '../../service/kai-explorer';
-import ButtomCustom from '../../common/components/Button';
-import { isLoggedIn } from '../../service/wallet';
+import { dateToUTCString, renderHashString, Button as ButtomCustom } from '../../common';
+import { getProposalDetails, isLoggedIn } from '../../service';
 
 const { Paragraph } = Placeholder;
 const { Line } = Progress;

@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Col, FlexboxGrid, Icon, IconButton, List, Nav, Panel, Progress, Tag } from 'rsuite';
-import { weiToKAI } from '../../../../common/utils/amount';
-import { numberFormat } from '../../../../common/utils/number';
-import { dateToUTCString, renderHashString } from '../../../../common/utils/string';
-import { getAccount } from '../../../../service/wallet';
+import { getAccount, checkIsValidator, getValidator, getBlocksByProposer } from '../../../../service';
 import './validators.css'
 import ValidatorCreate from './ValidatorCreate';
-import Button from '../../../../common/components/Button';
-import Helper from '../../../../common/components/Helper';
-import { HelperMessage } from '../../../../common/constant/HelperMessage';
-import { checkIsValidator, getValidator } from '../../../../service/kai-explorer';
 import { TABLE_CONFIG } from '../../../../config';
-import ErrMessage from '../../../../common/components/InputErrMessage/InputErrMessage';
-import { ErrorMessage, InforMessage } from '../../../../common/constant/Message';
-import { MIN_STAKED_AMOUNT_START_VALIDATOR } from '../../../../common/constant';
-import { StakingIcon } from '../../../../common/components/IconCustom';
 import DelegatorList from '../../../Staking/ValidatorDetail/DelegatorList';
-import { addressValid } from '../../../../common/utils/validate';
-import { getBlocksByProposer } from '../../../../service/kai-explorer/block';
+import {
+    addressValid,
+    ErrMessage,
+    ErrorMessage,
+    InforMessage,
+    MIN_STAKED_AMOUNT_START_VALIDATOR,
+    Button,
+    Helper,
+    weiToKAI,
+    numberFormat,
+    dateToUTCString,
+    renderHashString,
+    StakingIcon,
+    HelperMessage
+} from '../../../../common';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
 import { useHistory } from 'react-router-dom';
 import UpdateValidatorName from './UpdateValidatorName';
@@ -59,7 +61,7 @@ const YourDelegators = () => {
 
     const [indicator, setIndicator] = useState({
         percentage: 0,
-        color: '#f04f43' 
+        color: '#f04f43'
     })
 
     const [canUnjail, setCanUnjail] = useState(false);
@@ -110,12 +112,12 @@ const YourDelegators = () => {
         if (isVal) {
             const cacheKey = `VALIDATOR_DATA_${myAccount.publickey}_${page}_${limit}`;
             deleteCache(cacheKey);
-            
+
             const val = await getValidator(myAccount.publickey, page, limit);
             setValidator(val)
             setIndicator({
                 percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
-                color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43' 
+                color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43'
             })
             setDelegators(val.delegators)
             setTableLoading(false);
@@ -365,11 +367,11 @@ const YourDelegators = () => {
                                                     color: 'white'
                                                 }}>
                                                     <Circle percent={indicator.percentage}
-                                                    strokeColor={indicator.color} />
+                                                        strokeColor={indicator.color} />
                                                 </div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </List.Item>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>

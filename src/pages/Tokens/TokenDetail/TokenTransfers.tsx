@@ -1,11 +1,9 @@
 import React from 'react';
 import { Col, FlexboxGrid, Icon, Table } from 'rsuite';
-import { numberFormat } from '../../../common/utils/number';
 import { useViewport } from '../../../context/ViewportContext';
-import { ITokenTranferTx } from '../../../service/kai-explorer/tokens/type';
+import { ITokenTranferTx } from '../../../service';
 import { TABLE_CONFIG } from '../../../config';
-import { millisecondToHMS, renderHashToRedirect } from '../../../common/utils/string';
-import { convertValueFollowDecimal } from '../../../common/utils/amount';
+import { convertValueFollowDecimal, numberFormat, millisecondToHMS, renderHashToRedirect } from '../../../common';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 
 const { Column, HeaderCell, Cell } = Table;

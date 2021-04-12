@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, FlexboxGrid, Icon, Panel, Table } from 'rsuite';
-import { renderHashToRedirect, renderStringAndTooltip } from '../../common/utils/string';
-import { colors } from '../../common/constant';
 import { useViewport } from '../../context/ViewportContext';
-import { getNodes } from '../../service/kai-explorer/network';
+import { getNodes } from '../../service';
 import './network.css'
 import { ForceGraph3D } from 'react-force-graph';
-import SearchSection from '../../common/components/Header/SearchSection';
+import {SearchSection, renderHashToRedirect, renderStringAndTooltip, colors} from '../../common';
 
 const { Column, HeaderCell, Cell } = Table;
 

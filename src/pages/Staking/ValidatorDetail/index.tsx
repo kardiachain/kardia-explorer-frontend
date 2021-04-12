@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { Col, FlexboxGrid, List, Nav, Panel, Progress, Tag } from 'rsuite';
-import { weiToKAI } from '../../../common/utils/amount';
-import { renderHashString } from '../../../common/utils/string';
-import { isLoggedIn } from '../../../service/wallet'
+import { isLoggedIn, getBlocksByProposer } from '../../../service'
 import './validator.css'
-import { numberFormat } from '../../../common/utils/number';
-import Button from '../../../common/components/Button';
-import Helper from '../../../common/components/Helper';
-import { HelperMessage } from '../../../common/constant/HelperMessage';
-import { addressValid } from '../../../common/utils/validate';
 import { TABLE_CONFIG } from '../../../config';
-import { getValidator } from '../../../service/kai-explorer';
+import { getValidator } from '../../../service';
 import DelegatorList from './DelegatorList';
-import { getBlocksByProposer } from '../../../service/kai-explorer/block';
 import BlockByProposerList from './BlockByProposerList';
-import { StakingIcon } from '../../../common/components/IconCustom';
+import {
+    StakingIcon,
+    Button,
+    Helper,
+    HelperMessage,
+    addressValid,
+    weiToKAI,
+    renderHashString,
+    numberFormat
+} from '../../../common';
 
 const { Circle } = Progress;
 
@@ -36,7 +37,7 @@ const ValidatorDetail = () => {
     const [totalBlockRewards, setTotalBlockRewards] = useState(0);
     const [indicator, setIndicator] = useState({
         percentage: 0,
-        color: '#f04f43' 
+        color: '#f04f43'
     })
 
     const [activeKey, setActiveKey] = useState("delegators");
@@ -50,7 +51,7 @@ const ValidatorDetail = () => {
                 setDelegators(val.delegators);
                 setIndicator({
                     percentage: !val.jailed && val?.signingInfo?.indicatorRate ? val?.signingInfo?.indicatorRate : 0,
-                    color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43' 
+                    color: !val.jailed && val?.signingInfo?.indicatorRate >= 50 ? '#58b15b' : '#f04f43'
                 })
                 setLoadingDelegators(false);
             })()
@@ -249,7 +250,7 @@ const ValidatorDetail = () => {
                                                 width: 60,
                                             }}>
                                                 <Circle percent={indicator.percentage}
-                                                strokeColor={indicator.color} />
+                                                    strokeColor={indicator.color} />
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

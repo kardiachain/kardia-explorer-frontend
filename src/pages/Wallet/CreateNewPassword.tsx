@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Panel } from 'rsuite';
-import Button from '../../common/components/Button';
-import ErrMessage from '../../common/components/InputErrMessage/InputErrMessage';
 import { useSetRecoilState } from 'recoil';
-import { ErrorMessage } from '../../common/constant/Message';
+import { ErrorMessage, Button, ErrMessage } from '../../common';
 import walletState from '../../atom/wallet.atom';
 import './wallet.css'
 import { useHistory } from 'react-router-dom';
