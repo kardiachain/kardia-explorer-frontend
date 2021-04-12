@@ -13,6 +13,7 @@ import TokenTransfers from './TokenTransfers';
 import { TABLE_CONFIG } from '../../../config';
 import { getTokenHoldersByToken, getTokenTransferTx } from '../../../service/kai-explorer/tokens';
 import TokenHolder from './TokenHolder';
+import { UNVERIFY_TOKEN_DEFAULT_BASE64 } from '../../../common/constant';
 
 const { Paragraph } = Placeholder;
 
@@ -65,14 +66,20 @@ const TokenDetail = () => {
 
     return (
         <div className="container token-details-container">
-            <div style={{ marginBottom: 10 }}>
-                <img src={tokenInfor.logo} style={{ width: '28px', height: '28px', marginRight: '10px' }} alt="logo" />
-                <span className="color-white"><span className="fs-18">Token</span> {tokenInfor.tokenName} {tokenInfor.symbol ? `[${tokenInfor.symbol}]` : ''}</span>
-            </div>
+            <FlexboxGrid justify="space-between" style={{marginBottom: 16}}>
+                <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
+                    <img src={tokenInfor.logo ? tokenInfor.logo : UNVERIFY_TOKEN_DEFAULT_BASE64} style={{ width: '28px', height: '28px', marginRight: '10px' }} alt="logo" />
+                    <div style={{display: 'inline-block', verticalAlign: 'middle' }}>
+                        <div className="title header-title">
+                            <span>Token</span> {tokenInfor.tokenName} {tokenInfor.symbol ? `[${tokenInfor.symbol}]` : ''}
+                        </div>
+                    </div>
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
 
             <FlexboxGrid justify="space-between">
                 <FlexboxGridItem componentClass={Col} colspan={24} md={14} sm={24} style={{ marginBottom: '25px' }}>
-                    <Panel className="overview panel-bg-gray" header="Overview [KRC-20]">
+                    <Panel className="overview panel-bg-gray">
                         {
                             loading ? <Paragraph style={{ marginBottom: 15 }} rows={5} /> : (
                                 <List bordered={false}>
@@ -83,6 +90,26 @@ const TokenDetail = () => {
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content">{tokenInfor.tokenName}</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                                <div className="property-title">Symbol</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                                <div className="property-content">{tokenInfor.symbol}</div>
+                                            </FlexboxGrid.Item>
+                                        </FlexboxGrid>
+                                    </List.Item>
+                                    <List.Item>
+                                        <FlexboxGrid justify="start" align="middle">
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
+                                                <div className="property-title">Type</div>
+                                            </FlexboxGrid.Item>
+                                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
+                                                <div className="property-content">{tokenInfor.type}</div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                     </List.Item>

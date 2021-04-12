@@ -63,7 +63,7 @@ const Tokens = () => {
                             <span style={{
                                 color: 'white',
                                 verticalAlign: 'bottom'
-                            }}>Token unverified</span>
+                            }}>Unverified Tokens</span>
                         </div>
                         <FlexboxGrid justify="space-between">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
