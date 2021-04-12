@@ -20,3 +20,10 @@
 .token-info {
     font-size: 12px;
 }
+
+.unverified-note {
+    margin-bottom: 10px;
+    background: #AE7E47;
+    padding: 12px;
+    border-radius: 8px;
+}

@@ -1,4 +1,4 @@
-import { KRC20, UNKNOW_AVARTAR_DEFAULT_BASE64 } from "../../../common/constant";
+import { KRC20, UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common/constant";
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 import { IContractList, ITokenContract, ITokenDetails, ITokenHolderByTokenList, ITokenTranferTxList } from "./type";
 
@@ -17,7 +17,7 @@ export const getContractsList = async (page: number, size: number): Promise<ICon
                 info: item.info ? item.info : '',
                 name: item.name ? item.name : '',
                 type: item.type ? item.type : '',
-                logo: item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                logo: item.logo ? item.logo : UNVERIFY_TOKEN_DEFAULT_BASE64,
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
                 totalSupply: item.totalSupply ? item.totalSupply : '0',
                 decimal: item.decimal ? item.decimal : 0
@@ -36,7 +36,7 @@ export const getTokenContractInfor = async (contractAddress: string): Promise<IT
         createdAt: raw.createdAt || '',
         decimals: raw.decimals || 0,
         info: raw.info || '',
-        logo: raw.logo ? raw.logo : UNKNOW_AVARTAR_DEFAULT_BASE64,
+        logo: raw.logo ? raw.logo : UNVERIFY_TOKEN_DEFAULT_BASE64,
         name: raw.name || '',
         ownerAddress: raw.ownerAddress || '',
         tokenName: raw.tokenName || '',
@@ -70,7 +70,7 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
                 tokenName: item.tokenName ? item.tokenName : '',
                 tokenType: item.tokenType ? item.tokenType : '',
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
-                logo: item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                logo: item.logo ? item.logo : UNVERIFY_TOKEN_DEFAULT_BASE64,
                 tokenAddress: item.address ? item.address : ''
             }
         })
@@ -99,7 +99,7 @@ export const getKrc20Txs = async (address: string, page: number, size: number): 
                 tokenName: item.tokenName ? item.tokenName : '',
                 tokenType: item.tokenType ? item.tokenType : '',
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
-                logo: item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                logo: item.logo ? item.logo : UNVERIFY_TOKEN_DEFAULT_BASE64,
                 tokenAddress: item.address ? item.address : ''
             }
         })

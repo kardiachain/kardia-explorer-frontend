@@ -1,4 +1,4 @@
-import { UNKNOW_AVARTAR_DEFAULT_BASE64 } from "../../../common/constant";
+import { UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common/constant";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { SearchItem } from "./type";
 
@@ -15,7 +15,7 @@ export const searchAll = async (text: string): Promise<SearchItem[]> => {
                 symbol: item.symbol ? item.symbol : '',
                 type: item.type ? item.type : '', 
                 address: item.address ? item.address : '',
-                logo: item.logo ? item.logo : UNKNOW_AVARTAR_DEFAULT_BASE64,
+                logo: item.logo ? item.logo : UNVERIFY_TOKEN_DEFAULT_BASE64,
                 info: item.info ? item.info : ''
             }
         })
