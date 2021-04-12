@@ -146,7 +146,7 @@ const DashboardHeader = () => {
                             <div>
                                 <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
                                 <div className="content color-white" style={{ paddingLeft: '42px' }}>
-                                    <span style={{marginRight: 5}}>Active:</span>
+                                    <span style={{marginRight: 5}}>Available:</span>
                                     <span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI
                                 </div>
                                 <div className="content color-white" style={{ paddingLeft: '42px' }}>
