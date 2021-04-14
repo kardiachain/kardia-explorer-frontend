@@ -1,4 +1,3 @@
-import { numberFormat } from "../../../common";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 import { checkValidatorRole } from "..";
@@ -101,7 +100,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     }
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(tx.time)).getTime()
-    const gasUsedPercent = numberFormat(tx.gasUsed / tx.gas * 100, 3);
+    const gasUsedPercent = tx.gasUsed / tx.gas * 100;
     const isContractCreation = (tx.input && tx.input !== '0x') && ((tx.contractAddress && tx.contractAddress !== '0x') || (!tx.contractAddress || tx.to === '0x'));
     return {
         txHash: tx.hash,

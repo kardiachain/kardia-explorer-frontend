@@ -1,4 +1,3 @@
-import { numberFormat } from "../../../common";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 interface BlocksResponse {
@@ -41,7 +40,7 @@ export const getBlockBy = async (block: any): Promise<KAIBlockDetails> => {
     }
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(blockDetail.time)).getTime()
-    const gasUsedPercent = numberFormat(blockDetail.gasUsed / blockDetail.gasLimit, 3);
+    const gasUsedPercent = blockDetail.gasUsed / blockDetail.gasLimit * 100;
     
     return {
         blockHash: blockDetail.hash,
