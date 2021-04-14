@@ -1,4 +1,3 @@
-import { numberFormat } from "../../../common";
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 
 interface BlocksResponse {
