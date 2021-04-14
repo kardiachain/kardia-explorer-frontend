@@ -114,7 +114,7 @@ const BlockDetail = () => {
                                         <div className="property-title">Gas Used</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(blockDetail?.gasUsed || 0)} ({blockDetail?.gasUsedPercent}%)</div>
+                                        <div className="property-content">{numberFormat(blockDetail?.gasUsed || 0)} ({numberFormat(blockDetail?.gasUsedPercent, 3)}%)</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>

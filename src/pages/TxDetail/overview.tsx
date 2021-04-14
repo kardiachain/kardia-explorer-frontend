@@ -367,7 +367,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                         <div className="property-title">Gas Used</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
-                                        <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)} ({txDetail?.gasUsedPercent}%)</div>
+                                        <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)} ({numberFormat(txDetail?.gasUsedPercent, 3)}%)</div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </List.Item>
