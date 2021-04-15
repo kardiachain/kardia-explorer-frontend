@@ -94,7 +94,7 @@ const TokenTransfers = ({txs, loading, totalTx, page, setPage, size, setSize }: 
                         </Cell>
                     </Column>
                     <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                        <HeaderCell>Balance</HeaderCell>
+                        <HeaderCell>Amount</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (

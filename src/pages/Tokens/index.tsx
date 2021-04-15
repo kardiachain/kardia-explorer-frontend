@@ -1,36 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Col, FlexboxGrid, Panel, Table } from 'rsuite';
-import { useViewport } from '../../context/ViewportContext';
+import { Col, FlexboxGrid, Nav, Panel } from 'rsuite';
 import { TABLE_CONFIG } from '../../config';
 import { getContractsList, ITokenContract } from '../../service';
-import TablePagination from 'rsuite/lib/Table/TablePagination';
 import './tokens.css'
-import { renderHashToRedirect, renderStringAndTooltip, convertValueFollowDecimal, numberFormat } from '../../common';
 import unverified from '../../resources/unverified.svg';
+import { VerifiedTokens } from './VerifiedTokens';
+import { UnVerifiedTokens } from './UnverifiedTokens';
 
-const { Column, HeaderCell, Cell } = Table;
 
 const Tokens = () => {
-    const [loading, setLoading] = useState(false);
-    const { isMobile } = useViewport();
 
-    const [page, setPage] = useState(TABLE_CONFIG.page);
-    const [size, setSize] = useState(TABLE_CONFIG.limitDefault);
+    const [activeKey, setActiveKey] = useState('verified')
 
+    const [verifiedTokensPage, setVerifiedTokensPage] = useState(TABLE_CONFIG.page);
+    const [verifiedTokensSize, setVerifiedTokensSize] = useState(TABLE_CONFIG.limitDefault);
+    const [verifiedTokens, setVerifiedTokens] = useState<ITokenContract[]>([] as ITokenContract[])
+    const [totalVerifiedTokens, setTotalVerifiedTokens] = useState(0);
+    const [verifiedTokensLoading, setVerifiedTokensLoading] = useState(false);
 
-    const [tokens, setTokens] = useState<ITokenContract[]>([] as ITokenContract[])
-    const [totalContract, setTotalContract] = useState(0);
+    const [unverifiedTokensPage, setUnverifiedTokensPage] = useState(TABLE_CONFIG.page);
+    const [unverifiedTokensSize, setUnverifiedTokensSize] = useState(TABLE_CONFIG.limitDefault);
+    const [unverifiedTokens, setUnverifiedTokens] = useState<ITokenContract[]>([] as ITokenContract[])
+    const [totalUnverifiedTokens, setTotalUnverifiedTokens] = useState(0);
+    const [unverifiedTokensLoading, setUnverifiedTokensLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
-            setLoading(true);
-            const rs = await getContractsList(page, size);
-            setTokens(rs.contracts);
-            setTotalContract(rs?.total);
-            setLoading(false);
+            setVerifiedTokensLoading(true);
+            const rs = await getContractsList(verifiedTokensPage, verifiedTokensSize, 'Verified');
+            setVerifiedTokens(rs.contracts);
+            setTotalVerifiedTokens(rs?.total);
+            setVerifiedTokensLoading(false);
         })()
-    }, [page, size])
+    }, [verifiedTokensPage, verifiedTokensSize])
+
+
+    useEffect(() => {
+        (async () => {
+            setUnverifiedTokensLoading(true);
+            const rs = await getContractsList(unverifiedTokensPage, unverifiedTokensSize, 'Unverified');
+            setUnverifiedTokens(rs.contracts);
+            setTotalUnverifiedTokens(rs?.total);
+            setUnverifiedTokensLoading(false);
+        })()
+    }, [unverifiedTokensPage, unverifiedTokensSize])
 
     return (
         <div className="container txs-container">
@@ -47,132 +60,62 @@ const Tokens = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded className="panel-bg-gray">
                         <div className="unverified-note">
-                            <img 
-                            className="token-logo" 
-                            style={{
-                                width: 20,
-                                height: 20,
-                                marginTop: 0,
-                                marginRight: 10
-                            }} 
-                            src={unverified} alt="kardiachain" />
+                            <img
+                                className="token-logo"
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    marginTop: 0,
+                                    marginRight: 10
+                                }}
+                                src={unverified} alt="kardiachain" />
                             <span style={{
                                 color: 'white',
                                 verticalAlign: 'bottom'
                             }}>Unverified Tokens</span>
                         </div>
-                        <FlexboxGrid justify="space-between">
-                            <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <Table
-                                    rowHeight={() => 80}
-                                    data={tokens}
-                                    autoHeight
-                                    hover={false}
-                                    wordWrap
-                                    loading={loading}
-                                >
-                                    <Column flexGrow={3} minWidth={270} verticalAlign="middle">
-                                        <HeaderCell>Token</HeaderCell>
-                                        <Cell>
-                                            {(rowData: ITokenContract) => {
-                                                return (
-                                                    <div>
-                                                        <img
-                                                            className="token-logo"
-                                                            src={rowData.logo}
-                                                            alt="kardiachain" />
-                                                        <span className="container-content-right">
-                                                            <Link className="token-name" to={`/token/${rowData?.address}`}>
-                                                                {
-                                                                    renderStringAndTooltip({
-                                                                        str: rowData.name,
-                                                                        headCount: isMobile ? 12 : 25,
-                                                                        showTooltip: true
-                                                                    })
-                                                                }
-                                                            </Link>
-                                                            <div className="token-info">
-                                                                {
-                                                                    renderStringAndTooltip({
-                                                                        str: rowData.info,
-                                                                        headCount: isMobile ? 12 : 30,
-                                                                        showTooltip: true
-                                                                    })
-                                                                }
-                                                            </div>
-                                                        </span>
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={1} minWidth={100} verticalAlign="middle">
-                                        <HeaderCell>Symbol</HeaderCell>
-                                        <Cell>
-                                            {(rowData: ITokenContract) => {
-                                                return (
-                                                    <div>
-                                                        {rowData.tokenSymbol}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={1} minWidth={100} verticalAlign="middle">
-                                        <HeaderCell>Decimals</HeaderCell>
-                                        <Cell>
-                                            {(rowData: ITokenContract) => {
-                                                return (
-                                                    <div>
-                                                        {rowData.decimal}
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                                        <HeaderCell>Token adress</HeaderCell>
-                                        <Cell>
-                                            {(rowData: ITokenContract) => {
-                                                return (
-                                                    <div>
-                                                        {
-                                                            renderHashToRedirect({
-                                                                hash: rowData.address,
-                                                                headCount: isMobile ? 5 : 12,
-                                                                tailCount: 4,
-                                                                showTooltip: true,
-                                                                redirectTo: `/address/${rowData.address}`
-                                                            })
-                                                        }
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                    <Column flexGrow={2} minWidth={100} verticalAlign="middle">
-                                        <HeaderCell>Total Supply</HeaderCell>
-                                        <Cell>
-                                            {(rowData: ITokenContract) => {
-                                                return (
-                                                    <div>
-                                                        { numberFormat(convertValueFollowDecimal(rowData.totalSupply, rowData.decimal)) }
-                                                    </div>
-                                                );
-                                            }}
-                                        </Cell>
-                                    </Column>
-                                </Table>
-                                <TablePagination
-                                    lengthMenu={TABLE_CONFIG.pagination.lengthMenu}
-                                    activePage={page}
-                                    displayLength={size}
-                                    total={totalContract}
-                                    onChangePage={setPage}
-                                    onChangeLength={setSize}
-                                />
-                            </FlexboxGrid.Item>
-                        </FlexboxGrid>
+                        <div className="custom-nav">
+                            <Nav
+                                appearance="subtle"
+                                activeKey={activeKey}
+                                onSelect={setActiveKey}
+                                style={{ marginBottom: 20 }}>
+                                <Nav.Item eventKey="verified">
+                                    {`Verified Tokens (${totalVerifiedTokens || 0})`}
+                                </Nav.Item>
+                                <Nav.Item eventKey="unverified">
+                                    {`Unverified Tokens (${totalUnverifiedTokens || 0})`}
+                                </Nav.Item>
+                            </Nav>
+                        </div>
+                        {
+                            (() => {
+                                switch (activeKey) {
+                                    case 'verified':
+                                        return (
+                                            <VerifiedTokens
+                                                tokens={verifiedTokens}
+                                                totalTokens={totalVerifiedTokens}
+                                                page={verifiedTokensPage}
+                                                setPage={setVerifiedTokensPage}
+                                                size={verifiedTokensSize}
+                                                setSize={setVerifiedTokensSize}
+                                                loading={verifiedTokensLoading} />
+                                        );
+                                    case 'unverified':
+                                        return (
+                                            <UnVerifiedTokens
+                                                tokens={unverifiedTokens}
+                                                totalTokens={totalUnverifiedTokens}
+                                                page={unverifiedTokensPage}
+                                                setPage={setUnverifiedTokensPage}
+                                                size={unverifiedTokensSize}
+                                                setSize={setUnverifiedTokensSize}
+                                                loading={unverifiedTokensLoading} />
+                                        )
+                                }
+                            })()
+                        }
                     </Panel>
                 </FlexboxGrid.Item>
             </FlexboxGrid>

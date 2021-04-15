@@ -2,8 +2,8 @@ import { KRC20, UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common";
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 import { IContractList, ITokenContract, ITokenDetails, ITokenHolderByTokenList, ITokenTranferTxList } from "./type";
 
-export const getContractsList = async (page: number, size: number): Promise<IContractList> => {
-    const response = await fetch(`${END_POINT}contracts?page=${page}&limit=${size}&type=${KRC20}`, GET_REQUEST_OPTION);
+export const getContractsList = async (page: number, size: number, status: 'Verified' | 'Unverified'): Promise<IContractList> => {
+    const response = await fetch(`${END_POINT}contracts?page=${page}&limit=${size}&type=${KRC20}&status=${status}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
 
