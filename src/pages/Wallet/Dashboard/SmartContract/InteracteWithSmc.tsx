@@ -225,12 +225,7 @@ const InteracteWithSmc = () => {
             console.log(error);
         }
     }
-
-    const uploadFileFailed = (response: Object, file: FileType) => {
-        setListFile([]);
-        Alert.error('Uploaded failed.');
-    }
-
+    
     const handleRemoveFile = (file: FileType) => {
         setListFile([]);
         setAbi('')
@@ -324,11 +319,10 @@ const InteracteWithSmc = () => {
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                             <ControlLabel className="color-white">{'Or Upload Your <contract.json> file'} (required)</ControlLabel>
                                             <Uploader
-                                                action="//jsonplaceholder.typicode.com/posts/"
                                                 draggable
+                                                autoUpload={false}
                                                 fileList={fileList}
                                                 onChange={handleUpload}
-                                                onError={uploadFileFailed}
                                                 onRemove={handleRemoveFile}>
                                                 <FormControl name="smcAddr"
                                                     style={{ padding: '11px 12px' }}

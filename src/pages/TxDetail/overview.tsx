@@ -42,11 +42,6 @@ const TxDetailOverview = ({ txDetail, loading }: {
     const [fileUploadErr, setFileUploadErr] = useState('');
     const [decodeErr, setDecodeErr] = useState('');
 
-    const uploadFileFailed = (response: Object, file: FileType) => {
-        setListFile([]);
-        Alert.error('Uploaded failed.');
-    }
-
     const handleRemoveFile = (file: FileType) => {
         setListFile([]);
         setAbi('')
@@ -440,11 +435,10 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                                                                     <ControlLabel className="label color-white">{'Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
                                                                                     <Uploader
-                                                                                        action="//jsonplaceholder.typicode.com/posts/"
+                                                                                        autoUpload={false}
                                                                                         draggable
                                                                                         fileList={fileList}
                                                                                         onChange={handleUpload}
-                                                                                        onError={uploadFileFailed}
                                                                                         onRemove={handleRemoveFile}
                                                                                     >
                                                                                         <FormControl name="smcAddr"
