@@ -20,7 +20,9 @@ Sentry.init({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <h1 style={{textAlign: 'center'}}>Under maintainance</h1>
+    <h2 style={{textAlign: 'center'}}>We will get back soon</h2>
+    {/* <App /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
