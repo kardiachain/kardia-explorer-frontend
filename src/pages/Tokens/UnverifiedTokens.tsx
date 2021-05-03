@@ -93,7 +93,7 @@ export const UnVerifiedTokens = ({tokens, totalTokens, loading, size, page, setS
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                        <HeaderCell>Token adress</HeaderCell>
+                        <HeaderCell>Token address</HeaderCell>
                         <Cell>
                             {(rowData: ITokenContract) => {
                                 return (
