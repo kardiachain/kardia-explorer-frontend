@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Message, Panel } from 'rsuite';
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, Message, Panel } from 'rsuite';
 import {
     ErrorMessage,
     Button,
@@ -16,6 +16,7 @@ const Faucet = () => {
 
     const [walletAddress, setWalletAddress] = useState('')
     const [walletAddrErr, setWalletAddrErr] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const validateWalletAddr = () => {
         if (!walletAddress) {
@@ -33,6 +34,7 @@ const Faucet = () => {
     const sendKai = async () => {
         try {
             if (!validateWalletAddr()) return;
+            setLoading(true)
             const requestOptions = {
                 method: 'GET'
             };
@@ -59,40 +61,52 @@ const Faucet = () => {
             });
         } catch (error) {
             NotificationError({
-                description: "Faucet free KAI testnet failed",
+                description: "Faucet free KAIs testnet failed",
             });
+        } finally {
+            setLoading(false)
         }
     }
 
     return (
         <div className="container">
-            <div className="block-title" style={{ padding: '0px 5px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon className="highlight" icon="eyedropper" size={"2x"} />
-                    <p style={{ marginLeft: '12px' }} className="title">Received free KAIs with KardiaChain Faucet</p>
+            <FlexboxGrid justify="center">
+                <FlexboxGrid.Item componentClass={Col} colspan={22} sm={24} md={12}>
+            <div style={{ marginBottom: 16 }}>
+                <div className="title header-title">
+                    Received free KAIs
                 </div>
             </div>
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item componentClass={Col} colspan={22} md={24}>
                     <Panel shaded>
-                        <Form fluid>
-                            <FormGroup>
-                                <FormControl
-                                    placeholder="Wallet address"
-                                    name="walletAddress"
-                                    value={walletAddress}
-                                    onChange={(value) => {
-                                        if (!value) setWalletAddrErr(ErrorMessage.Require);
-                                        setWalletAddress(value)
-                                    }}
-                                    type="text" />
-                                <ErrMessage message={walletAddrErr} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Button size="big" onClick={sendKai}>Send me some KAI</Button>
-                            </FormGroup>
-                        </Form>
-                        <Message className="faucet-warning" type="warning" description="These tokens are for testing purpose only. They can't be used to trade or pay for any services." />
+                        <div style={{ paddingTop: 20, paddingBottom: 50 }}>
+                            <FlexboxGrid>
+                                <FlexboxGrid.Item componentClass={Col} sm={24}>
+                                    <Message 
+                                    className="faucet-warning" 
+                                    type="warning" 
+                                    description="These tokens are for testing purpose only. They can't be used to trade or pay for any services." />
+                                    <Form fluid>
+                                        <FormGroup>
+                                            <FormControl
+                                                placeholder="Enter your wallet address"
+                                                name="walletAddress"
+                                                value={walletAddress}
+                                                onChange={(value) => {
+                                                    if (!value) setWalletAddrErr(ErrorMessage.Require);
+                                                    setWalletAddress(value)
+                                                }}
+                                                type="text" />
+                                            <ErrMessage message={walletAddrErr} />
+                                            <Button
+                                                loading={loading}
+                                                size="big"
+                                                style={{margin: '20px 0'}}
+                                                onClick={sendKai}>Send me some KAI</Button>
+                                        </FormGroup>
+                                    </Form>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </div>
                     </Panel>
                 </FlexboxGrid.Item>
             </FlexboxGrid>

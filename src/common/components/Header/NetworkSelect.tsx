@@ -51,7 +51,7 @@ export const NetworkSelect = () => {
                     })
                 }
                 {
-                    !mainnetMode ? <Dropdown.Item eventKey="faucet" onSelect={() => window.open('/faucet')}>Fengari Faucet</Dropdown.Item> : <></>
+                    !mainnetMode ? <Dropdown.Item eventKey="faucet" onSelect={() => window.open('/faucet')}>Faucet</Dropdown.Item> : <></>
                 }   
             </Dropdown>
         </div>

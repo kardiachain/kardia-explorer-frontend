@@ -203,10 +203,6 @@ export const KAIHeader = () => {
                     </Dropdown>
 
                     <Nav.Item eventKey="tokens" onClick={() => { history.push("/tokens") }}>Tokens</Nav.Item>
-
-                    {/* <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item> */}
-                    {/* <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item> */}
-                    {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                     <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
                     {
                         isLoggedIn() ? (
