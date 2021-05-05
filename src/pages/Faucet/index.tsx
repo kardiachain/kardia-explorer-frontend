@@ -33,7 +33,7 @@ const Faucet = () => {
 
     const sendKai = async () => {
         try {
-            if (!validateWalletAddr()) return;
+            if (!validateWalletAddr() || loading) return;
             setLoading(true)
             const requestOptions = {
                 method: 'GET'
