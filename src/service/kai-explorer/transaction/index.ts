@@ -193,21 +193,7 @@ export const getContractEvents = async (page: number, size: number, txHash: stri
     const response = await fetch(`${END_POINT}contracts/events?page=${page}&limit=${size}&txHash=${txHash}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     if (responseJSON.data.data.length > 0) {
-        const it = responseJSON.data.data[0];
-        return {
-            address: it.address || '',
-            methodName: it.methodName || '',
-            argumentsName: it.argumentsName || '',
-            arguments: it.arguments || '',
-            topics: it.topics || '',
-            data: it.data || '',
-            blockHeight: it.blockHeight || '',
-            transactionHash: it.transactionHash || '',
-            transactionIndex: it.transactionIndex || '',
-            blockHash: it.blockHash || '',
-            logIndex: it.logIndex || '',
-            removed: it.remove || ''
-        }
+        return responseJSON.data.data;
     }
 
     return {}

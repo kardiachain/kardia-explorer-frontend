@@ -14,8 +14,7 @@ const TxDetail = () => {
     const [loading, setLoading] = useState(true)
     const [activeKey, setActiveKey] = useState('overview')
 
-    const [logs, setLogs] = useState<Logs>({} as Logs);
-    const [data, setData] = useState("");
+    const [logs, setLogs] = useState([]);
 
 
     useEffect(() => {
@@ -26,7 +25,6 @@ const TxDetail = () => {
                 try {
                     const data = await getContractEvents(1, 10, txHash);
                     setLogs(data);
-                    setData(data.data);
                 } catch(e){
                     NotificationError({
                         description: `${NotifiMessage.TransactionError} Error: ${e.message}`
@@ -73,7 +71,7 @@ const TxDetail = () => {
                             {`Overview`}
                         </Nav.Item>
                         <Nav.Item eventKey="logs">
-                            {`Logs`}
+                            {`Logs ${logs.length > 0 ? `(${logs.length})` : ''}`}
                         </Nav.Item>
                     </Nav>
                 </div>
@@ -86,7 +84,7 @@ const TxDetail = () => {
                                 );
                             case 'logs':
                                 return (
-                                    <Logs logs={logs} data={data}/>
+                                    <Logs logs={logs}/>
                                 )
                         }
                     })()

@@ -1,10 +1,13 @@
 .logBody {
     /* padding: 12px 0px; */
+    border-bottom: var(--border) !important;
+    /* padding-bottom:13px; */
+    padding:13px;
 }
 
 .logRow{
     display:flex;
-    border-bottom: var(--border) !important;
+    /* border-bottom: var(--border) !important; */
     padding:13px 0px;
 }
 
