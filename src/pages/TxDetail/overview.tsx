@@ -168,14 +168,27 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                     {
-                                        txDetail?.status ?
-                                            <div className="property-content"><Tag color="green" className="tab tab-success">SUCCESS</Tag></div> :
-                                            <div className="property-content">
-                                                <Tag className="tab tab-failed" color="red">FAILED</Tag>
-                                                {
-                                                    txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
-                                                }
-                                            </div>
+                                        (() => {
+                                            switch (txDetail?.status) {
+                                                case 1:
+                                                    return (
+                                                        <div className="property-content"><Tag color="green" className="tab tab-success">SUCCESS</Tag></div>
+                                                    )
+                                                case 2: 
+                                                    return (
+                                                        <div className="property-content"><Tag color="green" className="tab tab-pending">PENDING</Tag></div>
+                                                    )
+                                                case 0:
+                                                    return (
+                                                        <div className="property-content">
+                                                            <Tag className="tab tab-failed" color="red">FAILED</Tag>
+                                                            {
+                                                                txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
+                                                            }
+                                                        </div>
+                                                    )
+                                            }
+                                        })()
                                     }
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>

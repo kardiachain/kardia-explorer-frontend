@@ -88,7 +88,7 @@ const TxList = () => {
                                             {(rowData: KAITransaction) => {
                                                 return (
                                                     <div>
-                                                        <span className={`container-icon-left ${!rowData.status ? 'icon-tx-error' : ''}`}>
+                                                        <span className={`container-icon-left ${rowData.status === 0 ? 'icon-tx-error' : ''}`}>
                                                             <Icon icon={ !rowData.isSmcInteraction ? "exchange" : "file-text-o"} className="gray-highlight" />
                                                         </span>
                                                         <span className="container-content-right">

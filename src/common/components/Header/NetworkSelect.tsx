@@ -24,9 +24,8 @@ const networkList = [
     }
 ]
 
-const getNetworkLabel = (value: string) => {
-    const networkItem = networkList.find((item) => item.value === value)
-    return networkItem?.label
+const getNetworkLabel = () => {
+    return mainnetMode ? 'Aris Mainnet 1.0' : 'Fengari Testnet 3.0'
 }
 
 export const NetworkSelect = () => {
@@ -39,7 +38,7 @@ export const NetworkSelect = () => {
 
     return (
         <div className="network-select-wrapper">
-            <Dropdown  icon={<Icon className={isMobile ? "gray-highlight" : ""} icon="cubes" />} activeKey={network} title={getNetworkLabel(network)}>
+            <Dropdown  icon={<Icon className={isMobile ? "gray-highlight" : ""} icon="cubes" />} activeKey={network} title={getNetworkLabel()}>
                 {
                     networkList.map((networkItem) => {
                         return <Dropdown.Item
