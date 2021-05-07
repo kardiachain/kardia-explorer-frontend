@@ -10,7 +10,7 @@ interface KAITransaction {
     time: Date
     blockNumber: number;
     blockHash: string;
-    status: boolean;
+    status: number;
     failedReason: string;
     nonce: number;
     age: number;

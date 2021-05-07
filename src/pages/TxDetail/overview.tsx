@@ -42,11 +42,6 @@ const TxDetailOverview = ({ txDetail, loading }: {
     const [fileUploadErr, setFileUploadErr] = useState('');
     const [decodeErr, setDecodeErr] = useState('');
 
-    const uploadFileFailed = (response: Object, file: FileType) => {
-        setListFile([]);
-        Alert.error('Uploaded failed.');
-    }
-
     const handleRemoveFile = (file: FileType) => {
         setListFile([]);
         setAbi('')
@@ -173,14 +168,27 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                     {
-                                        txDetail?.status ?
-                                            <div className="property-content"><Tag color="green" className="tab tab-success">SUCCESS</Tag></div> :
-                                            <div className="property-content">
-                                                <Tag className="tab tab-failed" color="red">FAILED</Tag>
-                                                {
-                                                    txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
-                                                }
-                                            </div>
+                                        (() => {
+                                            switch (txDetail?.status) {
+                                                case 1:
+                                                    return (
+                                                        <div className="property-content"><Tag color="green" className="tab tab-success">SUCCESS</Tag></div>
+                                                    )
+                                                case 2: 
+                                                    return (
+                                                        <div className="property-content"><Tag color="green" className="tab tab-pending">PENDING</Tag></div>
+                                                    )
+                                                case 0:
+                                                    return (
+                                                        <div className="property-content">
+                                                            <Tag className="tab tab-failed" color="red">FAILED</Tag>
+                                                            {
+                                                                txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
+                                                            }
+                                                        </div>
+                                                    )
+                                            }
+                                        })()
                                     }
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
@@ -440,11 +448,10 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                                                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
                                                                                     <ControlLabel className="label color-white">{'Upload Your <contract.json> file:'}<span className="required-mask">*</span></ControlLabel>
                                                                                     <Uploader
-                                                                                        action="//jsonplaceholder.typicode.com/posts/"
+                                                                                        autoUpload={false}
                                                                                         draggable
                                                                                         fileList={fileList}
                                                                                         onChange={handleUpload}
-                                                                                        onError={uploadFileFailed}
                                                                                         onRemove={handleRemoveFile}
                                                                                     >
                                                                                         <FormControl name="smcAddr"

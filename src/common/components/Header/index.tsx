@@ -3,6 +3,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Drawer, Dropdown, Icon, Nav, Navbar, Sidenav } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
 import logo from '../../../resources/Logo-dark.svg';
+import logo_testnet from '../../../resources/logo-testnet.svg';
 import './header.css';
 import { useSetRecoilState } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
@@ -18,6 +19,8 @@ export const KAIHeader = () => {
     let history = useHistory();
 
     const setWalletState = useSetRecoilState(walletState);
+
+    const mainnet_mode = process.env.REACT_APP_MAINNET_MODE as string === 'true'
 
     useEffect(() => {
         if (location.pathname.indexOf("/address/") > -1 ||
@@ -46,7 +49,7 @@ export const KAIHeader = () => {
             <div className="kai-header-container-mobile">
                 <Link to="/" className="navbar-brand logo">
                     <div className="kai-logo-container">
-                        <img src={logo} alt="Kardia block explorer" />
+                        <img src={mainnet_mode ? logo : logo_testnet} alt="Kardia block explorer" />
                     </div>
                 </Link>
                 <div className="kai-header-container-mobile-menu" >
@@ -182,7 +185,7 @@ export const KAIHeader = () => {
             <Navbar.Header>
                 <Link to="/" className="navbar-brand logo">
                     <div className="kai-logo-container">
-                        <img src={logo} alt="Kardia block explorer" />
+                        <img src={mainnet_mode ? logo : logo_testnet} alt="Kardia block explorer" />
                     </div>
                 </Link>
             </Navbar.Header>
@@ -203,10 +206,6 @@ export const KAIHeader = () => {
                     </Dropdown>
 
                     <Nav.Item eventKey="tokens" onClick={() => { history.push("/tokens") }}>Tokens</Nav.Item>
-
-                    {/* <Nav.Item eventKey="network" onClick={() => { history.push("/network") }}>Network</Nav.Item> */}
-                    {/* <Nav.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Nav.Item> */}
-                    {/* <Nav.Item eventKey="documentation" href="/documentation" >Documentation</Nav.Item> */}
                     <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
                     {
                         isLoggedIn() ? (

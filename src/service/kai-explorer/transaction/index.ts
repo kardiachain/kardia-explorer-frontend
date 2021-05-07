@@ -16,7 +16,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
-            const isContractCreation = (o.input && o.input !== '0x') && ((o.contractAddress && o.contractAddress !== '0x') || (!o.contractAddress || o.to === '0x'));
+            const isContractCreation = o.contractAddress && o.contractAddress !== '0x'
             return {
                 txHash: o.hash,
                 from: o.from,
@@ -25,7 +25,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 time: o.time,
                 blockNumber: o.blockNumber,
                 blockHash: o.blockHash,
-                status: o.status === 1,
+                status: o.status,
                 failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
@@ -58,7 +58,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
         totalTxs: responseJSON?.data?.total || 0,
         transactions: rawTxs.map((o: any) => {
             const createdTime = (new Date(o.time)).getTime()
-            const isContractCreation = (o.input && o.input !== '0x') && ((o.contractAddress && o.contractAddress !== '0x') || (!o.contractAddress || o.to === '0x'));
+            const isContractCreation = o.contractAddress && o.contractAddress !== '0x'
             return {
                 txHash: o.hash,
                 from: o.from,
@@ -67,7 +67,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 time: o.time,
                 blockNumber: o.blockNumber,
                 blockHash: o.blockHash,
-                status: o.status === 1,
+                status: o.status,
                 failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
@@ -101,7 +101,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
     const nowTime = (new Date()).getTime()
     const createdTime = (new Date(tx.time)).getTime()
     const gasUsedPercent = tx.gasUsed / tx.gas * 100;
-    const isContractCreation = (tx.input && tx.input !== '0x') && ((tx.contractAddress && tx.contractAddress !== '0x') || (!tx.contractAddress || tx.to === '0x'));
+    const isContractCreation = tx.contractAddress && tx.contractAddress !== '0x'
     return {
         txHash: tx.hash,
         from: tx.from,
@@ -110,7 +110,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         time: tx.time,
         blockNumber: tx.blockNumber,
         blockHash: tx.blockHash,
-        status: tx.status === 1,
+        status: tx.status,
         failedReason: defineFailedReason(tx.status === 1, tx.gasUsed, tx.gas),
         nonce: tx.nonce,
         age: (nowTime - createdTime),
@@ -146,7 +146,7 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
             totalTxs: responseJSON?.data?.total || 0,
             transactions: rawTxs.map((o: any) => {
                 const createdTime = (new Date(o.time)).getTime()
-                const isContractCreation = (o.input && o.input !== '0x') && ((o.contractAddress && o.contractAddress !== '0x') || (!o.contractAddress || o.to === '0x'));
+                const isContractCreation = o.contractAddress && o.contractAddress !== '0x'
                 return {
                     txHash: o.hash,
                     from: o.from,
@@ -155,7 +155,7 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                     time: o.time,
                     blockNumber: o.blockNumber,
                     blockHash: o.blockHash,
-                    status: o.status === 1,
+                    status: o.status,
                     failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
                     nonce: o.nonce,
                     age: (nowTime - createdTime),
