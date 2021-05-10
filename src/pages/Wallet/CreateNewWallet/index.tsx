@@ -23,8 +23,8 @@ const CreateNewWallet = () => {
                             <div className="icon">
                                 <Icon icon="key" size="lg" />
                             </div>
-                            <div> A unique private key will be generated for you </div>
-                            <div>Remember to save your private key! If you lose your private key, you will not able to recover your wallet</div>
+                            <div>A unique private key will be generated.</div>
+                            <div>Remember to save your private key and do not lose them!</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
                     </div>
@@ -36,7 +36,7 @@ const CreateNewWallet = () => {
                             <div className="icon">
                                 <Icon icon="file-download" size="lg" />
                             </div>
-                            <div>You must be DOWNLOAD and SAVE the following Keystore File. You will need it and your password to access your wallet.</div>
+                            <div>DOWNLOAD and SAVE the provided Keystore File. Both Keystore File and Password are necessary to access your wallet.</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
                     </div>
@@ -48,14 +48,14 @@ const CreateNewWallet = () => {
                             <div className="icon">
                                 <Icon icon="paragraph" size="lg" />
                             </div>
-                            <div>REMEMBER to save your mnemonic phrase. You will need this to access your wallet</div>
+                            <div>REMEMBER to save your mnemonic phrase to access your wallet.</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
                     </div>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <div style={{textAlign: 'center'}}>
-                <span className="color-white">You already have a wallet. </span>
+                <span className="color-white">Already have a wallet?</span>
                 <Link to="/access-wallet" className="orange-highlight" style={{ fontWeight: 600 }}> Access Now.</Link>
             </div>
         </div>

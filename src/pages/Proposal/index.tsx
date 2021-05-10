@@ -42,7 +42,7 @@ const Proposal = () => {
                         size={isMobile ? "normal" : "big"}
                         style={{ marginBottom: 10 }}
                         onClick={() => { isLoggedIn() ? history.push("/wallet/proposal-create") : history.push('/wallet') }}>
-                        Create Proposal
+                        Create Proposals
                     </Button>
                 </FlexboxGrid.Item>
             </FlexboxGrid>

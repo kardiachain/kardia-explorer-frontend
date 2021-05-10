@@ -96,7 +96,7 @@ const CreateByMnemonic = () => {
                                                 </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
-                                        <div className="color-white">Please make sure you <span className="note">WROTE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
+                                        <div className="color-white">Please make sure you <span className="note">WRITE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
                                                 <Button size="big" className="kai-button-gray">Back</Button>
