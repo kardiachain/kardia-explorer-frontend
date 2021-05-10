@@ -111,7 +111,7 @@ const Validators = () => {
                             <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }}
                                 onClick={() => { isLoggedIn() ? history.push("/wallet/staking/for-validator") : history.push('/wallet') }}
                             >
-                                Register to become validator
+                                Register to become a validator
                             </Button> : <></>
                     }
                 </FlexboxGrid.Item>
