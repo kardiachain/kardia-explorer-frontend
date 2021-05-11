@@ -113,7 +113,14 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
-                await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, addressKRC20.contractAddress, addressKRC20.tokenDecimals);
+                const response = await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, addressKRC20.contractAddress, addressKRC20.tokenDecimals);
+
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${response}`) },
+                    seeTxdetail: true
+                });
+
             } catch (error) {
                 try {
                     const errJson = JSON.parse(error?.message);
