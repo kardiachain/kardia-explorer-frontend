@@ -6,7 +6,6 @@ import KRC20_API from '../resources/smc-compile/krc20-abi.json'
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
 import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS } from '../config/api';
 import { gasLimitDefault, cellValue, cellValueKRC20, NotificationSuccess, NotifiMessage } from '../common';
-import { kardiaContract, kardiaProvider } from '../plugin/kardia-tool';
 import PROPOSAL_ABI from '../resources/smc-compile/proposal-abi.json';
 import kardiaClient from '../plugin/kardia-dx';
 
@@ -45,7 +44,7 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
                 gas: gasLimit,
                 value: cellAmountDel,
                 to: toAddress,
-               });
+               }, true);
 
             return txHash;
 
@@ -81,7 +80,7 @@ const sendKRC20ByExtension = async (toAddress: string, amount: number, gasPrice:
                 value: 0,
                 data: data,
                 to: tokenContract,
-               });
+               }, true);
 
             return response;
 
@@ -167,11 +166,11 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
                     value: cellAmountDel,
                     data: txData,
                     to: smcAddr
-                   });
+                   }, true);
 
                    NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${response}`) },
+                    callback: () => { window.open(`/tx/${response.transactionHash}`) },
                     seeTxdetail: true
                     });
 
