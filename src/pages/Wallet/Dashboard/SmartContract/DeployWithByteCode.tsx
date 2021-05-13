@@ -114,13 +114,6 @@ const DeployWithByteCode = () => {
                     })
 
                     setLoading(false);
-
-                    NotificationSuccess({
-                        description: NotifiMessage.TransactionSuccess,
-                        callback: () => { window.open(`/tx/${response.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-
                     setDeployedContract(response.contractAddress)
                     setContractJsonFileDownload({
                         contractAddress: response.contractAddress,

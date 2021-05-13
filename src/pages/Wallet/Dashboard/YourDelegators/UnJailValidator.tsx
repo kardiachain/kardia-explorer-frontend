@@ -26,6 +26,7 @@ const UnJailValidator = ({ validator = {} as Validator, showModel, setShowModel,
             // Case: Unjail validator interact with Kai Extension Wallet
             if (isExtensionWallet()) {
                 unjailValidatorByEW(valSmcAddr)
+                reFetchData();
                 setShowModel(false)
                 setIsLoading(false)
                 return

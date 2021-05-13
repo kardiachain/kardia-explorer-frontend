@@ -203,6 +203,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                 yourDelegationAmount: Number(yourDelAmount)
             } as CreateValParams;
             await createValidatorByEW(params, gasLimit, gasPrice)
+            reFetchData();
             return;
         }
 
