@@ -135,6 +135,8 @@ const DelegatorCreate = () => {
 
             try {
                 await delegateByEW(valSmcAddr, Number(delAmount), gasPrice, gasLimit)
+                clearCache();
+                fetchData();
             } catch (error) {
                 try {
                     const errJson = JSON.parse(error?.message);

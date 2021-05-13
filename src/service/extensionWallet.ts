@@ -5,10 +5,9 @@ import VALIDATOR_ABI from '../resources/smc-compile/validator-abi.json';
 import KRC20_API from '../resources/smc-compile/krc20-abi.json'
 import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
 import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS } from '../config/api';
-import { gasLimitDefault, cellValue, cellValueKRC20, NotificationSuccess, NotifiMessage } from '../common';
+import { gasLimitDefault, cellValue, cellValueKRC20, ShowNotify } from '../common';
 import PROPOSAL_ABI from '../resources/smc-compile/proposal-abi.json';
 import kardiaClient from '../plugin/kardia-dx';
-
 declare global {
     interface Window {
         kardiachain: any;
@@ -36,17 +35,17 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
             const accounts = await window.web3.eth.getAccounts();
             const cellAmountDel = amount ? cellValue(amount) : 0;
             if (accounts && accounts[0]) {
-            const kardiaTransaction = kardiaClient.transaction;
+                const kardiaTransaction = kardiaClient.transaction;
 
-            const txHash =  await kardiaTransaction.sendTransactionToExtension({
-                from: accounts[0],
-                gasPrice: gasPrice,
-                gas: gasLimit,
-                value: cellAmountDel,
-                to: toAddress,
-               }, true);
-
-            return txHash;
+                const response = await kardiaTransaction.sendTransactionToExtension({
+                    from: accounts[0],
+                    gasPrice: gasPrice,
+                    gas: gasLimit,
+                    value: cellAmountDel,
+                    to: toAddress,
+                }, true);
+                
+                ShowNotify(response);      
 
             } else {
                 Alert.error("Please login Kardia Extension Wallet.", 5000)
@@ -73,18 +72,17 @@ const sendKRC20ByExtension = async (toAddress: string, amount: number, gasPrice:
 
             const kardiaTransaction = kardiaClient.transaction;
 
-            const response =  await kardiaTransaction.sendTransactionToExtension({
+            const response = await kardiaTransaction.sendTransactionToExtension({
                 from: accounts[0],
                 gasPrice: gasPrice,
                 gas: gasLimit,
                 value: 0,
                 data: data,
                 to: tokenContract,
-               }, true);
+            }, true);
 
-            return response;
+            ShowNotify(response);     
 
-      
         } catch (error) {
             console.error(error);
         }
@@ -111,17 +109,18 @@ const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasP
                 const kardiaContract = kardiaClient.contract;
                 kardiaContract.updateAbi(abiJson);
                 kardiaContract.updateByteCode(bytecode);
-               const txData = kardiaContract.deploy({params}).txData();
-               const kardiaTransaction = kardiaClient.transaction;
-               const response =  await kardiaTransaction.sendTransactionToExtension({
-                from: accounts[0],
-                gasPrice: gasPrice,
-                gas: gasLimit,
-                value: cellAmountDel,
-                data: txData,
-               }, true);
+                const txData = kardiaContract.deploy({ params }).txData();
+                const kardiaTransaction = kardiaClient.transaction;
+                const response = await kardiaTransaction.sendTransactionToExtension({
+                    from: accounts[0],
+                    gasPrice: gasPrice,
+                    gas: gasLimit,
+                    value: cellAmountDel,
+                    data: txData,
+                }, true);
 
-               return response;
+                ShowNotify(response);     
+                return response
 
 
             } else {
@@ -156,23 +155,19 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
                 const kardiaContract = kardiaClient.contract;
                 const kardiaTransaction = kardiaClient.transaction;
                 kardiaContract.updateAbi(abiJson);
-                
+
                 const txData = kardiaContract.invokeContract(methodName, params).txData();
 
-                const response =  await kardiaTransaction.sendTransactionToExtension({
+                const response = await kardiaTransaction.sendTransactionToExtension({
                     from: accounts[0],
                     gasPrice: gasPrice,
                     gas: gasLimit,
                     value: cellAmountDel,
                     data: txData,
                     to: smcAddr
-                   }, true);
+                }, true);
 
-                   NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${response.transactionHash}`) },
-                    seeTxdetail: true
-                    });
+                ShowNotify(response);      
 
             } else {
                 Alert.error("Please login Kardia Extension Wallet.", 5000)

@@ -112,13 +112,8 @@ const SendKaiNative = () => {
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
-                const response = await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+                await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
 
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${response.transactionHash}`) },
-                    seeTxdetail: true
-                });
 
             } catch (error) {
                 try {

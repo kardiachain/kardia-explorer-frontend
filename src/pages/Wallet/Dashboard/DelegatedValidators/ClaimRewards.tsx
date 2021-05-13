@@ -39,9 +39,11 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
 
             if (isExtensionWallet()) {
                 // Case: claim reward interact with Kai Extension Wallet
-                withdrawRewardByEW(valSmcAddr)
-                setShowConfirmWithdrawRewardsModal(false)
                 setIsLoading(true)
+                await withdrawRewardByEW(valSmcAddr)
+                await reFetchData()
+                setShowConfirmWithdrawRewardsModal(false)
+                setIsLoading(false)
                 return
             }
 
