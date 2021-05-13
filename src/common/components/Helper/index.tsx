@@ -13,7 +13,7 @@ export const Helper = ({info, style, className}:{info: string; style?: React.CSS
 
 export const ShowNotify = (response: any) => { 
       // transaction fail
-      if (response.status == 0) {
+      if (response.status === 0) {
         NotificationError({
             description: NotifiMessage.TransactionError,
             callback: () => { window.open(`/tx/${response.transactionHash}`) },
@@ -23,7 +23,7 @@ export const ShowNotify = (response: any) => {
     
     // transaction success
 
-    if(response.status == 1){
+    if(response.status === 1){
         NotificationSuccess({
             description: NotifiMessage.TransactionSuccess,
             callback: () => { window.open(`/tx/${response.transactionHash}`) },
