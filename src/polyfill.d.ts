@@ -9,3 +9,4 @@ declare module 'kardia-tool/lib/common/lib/abi';
 declare module 'kardia-tool/lib/common/lib/utils';
 declare module 'toformat';
 declare module 'big.js';
+declare module 'solc';

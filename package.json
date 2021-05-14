@@ -29,6 +29,7 @@
     "ethers": "^5.0.24",
     "highcharts": "^9.1.0",
     "highcharts-react-official": "^3.0.0",
+    "import-scripts": "^1.0.0",
     "jsbi": "^3.1.4",
     "kardia-js-sdk": "^0.3.4",
     "kardia-tool": "0.0.13-3",

@@ -19,7 +19,7 @@ import ConfirmPassword from '../ConfirmPassword';
 import { isExtensionWallet, useWalletStorage } from '../../../service';
 import CreateProposal from './Proposal';
 import Vote from './Proposal/Vote';
-
+import DeployWithSourceCode from './SmartContract/DeployWithSourceCode'
 const DashboardWallet = () => {
 
     const [activeKey, setActiveKey] = useState("send-transaction");
@@ -88,7 +88,7 @@ const DashboardWallet = () => {
                                         </Dropdown.Item>
                                     </Dropdown>
                                     <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract">
-                                        {/* <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item> */}
+                                        <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item>
                                         <Dropdown.Item
                                             eventKey="byte-code-deployment"
                                             onClick={() => { history.push("/wallet/smc/byte-code-deployment") }}>Deploy Contract
@@ -117,7 +117,7 @@ const DashboardWallet = () => {
                     <Route path="/wallet/staking/:valAddr">
                         <DelegatorCreate />
                     </Route>
-                    {/* <AuthRouter component={DeployWithSourceCode} path="/wallet/smc/source-code-deployment" /> */}
+                    <AuthRouter component={DeployWithSourceCode} path="/wallet/smc/source-code-deployment" />
                     <AuthRouter component={DeployWithByteCode} path="/wallet/smc/byte-code-deployment" />
                     <AuthRouter component={InteracteWithSmc} path="/wallet/smc/interaction" />
                     <AuthRouter component={CreateProposal} path="/wallet/proposal-create" />
