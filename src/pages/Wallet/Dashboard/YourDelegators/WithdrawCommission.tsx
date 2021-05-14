@@ -26,6 +26,7 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
             // Case: withdraw commission rewards interact with Kai Extension Wallet
             if (isExtensionWallet()) {
                 withdrawCommissionByEW(valSmcAddr)
+                reFetchData();
                 setIsLoading(false)
                 setShowModel(false)
                 return;

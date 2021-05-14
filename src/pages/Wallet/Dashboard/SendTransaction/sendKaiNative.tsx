@@ -113,6 +113,8 @@ const SendKaiNative = () => {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
                 await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
+
+
             } catch (error) {
                 try {
                     const errJson = JSON.parse(error?.message);

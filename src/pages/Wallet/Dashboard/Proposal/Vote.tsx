@@ -58,6 +58,7 @@ const Vote = () => {
         try {
             if (isExtensionWallet()) {
                 await proposalVotingByEW(Number(proposalId), voteOption)
+                fetchData();
             } else {
                 const rs = await voting(walletLocalState.account, Number(proposalId), voteOption)
                 if (rs && rs.status === 1) {

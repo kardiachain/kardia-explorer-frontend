@@ -1,5 +1,7 @@
 import React from 'react'
 import { Icon, Whisper, Tooltip } from 'rsuite'
+import { NotifiMessage } from '../../constant'
+import { NotificationError, NotificationSuccess } from '../Notification'
 
 export const Helper = ({info, style, className}:{info: string; style?: React.CSSProperties; className?: string }) => {
     return (
@@ -7,4 +9,25 @@ export const Helper = ({info, style, className}:{info: string; style?: React.CSS
             <Icon className={className} style={style} icon="info"/>
         </Whisper>
     )
+}
+
+export const ShowNotify = (response: any) => { 
+      // transaction fail
+      if (response.status === 0) {
+        NotificationError({
+            description: NotifiMessage.TransactionError,
+            callback: () => { window.open(`/tx/${response.transactionHash}`) },
+            seeTxdetail: true
+        });
+    }
+    
+    // transaction success
+
+    if(response.status === 1){
+        NotificationSuccess({
+            description: NotifiMessage.TransactionSuccess,
+            callback: () => { window.open(`/tx/${response.transactionHash}`) },
+            seeTxdetail: true
+        });
+    }
 }

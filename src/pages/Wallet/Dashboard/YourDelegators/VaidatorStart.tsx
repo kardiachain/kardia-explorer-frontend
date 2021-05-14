@@ -26,6 +26,7 @@ const VaidatorStart = ({ validator = {} as Validator, showModel, setShowModel, r
             // Case: start validator interact with Kai Extension Wallet
             if (isExtensionWallet()) {
                 startValidatorByEW(valSmcAddr)
+                reFetchData();
                 setIsLoading(false)
                 setShowModel(false)
                 return

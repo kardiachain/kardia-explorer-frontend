@@ -104,13 +104,25 @@ const DeployWithByteCode = () => {
             if (isExtensionWallet()) {
                 try {
                     const params = construcFields && construcFields.length > 0 ? construcFields.map(item => JSON.parse(item.value)) : []
-                    deploySMCByEW({
+                    setLoading(true);
+                    const response = await deploySMCByEW({
                         abi: abi,
                         bytecode: byteCode,
                         params: params,
                         gasLimit: gasLimit,
                         gasPrice: gasPrice
                     })
+
+                    setLoading(false);
+                    setDeployedContract(response.contractAddress)
+                    setContractJsonFileDownload({
+                        contractAddress: response.contractAddress,
+                        byteCode: byteCode,
+                        abi: abi
+                    })
+                    setTxDetail(response)
+                    setDeployDone(true)
+
                 } catch (error) {
                     try {
                         const errJson = JSON.parse(error?.message);

@@ -92,7 +92,8 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
 
         // Case: update validator's commission interact with Kai Extension Wallet
         if (isExtensionWallet()) {
-            updateValidatorCommissionByEW(valSmcAddr, Number(commissionRate), gasLimit, gasPrice)
+            await updateValidatorCommissionByEW(valSmcAddr, Number(commissionRate), gasLimit, gasPrice)
+            reFetchData();
             cancelEdit()
             return;
         }

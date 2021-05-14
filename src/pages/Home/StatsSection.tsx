@@ -5,16 +5,18 @@ import { calculateTPS, getTotalStats } from '../../service';
 import './stat.css'
 
 const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {
-    const [tps, setTps] = useState(0)
+    const [tps, setTps] = useState('0')
     const [totalStats, setTotalStats] = useState({} as TotalStats)
 
     useEffect(() => {
-        const tps = calculateTPS(blockList);
-        setTps(tps);
-        (async () => {
-            const totalStats = await getTotalStats();
-            setTotalStats(totalStats)
-        })()
+        try {
+            const tps = calculateTPS(blockList);
+            setTps(tps);
+            (async () => {
+                const totalStats = await getTotalStats();
+                setTotalStats(totalStats)
+            })()
+        } catch (error) { }
     }, [blockList]);
 
     return (

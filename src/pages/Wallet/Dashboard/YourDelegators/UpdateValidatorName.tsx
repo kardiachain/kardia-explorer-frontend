@@ -77,7 +77,8 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
         }
         // Case: update validator's name interact with Kai Extension Wallet
         if (isExtensionWallet()) {
-            updateValidatorNameByEW(valSmcAddr, valName, updateFee, gasLimit, gasPrice)
+            await updateValidatorNameByEW(valSmcAddr, valName, updateFee, gasLimit, gasPrice)
+            reFetchData();
             setShowModel(false);
             resetForm();
             return

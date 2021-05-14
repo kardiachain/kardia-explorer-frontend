@@ -114,6 +114,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
                 await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, addressKRC20.contractAddress, addressKRC20.tokenDecimals);
+
             } catch (error) {
                 try {
                     const errJson = JSON.parse(error?.message);
