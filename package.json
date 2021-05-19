@@ -61,10 +61,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
-    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
-    "server": "node-env-run server --exec nodemon | pino-colada",
-    "proxy": "http://localhost:3001",
-    "dev": "run-p server start"
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -4,43 +4,26 @@ import AceEditor from "react-ace";
 import "ace-mode-solidity/build/remix-ide/mode-solidity";
 import "ace-builds/src-noconflict/theme-xcode";
 import { Button } from '../../../../common';
-import worker from './worker.js';
+import { compileSourceCode } from '../../../../service';
+
 const DeployWithSourceCode = () => {
 
     const [smcCode, setSmcCode] = useState('')
     const [currentStep, setCurrentStep] = useState(1)
-
-    var workerInstance = new Worker(worker as any);
-
-    const compileSourceCode = () => {
-        console.log(workerInstance);
-        workerInstance.postMessage('hello from main')
-        // workerInstance.postMessage(JSON.stringify({
-        //     language: "Solidity",
-        //     sources: { "": { content: smcCode } },
-        //     settings: { optimizer: { enabled: true }, outputSelection: { "*": { "*": ['evm.bytecode.object', 'evm.gasEstimates', 'evm.assembly'] } } }
-        // }));
-
-        // workerInstance.addEventListener('message', (message) => {
-        //     console.log('message', message);
-        // });
+    const [byteCode, setByteCode] = useState('');
 
 
-        // var output = JSON.parse(solc.compile(JSON.stringify(input)))
-        // for (var contractName in output.contracts['hello.sol']) {
-        //     console.log(contractName + ': ' + output.contracts['hello.sol'][contractName].evm.bytecode.object)
-        // }
+    const getByteCode = async () => {
+        const param = {
+            sourceCode: JSON.stringify(smcCode)
+        }
+        const response = await compileSourceCode(param);
+        for (var contractName in response.contracts['output.sol']) {
+            const byteCode = response.contracts['output.sol'][contractName].evm.bytecode.object
+            console.log('byteCode', byteCode);
+            setByteCode(byteCode);
+        }
     }
-
-    workerInstance.addEventListener('message', (message) => {
-        console.log('message from worker', message);
-    });
-
-    workerInstance.postMessage(JSON.stringify({
-        language: "Solidity",
-        sources: { "": { content: smcCode } },
-        settings: { optimizer: { enabled: true }, outputSelection: { "*": { "*": ['evm.bytecode.object', 'evm.gasEstimates', 'evm.assembly'] } } }
-    }));
 
     return (
         <div>
@@ -87,7 +70,7 @@ const DeployWithSourceCode = () => {
                                 </Steps>
                             </Panel>
 
-                            <Button className="kai-button get-started" onClick={compileSourceCode}>Compile</Button>
+                            <Button className="kai-button get-started" onClick={getByteCode}>Compile</Button>
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
                 </FormGroup>

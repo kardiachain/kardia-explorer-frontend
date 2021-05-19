@@ -45,3 +45,16 @@ export const getAccounts = async (page: number, size: number, sort: any): Promis
         })
     } as HolderAccountResponse
 }
+
+export const compileSourceCode = async (sourceCode: any) => {
+    const response = await fetch('http://localhost:3001/compile', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify(sourceCode)
+    });
+    const responseJSON = await response.json();
+    return responseJSON.output;
+}
