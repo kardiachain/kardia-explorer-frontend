@@ -38,11 +38,10 @@ const onSuccess = () => {
 
 const renderHashString = (hash: string, headCount?: number, tailCount?: number) => {
     if (!hash) return null;
-    const _hash = toChecksum(hash.toLowerCase())
     return (
         <span className="hex">
-            {truncate(_hash, headCount || 10, tailCount || 4)}{' '}
-            {renderCopyButton({str: _hash, size: "xs", callback: () => copyToClipboard(_hash, onSuccess)})}
+            {truncate(hash, headCount || 10, tailCount || 4)}{' '}
+            {renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
         </span>
     );
 }
