@@ -1,4 +1,3 @@
-import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, ButtonProps, Icon, IconButton, Tooltip, Whisper } from 'rsuite';
