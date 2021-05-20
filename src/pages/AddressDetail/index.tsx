@@ -10,6 +10,7 @@ import {
     numberFormat,
     renderHashString
 } from '../../common';
+import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 import { TABLE_CONFIG } from '../../config';
 import './addressDetail.css'
 import { getHolderAccount, getKrc20Txs, getTokens, getTxsByAddress, ITokenTranferTx } from '../../service';
@@ -33,6 +34,9 @@ const AddressDetail = () => {
     const [krc20TxsSize, setKrc20TxsSize] = useState(TABLE_CONFIG.limitDefault)
     const [krc20TxsLoading, setKrc20TxsLoading] = useState(false)
 
+    useEffect(() => {
+        window.history.replaceState(null, document.title, `/address/${toChecksum(address.toLowerCase())}`)
+    }, [address])
 
     useEffect(() => {
         (async () => {
