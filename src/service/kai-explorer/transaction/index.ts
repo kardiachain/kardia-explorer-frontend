@@ -201,7 +201,8 @@ export const getContractEvents = async (page: number, size: number, txHash: stri
 }
 
 export const getTokens = async (address: string): Promise<any> => {
-    const response = await fetch(`${END_POINT}addresses/${address}/tokens`, GET_REQUEST_OPTION);
+    const _address = toChecksum(address.toLowerCase())
+    const response = await fetch(`${END_POINT}addresses/${_address}/tokens`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     if (responseJSON.data.data != null) {
         return {
