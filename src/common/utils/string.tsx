@@ -1,3 +1,4 @@
+import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, ButtonProps, Icon, IconButton, Tooltip, Whisper } from 'rsuite';
@@ -37,10 +38,11 @@ const onSuccess = () => {
 
 const renderHashString = (hash: string, headCount?: number, tailCount?: number) => {
     if (!hash) return null;
+    const _hash = toChecksum(hash.toLowerCase())
     return (
         <span className="hex">
-            {truncate(hash, headCount || 10, tailCount || 4)}{' '}
-            {renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
+            {truncate(_hash, headCount || 10, tailCount || 4)}{' '}
+            {renderCopyButton({str: _hash, size: "xs", callback: () => copyToClipboard(_hash, onSuccess)})}
         </span>
     );
 }

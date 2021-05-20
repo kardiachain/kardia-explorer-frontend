@@ -1,4 +1,5 @@
 import { KRC20, UNVERIFY_TOKEN_DEFAULT_BASE64 } from "../../../common";
+import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
 import { IContractList, ITokenContract, ITokenDetails, ITokenHolderByTokenList, ITokenTranferTxList } from "./type";
 
@@ -78,7 +79,8 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
 }
 
 export const getKrc20Txs = async (address: string, page: number, size: number): Promise<ITokenTranferTxList> => {
-    const response = await fetch(`${END_POINT}token/txs?address=${address}&page=${page}&limit=${size}`, GET_REQUEST_OPTION);
+    const _address = toChecksum(address.toLowerCase())
+    const response = await fetch(`${END_POINT}token/txs?address=${_address}&page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
     

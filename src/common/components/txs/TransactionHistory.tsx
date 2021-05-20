@@ -8,6 +8,7 @@ import { weiToKAI } from '../../utils/amount';
 import { numberFormat } from '../../utils/number';
 import { millisecondToHMS, renderHashStringAndTooltip, renderHashToRedirect } from '../../utils/string';
 import { StakingIcon } from '../IconCustom';
+import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -80,7 +81,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                                 return (
                                     <div>
                                         {
-                                            address === rowData.from ? renderHashStringAndTooltip(rowData.from, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
+                                            toChecksum(address.toLowerCase()) === rowData.from ? renderHashStringAndTooltip(rowData.from, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
                                                 hash: rowData.from,
                                                 headCount: isMobile ? 5 : 12,
                                                 tailCount: 4,
@@ -100,7 +101,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                                 return (
                                     <div>
                                         {
-                                            address === rowData.from ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
+                                            toChecksum(address.toLowerCase()) === rowData.from ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
                                         }
                                     </div>
                                 )
@@ -117,7 +118,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                                             !rowData.isSmcInteraction || !rowData.toName ? (
                                                 <>
                                                     {
-                                                        address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
+                                                        toChecksum(address.toLowerCase()) === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
                                                             hash: rowData.to,
                                                             headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,
