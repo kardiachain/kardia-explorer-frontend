@@ -1,15 +1,20 @@
 import { gasLimitDefault } from '../../common';
-import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
+import { KardiaContract, KardiaUtils } from 'kardia-js-sdk';
+import { RPC_ENDPOINT } from '../../config';
 
 const deploySmartContract = async (object: SMCDeployObject) => {
     try {
         const paramsJson = JSON.parse(JSON.stringify(object.params))
-        const contract = kardiaContract(kardiaProvider, object.bytecode, JSON.parse(object.abi));
+        const contract = new KardiaContract({
+            provider: RPC_ENDPOINT,
+            bytecodes: object.bytecode,
+            abi: JSON.parse(object.abi)
+        })
         const deployment = contract.deploy(paramsJson);
         const deployResult = await deployment.send(object.account.privatekey, {
             gas: object.gasLimit,
-            gasPrice: object.gasPrice ? object.gasPrice * 10**9 : 10**9,
-        });
+            gasPrice: KardiaUtils.toHydro(object.gasPrice ? object.gasPrice : 1, 'oxy'),
+        }, true);
         return deployResult;
     } catch (err) {
         throw err
@@ -19,18 +24,18 @@ const deploySmartContract = async (object: SMCDeployObject) => {
 const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
     try {
         const paramsJson = JSON.parse(JSON.stringify(object.params))
-        const contract = kardiaContract(kardiaProvider, "", JSON.parse(object.abi));
-        const invoke = contract.invoke({
-          params: paramsJson,
-          name: object.functionName
-        });
+        const contract = new KardiaContract({
+            provider: RPC_ENDPOINT,
+            abi: JSON.parse(object.abi)
+        })
+        const invoke = contract.invokeContract(object.functionName, paramsJson);
         let invokeResult = null; 
         if (!object.isPure) {
             invokeResult = await invoke.send(object.account.privatekey, object.contractAddress, {
               amount: object.amount,
               gas: object.gasLimit,
-              gasPrice: object.gasPrice ? object.gasPrice * 10**9 : 10**9
-            });
+              gasPrice: KardiaUtils.toHydro(object.gasPrice ? object.gasPrice : 1, 'oxy')
+            }, true);
             return invokeResult;
           } else {
             invokeResult = await invoke.call(object.contractAddress, {}, "latest");
@@ -47,16 +52,12 @@ const invokeCallData = async (
     methodName: string,
     params: any[]
 ) => {
-    const invoke = await contractInstance.invoke({
-        params: params,
-        name: methodName
-    })
-
+    const invoke = await contractInstance.invokeContract(methodName, params)
     return await invoke.call(contractAddr, {}, "latest")
 }
 
 const invokeSendAction = async (
-    contractInstance: any,
+    abi: any,
     contractAddr: string,
     methodName: string,
     params: any[],
@@ -68,16 +69,17 @@ const invokeSendAction = async (
     if (!account.publickey) {
         return;
     }
-    const invoke = await contractInstance.invoke({
-        params: params,
-        name: methodName,
-    });
-    const invokeResult = await invoke.send(account.privatekey, contractAddr, {
+    const contract = new KardiaContract({
+        provider: RPC_ENDPOINT,
+        abi: abi
+    })
+    const invoke = await contract.invokeContract(methodName, params);
+    const invokeResult = await invoke.send(account.privatekey, KardiaUtils.toChecksum(contractAddr), {
         from: account.publickey,
         amount: amountVal,
         gas: gasLimit,
-        gasPrice: gasPrice ? gasPrice * 10**9 : 10**9
-    });
+        gasPrice: KardiaUtils.toHydro(gasPrice, 'oxy')
+    }, true);
 
     return invokeResult;
 }

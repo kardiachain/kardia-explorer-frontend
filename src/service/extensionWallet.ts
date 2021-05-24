@@ -3,11 +3,11 @@ import Web3 from 'web3';
 import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../resources/smc-compile/validator-abi.json';
 import KRC20_API from '../resources/smc-compile/krc20-abi.json'
-import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
 import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS } from '../config/api';
 import { gasLimitDefault, cellValue, cellValueKRC20, ShowNotify } from '../common';
 import PROPOSAL_ABI from '../resources/smc-compile/proposal-abi.json';
 import kardiaClient from '../plugin/kardia-dx';
+import { KardiaUtils } from 'kardia-js-sdk';
 declare global {
     interface Window {
         kardiachain: any;
@@ -197,180 +197,132 @@ const delegateByEW = async (smcAddr: string, amount: number, gasPrice: number, g
 
 // Create validator interact with Kai Extension Wallet
 const createValidatorByEW = async (params: CreateValParams, gasLimit: number, gasPrice: number) => {
-    try {
-        // convert value percent type to decimal type
-        const commissionRateDec = cellValue(params.commissionRate / 100);
-        const maxRateDec = cellValue(params.maxRate / 100);
-        const maxRateChangeDec = cellValue(params.maxChangeRate / 100);
-        // Convert validator name to bytes
-        const valName = fromAscii(params.valName);
-        const delAmountDec = Number(params.yourDelegationAmount);
-        await invokeSMCByEW({
-            abi: STAKING_ABI,
-            smcAddr: STAKING_SMC_ADDRESS,
-            methodName: 'createValidator',
-            params: [valName, commissionRateDec, maxRateDec, maxRateChangeDec],
-            amount: delAmountDec,
-            gasLimit: gasLimit,
-            gasPrice: gasPrice
-        })
-    } catch (error) {
-        throw error
-    }
+    // convert value percent type to decimal type
+    const commissionRateDec = cellValue(params.commissionRate / 100);
+    const maxRateDec = cellValue(params.maxRate / 100);
+    const maxRateChangeDec = cellValue(params.maxChangeRate / 100);
+    // Convert validator name to bytes
+    const valName = KardiaUtils.bytes.fromAscii(params.valName);
+    const delAmountDec = Number(params.yourDelegationAmount);
+    await invokeSMCByEW({
+        abi: STAKING_ABI,
+        smcAddr: STAKING_SMC_ADDRESS,
+        methodName: 'createValidator',
+        params: [valName, commissionRateDec, maxRateDec, maxRateChangeDec],
+        amount: delAmountDec,
+        gasLimit: gasLimit,
+        gasPrice: gasPrice
+    })
 }
 
 const updateValidatorNameByEW = async (smcAddr: string, name: string, amountFee: number, gasLimit: number, gasPrice: number) => {
-    try {
-        // Convert new validator name to bytes
-        const valName = fromAscii(name);
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'updateName',
-            params: [valName],
-            amount: amountFee
-        })
-    } catch (error) {
-        throw error
-    }
+    // Convert new validator name to bytes
+    const valName = KardiaUtils.bytes.fromAscii(name);
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'updateName',
+        params: [valName],
+        amount: amountFee
+    })
 }
 
 const updateValidatorCommissionByEW = async (smcAddr: string, newCommissionRate: number, gasLimit: number, gasPrice: number) => {
-    try {
         // convert value percent type to decimal type
-        const newCommissionRateDec = cellValue(newCommissionRate / 100);
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'updateCommissionRate',
-            params: [newCommissionRateDec],
-            gasLimit: gasLimit,
-            gasPrice: gasPrice
-        })
-    } catch (error) {
-        throw error
-    }
+    const newCommissionRateDec = cellValue(newCommissionRate / 100);
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'updateCommissionRate',
+        params: [newCommissionRateDec],
+        gasLimit: gasLimit,
+        gasPrice: gasPrice
+    })
 }
 
 const startValidatorByEW = async (smcAddr: string) => {
-    try {
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'start',
-            params: []
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'start',
+        params: []
+    })
 }
 
 
 const withdrawCommissionByEW = async (smcAddr: string) => {
-    try {
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'withdrawCommission',
-            params: []
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'withdrawCommission',
+        params: []
+    })
 }
 
 const withdrawRewardByEW = async (smcAddr: string) => {
-    try {
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'withdrawRewards',
-            params: []
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'withdrawRewards',
+        params: []
+    })
 }
 
 const withdrawDelegatedAmountByEW = async (smcAddr: string) => {
-    try {
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'withdraw',
-            params: []
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'withdraw',
+        params: []
+    })
 }
 
 const undelegateWithAmountByEW = async (smcAddr: string, amountUndel: number) => {
-    try {
-        // convert value number type to decimal type
-        const amountUndelDec = cellValue(amountUndel);
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'undelegateWithAmount',
-            params: [amountUndelDec]
-        })
-    } catch (error) {
-        throw error
-    }
+    // convert value number type to decimal type
+    const amountUndelDec = cellValue(amountUndel);
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'undelegateWithAmount',
+        params: [amountUndelDec]
+    })
 }
 
 const undelegateAllByEW = async (smcAddr: string) => {
-    try {
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'undelegate',
-            params: []
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'undelegate',
+        params: []
+    })
 }
 
 const unjailValidatorByEW = async (smcAddr: string) => {
-    try {
-        await invokeSMCByEW({
-            abi: VALIDATOR_ABI,
-            smcAddr: smcAddr,
-            methodName: 'unjail',
-            params: []
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: VALIDATOR_ABI,
+        smcAddr: smcAddr,
+        methodName: 'unjail',
+        params: []
+    })
 }
 
 const createProposalByEW = async (paramsKey: any[], paramsValue: any[]) => {
-    try {
-        await invokeSMCByEW({
-            abi: PROPOSAL_ABI,
-            smcAddr: PROPOSAL_SMC_ADDRESS,
-            methodName: 'addProposal',
-            params: [paramsKey, paramsValue],
-            amount: 500000
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: PROPOSAL_ABI,
+        smcAddr: PROPOSAL_SMC_ADDRESS,
+        methodName: 'addProposal',
+        params: [paramsKey, paramsValue],
+        amount: 500000
+    })
 }
 
 const proposalVotingByEW = async (proposalId: number, voteOption: number) => {
-    try {
-        await invokeSMCByEW({
-            abi: PROPOSAL_ABI,
-            smcAddr: PROPOSAL_SMC_ADDRESS,
-            methodName: 'addVote',
-            params: [proposalId, voteOption]
-        })
-    } catch (error) {
-        throw error
-    }
+    await invokeSMCByEW({
+        abi: PROPOSAL_ABI,
+        smcAddr: PROPOSAL_SMC_ADDRESS,
+        methodName: 'addVote',
+        params: [proposalId, voteOption]
+    })
 }
 
 export {

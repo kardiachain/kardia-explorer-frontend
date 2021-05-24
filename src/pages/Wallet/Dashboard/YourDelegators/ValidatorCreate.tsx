@@ -261,6 +261,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
                         <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                         <NumberInputFormat
+                            decimalScale={0}
                             value={gasLimit}
                             placeholder="Gas Limit"
                             className="input"
@@ -351,6 +352,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                             <Helper style={{ marginLeft: 5 }} info={HelperMessage.AmountSelftDelegation} />
                         </ControlLabel>
                         <NumberInputFormat
+                            decimalScale={18}
                             value={yourDelAmount}
                             placeholder="Must be at least 25,000 KAI"
                             className="input"

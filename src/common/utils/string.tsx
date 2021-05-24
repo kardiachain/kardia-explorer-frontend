@@ -164,7 +164,18 @@ const randomRGBColor = (): string => {
     const ggg =  Math.floor(Math.random() * 255);
     const bbb =  Math.floor(Math.random() * 255);
     return `rgb(${rrr},${ggg},${bbb})`
-} 
+}
+
+const compareString = (str1: string, str2: string): boolean => {
+    try {
+        if (str1 && str2 && str1.toLowerCase() === str2.toLowerCase()) {
+            return true
+        }
+        return false;
+    } catch (error) {
+        return false
+    }
+}
 export { 
     renderHashString, 
     copyToClipboard, 
@@ -177,5 +188,6 @@ export {
     renderCopyButton,
     renderStringAndTooltip,
     millisecondToDay,
-    onSuccess
+    onSuccess,
+    compareString
 }

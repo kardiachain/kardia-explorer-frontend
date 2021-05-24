@@ -359,6 +359,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                             <ControlLabel className="color-white">Amount (KAI) (required)</ControlLabel>
                                         </FlexboxGrid>
                                         <NumberInputFormat
+                                            decimalScale={18}
                                             value={unStakeAmount}
                                             placeholder="Enter Your Amount"
                                             className="input"
