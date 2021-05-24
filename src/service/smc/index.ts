@@ -52,11 +52,7 @@ const invokeCallData = async (
     methodName: string,
     params: any[]
 ) => {
-    const invoke = await contractInstance.invokeContract({
-        params: params,
-        name: methodName
-    })
-
+    const invoke = await contractInstance.invokeContract(methodName, params)
     return await invoke.call(contractAddr, {}, "latest")
 }
 
