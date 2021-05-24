@@ -197,6 +197,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                     <SelectPicker
                                         placeholder="Your KRC20 token"
                                         className="dropdown-custom"
+                                        virtualized={false}
                                         style={{
                                             width: '100%'
                                         }}
