@@ -20,7 +20,7 @@ import {
 } from '../../../../common';
 import kardiaClient from '../../../../plugin/kardia-dx';
 import { sendKRC20ByExtension, getAccount, isExtensionWallet } from '../../../../service';
-import { toChecksum } from 'kardia-tool/lib/common/lib/account';
+import { KardiaUtils } from 'kardia-js-sdk';
 
 const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     tokens: any[];
@@ -42,7 +42,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
 
     const walletLocalState = useRecoilValue(walletState)
 
-    const [addressKRC20, setAddressKRC20] = useState(null as any)
+    const [krc20Token, setKrc20Token] = useState(null as any)
     const [addressKRC20Err, setAddressKRC20Err] = useState('')
 
     const validateKRC20 = (krc20: any): boolean => {
@@ -107,13 +107,13 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
 
 
     const submitSend = async () => {
-        if (!validateKRC20(addressKRC20) || !validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
+        if (!validateKRC20(krc20Token) || !validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
-                await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, addressKRC20.contractAddress, addressKRC20.tokenDecimals);
+                await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, krc20Token.contractAddress, krc20Token.tokenDecimals);
 
             } catch (error) {
                 try {
@@ -141,7 +141,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
         setToAddressErr('');
         setAmountErr('');
         setAddressKRC20Err('');
-        setAddressKRC20(null)
+        setKrc20Token(null)
     }
 
     const confirmSend = async () => {
@@ -155,17 +155,26 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     const transferKRC20 = async () => {
         const privateKey = walletLocalState.account.privatekey;
         const krc20 = kardiaClient.krc20;
-        krc20.address = addressKRC20.contractAddress;
-        krc20.decimals = addressKRC20.tokenDecimals;
+        krc20.address = krc20Token.contractAddress;
+        krc20.decimals = krc20Token.tokenDecimals;
 
         try {
-            const toAddressChecksum = toAddress ? toChecksum(toAddress.toLowerCase()) : ''
-            const response = await krc20.transfer(privateKey, toAddressChecksum, Number(amount), {});
-            NotificationSuccess({
-                description: NotifiMessage.TransactionSuccess,
-                callback: () => { window.open(`/tx/${response.transactionHash}`) },
-                seeTxdetail: true
-            });
+            const toAddressChecksum = toAddress ? KardiaUtils.toChecksum(toAddress) : ''
+            const { transactionHash, status } = await krc20.transfer(privateKey, toAddressChecksum, Number(amount), {}, true);
+            if (status === 1) {
+                NotificationSuccess({
+                    description: NotifiMessage.TransactionSuccess,
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
+                    seeTxdetail: true
+                });
+            } else {
+                NotificationError({
+                    description: NotifiMessage.TransactionError,
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
+                    seeTxdetail: true
+                });
+            }
+
         } catch (error) {
             try {
                 const errJson = JSON.parse(error?.message);
@@ -202,10 +211,10 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                             width: '100%'
                                         }}
                                         data={tokens}
-                                        value={addressKRC20}
+                                        value={krc20Token}
                                         onChange={(value) => {
                                             validateKRC20(value)
-                                            setAddressKRC20(value)
+                                            setKrc20Token(value)
                                         }}
                                         renderMenuItem={(label, item: any) => {
                                             return (
@@ -239,6 +248,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                     <ControlLabel className="color-white">Amount (required)</ControlLabel>
                                     <NumberInputFormat
+                                        decimalScale={krc20Token && krc20Token.tokenDecimals}
                                         value={amount}
                                         placeholder="Ex. 1000"
                                         className="input"
@@ -247,12 +257,13 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                             validateAmount(event.value)
                                         }} />
                                     <ErrMessage message={amountErr} />
-                                    {addressKRC20 ? <p style={{ marginTop: '8px' }} className="property-content">Available: {numberFormat(convertValueFollowDecimal(addressKRC20.balance, addressKRC20.tokenDecimals))} {addressKRC20.tokenSymbol}</p> : <></>}
+                                    {krc20Token ? <p style={{ marginTop: '8px' }} className="property-content">Available: {numberFormat(convertValueFollowDecimal(krc20Token.balance, krc20Token.tokenDecimals))} {krc20Token.tokenSymbol}</p> : <></>}
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                     <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                     <NumberInputFormat
                                         value={gasLimit}
+                                        decimalScale={0}
                                         placeholder="Gas limit"
                                         className="input"
                                         onChange={(event) => {
@@ -334,7 +345,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
-                                        {numberFormat(amount)} {addressKRC20 && addressKRC20.tokenSymbol ? addressKRC20.tokenSymbol : ''}
+                                        {numberFormat(amount)} {krc20Token && krc20Token.tokenSymbol ? krc20Token.tokenSymbol : ''}
                                     </div>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>

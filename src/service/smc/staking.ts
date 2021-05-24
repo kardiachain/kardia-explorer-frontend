@@ -1,128 +1,76 @@
 import { cellValue } from '../../common';
 import { STAKING_SMC_ADDRESS } from '../../config';
-import { kardiaContract, kardiaProvider } from '../../plugin/kardia-tool';
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../../resources/smc-compile/validator-abi.json';
-import { fromAscii } from 'kardia-tool/lib/common/lib/bytes';
-import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import { invokeSendAction } from '.';
-
-const stakingContract = kardiaContract(kardiaProvider, "", STAKING_ABI);
-const validatorContract = kardiaContract(kardiaProvider, "", VALIDATOR_ABI);
+import { KardiaUtils } from 'kardia-js-sdk';
 
 
 
 const delegateAction = async (valSmcAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
-    try {
-        const cellAmountDel = cellValue(amountDel);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "delegate", [], account, cellAmountDel, gasLimit, gasPrice);
-    } catch (error) {
-        throw error;
-    }
+    const cellAmountDel = cellValue(amountDel);
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "delegate", [], account, cellAmountDel, gasLimit, gasPrice);
 }
 
 const createValidator = async (params: CreateValParams, account: Account, gasLimit: number, gasPrice: number) => {
-    try {
-        // convert value percent type to decimal type
-        const commissionRateDec = cellValue(params.commissionRate / 100);
-        const maxRateDec = cellValue(params.maxRate / 100);
-        const maxRateChangeDec = cellValue(params.maxChangeRate / 100);
-        // Convert validator name to bytes
-        const valName = fromAscii(params.valName);
-        // Convert amount to decimal type
-        const delAmountDec = cellValue(params.yourDelegationAmount);
-        return await invokeSendAction(stakingContract, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, delAmountDec, gasLimit, gasPrice);
-    } catch (error) {
-        throw error;
-    }
+    // convert value percent type to decimal type
+    const commissionRateDec = cellValue(params.commissionRate / 100);
+    const maxRateDec = cellValue(params.maxRate / 100);
+    const maxRateChangeDec = cellValue(params.maxChangeRate / 100);
+    // Convert validator name to bytes
+    const valName = KardiaUtils.bytes.fromAscii(params.valName);
+    // Convert amount to decimal type
+    const delAmountDec = cellValue(params.yourDelegationAmount);
+    return await invokeSendAction(STAKING_ABI, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, delAmountDec, gasLimit, gasPrice);
 }
 
 const updateValidatorName = async (valSmcAddr: string, name: string, account: Account, amountFee: number, gasLimit: number, gasPrice: number) => {
-    try {
-        // Convert amount to decimal type
-        const amountFeeDec = cellValue(amountFee);
-        // Convert new validator name to bytes
-        const valName = fromAscii(name);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "updateName", [valName], account, amountFeeDec, gasLimit, gasPrice);
-    } catch (error) {
-        throw error;
-    }
+    // Convert amount to decimal type
+    const amountFeeDec = cellValue(amountFee);
+    // Convert new validator name to bytes
+    const valName = KardiaUtils.bytes.fromAscii(name);
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "updateName", [valName], account, amountFeeDec, gasLimit, gasPrice);
 }
 
 const updateValidatorCommission = async (valSmcAddr: string, newCommissionRate: number, account: Account, gasLimit: number, gasPrice: number) => {
-    try {
-        // convert value percent type to decimal type
-        const newCommissionRateDec = cellValue(newCommissionRate / 100);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "updateCommissionRate", [newCommissionRateDec], account, 0, gasLimit, gasPrice);
-    } catch (error) {
-        throw error;
-    }
+    // convert value percent type to decimal type
+    const newCommissionRateDec = cellValue(newCommissionRate / 100);
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "updateCommissionRate", [newCommissionRateDec], account, 0, gasLimit, gasPrice);
 }
 
 const startValidator = async (valSmcAddr: string, account: Account) => {
-    try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "start", [], account, 0);
-    } catch (error) {
-        throw error;
-    }
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "start", [], account, 0);
 }
 
 const withdrawCommission = async (valSmcAddr: string, account: Account) => {
-    try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "withdrawCommission", [], account, 0);
-    } catch (error) {
-        throw error
-    }
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "withdrawCommission", [], account, 0);
 }
 
 const withdrawReward = async (valSmcAddr: string, account: Account) => {
-    try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "withdrawRewards", [], account, 0);
-    } catch (error) {
-        throw error;
-    }
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "withdrawRewards", [], account, 0);
 }
 
 const withdrawDelegatedAmount = async (valSmcAddr: string, account: Account) => {
-    try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "withdraw", [], account, 0);
-    } catch (error) {
-        throw error;
-    }
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "withdraw", [], account, 0);
 }
 
 const undelegateWithAmount = async (valSmcAddr: string, amountUndel: number, account: Account) => {
-    try {
-        // convert value number type to decimal type
-        const amountUndelDec = cellValue(amountUndel);
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "undelegateWithAmount", [amountUndelDec], account, 0);
-    } catch (error) {
-        throw error;
-    }
+    // convert value number type to decimal type
+    const amountUndelDec = cellValue(amountUndel);
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "undelegateWithAmount", [amountUndelDec], account, 0);
 }
 
 const undelegateAll = async (valSmcAddr: string, account: Account) => {
-    try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "undelegate", [], account, 0);
-    } catch (error) {
-        throw error;
-    }
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "undelegate", [], account, 0);
 }
 
 const unjailValidator = async (valSmcAddr: string, account: Account) => {
-    try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "unjail", [], account, 0);
-    } catch (error) {
-        throw error;
-    }
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "unjail", [], account, 0);
 }
 
 const stopValidator = async (valSmcAddr: string, account: Account) => {
-    try {
-        return await invokeSendAction(validatorContract, toChecksum(valSmcAddr.toLowerCase()), "stop", [], account, 0);
-    } catch (error) {
-        throw error;
-    }
+    return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "stop", [], account, 0);
+
 }
 
 export {

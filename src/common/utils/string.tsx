@@ -1,4 +1,3 @@
-import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, ButtonProps, Icon, IconButton, Tooltip, Whisper } from 'rsuite';
@@ -38,11 +37,10 @@ const onSuccess = () => {
 
 const renderHashString = (hash: string, headCount?: number, tailCount?: number) => {
     if (!hash) return null;
-    const _hash = toChecksum(hash.toLowerCase())
     return (
         <span className="hex">
-            {truncate(_hash, headCount || 10, tailCount || 4)}{' '}
-            {renderCopyButton({str: _hash, size: "xs", callback: () => copyToClipboard(_hash, onSuccess)})}
+            {truncate(hash, headCount || 10, tailCount || 4)}{' '}
+            {renderCopyButton({str: hash, size: "xs", callback: () => copyToClipboard(hash, onSuccess)})}
         </span>
     );
 }
@@ -166,7 +164,18 @@ const randomRGBColor = (): string => {
     const ggg =  Math.floor(Math.random() * 255);
     const bbb =  Math.floor(Math.random() * 255);
     return `rgb(${rrr},${ggg},${bbb})`
-} 
+}
+
+const compareString = (str1: string, str2: string): boolean => {
+    try {
+        if (str1 && str2 && str1.toLowerCase() === str2.toLowerCase()) {
+            return true
+        }
+        return false;
+    } catch (error) {
+        return false
+    }
+}
 export { 
     renderHashString, 
     copyToClipboard, 
@@ -179,5 +188,6 @@ export {
     renderCopyButton,
     renderStringAndTooltip,
     millisecondToDay,
-    onSuccess
+    onSuccess,
+    compareString
 }

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { kardiaApi, kardiaCommon } from '../plugin/kardia-tool';
-import { cellValue } from '../common';
-import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import CryptoJS from 'crypto-js';
+import { kardiaAccount, kardiaTx } from '../plugin/kardia-dx';
+import { KardiaUtils } from 'kardia-js-sdk';
 
 const initialValue: WalletStore = {
     privatekey: '',
@@ -147,7 +146,7 @@ export const logoutWallet = () => {
 
 export const getBalanceByAddress = async (address: string) => {
     try {
-        const balance = await kardiaApi.balance(address, '', null)
+        const balance = await kardiaAccount.getBalance(address)
         return balance
     } catch (error) {
         console.error(error)
@@ -160,7 +159,7 @@ export const getAccount = (): Account => {
         const walletstoreDecode = window.atob(walletstoreStr || '')
         const walletstoreJson = JSON.parse(walletstoreDecode) || initialValue;
         return {
-            publickey: walletstoreJson.address ? toChecksum(walletstoreJson.address.toLowerCase()) : '',
+            publickey: walletstoreJson.address ? KardiaUtils.toChecksum(walletstoreJson.address) : '',
             privatekey: walletstoreJson.privatekey
         } as Account
     } catch (error) {
@@ -169,17 +168,13 @@ export const getAccount = (): Account => {
 }
 
 export const generateTx = async (fromAccount: Account, toAddr: string, amount: number, gasLimit: number, gasPrice: number) => {
-    const cellAmount = cellValue(amount);
-    let nonce = await kardiaApi.accountNonce(fromAccount.publickey);
-    const tx = await kardiaCommon.txGenerator(
-        toAddr,
-        cellAmount,
+    const nonce = await kardiaAccount.getNonce(fromAccount.publickey)
+    const txHash = await kardiaTx.sendTransaction({
         nonce,
-        gasPrice ? gasPrice * 10**9 : 10**9,
-        gasLimit,
-    );
-    
-    const signedTx = await kardiaCommon.sign(tx, fromAccount.privatekey);
-    const txHash = await kardiaApi.sendSignedTransaction(signedTx.rawTransaction);
+        to: toAddr,
+        gasPrice: KardiaUtils.toHydro(gasPrice, 'oxy'),
+        gas: gasLimit,
+        value: KardiaUtils.toHydro(amount, 'kai'),
+    }, fromAccount.privatekey, true)
     return txHash
 };

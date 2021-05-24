@@ -1,8 +1,8 @@
-import { colors } from "../../../common"
+import { colors, compareString } from "../../../common"
 import { END_POINT, GET_REQUEST_OPTION } from "../config"
-import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import { getCache, setCache } from "../../../plugin/localCache";
 import { ValidatorStats } from "./type";
+import { KardiaUtils } from "kardia-js-sdk";
 
 export const getValidators = async (): Promise<Validator[]> => {
     try {
@@ -20,7 +20,7 @@ export const getValidators = async (): Promise<Validator[]> => {
                 return {
                     rank: i + 1,
                     color: colors[i] || colors[colorIndexRandom],
-                    address: v.address ? toChecksum(v.address.toLowerCase()) : '',
+                    address: v.address ? KardiaUtils.toChecksum(v.address) : '',
                     votingPower: v.votingPowerPercentage,
                     stakedAmount: v.stakedAmount,
                     commissionRate: v.commissionRate,
@@ -28,7 +28,7 @@ export const getValidators = async (): Promise<Validator[]> => {
                     maxRate: v.maxRate,
                     maxChangeRate: v.maxChangeRate,
                     name: v.name,
-                    smcAddress: v.smcAddress ? toChecksum(v.smcAddress.toLowerCase()) : '',
+                    smcAddress: v.smcAddress ? KardiaUtils.toChecksum(v.smcAddress) : '',
                     isProposer: v.role === 2,
                     isValidator: v.role === 1,
                     isRegister: v.role === 0,
@@ -75,7 +75,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             return {} as Validator
         }
         const responseData: Validator = {
-            address: val.address ? toChecksum(val.address.toLowerCase()) : '',
+            address: val.address ? KardiaUtils.toChecksum(val.address) : '',
             votingPower: val.votingPowerPercentage,
             stakedAmount: val.stakedAmount,
             commissionRate: val.commissionRate,
@@ -83,7 +83,7 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             maxRate: val.maxRate,
             maxChangeRate: val.maxChangeRate,
             name: val.name || '',
-            smcAddress: val.smcAddress ? toChecksum(val.smcAddress.toLowerCase()) : '',
+            smcAddress: val.smcAddress ? KardiaUtils.toChecksum(val.smcAddress) : '',
             role: checkValidatorRole(val.role),
             isProposer: val.role === 2,
             isValidator: val.role === 1,
@@ -102,8 +102,8 @@ export const getValidator = async (valAddr: string, page: number, limit: number)
             },
             delegators: val.delegators ? val.delegators.map((del: any, index: number) => {
                 return {
-                    owner: del?.address?.toLowerCase() === val?.address?.toLowerCase(),
-                    address: del.address ? toChecksum(del.address.toLowerCase()) : '',
+                    owner: compareString(del?.address, val?.address),
+                    address: del.address ? KardiaUtils.toChecksum(del.address) : '',
                     stakeAmount: del.stakedAmount,
                     rewardsAmount: del.reward
                 } as Delegator 
@@ -131,8 +131,8 @@ export const getCandidates = async (): Promise<Candidate[]> => {
             return {
                 rank: index + 1,
                 name: v.name,
-                address: v.address ? toChecksum(v.address.toLowerCase()) : '',
-                smcAddress: v.smcAddress ? toChecksum(v.smcAddress.toLowerCase()) : '',
+                address: v.address ? KardiaUtils.toChecksum(v.address) : '',
+                smcAddress: v.smcAddress ? KardiaUtils.toChecksum(v.smcAddress) : '',
                 role: checkValidatorRole(v.role),
                 isProposer: v.role === 2,
                 isValidator: v.role === 1,
@@ -162,9 +162,9 @@ export const getValidatorByDelegator = async (delAddr: string): Promise<YourVali
         const responseData = vals ? vals.map((v: any) => {
             return {
                 validatorName: v.name || '',
-                validatorAddr: v.validator ? toChecksum(v.validator.toLowerCase()) : '',
+                validatorAddr: v.validator ? KardiaUtils.toChecksum(v.validator) : '',
                 yourStakeAmount: v.stakedAmount,
-                validatorSmcAddr: v.validatorContractAddr ? toChecksum(v.validatorContractAddr.toLowerCase()) : '',
+                validatorSmcAddr: v.validatorContractAddr ? KardiaUtils.toChecksum(v.validatorContractAddr) : '',
                 claimableAmount: v.claimableRewards || 0,
                 unbondedAmount: v.totalUnbondedAmount,
                 withdrawableAmount: v.totalWithdrawableAmount,
