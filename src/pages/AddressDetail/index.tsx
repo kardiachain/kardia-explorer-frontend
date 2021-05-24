@@ -140,6 +140,7 @@ const AddressDetail = () => {
                                             placeholder="Search for Token name"
                                             className="dropdown-custom"
                                             data={tokens}
+                                            virtualized={false}
                                             style={{ width: '100%' }}
                                             renderMenuItem={(label, item: any) => {
                                                 return (
