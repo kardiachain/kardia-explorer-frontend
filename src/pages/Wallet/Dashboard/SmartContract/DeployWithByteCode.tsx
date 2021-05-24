@@ -243,6 +243,7 @@ const DeployWithByteCode = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
                                 <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                 <NumberInputFormat
+                                    decimalScale={0}
                                     value={gasLimit}
                                     placeholder="Gas Limit"
                                     className="input"

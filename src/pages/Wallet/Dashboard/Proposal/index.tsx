@@ -201,6 +201,7 @@ const CreateProposal = () => {
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24} style={{ marginBottom: 15 }}>
                                                 <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                                 <NumberInputFormat
+                                                    decimalScale={0}
                                                     value={gasLimit}
                                                     placeholder="Gas Limit"
                                                     className="input"

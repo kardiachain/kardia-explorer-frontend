@@ -1,68 +1,35 @@
 import { fractionDivide, toFixed, toFraction } from "./fraction";
+import { BigNumber } from "bignumber.js";
+import { KardiaUtils } from "kardia-js-sdk";
 
 const cellValue = (kaiValue: any) => {
-  let cellString = removeTrailingZeros(kaiValue);
-  let decimalStr = cellString.split('.')[1];
-  let numberStr = cellString.split('.')[0];
-  if (!decimalStr) {
-    numberStr = numberStr.padEnd(18 + numberStr.length, '0');
-  } else {
-    decimalStr = decimalStr.padEnd(18, '0');
-  }
-  cellString = `${numberStr}${decimalStr || ''}`;
-  return cellString;
+  return KardiaUtils.toHydro(kaiValue, 'kai')
 };
 
 const cellValueKRC20 = (kaiValue: any, decimal: number) => {
-  let cellString = removeTrailingZeros(kaiValue);
-  let decimalStr = cellString.split('.')[1];
-  let numberStr = cellString.split('.')[0];
-  if (!decimalStr) {
-    numberStr = numberStr.padEnd(decimal + numberStr.length, '0');
-  } else {
-    decimalStr = decimalStr.padEnd(decimal, '0');
-  }
-  cellString = `${numberStr}${decimalStr || ''}`;
-  return cellString;
+  const rawValue = new BigNumber(kaiValue);
+  return rawValue.multipliedBy(new BigNumber(10 ** decimal)).toFixed(0, 1)
 };
 
 const weiToKAI = (value: any): any => {
-  if (!value || value === '0') {
-    return 0
-  }
-
-  value = value.toLocaleString('en-US', { useGrouping: false });
-
-  const cellString = value.toString().padStart(36, '0');
-  const kaiNumString = parseInt(cellString.slice(0, 18));
-  const kaiDecimalString = cellString.slice(-18);
-  return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+  try {
+    if (!value || value === '0') return '0'
+    return KardiaUtils.fromHydro(value, 'kai')
+  } catch (error) {  }
 };
 
 const weiToOXY = (value: any): any => {
-  if (!value || value === '0') {
-    return 0
-  }
-
-  value = value.toLocaleString('en-US', { useGrouping: false });
-
-  const cellString = value.toString().padStart(18, '0');
-  const kaiNumString = parseInt(cellString.slice(0, 9));
-  const kaiDecimalString = cellString.slice(-9);
-  return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+  try {
+    if (!value || value === '0') return '0'
+    return KardiaUtils.fromHydro(value, 'oxy')
+  } catch (error) {}
 };
 
 const oxyToKAI = (value: any): any => {
-  if (!value || value === '0') {
-    return 0
-  }
-
-  value = value.toLocaleString('en-US', { useGrouping: false });
-
-  const cellString = value.toString().padStart(18, '0');
-  const kaiNumString = parseInt(cellString.slice(0, 9));
-  const kaiDecimalString = cellString.slice(-9);
-  return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+  try {
+    if (!value || value === '0') return '0'
+    return KardiaUtils.fromHydro(value, 'oxy')
+  } catch (error) { }
 };
 
 const convertValueFollowDecimal = (value: any, decimals: number): any => {

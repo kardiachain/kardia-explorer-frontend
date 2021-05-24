@@ -162,6 +162,7 @@ const StakingCalculator = ({ showModal, setShowModal, validators, totalStakedAmo
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24} style={{ marginBottom: 20 }}>
                                 <ControlLabel className="color-white">Enter your KAI amount (required)</ControlLabel>
                                 <NumberInputFormat
+                                    decimalScale={18}
                                     value={amount}
                                     placeholder="Minimum amount is 1,000"
                                     className="input"
