@@ -1,6 +1,6 @@
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
-import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 import { checkValidatorRole } from "..";
+import { KardiaUtils } from "kardia-js-sdk";
 
 interface TransactionsResponse {
     totalTxs: number;
@@ -136,7 +136,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
     try {
-        const checkSumAddr = address ? toChecksum(address.toLowerCase()) : '';
+        const checkSumAddr = address ? KardiaUtils.toChecksum(address) : '';
         const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const rawTxs = responseJSON?.data?.data || []
@@ -201,7 +201,7 @@ export const getContractEvents = async (page: number, size: number, txHash: stri
 }
 
 export const getTokens = async (address: string): Promise<any> => {
-    const _address = toChecksum(address.toLowerCase())
+    const _address = KardiaUtils.toChecksum(address)
     const response = await fetch(`${END_POINT}addresses/${_address}/tokens`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     if (responseJSON.data.data != null) {

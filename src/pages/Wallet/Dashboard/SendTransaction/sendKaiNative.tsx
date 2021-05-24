@@ -148,17 +148,17 @@ const SendKaiNative = () => {
         }
         setSendBntLoading(true)
         try {
-            const txHash = await generateTx(walletLocalState.account, toAddress, Number(amount), gasLimit, gasPrice)
-            if (txHash) {
+            const {transactionHash, status} = await generateTx(walletLocalState.account, toAddress, Number(amount), gasLimit, gasPrice)
+            if (status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${txHash}`) },
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
                     seeTxdetail: true
                 });
             } else {
                 NotificationError({
                     description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${txHash}`) },
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
                     seeTxdetail: true
                 });
             }
@@ -211,6 +211,7 @@ const SendKaiNative = () => {
                                             }}>Maximum</span>
                                     </FlexboxGrid>
                                     <NumberInputFormat
+                                        decimalScale={18}
                                         value={amount}
                                         placeholder="Ex. 1000"
                                         className="input"
@@ -223,6 +224,7 @@ const SendKaiNative = () => {
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                     <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                     <NumberInputFormat
+                                        decimalScale={0}
                                         value={gasLimit}
                                         placeholder="Gas limit"
                                         className="input"

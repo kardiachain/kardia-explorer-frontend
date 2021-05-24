@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { Alert, Input, InputGroup } from 'rsuite';
 import { onlyInteger } from '../../utils/number';
 import { addressValid, hashValid } from '../../utils/validate';
-import { toChecksum } from 'kardia-tool/lib/common/lib/account';
 import { getBlockBy, getTxByHash, searchAll, SearchItem } from '../../../service';
 import { Button } from '../Button';
+import { KardiaUtils } from 'kardia-js-sdk';
 
 export const SearchSection = () => {
     const [searchInput, setSearchInput] = useState('')
@@ -59,7 +59,7 @@ export const SearchSection = () => {
                 history.push(`/block/${searchInput.trim()}`)
                 break
             case 'address':
-                history.push(`/address/${toChecksum(searchInput ? searchInput.trim().toLowerCase() : '')}`)
+                history.push(`/address/${KardiaUtils.toChecksum(searchInput ? searchInput : '')}`)
                 break;
             default:
                 setSearchInput('')
@@ -70,16 +70,18 @@ export const SearchSection = () => {
     }
 
     const handleClickSuggestItem = (item: SearchItem) => {
-
-        switch (item.type) {
-            case 'KRC20':
-            case 'KRC721':
-                history.push(`/token/${toChecksum(item.address ? item.address.trim().toLowerCase() : '')}`)
-                break;
-            default:
-                history.push(`/address/${toChecksum(item.address ? item.address.trim().toLowerCase() : '')}`)
-                break;
-        }
+        try {
+            const addressChecksum = KardiaUtils.toChecksum(item.address)
+            switch (item.type) {
+                case 'KRC20':
+                case 'KRC721':
+                    history.push(`/token/${addressChecksum}`)
+                    break;
+                default:
+                    history.push(`/address/${addressChecksum}`)
+                    break;
+            }
+        } catch (error) {}
     }
 
     const checkSearchType = async (input: string): Promise<string> => {

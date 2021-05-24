@@ -183,12 +183,12 @@ const DelegatorCreate = () => {
             if (!valSmcAddr) {
                 return
             }
-            const delegate = await delegateAction(valSmcAddr, walletLocalState.account, Number(delAmount), gasLimit, gasPrice);
+            const { transactionHash, status } = await delegateAction(valSmcAddr, walletLocalState.account, Number(delAmount), gasLimit, gasPrice);
 
-            if (delegate && delegate.status === 1) {
+            if (status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${delegate.transactionHash}`) },
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
                     seeTxdetail: true
                 });
                 clearCache();
@@ -196,7 +196,7 @@ const DelegatorCreate = () => {
             } else {
                 NotificationError({
                     description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${delegate.transactionHash}`) },
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
                     seeTxdetail: true
                 });
             }
@@ -445,6 +445,7 @@ const DelegatorCreate = () => {
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} xs={24} style={{ marginBottom: 15 }}>
                                                         <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                                         <NumberInputFormat
+                                                            decimalScale={0}
                                                             value={gasLimit}
                                                             placeholder="Gas Limit"
                                                             className="input"
@@ -479,6 +480,7 @@ const DelegatorCreate = () => {
                                                                 }}>Maximum</span>
                                                         </FlexboxGrid>
                                                         <NumberInputFormat
+                                                            decimalScale={18}
                                                             value={delAmount}
                                                             placeholder="Must be at least 1,000 KAI"
                                                             className="input"
