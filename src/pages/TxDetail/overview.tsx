@@ -183,7 +183,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                                         <div className="property-content">
                                                             <Tag className="tab tab-failed" color="red">FAILED</Tag>
                                                             {
-                                                                txDetail?.failedReason ? <span className="failed-reason-details">{`${txDetail?.failedReason}`}</span> : <></>
+                                                                txDetail?.failedReason ? <span className="failed-reason-details">[{`${txDetail?.failedReason}`}]</span> : <></>
                                                             }
                                                         </div>
                                                     )
