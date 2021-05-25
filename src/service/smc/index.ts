@@ -4,13 +4,12 @@ import { RPC_ENDPOINT } from '../../config';
 
 const deploySmartContract = async (object: SMCDeployObject) => {
     try {
-        const paramsJson = JSON.parse(JSON.stringify(object.params))
         const contract = new KardiaContract({
             provider: RPC_ENDPOINT,
             bytecodes: object.bytecode,
             abi: JSON.parse(object.abi)
         })
-        const deployment = contract.deploy(paramsJson);
+        const deployment = contract.deploy({params: object.params});
         const deployResult = await deployment.send(object.account.privatekey, {
             gas: object.gasLimit,
             gasPrice: KardiaUtils.toHydro(object.gasPrice ? object.gasPrice : 1, 'oxy'),
