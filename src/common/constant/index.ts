@@ -62,3 +62,26 @@ export const TrueOrFalse = [
     { label: 'Yes', value: true },
     { label: 'No', value: false }
 ]
+
+export const CompilerVersion = [
+    {
+        label: 'v0.8.4+commit.c7e474f2',
+        value: 'v0.8.4+commit.c7e474f2'
+    },
+    {
+        label: 'v0.8.3+commit.8d00100c',
+        value: 'v0.8.3+commit.8d00100c'
+    },
+    {
+        label: 'v0.8.2+commit.661d1103',
+        value: 'v0.8.2+commit.661d1103'
+    },
+    {
+        label: 'v0.8.1+commit.df193b15',
+        value: 'v0.8.1+commit.df193b15'
+    },
+    {
+        label: 'v0.8.0+commit.c7dfd78e',
+        value: 'v0.8.0+commit.c7dfd78e'
+    }
+]
