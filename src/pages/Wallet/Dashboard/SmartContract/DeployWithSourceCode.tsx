@@ -27,46 +27,46 @@ const DeployWithSourceCode = () => {
 
     const validateOptimize = (value: Boolean) => {
 
-        if (!value) {
-            setOptimizeError(ErrorMessage.Require);
-            return false;
-        }
+    //     if (!value) {
+    //         setOptimizeError(ErrorMessage.Require);
+    //         return false;
+    //     }
 
-        // setOptimizeError("");
-        return true
+    //     setOptimizeError("");
+    //     return true
     }
 
     const validateCompilerVersion = (value: String) => {
 
-        if (!value) {
-            setCompilerVersionError(ErrorMessage.Require);
-            return false;
-        }
+        // if (!value) {
+        //     setCompilerVersionError(ErrorMessage.Require);
+        //     return false;
+        // }
 
         // setCompilerVersionError("");
-        return true
+        // return true
     }
 
     const validateContractAddress = (value: any) => {
 
-        if (!value) {
-            setContractAddressError(ErrorMessage.Require);
-            return false;
-        }
+        // if (!value) {
+        //     setContractAddressError(ErrorMessage.Require);
+        //     return false;
+        // }
 
         // setContractAddressError("");
-        return true
+        // return true
     }
 
     const validateSourceCode = (value: any) => {
 
-        if (!value) {
-            setSourceCodeError(ErrorMessage.Require);
-            return false;
-        }
+        // if (!value) {
+        //     setSourceCodeError(ErrorMessage.Require);
+        //     return false;
+        // }
 
         // setSourceCodeError("");
-        return true
+        // return true
     }
 
 
