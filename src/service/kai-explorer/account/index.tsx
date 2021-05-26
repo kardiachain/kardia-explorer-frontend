@@ -47,7 +47,7 @@ export const getAccounts = async (page: number, size: number, sort: any): Promis
 }
 
 export const compileSourceCode = async (sourceCode: any) => {
-    const response = await fetch('http://localhost:3001/compile', {
+    const response = await fetch('https://nodejs.kardiachain.io/compile', {
         method: 'POST',
         headers: {
             'Accept': 'application/json, text/plain, */*',

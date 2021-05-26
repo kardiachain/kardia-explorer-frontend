@@ -1,34 +1,100 @@
 import React, { useState } from 'react';
-import { Col, FlexboxGrid, Form, FormControl, FormGroup, Icon, Panel, SelectPicker, Steps } from 'rsuite';
+import { Col, FlexboxGrid, Form, FormControl, FormGroup, SelectPicker } from 'rsuite';
 import AceEditor from "react-ace";
 import "ace-mode-solidity/build/remix-ide/mode-solidity";
 import "ace-builds/src-noconflict/theme-monokai";
-import { Button, CompilerVersion, TrueOrFalse } from '../../../../common';
+import { Button, CompilerVersion, ErrMessage, ErrorMessage, TrueOrFalse } from '../../../../common';
 import { compileSourceCode } from '../../../../service';
+import './style.css'
 
 const DeployWithSourceCode = () => {
 
     const [smcCode, setSmcCode] = useState('')
+    const [sourceCodeError, setSourceCodeError] = useState('')
     const [byteCode, setByteCode] = useState('');
+
     const [contractAddress, setContractAddress] = useState('');
-    const [optimize, setOptimize] = useState('');
+    const [contractAddressError, setContractAddressError] = useState('')
+
+    const [optimize, setOptimize] = useState<Boolean>();
+    const [optimizeError, setOptimizeError] = useState('')
+
     const [compilerVersion, setCompilerVersion] = useState('');
+    const [compilerVersionError, setCompilerVersionError] = useState('')
+
     const [constructorArgument, setConstructorArgument] = useState('');
 
 
+    const validateOptimize = (value: Boolean) => {
+
+        if (!value) {
+            setOptimizeError(ErrorMessage.Require);
+            return false;
+        }
+
+        // setOptimizeError("");
+        return true
+    }
+
+    const validateCompilerVersion = (value: String) => {
+
+        if (!value) {
+            setCompilerVersionError(ErrorMessage.Require);
+            return false;
+        }
+
+        // setCompilerVersionError("");
+        return true
+    }
+
+    const validateContractAddress = (value: any) => {
+
+        if (!value) {
+            setContractAddressError(ErrorMessage.Require);
+            return false;
+        }
+
+        // setContractAddressError("");
+        return true
+    }
+
+    const validateSourceCode = (value: any) => {
+
+        if (!value) {
+            setSourceCodeError(ErrorMessage.Require);
+            return false;
+        }
+
+        // setSourceCodeError("");
+        return true
+    }
+
 
     const getByteCode = async () => {
-        console.log('compilerVersion', compilerVersion);
+        // if (!validateContractAddress(optimize as Boolean) ||
+        //     !validateCompilerVersion(compilerVersion) ||
+        //     !validateSourceCode(smcCode) ||
+        //     !validateOptimize(contractAddress as any)) {
+        //     return;
+        // }
+
         const param = {
             sourceCode: JSON.stringify(smcCode),
-            compilerVersion: JSON.stringify(compilerVersion)
+            compilerVersion: JSON.stringify(compilerVersion),
+            isOptimize: JSON.stringify(optimize)
         }
         const response = await compileSourceCode(param);
-        console.log('response', response);
         // for (var contractName in response.contracts['hello.sol']) {
         //     const byteCode = response.contracts['hello.sol'][contractName].evm.bytecode.object
         //     setByteCode(byteCode);
         // }
+    }
+
+    const resetAll = () => {
+        setOptimizeError("");
+        setSourceCodeError("");
+        setCompilerVersionError("");
+        setContractAddressError("");
     }
 
     const verify = () => {
@@ -41,7 +107,7 @@ const DeployWithSourceCode = () => {
     return (
         <div>
             <Form>
-                <div className="row" style={{ display: 'inline-flex', gap: '12px', marginBottom: '16px' }}>
+                <div className="row wrapper" style={{ display: 'inline-flex', gap: '12px', marginBottom: '16px', width: '100%' }}>
                     <div className="flex-1" style={{ flex: 1 }}>
                         <p className="rs-control-label color-white">
                             Contract Address
@@ -52,8 +118,11 @@ const DeployWithSourceCode = () => {
                             value={contractAddress}
                             onChange={(value) => {
                                 setContractAddress(value)
+                                validateContractAddress(value)
                             }}
+                            style={{ width: '100%' }}
                         />
+                        <ErrMessage message={contractAddressError} />
                     </div>
 
                     <div className="flex-1" style={{ flex: 1 }}>
@@ -67,12 +136,14 @@ const DeployWithSourceCode = () => {
                             value={compilerVersion}
                             onChange={(value) => {
                                 setCompilerVersion(value)
+                                validateCompilerVersion(value)
                             }}
                             style={{ width: '100%' }}
                         />
+                        <ErrMessage message={compilerVersionError} />
                     </div>
 
-                    <div className="flex-1" style={{ flex: 1 }}>
+                    <div>
                         <p className="rs-control-label color-white">
                             Optimization
                     </p>
@@ -83,9 +154,11 @@ const DeployWithSourceCode = () => {
                             value={optimize}
                             onChange={(value) => {
                                 setOptimize(value)
+                                validateOptimize(value)
                             }}
                             style={{ width: '100%' }}
                         />
+                        <ErrMessage message={optimizeError} />
                     </div>
                 </div>
             </Form>
@@ -112,12 +185,16 @@ const DeployWithSourceCode = () => {
                                     enableSnippets: true,
                                     showLineNumbers: true,
                                 }}
-                                onChange={setSmcCode}
+                                onChange={(value) => {
+                                    setSmcCode(value)
+                                    validateSourceCode(value)
+                                }}
                             />
+                            <ErrMessage message={sourceCodeError} />
 
                             <p className="rs-control-label color-white" style={{ marginTop: '16px' }}>Constructor Arguments</p>
                             <FormControl rows={20}
-                                style={{ minWidth: 100 }}
+                                style={{ minWidth: 100, height: 200 }}
                                 name="argument"
                                 componentClass="textarea"
                                 className="input"
@@ -131,7 +208,7 @@ const DeployWithSourceCode = () => {
 
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 20, paddingLeft: 0 }}>
                             <Button size="big" className="kai-button get-started" onClick={getByteCode}>Verify</Button>
-                            <Button size="big" className="kai-button-gray">Reset</Button>
+                            <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
                         </FlexboxGrid.Item>
 
                     </FlexboxGrid>
