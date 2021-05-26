@@ -13,6 +13,7 @@ import {
 import { TABLE_CONFIG } from '../../config';
 import './addressDetail.css'
 import { getHolderAccount, getKrc20Txs, getTokens, getTxsByAddress, ITokenTranferTx } from '../../service';
+import { KardiaUtils } from 'kardia-js-sdk';
 
 
 const AddressDetail = () => {
@@ -33,6 +34,9 @@ const AddressDetail = () => {
     const [krc20TxsSize, setKrc20TxsSize] = useState(TABLE_CONFIG.limitDefault)
     const [krc20TxsLoading, setKrc20TxsLoading] = useState(false)
 
+    useEffect(() => {
+        window.history.replaceState(null, document.title, `/address/${KardiaUtils.toChecksum(address)}`)
+    }, [address])
 
     useEffect(() => {
         (async () => {
@@ -136,6 +140,7 @@ const AddressDetail = () => {
                                             placeholder="Search for Token name"
                                             className="dropdown-custom"
                                             data={tokens}
+                                            virtualized={false}
                                             style={{ width: '100%' }}
                                             renderMenuItem={(label, item: any) => {
                                                 return (

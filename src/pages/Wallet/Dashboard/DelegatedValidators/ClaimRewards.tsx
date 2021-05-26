@@ -47,17 +47,17 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 return
             }
 
-            const result = await withdrawReward(valSmcAddr, walletLocalState.account);
-            if (result && result.status === 1) {
+            const {status, transactionHash} = await withdrawReward(valSmcAddr, walletLocalState.account);
+            if (status === 1) {
                 NotificationSuccess({
                     description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
                     seeTxdetail: true
                 });
             } else {
                 NotificationError({
                     description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
+                    callback: () => { window.open(`/tx/${transactionHash}`) },
                     seeTxdetail: true
                 });
             }

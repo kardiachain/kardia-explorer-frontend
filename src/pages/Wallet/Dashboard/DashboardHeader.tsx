@@ -159,6 +159,7 @@ const DashboardHeader = () => {
                                 placeholder="Your KRC20 token"
                                 className="dropdown-custom balanceSelect"
                                 data={tokens}
+                                virtualized={false}
                                 renderMenuItem={(label, item: any) => {
                                     return (
                                         <div className="rowToken">
@@ -166,7 +167,7 @@ const DashboardHeader = () => {
                                                 <img src={item.logo} alt="logo" width="12px" height="12px" style={{ marginRight: '4px' }} />
                                                 <p>{item.tokenSymbol}</p>
                                             </div>
-                                            <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals))}</span>
+                                            <span>{numberFormat(convertValueFollowDecimal(item.balance, item.tokenDecimals), 4)}</span>
                                         </div>
                                     );
                                 }}

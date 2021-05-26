@@ -385,6 +385,7 @@ const InteracteWithSmc = () => {
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={24}>
                                                 <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
                                                 <NumberInputFormat
+                                                    decimalScale={0}
                                                     value={gasLimit}
                                                     placeholder="Gas Limit"
                                                     className="input"

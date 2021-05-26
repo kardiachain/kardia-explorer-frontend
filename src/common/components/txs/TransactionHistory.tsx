@@ -6,7 +6,7 @@ import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
 import { weiToKAI } from '../../utils/amount';
 import { numberFormat } from '../../utils/number';
-import { millisecondToHMS, renderHashStringAndTooltip, renderHashToRedirect } from '../../utils/string';
+import { compareString, millisecondToHMS, renderHashStringAndTooltip, renderHashToRedirect } from '../../utils/string';
 import { StakingIcon } from '../IconCustom';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -80,7 +80,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                                 return (
                                     <div>
                                         {
-                                            address === rowData.from ? renderHashStringAndTooltip(rowData.from, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
+                                            compareString(address, rowData.from) ? renderHashStringAndTooltip(rowData.from, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
                                                 hash: rowData.from,
                                                 headCount: isMobile ? 5 : 12,
                                                 tailCount: 4,
@@ -100,7 +100,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                                 return (
                                     <div>
                                         {
-                                            address === rowData.from ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
+                                            compareString(address, rowData.from) ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
                                         }
                                     </div>
                                 )
@@ -117,7 +117,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                                             !rowData.isSmcInteraction || !rowData.toName ? (
                                                 <>
                                                     {
-                                                        address === rowData.to ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
+                                                        compareString(address, rowData.to) ? renderHashStringAndTooltip(rowData.to, isMobile ? 5 : 12, 4, true) : renderHashToRedirect({
                                                             hash: rowData.to,
                                                             headCount: isMobile ? 5 : 12,
                                                             tailCount: 4,

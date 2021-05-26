@@ -5,7 +5,7 @@
 }
 .failed-reason-details {
     margin-left: 5px;
-    color: var(--hyperlink-color);
+    color: #fff;
     font-size: 12px;
     font-style: italic;
 }

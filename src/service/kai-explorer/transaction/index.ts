@@ -1,6 +1,6 @@
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
-import { toChecksum } from 'kardia-tool/lib/common/lib/account'
 import { checkValidatorRole } from "..";
+import { KardiaUtils } from "kardia-js-sdk";
 
 interface TransactionsResponse {
     totalTxs: number;
@@ -26,7 +26,7 @@ export const getTransactions = async (page: number, size: number): Promise<Trans
                 blockNumber: o.blockNumber,
                 blockHash: o.blockHash,
                 status: o.status,
-                failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
+                failedReason: defineFailedReason(o),
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
@@ -68,7 +68,7 @@ export const getTxsByBlockHeight = async (blockHeight: any, page: number, size: 
                 blockNumber: o.blockNumber,
                 blockHash: o.blockHash,
                 status: o.status,
-                failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
+                failedReason: defineFailedReason(o),
                 nonce: o.nonce,
                 age: (nowTime - createdTime),
                 transactionIndex: o.transactionIndex,
@@ -111,7 +111,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
         blockNumber: tx.blockNumber,
         blockHash: tx.blockHash,
         status: tx.status,
-        failedReason: defineFailedReason(tx.status === 1, tx.gasUsed, tx.gas),
+        failedReason: defineFailedReason(tx),
         nonce: tx.nonce,
         age: (nowTime - createdTime),
         transactionIndex: tx.transactionIndex,
@@ -136,7 +136,7 @@ export const getTxByHash = async (txHash: string): Promise<KAITransaction> => {
 
 export const getTxsByAddress = async (address: string, page: number, size: number): Promise<TransactionsResponse> => {
     try {
-        const checkSumAddr = address ? toChecksum(address.toLowerCase()) : '';
+        const checkSumAddr = address ? KardiaUtils.toChecksum(address) : '';
         const response = await fetch(`${END_POINT}addresses/${checkSumAddr}/txs?page=${page}&limit=${size}`, GET_REQUEST_OPTION)
         const responseJSON = await response.json()
         const rawTxs = responseJSON?.data?.data || []
@@ -156,7 +156,7 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
                     blockNumber: o.blockNumber,
                     blockHash: o.blockHash,
                     status: o.status,
-                    failedReason: defineFailedReason(o.status === 1, o.gasUsed, o.gas),
+                    failedReason: defineFailedReason(o),
                     nonce: o.nonce,
                     age: (nowTime - createdTime),
                     transactionIndex: o.transactionIndex,
@@ -182,11 +182,19 @@ export const getTxsByAddress = async (address: string, page: number, size: numbe
     }
 }
 
-const defineFailedReason = (status: boolean, gasUsed: number, gasLimit: number): string => {
-    if (!status && gasUsed === gasLimit) {
-        return 'Transacsion error: Out of gas.'
+const defineFailedReason = (txData: any): string => {
+    try {
+        const {status, gasUsed, gasLimit, revertReason } = txData
+        if (revertReason) {
+            return `Fail with error: ${revertReason}`
+        }
+        if (status !== 1 && gasUsed === gasLimit) {
+            return 'Fail with error: Out of gas.'
+        }
+        return ''
+    } catch (error) {
+        return ''
     }
-    return '';
 }
 
 export const getContractEvents = async (page: number, size: number, txHash: string): Promise<any> => {
@@ -201,7 +209,8 @@ export const getContractEvents = async (page: number, size: number, txHash: stri
 }
 
 export const getTokens = async (address: string): Promise<any> => {
-    const response = await fetch(`${END_POINT}addresses/${address}/tokens`, GET_REQUEST_OPTION);
+    const _address = KardiaUtils.toChecksum(address)
+    const response = await fetch(`${END_POINT}addresses/${_address}/tokens`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     if (responseJSON.data.data != null) {
         return {
