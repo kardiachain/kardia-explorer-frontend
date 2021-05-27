@@ -7,17 +7,17 @@ import {
     Button,
     NumberInputFormat,
     ErrMessage,
-    NotificationError,
-    NotificationSuccess,
     gasLimitSendTx,
     gasPriceOption,
     ErrorMessage,
     InforMessage,
-    NotifiMessage,
     weiToKAI,
     numberFormat,
-    renderHashString
+    renderHashString,
+    ShowNotify,
+    ShowNotifyErr
 } from '../../../../common'
+import { GasMode } from '../../../../enum'
 import { generateTxForEW, generateTx, getAccount, getStoredBalance, isExtensionWallet } from '../../../../service'
 
 const SendKaiNative = () => {
@@ -30,7 +30,7 @@ const SendKaiNative = () => {
     const [gasLimitErr, serGasLimitErr] = useState('')
     const myAccount: Account = getAccount();
 
-    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [sendBntLoading, setSendBntLoading] = useState(false)
@@ -113,19 +113,8 @@ const SendKaiNative = () => {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
                 await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
-
-
             } catch (error) {
-                try {
-                    const errJson = JSON.parse(error?.message);
-                    NotificationError({
-                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                    })
-                } catch (error) {
-                    NotificationError({
-                        description: NotifiMessage.TransactionError
-                    });
-                }
+                ShowNotifyErr(error)
             }
             resetFrom()
         } else {
@@ -137,7 +126,7 @@ const SendKaiNative = () => {
         setAmount('');
         setToAddress('');
         setGasLimit(gasLimitSendTx);
-        setGasPrice(1);
+        setGasPrice(GasMode.NORMAL);
         setToAddressErr('');
         setAmountErr('');
     }
@@ -148,31 +137,10 @@ const SendKaiNative = () => {
         }
         setSendBntLoading(true)
         try {
-            const {transactionHash, status} = await generateTx(walletLocalState.account, toAddress, Number(amount), gasLimit, gasPrice)
-            if (status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            const response = await generateTx(walletLocalState.account, toAddress,  amount, gasLimit, gasPrice)
+            ShowNotify(response)
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                })
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
 
         setShowConfirmModal(false)

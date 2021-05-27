@@ -9,18 +9,16 @@ import {
     NumberInputFormat,
     ErrMessage,
     renderHashString,
-    NotificationError,
-    NotificationSuccess,
     gasLimitSendTxKRC20,
     convertValueFollowDecimal,
     ErrorMessage,
     InforMessage,
-    NotifiMessage,
-    gasPriceOption
+    gasPriceOption,
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
-import kardiaClient from '../../../../plugin/kardia-dx';
-import { sendKRC20ByExtension, getAccount, isExtensionWallet } from '../../../../service';
-import { KardiaUtils } from 'kardia-js-sdk';
+import { sendKRC20ByExtension, getAccount, isExtensionWallet, transferKrc20Token } from '../../../../service';
+import { GasMode } from '../../../../enum';
 
 const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     tokens: any[];
@@ -37,7 +35,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     const [sendBntLoading, setSendBntLoading] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
-    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL)
     const [gasPriceErr, setGasPriceErr] = useState('')
 
     const walletLocalState = useRecoilValue(walletState)
@@ -114,18 +112,8 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
             // Case: Send transaction interact with Kai Extension Wallet
             try {
                 await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, krc20Token.contractAddress, krc20Token.tokenDecimals);
-
             } catch (error) {
-                try {
-                    const errJson = JSON.parse(error?.message);
-                    NotificationError({
-                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                    })
-                } catch (error) {
-                    NotificationError({
-                        description: NotifiMessage.TransactionError
-                    });
-                }
+                ShowNotifyErr(error)
             }
             resetFrom()
         } else {
@@ -137,7 +125,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
         setAmount('');
         setToAddress('');
         setGasLimit(gasLimitSendTxKRC20);
-        setGasPrice(1);
+        setGasPrice(GasMode.NORMAL);
         setToAddressErr('');
         setAmountErr('');
         setAddressKRC20Err('');
@@ -153,39 +141,22 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     }
 
     const transferKRC20 = async () => {
-        const privateKey = walletLocalState.account.privatekey;
-        const krc20 = kardiaClient.krc20;
-        krc20.address = krc20Token.contractAddress;
-        krc20.decimals = krc20Token.tokenDecimals;
-
         try {
-            const toAddressChecksum = toAddress ? KardiaUtils.toChecksum(toAddress) : ''
-            const { transactionHash, status } = await krc20.transfer(privateKey, toAddressChecksum, Number(amount), {}, true);
-            if (status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
-
+            const token = {
+                address: krc20Token.contractAddress,
+                decimals: krc20Token.tokenDecimals
+            } as Krc20Token
+            const response = await transferKrc20Token({
+                fromAccount: walletLocalState.account,
+                token,
+                toAddress,
+                amount: Number(amount),
+                gasLimit: Number(gasLimit),
+                gasPrice: gasPrice
+            })
+            ShowNotify(response)
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                })
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
 
         fetchKrc20Token()
