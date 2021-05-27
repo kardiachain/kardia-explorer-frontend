@@ -34,6 +34,7 @@ const SendKaiNative = () => {
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [sendBntLoading, setSendBntLoading] = useState(false)
+    const [confirmLoading, setConfirmLoading] = useState(false)
     const walletLocalState = useRecoilValue(walletState)
 
     const validateAmount = (amount: any): boolean => {
@@ -111,11 +112,13 @@ const SendKaiNative = () => {
         }
         if (isExtensionWallet()) {
             // Case: Send transaction interact with Kai Extension Wallet
+            setSendBntLoading(true)
             try {
                 await generateTxForEW(toAddress, Number(amount), gasPrice, gasLimit);
             } catch (error) {
                 ShowNotifyErr(error)
             }
+            setSendBntLoading(false)
             resetFrom()
         } else {
             setShowConfirmModal(true)
@@ -135,7 +138,7 @@ const SendKaiNative = () => {
         if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
-        setSendBntLoading(true)
+        setConfirmLoading(true)
         try {
             const response = await generateTx(walletLocalState.account, toAddress,  amount, gasLimit, gasPrice)
             ShowNotify(response)
@@ -145,7 +148,7 @@ const SendKaiNative = () => {
 
         setShowConfirmModal(false)
         resetFrom()
-        setSendBntLoading(false)
+        setConfirmLoading(false)
     }
 
     return (
@@ -218,7 +221,7 @@ const SendKaiNative = () => {
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
-                                    <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                    <Button size="big" loading={sendBntLoading} style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
                         </FlexboxGrid.Item>
@@ -286,7 +289,7 @@ const SendKaiNative = () => {
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
                     </Button>
-                    <Button loading={sendBntLoading} onClick={confirmSend}>
+                    <Button loading={confirmLoading} onClick={confirmSend}>
                         Confirm
                     </Button>
                 </Modal.Footer>

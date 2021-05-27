@@ -33,6 +33,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     const [gasLimitErr, serGasLimitErr] = useState('')
     const myAccount: Account = getAccount();
     const [sendBntLoading, setSendBntLoading] = useState(false)
+    const [confirmLoading, setConfirmLoading] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL)
@@ -109,12 +110,14 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
             return
         }
         if (isExtensionWallet()) {
+            setSendBntLoading(true)
             // Case: Send transaction interact with Kai Extension Wallet
             try {
                 await sendKRC20ByExtension(toAddress, Number(amount), gasPrice, gasLimit, krc20Token.contractAddress, krc20Token.tokenDecimals);
             } catch (error) {
                 ShowNotifyErr(error)
             }
+            setSendBntLoading(false)
             resetFrom()
         } else {
             setShowConfirmModal(true)
@@ -136,11 +139,11 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
         if (!validateToAddress(toAddress) || !validateAmount(amount) || !validateGasLimit(gasLimit) || !validateGasPrice(gasPrice)) {
             return
         }
-        setSendBntLoading(true)
         transferKRC20();
     }
 
     const transferKRC20 = async () => {
+        setConfirmLoading(true)
         try {
             const token = {
                 address: krc20Token.contractAddress,
@@ -158,11 +161,10 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
         } catch (error) {
             ShowNotifyErr(error)
         }
-
         fetchKrc20Token()
         setShowConfirmModal(false)
         resetFrom()
-        setSendBntLoading(false)
+        setConfirmLoading(false)
     }
 
     return (
@@ -259,7 +261,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
-                                    <Button size="big" style={{ margin: 0 }} onClick={submitSend} >Send Token<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                    <Button size="big" style={{ margin: 0 }} onClick={submitSend} loading={sendBntLoading} >Send Token<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
                         </FlexboxGrid.Item>
@@ -327,7 +329,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
                         Cancel
                     </Button>
-                    <Button loading={sendBntLoading} onClick={confirmSend}>
+                    <Button loading={confirmLoading} onClick={confirmSend}>
                         Confirm
                     </Button>
                 </Modal.Footer>

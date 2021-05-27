@@ -7,12 +7,16 @@ const getRecomendedGasPrice = async () => {
 }
 
 export const calGasprice = async (mode: GasMode)  => {
-    let calculatedGasPrice = await getRecomendedGasPrice();
-    if (mode === GasMode.SLOW) {
-        const _calculated = Math.ceil(calculatedGasPrice * 0.75)
-        calculatedGasPrice = _calculated >= 10**9 ? _calculated : calculatedGasPrice
-    } else if (mode === GasMode.FAST) {
-        calculatedGasPrice = Math.ceil(calculatedGasPrice * 1.25)
+    try {
+        let calculatedGasPrice = await getRecomendedGasPrice();
+        if (mode === GasMode.SLOW) {
+            const _calculated = Math.ceil(calculatedGasPrice * 0.75)
+            calculatedGasPrice = _calculated >= 10**9 ? _calculated : calculatedGasPrice
+        } else if (mode === GasMode.FAST) {
+            calculatedGasPrice = Math.ceil(calculatedGasPrice * 1.25)
+        }
+        return calculatedGasPrice.toString()
+    } catch (error) {
+        return '1000000000'
     }
-    return calculatedGasPrice
 }
