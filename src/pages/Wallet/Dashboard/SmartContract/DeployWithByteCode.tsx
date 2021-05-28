@@ -4,21 +4,21 @@ import { deploySmartContract, isExtensionWallet, deploySMCByEW } from '../../../
 import ReactJson from 'react-json-view'
 import './smartContract.css'
 import {
-    NotificationError,
-    NotificationSuccess,
     Button,
     ErrMessage,
     NumberInputFormat,
     ErrorMessage,
-    NotifiMessage,
     gasLimitDefault,
     copyToClipboard,
     jsonValid,
     gasPriceOption,
-    onSuccess
+    onSuccess,
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { GasMode } from '../../../../enum';
 
 const DeployWithByteCode = () => {
 
@@ -29,7 +29,7 @@ const DeployWithByteCode = () => {
     const [abiErr, setAbiErr] = useState('')
     const [gasLimitErr, setGasLimitErr] = useState('')
     const [loading, setLoading] = useState(false)
-    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [deployedContract, setDeployedContract] = useState('')
     const [deployDone, setDeployDone] = useState(false)
@@ -86,7 +86,7 @@ const DeployWithByteCode = () => {
         setByteCodeErr('')
         setAbiErr('')
         setGasLimitErr('')
-        setGasPrice(1)
+        setGasPrice(GasMode.NORMAL)
         setGasPriceErr('')
         setDeployDone(false)
         setDeployedContract('')
@@ -124,16 +124,7 @@ const DeployWithByteCode = () => {
                     setDeployDone(true)
 
                 } catch (error) {
-                    try {
-                        const errJson = JSON.parse(error?.message);
-                        NotificationError({
-                            description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                        })
-                    } catch (error) {
-                        NotificationError({
-                            description: `${NotifiMessage.TransactionError}`
-                        })
-                    }
+                    ShowNotifyErr(error)
                 }
                 return;
             }
@@ -149,20 +140,7 @@ const DeployWithByteCode = () => {
             } as SMCDeployObject
 
             const result = await deploySmartContract(txObject);
-            if (result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
-                const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas` : `${NotifiMessage.TransactionError}`
-                NotificationError({
-                    description: errMsg,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            ShowNotify(result)
             setDeployedContract(result.contractAddress)
             setContractJsonFileDownload({
                 contractAddress: result.contractAddress,
@@ -172,16 +150,7 @@ const DeployWithByteCode = () => {
             setTxDetail(result)
             setDeployDone(true)
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                })
-            } catch (error) {
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError}`
-                })
-            }
+            ShowNotifyErr(error)
         }
         setLoading(false)
     }

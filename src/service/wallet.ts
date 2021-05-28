@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import CryptoJS from 'crypto-js';
-import { kardiaAccount, kardiaTx } from '../plugin/kardia-dx';
+import kardiaClient, { kardiaAccount, kardiaTx } from '../plugin/kardia-dx';
 import { KardiaUtils } from 'kardia-js-sdk';
+import { calGasprice, privateKeyValid } from '../common';
+import { GasMode } from '../enum';
 
 const initialValue: WalletStore = {
     privatekey: '',
@@ -167,14 +169,45 @@ export const getAccount = (): Account => {
     }
 }
 
-export const generateTx = async (fromAccount: Account, toAddr: string, amount: number, gasLimit: number, gasPrice: number) => {
+export const generateTx = async (fromAccount: Account, toAddr: string, amount: string, gasLimit: number, gasPrice: GasMode) => {
     const nonce = await kardiaAccount.getNonce(fromAccount.publickey)
+    const calGasPrice = await calGasprice(gasPrice)
     const txHash = await kardiaTx.sendTransaction({
         nonce,
         to: toAddr,
-        gasPrice: KardiaUtils.toHydro(gasPrice, 'oxy'),
+        gasPrice: calGasPrice,
         gas: gasLimit,
         value: KardiaUtils.toHydro(amount, 'kai'),
     }, fromAccount.privatekey, true)
     return txHash
 };
+
+export const transferKrc20Token = async ({fromAccount, token, toAddress, amount, gasLimit, gasPrice}: {
+    fromAccount: Account;
+    token: Krc20Token;
+    toAddress: string;
+    amount: number;
+    gasLimit: number;
+    gasPrice: GasMode;
+}) => {
+    if (!fromAccount || !fromAccount.privatekey || !privateKeyValid(fromAccount.privatekey)) throw new Error("Pk invalid")
+    const krc20 = kardiaClient.krc20;
+    krc20.address = token.address;
+    krc20.decimals = token.decimals;
+    const toAddressChecksum = toAddress ? KardiaUtils.toChecksum(toAddress) : '';
+    const promiseArr = await Promise.all([
+        calGasprice(gasPrice),
+        kardiaAccount.getNonce(fromAccount.publickey)
+    ])
+    const calGasPrice = promiseArr[0]
+    const nonce = promiseArr[1]
+    return await krc20.transfer(
+        fromAccount.privatekey, 
+        toAddressChecksum, 
+        amount,
+        {
+            nonce,
+            gas: gasLimit,
+            gasPrice: calGasPrice,
+        }, true);
+}

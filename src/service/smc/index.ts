@@ -1,6 +1,7 @@
-import { gasLimitDefault } from '../../common';
+import { calGasprice, gasLimitDefault } from '../../common';
 import { KardiaContract, KardiaUtils } from 'kardia-js-sdk';
 import { RPC_ENDPOINT } from '../../config';
+import { GasMode } from '../../enum';
 
 const deploySmartContract = async (object: SMCDeployObject) => {
     try {
@@ -9,10 +10,11 @@ const deploySmartContract = async (object: SMCDeployObject) => {
             bytecodes: object.bytecode,
             abi: JSON.parse(object.abi)
         })
+        const calGasPrice = await calGasprice(object.gasPrice ? object.gasPrice : 2)
         const deployment = contract.deploy({params: object.params});
         const deployResult = await deployment.send(object.account.privatekey, {
             gas: object.gasLimit,
-            gasPrice: KardiaUtils.toHydro(object.gasPrice ? object.gasPrice : 1, 'oxy'),
+            gasPrice: calGasPrice
         }, true);
         return deployResult;
     } catch (err) {
@@ -30,10 +32,11 @@ const invokeFunctionFromContractAbi = async (object: SMCInvokeObject) => {
         const invoke = contract.invokeContract(object.functionName, paramsJson);
         let invokeResult = null; 
         if (!object.isPure) {
+            const calGasPrice = await calGasprice(object.gasPrice ? object.gasPrice : 2)
             invokeResult = await invoke.send(object.account.privatekey, object.contractAddress, {
               amount: object.amount,
               gas: object.gasLimit,
-              gasPrice: KardiaUtils.toHydro(object.gasPrice ? object.gasPrice : 1, 'oxy')
+              gasPrice: calGasPrice
             }, true);
             return invokeResult;
           } else {
@@ -63,7 +66,7 @@ const invokeSendAction = async (
     account: Account,
     amountVal: number = 0,
     gasLimit = gasLimitDefault,
-    gasPrice = 2
+    gasPrice = GasMode.NORMAL
 ) => {
     if (!account.publickey) {
         return;
@@ -72,12 +75,13 @@ const invokeSendAction = async (
         provider: RPC_ENDPOINT,
         abi: abi
     })
+    const calGasPrice = await calGasprice(gasPrice)
     const invoke = await contract.invokeContract(methodName, params);
     const invokeResult = await invoke.send(account.privatekey, KardiaUtils.toChecksum(contractAddr), {
         from: account.publickey,
         amount: amountVal,
         gas: gasLimit,
-        gasPrice: KardiaUtils.toHydro(gasPrice, 'oxy')
+        gasPrice: calGasPrice
     }, true);
 
     return invokeResult;

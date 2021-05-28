@@ -6,14 +6,13 @@ import {
     cellValue,
     Button,
     NumberInputFormat,
-    NotificationError,
-    NotificationSuccess,
     gasLimitDefault,
     gasPriceOption,
     ErrorMessage,
     InforMessage,
-    NotifiMessage,
-    ErrMessage
+    ErrMessage,
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import { proposalItems } from './type';
 import './style.css'
@@ -24,6 +23,7 @@ import {
     createNewProposal,
     createProposalByEW
 } from '../../../../service';
+import { GasMode } from '../../../../enum';
 
 interface FieldsModal {
     value: string;
@@ -39,7 +39,7 @@ const CreateProposal = () => {
 
     const [items, setItems] = useState([] as FieldsModal[]);
     const [loading, setLoading] = useState(false);
-    const [gasPrice, setGasPrice] = useState(1);
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL);
     const [gasPriceErr, setGasPriceErr] = useState('');
     const [gasLimit, setGasLimit] = useState(gasLimitDefault);
     const [gasLimitErr, setGasLimitErr] = useState('');
@@ -138,33 +138,11 @@ const CreateProposal = () => {
             if (isExtensionWallet()) {
                 await createProposalByEW(paramsKey, paramsValue)
             } else {
-                const rs = await createNewProposal(walletLocalState.account, paramsKey, paramsValue, gasLimit, gasPrice);
-
-                if (rs && rs.status === 1) {
-                    NotificationSuccess({
-                        description: NotifiMessage.TransactionSuccess,
-                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                } else {
-                    NotificationError({
-                        description: NotifiMessage.TransactionError,
-                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                }
+                const response = await createNewProposal(walletLocalState.account, paramsKey, paramsValue, gasLimit, gasPrice);
+                ShowNotify(response)
             }
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
         setLoading(false)
         setShowModelConfirm(false)
@@ -174,7 +152,7 @@ const CreateProposal = () => {
     const resetForm = () => {
         // setItems([] as FieldsModal[])
         setLoading(false)
-        setGasPrice(1)
+        setGasPrice(GasMode.NORMAL)
         setGasPriceErr('')
         setGasLimit(gasLimitDefault)
         setGasLimitErr('')

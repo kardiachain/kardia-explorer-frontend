@@ -7,13 +7,12 @@ import {
     renderHashStringAndTooltip,
     renderStringAndTooltip,
     StakingIcon,
-    NotificationError,
-    NotificationSuccess,
-    NotifiMessage,
     InforMessage,
     weiToKAI,
     numberFormat,
-    Button
+    Button,
+    ShowNotify,
+    ShowNotifyErr
 } from '../../../../common';
 import { useViewport } from '../../../../context/ViewportContext';
 import { withdrawRewardByEW, isExtensionWallet } from '../../../../service';
@@ -46,30 +45,15 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 setIsLoading(false)
                 return
             }
-
-            const {status, transactionHash} = await withdrawReward(valSmcAddr, walletLocalState.account);
-            if (status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            const result = await withdrawReward(valSmcAddr, walletLocalState.account);
+            ShowNotify(result)
         } catch (error) {
-            NotificationError({
-                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
-            });
+            ShowNotifyErr(error)
         }
-        await reFetchData()
         setIsLoading(false)
         setShowConfirmWithdrawRewardsModal(false)
         setValidatorActive({} as YourValidator)
+        await reFetchData()
     }
 
     return (

@@ -10,15 +10,15 @@ import {
     numberFormat,
     ErrorMessage,
     InforMessage,
-    NotifiMessage,
     HelperMessage,
     gasPriceOption,
     MIN_SELF_DELEGATION,
-    NotificationError,
-    NotificationSuccess
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { GasMode } from '../../../../enum';
 
 const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 
@@ -37,7 +37,7 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
 
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
-    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(5000000)
     const [gasLimitErr, setGasLimitErr] = useState('')
@@ -221,33 +221,10 @@ const ValidatorCreate = ({ reFetchData }: { reFetchData: () => void }) => {
                 yourDelegationAmount: Number(yourDelAmount)
             } as CreateValParams;
 
-            let validator = await createValidator(params, walletLocalState.account, gasLimit, gasPrice);
-            if (validator && validator.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${validator.transactionHash}`) },
-                    seeTxdetail: true
-                });
-                reFetchData();
-            } else {
-                const errMsg = validator.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas.` : NotifiMessage.TransactionError;
-                NotificationError({
-                    description: errMsg,
-                    callback: () => { window.open(`/tx/${validator.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            let result = await createValidator(params, walletLocalState.account, gasLimit, gasPrice);
+            ShowNotify(result)
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
         resetForm();
         setIsLoading(false)
