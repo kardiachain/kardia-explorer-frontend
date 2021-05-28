@@ -4,10 +4,11 @@ import STAKING_ABI from '../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../resources/smc-compile/validator-abi.json';
 import KRC20_API from '../resources/smc-compile/krc20-abi.json'
 import { STAKING_SMC_ADDRESS, PROPOSAL_SMC_ADDRESS } from '../config/api';
-import { gasLimitDefault, cellValue, cellValueKRC20, ShowNotify } from '../common';
+import { gasLimitDefault, cellValue, cellValueKRC20, ShowNotify, calGasprice } from '../common';
 import PROPOSAL_ABI from '../resources/smc-compile/proposal-abi.json';
 import kardiaClient from '../plugin/kardia-dx';
 import { KardiaUtils } from 'kardia-js-sdk';
+import { GasMode } from '../enum';
 declare global {
     interface Window {
         kardiachain: any;
@@ -26,7 +27,7 @@ const kardiaExtensionWalletEnabled = () => {
     return false;
 }
 
-const generateTxForEW = async (toAddress: string, amount: number, gasPrice: number, gasLimit: number) => {
+const generateTxForEW = async (toAddress: string, amount: number, gasPrice: GasMode, gasLimit: number) => {
     if (!kardiaExtensionWalletEnabled()) {
         Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
     } else {
@@ -37,9 +38,10 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
             if (accounts && accounts[0]) {
                 const kardiaTransaction = kardiaClient.transaction;
 
+                const _gasPrice = await calGasprice(gasPrice)
                 const response = await kardiaTransaction.sendTransactionToExtension({
                     from: accounts[0],
-                    gasPrice: gasPrice,
+                    gasPrice: _gasPrice,
                     gas: gasLimit,
                     value: cellAmountDel,
                     to: toAddress,
@@ -56,33 +58,27 @@ const generateTxForEW = async (toAddress: string, amount: number, gasPrice: numb
     }
 }
 
-const sendKRC20ByExtension = async (toAddress: string, amount: number, gasPrice: number, gasLimit: number, tokenContract: string, decimal: any) => {
+const sendKRC20ByExtension = async (toAddress: string, amount: number, gasPrice: GasMode, gasLimit: number, tokenContract: string, decimal: any) => {
     if (!kardiaExtensionWalletEnabled()) {
         Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
     } else {
         try {
-
             const accounts = await window.web3.eth.getAccounts();
             const cellAmountDel = amount ? cellValueKRC20(amount, decimal) : 0;
-
             const kardiaContract = kardiaClient.contract;
             kardiaContract.updateAbi(KRC20_API);
-
             const data = await kardiaContract.invokeContract("transfer", [toAddress, cellAmountDel]).txData();
-
             const kardiaTransaction = kardiaClient.transaction;
-
+            const _gasPrice = await calGasprice(gasPrice)
             const response = await kardiaTransaction.sendTransactionToExtension({
                 from: accounts[0],
-                gasPrice: gasPrice,
+                gasPrice: _gasPrice,
                 gas: gasLimit,
                 value: 0,
                 data: data,
                 to: tokenContract,
             }, true);
-
-            ShowNotify(response);     
-
+            ShowNotify(response);
         } catch (error) {
             console.error(error);
         }
@@ -95,7 +91,7 @@ const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasP
     params: any;
     amount?: number;
     gasLimit: number;
-    gasPrice: number;
+    gasPrice: GasMode;
 }) => {
     if (!kardiaExtensionWalletEnabled()) {
         Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
@@ -111,9 +107,10 @@ const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasP
                 kardiaContract.updateByteCode(bytecode);
                 const txData = kardiaContract.deploy({ params }).txData();
                 const kardiaTransaction = kardiaClient.transaction;
+                const _gasPrice = await calGasprice(gasPrice)
                 const response = await kardiaTransaction.sendTransactionToExtension({
                     from: accounts[0],
-                    gasPrice: gasPrice,
+                    gasPrice: _gasPrice,
                     gas: gasLimit,
                     value: cellAmountDel,
                     data: txData,
@@ -133,14 +130,14 @@ const deploySMCByEW = async ({ abi, bytecode, params, amount = 0, gasLimit, gasP
 
 }
 
-const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gasLimit = gasLimitDefault, gasPrice = 1 }: {
+const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gasLimit = gasLimitDefault, gasPrice = GasMode.NORMAL }: {
     abi: any;
     smcAddr: string;
     methodName: string;
     params: any[];
     amount?: number;
     gasLimit?: number;
-    gasPrice?: number;
+    gasPrice?: GasMode;
 }) => {
     if (!kardiaExtensionWalletEnabled()) {
         Alert.error("Please install the Kardia Extension Wallet to access.", 5000)
@@ -158,9 +155,10 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
 
                 const txData = kardiaContract.invokeContract(methodName, params).txData();
 
+                const _gasPrice = await calGasprice(gasPrice)
                 const response = await kardiaTransaction.sendTransactionToExtension({
                     from: accounts[0],
-                    gasPrice: gasPrice,
+                    gasPrice: _gasPrice,
                     gas: gasLimit,
                     value: cellAmountDel,
                     data: txData,
@@ -179,7 +177,7 @@ const invokeSMCByEW = async ({ abi, smcAddr, methodName, params, amount = 0, gas
 }
 
 // Delegate interact with Kai Extenstion Wallet
-const delegateByEW = async (smcAddr: string, amount: number, gasPrice: number, gasLimit: number) => {
+const delegateByEW = async (smcAddr: string, amount: number, gasPrice: GasMode, gasLimit: number) => {
     try {
         await invokeSMCByEW({
             abi: VALIDATOR_ABI,
@@ -196,7 +194,7 @@ const delegateByEW = async (smcAddr: string, amount: number, gasPrice: number, g
 }
 
 // Create validator interact with Kai Extension Wallet
-const createValidatorByEW = async (params: CreateValParams, gasLimit: number, gasPrice: number) => {
+const createValidatorByEW = async (params: CreateValParams, gasLimit: number, gasPrice: GasMode) => {
     // convert value percent type to decimal type
     const commissionRateDec = cellValue(params.commissionRate / 100);
     const maxRateDec = cellValue(params.maxRate / 100);
@@ -215,7 +213,7 @@ const createValidatorByEW = async (params: CreateValParams, gasLimit: number, ga
     })
 }
 
-const updateValidatorNameByEW = async (smcAddr: string, name: string, amountFee: number, gasLimit: number, gasPrice: number) => {
+const updateValidatorNameByEW = async (smcAddr: string, name: string, amountFee: number, gasLimit: number, gasPrice: GasMode) => {
     // Convert new validator name to bytes
     const valName = KardiaUtils.bytes.fromAscii(name);
     await invokeSMCByEW({
@@ -223,11 +221,13 @@ const updateValidatorNameByEW = async (smcAddr: string, name: string, amountFee:
         smcAddr: smcAddr,
         methodName: 'updateName',
         params: [valName],
-        amount: amountFee
+        amount: amountFee,
+        gasLimit: gasLimit,
+        gasPrice: gasPrice
     })
 }
 
-const updateValidatorCommissionByEW = async (smcAddr: string, newCommissionRate: number, gasLimit: number, gasPrice: number) => {
+const updateValidatorCommissionByEW = async (smcAddr: string, newCommissionRate: number, gasLimit: number, gasPrice: GasMode) => {
         // convert value percent type to decimal type
     const newCommissionRateDec = cellValue(newCommissionRate / 100);
     await invokeSMCByEW({

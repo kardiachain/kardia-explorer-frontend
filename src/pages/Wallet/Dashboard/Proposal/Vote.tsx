@@ -5,12 +5,11 @@ import { RenderStatus } from '../../../Proposal';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import {
-    NotifiMessage,
     Button as ButtomCustom,
     dateToUTCString,
     renderHashString,
-    NotificationError,
-    NotificationSuccess
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import { isExtensionWallet, getProposalDetails, voting, proposalVotingByEW } from '../../../../service';
 
@@ -61,32 +60,10 @@ const Vote = () => {
                 fetchData();
             } else {
                 const rs = await voting(walletLocalState.account, Number(proposalId), voteOption)
-                if (rs && rs.status === 1) {
-                    NotificationSuccess({
-                        description: NotifiMessage.TransactionSuccess,
-                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                    fetchData();
-                } else {
-                    NotificationError({
-                        description: NotifiMessage.TransactionError,
-                        callback: () => { window.open(`/tx/${rs.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                }
+                ShowNotify(rs)
             }
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
         setSubmitLoading(false)
         setShowModelConfirm(false)

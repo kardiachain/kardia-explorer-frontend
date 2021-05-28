@@ -11,13 +11,12 @@ import {
     StakingIcon,
     ErrMessage,
     Helper,
-    NotificationError,
-    NotificationSuccess,
     HelperMessage,
     ErrorMessage,
-    NotifiMessage,
     InforMessage,
-    renderStringAndTooltip
+    renderStringAndTooltip,
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import { useViewport } from '../../../../context/ViewportContext';
 import { useRecoilValue } from 'recoil';
@@ -67,28 +66,13 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 }
 
                 const result = await undelegateWithAmount(valSmcAddr, Number(unStakeAmount), walletLocalState.account)
-                if (result && result.status === 1) {
-                    NotificationSuccess({
-                        description: NotifiMessage.TransactionSuccess,
-                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                } else {
-                    NotificationError({
-                        description: NotifiMessage.TransactionError,
-                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                }
+                ShowNotify(result)
             } catch (error) {
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${error.message}`
-                });
+                ShowNotifyErr(error)
             }
         } else {
             try {
                 setIsLoading(true);
-
                 // Case: undelegate all interact with Kai Extension Wallet
                 if (isExtensionWallet()) {
                     undelegateAllByEW(valSmcAddr)
@@ -97,25 +81,10 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     setIsLoading(false)
                     return
                 }
-
                 const result = await undelegateAll(valSmcAddr, walletLocalState.account);
-                if (result && result.status === 1) {
-                    NotificationSuccess({
-                        description: NotifiMessage.TransactionSuccess,
-                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                } else {
-                    NotificationError({
-                        description: NotifiMessage.TransactionError,
-                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                }
+                ShowNotify(result)
             } catch (error) {
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${error.message}`
-                });
+                ShowNotifyErr(error)
             }
         }
         reFetchData();
@@ -161,23 +130,9 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             }
 
             const result = await withdrawDelegatedAmount(valAddr, walletLocalState.account);
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            ShowNotify(result)
         } catch (error) {
-            NotificationError({
-                description: `${NotifiMessage.TransactionError} Error: ${error.message}`
-            });
+            ShowNotifyErr(error)
         }
         reFetchData()
         setIsLoading(false)

@@ -99,7 +99,7 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                        <HeaderCell>Balance</HeaderCell>
+                        <HeaderCell>Amount</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from 'rsuite';
-import { NotifiMessage, InforMessage, Button, NotificationError, NotificationSuccess } from '../../../../common';
+import { InforMessage, Button, ShowNotifyErr, ShowNotify } from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { withdrawCommissionByEW, isExtensionWallet, withdrawCommission } from '../../../../service';
@@ -33,31 +33,10 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
             }
             
             const result = await withdrawCommission(valSmcAddr, walletLocalState.account);
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-                reFetchData();
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            ShowNotify(result)
+            reFetchData();
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
         setIsLoading(false);
         setShowModel(false);

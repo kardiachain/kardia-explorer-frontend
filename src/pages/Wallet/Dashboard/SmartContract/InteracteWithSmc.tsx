@@ -8,20 +8,20 @@ import {
     Button,
     NumberInputFormat,
     ErrMessage,
-    NotificationError,
-    NotificationSuccess,
     gasLimitDefault,
     gasPriceOption,
     jsonValid,
     ErrorMessage,
-    NotifiMessage,
     copyToClipboard,
-    onSuccess
+    onSuccess,
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import { invokeFunctionFromContractAbi, isExtensionWallet, invokeSMCByEW } from '../../../../service';
 import './smartContract.css'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
+import { GasMode } from '../../../../enum';
 
 const InteracteWithSmc = () => {
 
@@ -35,7 +35,7 @@ const InteracteWithSmc = () => {
     const [loadingExecute, setLoadingExecute] = useState(false)
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
-    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [txResult, setTxResult] = useState('')
     const [showResult, setShowResult] = useState(false)
@@ -148,16 +148,7 @@ const InteracteWithSmc = () => {
                         gasPrice: txObject.gasPrice
                     })
                 } catch (error) {
-                    try {
-                        const errJson = JSON.parse(error?.message);
-                        NotificationError({
-                            description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                        })
-                    } catch (error) {
-                        NotificationError({
-                            description: `${NotifiMessage.TransactionError}`
-                        })
-                    }
+                    ShowNotifyErr(error)
                 }
                 return;
             }
@@ -168,34 +159,12 @@ const InteracteWithSmc = () => {
                 setTxResult(result);
                 setShowResult(true)
             } else {
-                if (result?.status === 1) {
-                    NotificationSuccess({
-                        description: NotifiMessage.TransactionSuccess,
-                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                } else {
-                    const errMsg = result.gasUsed === Number(gasLimit) ? `${NotifiMessage.TransactionError} Error: Out of gas` : `${NotifiMessage.TransactionError}`
-                    NotificationError({
-                        description: errMsg,
-                        callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                        seeTxdetail: true
-                    });
-                }
+                ShowNotify(result)
                 setTxResult(result);
                 setShowResult(true)
             }
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                })
-            } catch (error) {
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError}`
-                })
-            }
+            ShowNotifyErr(error)
         }
         setLoadingExecute(false)
     }
@@ -265,7 +234,7 @@ const InteracteWithSmc = () => {
         setCurrentStep(0)
         setGasLimit(gasLimitDefault);
         setGasLimitErr('')
-        setGasPrice(1)
+        setGasPrice(GasMode.NORMAL)
         setGasPriceErr('')
         setTxResult('')
         setShowResult(false)
