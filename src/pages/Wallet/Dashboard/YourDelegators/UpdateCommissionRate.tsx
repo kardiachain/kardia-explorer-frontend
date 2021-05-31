@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Col, ControlLabel, FlexboxGrid, Form, FormGroup, Modal, SelectPicker } from "rsuite";
-import { dateToUTCString, Button, NumberInputFormat, ErrMessage, NotificationError, NotificationSuccess, gasLimitDefault, gasPriceOption, ErrorMessage, NotifiMessage } from "../../../../common";
+import { dateToUTCString, Button, NumberInputFormat, ErrMessage, gasLimitDefault, gasPriceOption, ErrorMessage, ShowNotifyErr, ShowNotify } from "../../../../common";
 import './validators.css'
 import { useRecoilValue } from 'recoil';
 import walletState from "../../../../atom/wallet.atom";
 import { updateValidatorCommissionByEW, updateValidatorCommission, isExtensionWallet } from "../../../../service";
+import { GasMode } from "../../../../enum";
 
 const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -17,7 +18,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
     const [commissionRate, setCommissionRate] = useState('');
     const [commissionRateErr, setCommissionRateErr] = useState('');
 
-    const [gasPrice, setGasPrice] = useState(1);
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL);
     const [gasPriceErr, setGasPriceErr] = useState('');
     const [gasLimit, setGasLimit] = useState(gasLimitDefault);
     const [gasLimitErr, setGasLimitErr] = useState('');
@@ -101,31 +102,9 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
         try {
             setIsLoading(true);
             let result = await updateValidatorCommission(valSmcAddr, Number(commissionRate), walletLocalState.account, gasLimit, gasPrice);
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-                reFetchData();
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            ShowNotify(result)
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
         setIsLoading(false);
         cancelEdit();

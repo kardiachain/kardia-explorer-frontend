@@ -1,9 +1,13 @@
+import { GasMode } from '../../enum';
+
 export * from './HelperMessage'
 export * from './Message'
+
+
 export const gasPriceOption = [
-    { label: 'Normal (1 Oxy)', value: 1 },
-    { label: 'Regular (2 Oxy)', value: 2 },
-    { label: 'Fast (3 Oxy)', value: 3 },
+    { label: 'Slow', value: GasMode.SLOW },
+    { label: 'Normal', value: GasMode.NORMAL },
+    { label: 'Fast', value: GasMode.FAST },
 ];
 
 export const colors = [

@@ -55,7 +55,7 @@ const Faucet = () => {
                 return
             }
             NotificationSuccess({
-                description: `Congratulations! You had received ${process.env.REACT_APP_FAUCET_AMOUNT} KAI free.`,
+                description: `Congratulations! You had received KAI free.`,
                 callback: () => { window.open(`/tx/${responseJSON.txHash}`) },
                 seeTxdetail: true
             });

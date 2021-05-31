@@ -10,21 +10,21 @@ import {
     Button,
     NumberInputFormat,
     Helper,
-    NotificationError,
-    NotificationSuccess,
     gasLimitDefault,
     gasPriceOption,
     MIN_DELEGATION_AMOUNT,
     HelperMessage,
     ErrorMessage,
     InforMessage,
-    NotifiMessage,
-    StakingIcon
+    StakingIcon,
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import {
     renderHashString,
 } from '../../../../common';
 import { TABLE_CONFIG } from '../../../../config';
+import { GasMode } from '../../../../enum';
 import { clearCache } from '../../../../plugin/localCache';
 import { delegateByEW, getValidator, getBlocksByProposer, delegateAction, getStoredBalance, isExtensionWallet } from '../../../../service';
 import BlockByProposerList from '../../../Staking/ValidatorDetail/BlockByProposerList';
@@ -40,7 +40,7 @@ const DelegatorCreate = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const { valAddr }: any = useParams();
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const [gasPrice, setGasPrice] = useState(1)
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL)
     const [gasPriceErr, setGasPriceErr] = useState('')
     const [gasLimit, setGasLimit] = useState(gasLimitDefault)
     const [gasLimitErr, setGasLimitErr] = useState('')
@@ -138,16 +138,7 @@ const DelegatorCreate = () => {
                 clearCache();
                 fetchData();
             } catch (error) {
-                try {
-                    const errJson = JSON.parse(error?.message);
-                    NotificationError({
-                        description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                    });
-                } catch (error) {
-                    NotificationError({
-                        description: NotifiMessage.TransactionError
-                    });
-                }
+                ShowNotifyErr(error)
             }
             resetFrom()
         } else {
@@ -183,34 +174,10 @@ const DelegatorCreate = () => {
             if (!valSmcAddr) {
                 return
             }
-            const { transactionHash, status } = await delegateAction(valSmcAddr, walletLocalState.account, Number(delAmount), gasLimit, gasPrice);
-
-            if (status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-                clearCache();
-                fetchData();
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
+            const response = await delegateAction(valSmcAddr, walletLocalState.account, Number(delAmount), gasLimit, gasPrice);
+            ShowNotify(response)
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
         resetFrom();
         setIsLoading(false);
@@ -220,7 +187,7 @@ const DelegatorCreate = () => {
     const resetFrom = () => {
         setDelAmount('');
         setGasLimit(gasLimitDefault);
-        setGasPrice(1);
+        setGasPrice(GasMode.NORMAL);
         setErrorMessage('');
     }
 

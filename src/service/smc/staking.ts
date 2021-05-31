@@ -4,15 +4,16 @@ import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import VALIDATOR_ABI from '../../resources/smc-compile/validator-abi.json';
 import { invokeSendAction } from '.';
 import { KardiaUtils } from 'kardia-js-sdk';
+import { GasMode } from '../../enum';
 
 
 
-const delegateAction = async (valSmcAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: number) => {
+const delegateAction = async (valSmcAddr: string, account: Account, amountDel: number, gasLimit: number, gasPrice: GasMode) => {
     const cellAmountDel = cellValue(amountDel);
     return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "delegate", [], account, cellAmountDel, gasLimit, gasPrice);
 }
 
-const createValidator = async (params: CreateValParams, account: Account, gasLimit: number, gasPrice: number) => {
+const createValidator = async (params: CreateValParams, account: Account, gasLimit: number, gasPrice: GasMode) => {
     // convert value percent type to decimal type
     const commissionRateDec = cellValue(params.commissionRate / 100);
     const maxRateDec = cellValue(params.maxRate / 100);
@@ -24,7 +25,7 @@ const createValidator = async (params: CreateValParams, account: Account, gasLim
     return await invokeSendAction(STAKING_ABI, STAKING_SMC_ADDRESS, "createValidator", [valName, commissionRateDec, maxRateDec, maxRateChangeDec], account, delAmountDec, gasLimit, gasPrice);
 }
 
-const updateValidatorName = async (valSmcAddr: string, name: string, account: Account, amountFee: number, gasLimit: number, gasPrice: number) => {
+const updateValidatorName = async (valSmcAddr: string, name: string, account: Account, amountFee: number, gasLimit: number, gasPrice: GasMode) => {
     // Convert amount to decimal type
     const amountFeeDec = cellValue(amountFee);
     // Convert new validator name to bytes
@@ -32,7 +33,7 @@ const updateValidatorName = async (valSmcAddr: string, name: string, account: Ac
     return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "updateName", [valName], account, amountFeeDec, gasLimit, gasPrice);
 }
 
-const updateValidatorCommission = async (valSmcAddr: string, newCommissionRate: number, account: Account, gasLimit: number, gasPrice: number) => {
+const updateValidatorCommission = async (valSmcAddr: string, newCommissionRate: number, account: Account, gasLimit: number, gasPrice: GasMode) => {
     // convert value percent type to decimal type
     const newCommissionRateDec = cellValue(newCommissionRate / 100);
     return await invokeSendAction(VALIDATOR_ABI, valSmcAddr, "updateCommissionRate", [newCommissionRateDec], account, 0, gasLimit, gasPrice);

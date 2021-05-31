@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, SelectPicker } from 'rsuite';
 import {
     ErrorMessage,
-    NotifiMessage,
     Button,
     NumberInputFormat,
     ErrMessage,
-    NotificationError,
-    NotificationSuccess,
     gasLimitDefault,
-    gasPriceOption
+    gasPriceOption,
+    ShowNotifyErr,
+    ShowNotify
 } from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { updateValidatorNameByEW, getStoredBalance, isExtensionWallet, updateValidatorName } from '../../../../service';
+import { GasMode } from '../../../../enum';
 
 const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -22,7 +22,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
     reFetchData: () => void;
 }) => {
 
-    const [gasPrice, setGasPrice] = useState(1);
+    const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL);
     const [gasPriceErr, setGasPriceErr] = useState('');
     const [gasLimit, setGasLimit] = useState(gasLimitDefault);
     const [gasLimitErr, setGasLimitErr] = useState('');
@@ -88,32 +88,9 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
             setIsLoading(true);
             if (!validateValName(valName)) return;
             let result = await updateValidatorName(valSmcAddr, valName, walletLocalState.account, updateFee, gasLimit, gasPrice);
-            if (result && result.status === 1) {
-                NotificationSuccess({
-                    description: NotifiMessage.TransactionSuccess,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-                reFetchData();
-            } else {
-                NotificationError({
-                    description: NotifiMessage.TransactionError,
-                    callback: () => { window.open(`/tx/${result.transactionHash}`) },
-                    seeTxdetail: true
-                });
-            }
-
+            ShowNotify(result)
         } catch (error) {
-            try {
-                const errJson = JSON.parse(error?.message);
-                NotificationError({
-                    description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
-                });
-            } catch (error) {
-                NotificationError({
-                    description: NotifiMessage.TransactionError
-                });
-            }
+            ShowNotifyErr(error)
         }
         setIsLoading(false);
         setShowModel(false);

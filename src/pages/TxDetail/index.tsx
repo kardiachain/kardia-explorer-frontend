@@ -6,7 +6,7 @@ import { getContractEvents, getTxByHash } from '../../service';
 import './txDetail.css'
 import Logs from './Logs';
 import TxDetailOverview from './overview';
-import { NotifiMessage, hashValid, NotificationError } from '../../common';
+import { hashValid } from '../../common';
 
 const TxDetail = () => {
     const { txHash }: any = useParams();
@@ -25,13 +25,7 @@ const TxDetail = () => {
                 try {
                     const data = await getContractEvents(1, 10, txHash);
                     setLogs(data);
-                } catch(e){
-                    NotificationError({
-                        description: `${NotifiMessage.TransactionError} Error: ${e.message}`
-                    });
-                }
-
-
+                } catch(e){}
 
                 let tx = await getTxByHash(txHash);
                 if (tx.txHash) {
