@@ -31,3 +31,16 @@ export const ShowNotify = (response: any) => {
         });
     }
 }
+
+export const ShowNotifyErr = (error: any) => {
+    try {
+        const errJson = JSON.parse(error?.message);
+        NotificationError({
+            description: `${NotifiMessage.TransactionError} Error: ${errJson?.error?.message}`
+        })
+    } catch (error) {
+        NotificationError({
+            description: NotifiMessage.TransactionError
+        });
+    }
+}

@@ -302,3 +302,9 @@ interface Logs {
     logIndex: number,
     removed: string
 }
+
+interface Krc20Token {
+    address: string;
+    decimals: number;
+    symbol?: string
+}
