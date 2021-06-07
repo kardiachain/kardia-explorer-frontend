@@ -7,10 +7,12 @@ import { useViewport } from '../../context/ViewportContext';
 import { getTransactions, getTxsByBlockHeight } from '../../service';
 import './txList.css'
 import { StakingIcon, SearchSection, numberFormat, weiToKAI, millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../common';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const TxList = () => {
+    const { t } = useTranslation()
 
     const query = new URLSearchParams(useLocation().search);
     const block = query.get("block") || '';
@@ -60,10 +62,10 @@ const TxList = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Transactions
+                        {t('transactions')}
                         </div>
                         <div className="sub-title">
-                            {numberFormat(totalTxs)} transactions found
+                            {numberFormat(totalTxs)} {t('transactionFound')}
                         </div>
                     </div>
                 </FlexboxGrid.Item>
@@ -109,7 +111,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 70 : 100} verticalAlign="middle">
-                                        <HeaderCell>Block</HeaderCell>
+                                        <HeaderCell>{t('block')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -121,7 +123,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
-                                        <HeaderCell>From</HeaderCell>
+                                        <HeaderCell>{t('from')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -157,7 +159,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 150 : 200} verticalAlign="middle">
-                                        <HeaderCell>To</HeaderCell>
+                                        <HeaderCell>{t('to')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -214,7 +216,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Value (KAI)</HeaderCell>
+                                        <HeaderCell>{t('value')} (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (
@@ -226,7 +228,7 @@ const TxList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
+                                        <HeaderCell>{t('txFee')} (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAITransaction) => {
                                                 return (

@@ -11,9 +11,11 @@ import StatsSection from './StatsSection';
 import { useViewport } from '../../context/ViewportContext';
 import { Icon } from 'rsuite';
 import { numberFormat, Button, SearchSection } from '../../common';
+import { useTranslation } from 'react-i18next';
 
 
 const Home = () => {
+    const { t } = useTranslation()
 
     const [blockHeight, setBlockHeight] = useState(0)
     const [tpsCalculateBlocks, setTpsCalculateBlocks] = useState<KAIBlock[]>([]);
@@ -79,7 +81,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="rocket" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Symbol</p>
+                                        <p className="color-graylight fs-12">{t('symbol')}</p>
                                         <p className="mt0 fw700 color-white fs-15">KAI</p>
                                     </div>
                                 </div>
@@ -88,7 +90,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="usd" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Price ($)</p>
+                                        <p className="color-graylight fs-12">{t('price')} ($)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.price ? numberFormat(tokenInfor.price as number, 6) : ''}</p>
                                     </div>
                                 </div>
@@ -97,7 +99,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="signal" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Volume 24h ($)</p>
+                                        <p className="color-graylight fs-12">{t('volume')} 24h ($)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.volume_24h ? numberFormat(tokenInfor.volume_24h as number, 3) : ''}</p>
                                     </div>
                                 </div>
@@ -106,7 +108,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="line-chart" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Market Cap ($)</p>
+                                        <p className="color-graylight fs-12">{t('marketCap')} ($)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.price ? numberFormat(tokenInfor.market_cap, 3) : ''}</p>
                                     </div>
                                 </div>
@@ -115,7 +117,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="database" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Total Supply (KAI)</p>
+                                        <p className="color-graylight fs-12">{t('totalSupply')} (KAI)</p>
                                         <p className="mt0 fw700 color-white fs-15 word-break-all">{tokenInfor.total_supply ? numberFormat(tokenInfor.total_supply as number) : ''}</p>
                                     </div>
                                 </div>
@@ -124,7 +126,7 @@ const Home = () => {
                                         <Icon className="gray-highlight" icon="coincide" size={"2x"} />
                                     </div>
                                     <div className="right">
-                                        <p className="color-graylight fs-12">Total Rewards (KAI)</p>
+                                        <p className="color-graylight fs-12">{t('totalRewards')} (KAI)</p>
                                         <p className="mt0" style={{wordBreak: 'break-all'}}>
                                             <span className="fw700 color-white fs-15 word-break-all">{tokenInfor.mainnet_circulating_supply ? numberFormat(tokenInfor.mainnet_circulating_supply) : 0}</span>
                                         </p>
@@ -143,18 +145,18 @@ const Home = () => {
                     <FlexboxGrid.Item className="section-left" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <p className="title color-white fs-24">Latest Blocks</p>
+                                <p className="title color-white fs-24">{t('latestBlocks')}</p>
                             </div>
-                            <Button className="transparent-btn" onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/blocks') }} style={{marginRight: 0}}>{t('viewAll')}</Button>
                         </div>
                         <BlockSection blockList={blocks} />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item className="section-right" componentClass={Col} colspan={24} md={12} sm={24} style={{ marginBottom: '20px' }}>
                         <div className="block-title">
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <p className="title color-white fs-24">Latest Transactions</p>
+                                <p className="title color-white fs-24">{t('latestTransactions')}</p>
                             </div>
-                            <Button className="transparent-btn" onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>View all</Button>
+                            <Button className="transparent-btn" onClick={() => { history.push('/txs') }} style={{marginRight: 0}}>{t('viewAll')}</Button>
                         </div>
                         <TransactionSection transactionList={transactionList} />
                     </FlexboxGrid.Item>

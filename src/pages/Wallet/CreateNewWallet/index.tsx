@@ -3,10 +3,11 @@ import { Link, useHistory } from 'react-router-dom';
 import { Col, FlexboxGrid, Icon, Panel } from 'rsuite';
 import { isLoggedIn } from '../../../service';
 import './createWallet.css'
+import { useTranslation } from 'react-i18next';
 
 const CreateNewWallet = () => {
     let history = useHistory();
-
+    const { t } = useTranslation()
     useEffect(() => {
         if (isLoggedIn()) {
             history.push("/wallet/dashboard")
@@ -19,12 +20,12 @@ const CreateNewWallet = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={6}>
                     <div className="panel-container private-key">
                         <Panel shaded onClick={() => { history.push('/create-private-key') }}>
-                            <div className="title">CREATE WITH PRIVATE KEY</div>
+                            <div className="title">{t('createWalletByPrivateKey.createWithPrivateKey')}</div>
                             <div className="icon">
                                 <Icon icon="key" size="lg" />
                             </div>
-                            <div>A unique private key will be generated.</div>
-                            <div>Remember to save your private key and do not lose them!</div>
+                            <div>{t('createWalletByPrivateKey.generate')}</div>
+                            <div>{t('createWalletByPrivateKey.rememberToSave')}</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
                     </div>
@@ -32,7 +33,7 @@ const CreateNewWallet = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={6}>
                     <div className="panel-container keystore-file">
                         <Panel shaded onClick={() => { history.push('/create-keystore-file') }}>
-                            <div className="title">CREATE WITH KEYSTORED FILE</div>
+                            <div className="title">{t('createWalletByKeystoreFile.title')}</div>
                             <div className="icon">
                                 <Icon icon="file-download" size="lg" />
                             </div>
@@ -55,8 +56,8 @@ const CreateNewWallet = () => {
                 </FlexboxGrid.Item>
             </FlexboxGrid>
             <div style={{textAlign: 'center'}}>
-                <span className="color-white">Already have a wallet?</span>
-                <Link to="/access-wallet" className="orange-highlight" style={{ fontWeight: 600 }}> Access Now.</Link>
+                <span className="color-white">{t('alreadyHave')}</span>
+                <Link to="/access-wallet" className="orange-highlight" style={{ fontWeight: 600 }}> {t('accessNow')}</Link>
             </div>
         </div>
     );

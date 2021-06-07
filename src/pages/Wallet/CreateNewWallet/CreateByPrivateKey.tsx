@@ -5,8 +5,10 @@ import EtherWallet from 'ethereumjs-wallet'
 import './createWallet.css'
 import { copyToClipboard, Button, onSuccess } from '../../../common';
 import { isLoggedIn } from '../../../service';
+import { useTranslation } from 'react-i18next';
 
 const CreateByPrivateKey = () => {
+    const { t } = useTranslation()
 
     const [showPrivKey, setShowPrivKey] = useState(false)
     const [wallet, setWallet] = useState({} as WalletStore)
@@ -46,57 +48,57 @@ const CreateByPrivateKey = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
-                            <h3 className="color-white">PRIVATE KEY</h3>
+                            <h3 className="color-white">{t('privateKey')}</h3>
                         </FlexboxGrid>
                         {
                             !wallet.privatekey ? (
                                 <FlexboxGrid justify="start">
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
-                                        <div className="color-white"> A unique Private Key will be generated for you </div>
-                                        <div className="color-white"> <span className="note">REMEMBER</span> to save your <span className="note">PRIVATE KEY</span>! If you <span className="note">lose</span> your private key, you will <span className="note">not</span> be able to <span className="note">recover</span> your wallet</div>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
+                                        <div className="color-white"> {t('aUnique')} </div>
+                                        <div className="color-white"> <span className="note">{t('createWalletByPrivateKey.remember')}</span> {t('createWalletByPrivateKey.toSaveYour')} <span className="note">{t('privateKey')}</span>! {t('createWalletByPrivateKey.ifYou')} <span className="note">{t('createWalletByPrivateKey.lose')}</span> {t('createWalletByPrivateKey.yourPrivateKeyYouWill')} <span className="note">{t('createWalletByPrivateKey.not')}</span> {t('createWalletByPrivateKey.beAbleTo')} <span className="note">{t('createWalletByPrivateKey.recover')}</span> {t('createWalletByPrivateKey.yourWallet')}</div>
                                     </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginTop: '20px'}}>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '20px' }}>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="kai-button-gray">Back</Button>
+                                                <Button size="big" className="kai-button-gray">{t('back')}</Button>
                                             </Link>
-                                            <Button 
-                                            className="btn-access"
+                                            <Button
+                                                className="btn-access"
                                                 size="big"
                                                 onClick={handleGenerate}>
-                                                Create wallet
+                                                {t('createWallet')}
                                             </Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             ) : (
-                                    <FlexboxGrid justify="center">
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{marginBottom: 10, padding:0}}>
-                                            <div className="color-white"><b>Please <span className="note">COPY</span>  and <span className="note">SAVE</span>  the following Private key:</b></div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
-                                            <div style={{ wordBreak: 'break-all' }}>
-                                                <InputGroup style={{ width: '100%' }} className="privatekey-input-container">
-                                                    <Input className="input" value={renderCredential()} />
-                                                    <InputGroup.Button onClick={() => setShowPrivKey(!showPrivKey)}>
-                                                        <Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />
-                                                    </InputGroup.Button>
-                                                    <InputGroup.Button onClick={() => copyToClipboard(wallet.privatekey, onSuccess)}>
-                                                        <Icon icon="copy" />
-                                                    </InputGroup.Button>
-                                                </InputGroup>
-                                            </div>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
-                                            <div className="button-container">
-                                                <Link to="/create-wallet">
-                                                    <Button size="big" className="kai-button-gray">Back</Button>
-                                                </Link>
-                                                <Button className="btn-access" size="big" onClick={accessWalletNow}>Access Now</Button>
-                                            </div>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                )
+                                <FlexboxGrid justify="center">
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 10, padding: 0 }}>
+                                        <div className="color-white"><b>{t('createWalletByPrivateKey.please')} <span className="note">{t('createWalletByPrivateKey.copy')}</span>  {t('createWalletByPrivateKey.and')} <span className="note">{t('createWalletByPrivateKey.save')}</span>  {t('createWalletByPrivateKey.theFollowing')} {t('privateKey')}:</b></div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
+                                        <div style={{ wordBreak: 'break-all' }}>
+                                            <InputGroup style={{ width: '100%' }} className="privatekey-input-container">
+                                                <Input className="input" value={renderCredential()} />
+                                                <InputGroup.Button onClick={() => setShowPrivKey(!showPrivKey)}>
+                                                    <Icon icon={showPrivKey ? 'eye-slash' : 'eye'} />
+                                                </InputGroup.Button>
+                                                <InputGroup.Button onClick={() => copyToClipboard(wallet.privatekey, onSuccess)}>
+                                                    <Icon icon="copy" />
+                                                </InputGroup.Button>
+                                            </InputGroup>
+                                        </div>
+                                    </FlexboxGrid.Item>
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
+                                        <div className="button-container">
+                                            <Link to="/create-wallet">
+                                                <Button size="big" className="kai-button-gray">{t('back')}</Button>
+                                            </Link>
+                                            <Button className="btn-access" size="big" onClick={accessWalletNow}>{t('accessNow')}</Button>
+                                        </div>
+                                    </FlexboxGrid.Item>
+                                </FlexboxGrid>
+                            )
                         }
                     </Panel>
                 </FlexboxGrid.Item>

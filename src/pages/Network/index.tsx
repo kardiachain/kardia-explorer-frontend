@@ -5,10 +5,13 @@ import { getNodes } from '../../service';
 import './network.css'
 import { ForceGraph3D } from 'react-force-graph';
 import {SearchSection, renderHashToRedirect, renderStringAndTooltip, colors} from '../../common';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const Network = () => {
+    const { t } = useTranslation()
+
     const [graphData, setGraphData] = useState({} as any)
     const [networks, setNetworks] = useState([] as KAINode[])
     const { isMobile } = useViewport()
@@ -86,7 +89,7 @@ const Network = () => {
                 <SearchSection />
                 <div style={{ marginBottom: 16 }}>
                     <div className="title header-title">
-                        Network
+                        {t('network')}
                     </div>
                 </div>
                 <FlexboxGrid>
@@ -102,7 +105,7 @@ const Network = () => {
                                         wordWrap
                                     >
                                         <Column flexGrow={2} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
-                                            <HeaderCell><span style={{ marginLeft: 40 }}>Name</span></HeaderCell>
+                                            <HeaderCell><span style={{ marginLeft: 40 }}>{t('name')}</span></HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
                                                     return (
@@ -125,7 +128,7 @@ const Network = () => {
                                             </Cell>
                                         </Column>
                                         <Column flexGrow={2} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                                            <HeaderCell>Address</HeaderCell>
+                                            <HeaderCell>{t('address')}</HeaderCell>
                                             <Cell>
                                                 {(rowData: KAINode) => {
                                                     return (

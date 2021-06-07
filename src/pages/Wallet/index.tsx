@@ -4,8 +4,11 @@ import { Col, FlexboxGrid, Panel, Icon } from 'rsuite';
 import { useViewport } from '../../context/ViewportContext';
 import { isLoggedIn } from '../../service';
 import './wallet.css';
+import { useTranslation } from 'react-i18next';
 
 const Wallet = () => {
+    const { t } = useTranslation()
+
     let history = useHistory();
     const { isMobile } = useViewport()
 
@@ -28,10 +31,10 @@ const Wallet = () => {
                                             <Icon icon="cogs" size="lg" />
                                         </div>
                                         {
-                                            isMobile ? <h3>Create a new wallet</h3> : <h2>Create a new wallet</h2>
+                                            isMobile ? <h3>{t('createANewWallet')}</h3> : <h2>{t('createANewWallet')}</h2>
                                         }
-                                        <p>Our user-friendly application will enable wallet creation and user's interaction with Kardiachain</p>
-                                        <div className="move">Get Started &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
+                                        <p>{t('createANewWalletContent')}</p>
+                                        <div className="move">{t('getStarted')} &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </Panel>
@@ -46,10 +49,10 @@ const Wallet = () => {
                                             <Icon icon="character-area" size="lg" />
                                         </div>
                                         {
-                                            isMobile ? <h3>Access my wallet</h3> : <h2>Access my wallet</h2>
+                                            isMobile ? <h3>{t('accessMyWallet')}</h3> : <h2>{t('accessMyWallet')}</h2>
                                         }
-                                        <p>Send your KAI and interact with Kardiachain blockchain platform</p>
-                                        <div className="move">Access Now &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
+                                        <p>{t('accessMyWalletContent')}</p>
+                                        <div className="move">{t('getStarted')} &nbsp;&nbsp;&nbsp; <Icon icon="long-arrow-right" /></div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
                             </Panel>

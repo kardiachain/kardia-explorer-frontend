@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from 'highcharts';
+import { useTranslation } from 'react-i18next';
 
 const chartConfigDefault = {
     chart: {
@@ -56,17 +57,18 @@ const chartConfigDefault = {
 const StakedPieChart = ({ dataForChart = {} as StakedPieChartConfig }: { dataForChart: StakedPieChartConfig }) => {
 
     const [chartOptionsConfig, setChartOptionsConfig] = useState({})
+    const { t } = useTranslation()
 
     useEffect(() => {
         const newConfig = JSON.parse(JSON.stringify(chartConfigDefault))
         newConfig.series[0].data = [{
-            name: "Validators Stakes",
+            name: t('validatorsStakes'),
             y: Number(dataForChart.totalValidatorStakedAmount),
             sliced: true,
             selected: true,
             color: '#24BD71'
         }, {
-            name: "Delegators Stakes",
+            name: t('delegatorsStakes'),
             y: Number(dataForChart.totalDelegatorStakedAmount),
             color: '#A9EFCC',
         }]

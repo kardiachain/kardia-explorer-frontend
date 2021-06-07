@@ -13,6 +13,7 @@ import {
 import { useViewport } from '../../context/ViewportContext';
 import { isLoggedIn } from '../../service';
 import './staking.css'
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,6 +23,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
 }) => {
     let history = useHistory();
     const { isMobile } = useViewport();
+    const { t } = useTranslation()
 
     return (
         <div>
@@ -34,7 +36,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                 loading={loading}
             >
                 <Column flexGrow={3} minWidth={isMobile ? 200 : 250} verticalAlign="middle">
-                    <HeaderCell><span style={{ marginLeft: 50 }}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{ marginLeft: 50 }}>{t('validator')}</span></HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -70,7 +72,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} verticalAlign="middle">
-                    <HeaderCell>Rank</HeaderCell>
+                    <HeaderCell>{t('rank')}</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -82,7 +84,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
-                    <HeaderCell>Staked Amount (KAI)</HeaderCell>
+                    <HeaderCell>{t('stakedAmount')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -92,7 +94,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
-                    <HeaderCell>Voting power (%)</HeaderCell>
+                    <HeaderCell>{t('votingPower')} (%)</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -102,7 +104,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={140} verticalAlign="middle">
-                    <HeaderCell>Delegators</HeaderCell>
+                    <HeaderCell>{t('delegators')}</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -112,7 +114,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={100} verticalAlign="middle">
-                    <HeaderCell>Commission (%)</HeaderCell>
+                    <HeaderCell>{t('commission')} (%)</HeaderCell>
                     <Cell>
                         {(rowData: Validator) => {
                             return (
@@ -126,7 +128,7 @@ const ValidatorList = ({ validators = [] as Validator[], loading = true }: {
                     <Cell>
                         {(rowData: Validator) => {
                             return (
-                                <Button className="kai-button-gray delegate-btn" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>Delegate</Button>
+                                <Button className="kai-button-gray delegate-btn" onClick={() => { isLoggedIn() ? history.push(`/wallet/staking/${rowData.address}`) : history.push('/wallet') }}>{t('delegate')}</Button>
                             );
                         }}
                     </Cell>

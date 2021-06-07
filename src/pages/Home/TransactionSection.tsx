@@ -4,12 +4,15 @@ import { Col, FlexboxGrid, Table, Panel, Icon, Whisper, Tooltip } from 'rsuite';
 import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip, weiToKAI, numberFormat } from '../../common';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const TransactionSection = ({ transactionList = [] }: {
     transactionList: KAITransaction[]
 }) => {
+    const { t } = useTranslation()
+
     const { isMobile } = useViewport();
     return (
         <Panel shaded className="panel-bg-gray">
@@ -47,13 +50,13 @@ const TransactionSection = ({ transactionList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={2} minWidth={180} verticalAlign="middle">
-                            <HeaderCell>Detail</HeaderCell>
+                            <HeaderCell>{t('detail')}</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (
                                         <div>
                                             <span className="container-content-right">
-                                                <span style={{ marginRight: 5, fontSize: 12 }}>From:</span>
+                                                <span style={{ marginRight: 5, fontSize: 12 }}>{t('from')}:</span>
                                                 {renderHashToRedirect({
                                                     hash: rowData.from,
                                                     headCount: isMobile ? 4 : 8,
@@ -62,7 +65,7 @@ const TransactionSection = ({ transactionList = [] }: {
                                                     redirectTo: `/address/${rowData.from}`
                                                 })}
                                                 <div>
-                                                    <span style={{ marginRight: 5, fontSize: 12 }}>To:</span>
+                                                    <span style={{ marginRight: 5, fontSize: 12 }}>{t('to')}:</span>
                                                     {
                                                         !rowData.isSmcInteraction || !rowData.toName ? (
                                                             <span>
@@ -108,7 +111,7 @@ const TransactionSection = ({ transactionList = [] }: {
                             </Cell>
                         </Column>
                         <Column align="right" verticalAlign="middle" flexGrow={1} minWidth={70}>
-                            <HeaderCell>Value (KAI)</HeaderCell>
+                            <HeaderCell>{t('value')} (KAI)</HeaderCell>
                             <Cell>
                                 {(rowData: KAITransaction) => {
                                     return (

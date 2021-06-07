@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import './i18n';
 
 Sentry.init({
   dsn: "https://95cf929f53bd4ead85d8d918cc2e2ba5@o497910.ingest.sentry.io/5574725",

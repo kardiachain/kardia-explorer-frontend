@@ -6,9 +6,11 @@ import './tokens.css'
 import unverified from '../../resources/unverified.svg';
 import { VerifiedTokens } from './VerifiedTokens';
 import { UnVerifiedTokens } from './UnverifiedTokens';
+import { useTranslation } from 'react-i18next';
 
 
 const Tokens = () => {
+    const { t } = useTranslation()
 
     const [activeKey, setActiveKey] = useState('verified')
 
@@ -72,7 +74,7 @@ const Tokens = () => {
                             <span style={{
                                 color: 'white',
                                 verticalAlign: 'bottom'
-                            }}>Unverified Tokens</span>
+                            }}>{t('unverifiedTokens')}</span>
                         </div>
                         <div className="custom-nav">
                             <Nav
@@ -81,10 +83,10 @@ const Tokens = () => {
                                 onSelect={setActiveKey}
                                 style={{ marginBottom: 20 }}>
                                 <Nav.Item eventKey="verified">
-                                    {`Verified Tokens (${totalVerifiedTokens || 0})`}
+                                    {`${t('verifiedToken')} (${totalVerifiedTokens || 0})`}
                                 </Nav.Item>
                                 <Nav.Item eventKey="unverified">
-                                    {`Unverified Tokens (${totalUnverifiedTokens || 0})`}
+                                    {`${t('unverifiedTokens')} (${totalUnverifiedTokens || 0})`}
                                 </Nav.Item>
                             </Nav>
                         </div>

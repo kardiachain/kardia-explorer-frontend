@@ -16,8 +16,11 @@ import {
 } from '../../common';
 import CandidateList from './CandidateList';
 import StakingCalculator from './StakingCalculator';
+import { useTranslation } from 'react-i18next';
 
 const Validators = () => {
+    const { t } = useTranslation()
+
     let history = useHistory();
     const { isMobile } = useViewport();
     const [validators, setValidators] = useState([] as Validator[]);
@@ -98,20 +101,20 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={10} style={{ marginBottom: isMobile ? '15px' : '0' }}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Staking
+                            {t('staking')}
                         </div>
                     </div>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={14} style={{ textAlign: 'right' }}>
                     <Button size={isMobile ? "normal" : "big"} className="kai-button-gray" style={{ marginBottom: 10 }} onClick={() => { setStakingCalculator(true) }}>
-                        Staking Calculator
+                        {t('stakingCalculator')}
                     </Button>
                     {
                         !isVal ?
                             <Button size={isMobile ? "normal" : "big"} style={{ marginBottom: 10 }}
                                 onClick={() => { isLoggedIn() ? history.push("/wallet/staking/for-validator") : history.push('/wallet') }}
                             >
-                                Register to become a validator
+                                {t('registerToBecomeAValidator')}
                             </Button> : <></>
                     }
                 </FlexboxGrid.Item>
@@ -120,7 +123,7 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray">
                         <div className="color-white" style={{ fontWeight: 600 }}>
-                            <span style={{ fontSize: 24 }}>Proposers</span>
+                            <span style={{ fontSize: 24 }}>{t('proposers')}</span>
                         </div>
                         <ValidatorsPieChart dataForChart={dataForValidatorsChart} />
                     </Panel>
@@ -128,8 +131,8 @@ const Validators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} md={12} style={{ marginBottom: isMobile ? '10px' : '0' }}>
                     <Panel shaded className="panel-bg-gray" style={{ marginBottom: '10px' }}>
                         <div className="color-white" style={{ fontWeight: 600 }}>
-                            <span style={{ fontSize: 24 }}>Total Staked </span>
-                            <div style={{ opacity: 0.6 }}>Amount: {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
+                            <span style={{ fontSize: 24 }}>{t('totalStaked')} </span>
+                            <div style={{ opacity: 0.6 }}>{t('amount')}: {formatAmountwithPlus(Number(weiToKAI(totalStakedAmount)))} KAI</div>
                         </div>
                         <StakedPieChart dataForChart={dataForStakedPieChart || {}} />
                     </Panel>
@@ -143,7 +146,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalProposer}</div>
                                         <div className="title color-graylight">
-                                            Proposers
+                                            {t('proposers')}
                                         </div>
                                     </div>
                                 </div>
@@ -156,7 +159,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalValidator}</div>
                                         <div className="title color-graylight">
-                                            Validators
+                                            {t('validators')}
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +172,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalCandidate}</div>
                                         <div className="title color-graylight">
-                                            Candidates
+                                            {t('candidates')}
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +185,7 @@ const Validators = () => {
                                     <div className="content">
                                         <div className="value color-white">{totalDelegator}</div>
                                         <div className="title color-graylight">
-                                            Delegators
+                                            {t('delegators')}
                                         </div>
                                     </div>
                                 </div>
@@ -201,10 +204,10 @@ const Validators = () => {
                                 onSelect={setActiveKey}
                                 style={{ marginBottom: 20 }}>
                                 <Nav.Item eventKey="validators">
-                                    {`Validators (${validators.length})`}
+                                    {`${t('validators')} (${validators.length})`}
                                 </Nav.Item>
                                 <Nav.Item eventKey="candidates">
-                                    {`Candidates (${candidates.length})`}
+                                    {`${t('candidates')} (${candidates.length})`}
                                 </Nav.Item>
                             </Nav>
                         </div>

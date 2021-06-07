@@ -6,8 +6,11 @@ import { addressValid, hashValid } from '../../utils/validate';
 import { getBlockBy, getTxByHash, searchAll, SearchItem } from '../../../service';
 import { Button } from '../Button';
 import { KardiaUtils } from 'kardia-js-sdk';
+import { useTranslation } from 'react-i18next';
 
 export const SearchSection = () => {
+    const { t } = useTranslation()
+
     const [searchInput, setSearchInput] = useState('')
     const history = useHistory()
     const [suggestData, setSuggestData] = useState<SearchItem[]>([] as SearchItem[])
@@ -125,12 +128,12 @@ export const SearchSection = () => {
             <div className="autocomplete-box">
                 <InputGroup inside>
                     <Input
-                        placeholder="Search by Address / TxHash / BlockHash ..."
+                        placeholder={t('searchPlaceholder')}
                         value={searchInput}
                         onChange={(value: string) => { handleOnchange(value) }}
                         onPressEnter={search}
                     />
-                    <Button onClick={search} className="btn-search kai-button-violet-gradient" style={{ margin: 0 }}>Search</Button>
+                    <Button onClick={search} className="btn-search kai-button-violet-gradient" style={{ margin: 0 }}>{t('search')}</Button>
 
                 </InputGroup>
                 {

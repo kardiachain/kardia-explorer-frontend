@@ -3,8 +3,11 @@ import { Icon, Panel } from 'rsuite';
 import { numberFormat } from '../../common';
 import { calculateTPS, getTotalStats } from '../../service';
 import './stat.css'
+import { useTranslation } from 'react-i18next';
 
 const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { totalTxs: number, blockHeight: number, blockList: KAIBlock[] }) => {
+    const { t } = useTranslation()
+
     const [tps, setTps] = useState('0')
     const [totalStats, setTotalStats] = useState({} as TotalStats)
 
@@ -26,7 +29,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                         <div className="icon">
                             <Icon className="gray-highlight" icon="cubes" size={"lg"} />
                         </div>
-                        <div className="title color-graylight">Block Height</div>
+                        <div className="title color-graylight">{t('blockHeight')}</div>
                         <div className="value color-white">{numberFormat(blockHeight)}</div>
                     </div>
 
@@ -34,7 +37,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                         <div className="icon">
                             <Icon className="gray-highlight" icon="realtime" size={"lg"} />
                         </div>
-                        <div className="title color-graylight">Live TPS</div>
+                        <div className="title color-graylight">{t('liveTPS')}</div>
                         <div className="value color-white">{numberFormat(tps)}</div>
                     </div>
 
@@ -42,7 +45,7 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                         <div className="icon">
                             <Icon className="gray-highlight" icon="exchange" size={"lg"} />
                         </div>
-                        <div className="title color-graylight">Transactions</div>
+                        <div className="title color-graylight">{t('transactions')}</div>
                         <div className="value color-white">{numberFormat(totalTxs)}</div>
                     </div>
 
@@ -50,14 +53,14 @@ const StatsSection = ({ totalTxs = 0, blockHeight = 0, blockList = [] }: { total
                         <div className="icon">
                             <Icon className="gray-highlight" icon="vcard" size={"lg"} />
                         </div>
-                        <div className="title color-graylight">Addresses</div>
+                        <div className="title color-graylight">{t('addresses')}</div>
                         <div className="value color-white">{numberFormat(totalStats.totalHolders)}</div>
                     </div>
                     <div className="stat">
                         <div className="icon">
                             <Icon className="gray-highlight" icon="file-text-o" size={"lg"} />
                         </div>
-                        <div className="title color-graylight">Contracts</div>
+                        <div className="title color-graylight">{t('contracts')}</div>
                         <div className="value color-white">{numberFormat(totalStats.totalContracts)}</div>
                     </div>
                 </Panel>

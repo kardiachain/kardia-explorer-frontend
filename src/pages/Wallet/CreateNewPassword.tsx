@@ -5,11 +5,13 @@ import { ErrorMessage, Button, ErrMessage } from '../../common';
 import walletState from '../../atom/wallet.atom';
 import './wallet.css'
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const CreateNewPassword = ({ show, setShow }: {
     show: boolean;
     setShow: (isShow: boolean) => void;
 }) => {
+    const { t } = useTranslation()
 
     const [password, setPassword] = useState('')
     const [passwordErr, setPasswordErr] = useState('')
@@ -75,21 +77,21 @@ const CreateNewPassword = ({ show, setShow }: {
                         <FlexboxGrid.Item componentclass={Col} colspan={22} sm={24} >
                             <Panel shaded className="panel-bg-gray">
                                 <FlexboxGrid justify="center" style={{ marginBottom: 20 }}>
-                                    <h2 className="color-white" style={{ fontSize: 20 }}>Create A New Pass Code</h2>
+                                    <h2 className="color-white" style={{ fontSize: 20 }}>{t('createANewPasscode.createANewPasscode')}</h2>
                                 </FlexboxGrid>
                                 <FlexboxGrid style={{ marginBottom: 20 }}>
                                     <div style={{ padding: '0 5px' }}>
                                         <div className="createpass-note">
-                                            <b>What is a pass code?</b> <br />
-                                            <span>Pass Code is a protection layer that prevents others from accessing your wallet.</span> <br />
-                                            <b>What if I lose my Pass Code?</b> <br />
-                                            <span>Remove the old pass code and create a new one, you will then have access to your wallet again</span>
+                                            <b>{t('createANewPasscode.what')}</b> <br />
+                                            <span>{t('createANewPasscode.passcode')}</span> <br />
+                                            <b>{t('createANewPasscode.lost')}</b> <br />
+                                            <span>{t('createANewPasscode.answer')}</span>
                                         </div>
                                     </div>
                                 </FlexboxGrid>
                                 <FlexboxGrid>
                                     <FlexboxGrid.Item componentclass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                        <ControlLabel className="color-white">New Pass Code (minimum 8 characters) (required)</ControlLabel>
+                                        <ControlLabel className="color-white">{t('createANewPasscode.answer')}</ControlLabel>
                                         <FormControl
                                             name="password"
                                             type="password"
@@ -103,7 +105,7 @@ const CreateNewPassword = ({ show, setShow }: {
                                         <ErrMessage message={passwordErr} />
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentclass={Col} colspan={24} sm={24}>
-                                        <ControlLabel className="color-white">Confirm Pass Code (required)</ControlLabel>
+                                        <ControlLabel className="color-white">{t('createANewPasscode.confirm')}</ControlLabel>
                                         <FormControl
                                             name="confirmPassword"
                                             type="password"
@@ -118,9 +120,9 @@ const CreateNewPassword = ({ show, setShow }: {
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid justify="center" style={{ margin: '30px auto 20px auto' }}>
                                         <Button className="kai-button-gray" size="big" onClick={() => { history.push('/access-wallet') }}>
-                                            Back
+                                        {t('back')}
                                         </Button>
-                                        <Button className="btn-access" size="big" onClick={createNewPassword} >Create</Button>
+                                        <Button className="btn-access" size="big" onClick={createNewPassword} >{t('create')}</Button>
                                     </FlexboxGrid>
                                 </FlexboxGrid>
                             </Panel>

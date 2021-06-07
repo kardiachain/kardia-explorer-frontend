@@ -10,12 +10,15 @@ import {
 } from '../../common';
 import { useViewport } from '../../context/ViewportContext';
 import './home.css'
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const BlockSection = ({ blockList = [] }: {
     blockList: KAIBlock[]
 }) => {
+    const { t } = useTranslation()
+
     const { isMobile } = useViewport()
     return (
         <Panel shaded className="panel-bg-gray">
@@ -30,7 +33,7 @@ const BlockSection = ({ blockList = [] }: {
                         autoHeight={isMobile ? true : false}
                     >
                         <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                            <HeaderCell><span style={{ marginLeft: 40 }}>Block Height</span></HeaderCell>
+                            <HeaderCell><span style={{ marginLeft: 40 }}>{t('blockHeight')}</span></HeaderCell>
                             <Cell dataKey="blockHeight" >
                                 {(rowData: KAIBlock) => {
                                     return (
@@ -48,7 +51,7 @@ const BlockSection = ({ blockList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={2} minWidth={150}>
-                            <HeaderCell>Proposer</HeaderCell>
+                            <HeaderCell>{t('proposer')}</HeaderCell>
                             <Cell>
                                 {(rowData: KAIBlock) => {
                                     return (
@@ -90,7 +93,7 @@ const BlockSection = ({ blockList = [] }: {
                             </Cell>
                         </Column>
                         <Column flexGrow={2} minWidth={110} align="right" verticalAlign="middle">
-                            <HeaderCell>Rewards (KAI)</HeaderCell>
+                            <HeaderCell>{t('rewards')} (KAI)</HeaderCell>
                             <Cell dataKey="transactions">
                                 {(rowData: KAIBlock) => {
                                     return (

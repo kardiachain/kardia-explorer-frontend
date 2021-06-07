@@ -14,10 +14,12 @@ import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { getAccounts } from '../../service';
 import './style.css';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const AccountList = () => {
+    const { t } = useTranslation()
 
     const { isMobile } = useViewport();
     const [holderAccounts, setHolderAccounts] = useState([] as HolderAccount[]);
@@ -52,7 +54,7 @@ const AccountList = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Account
+                        {t('account')}
                         </div>
                         <div className="sub-title">
                             {numberFormat(totalAccount)} accounts found
@@ -87,7 +89,7 @@ const AccountList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={3} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
-                                        <HeaderCell><span style={{ marginLeft: 40 }}>Address</span></HeaderCell>
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>{t('address')}</span></HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
                                                 return (
@@ -112,7 +114,7 @@ const AccountList = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 150 : 250} verticalAlign="middle">
-                                        <HeaderCell>Name</HeaderCell>
+                                        <HeaderCell>{t('name')}</HeaderCell>
                                         <Cell>
                                             {(rowData: HolderAccount) => {
                                                 return (
@@ -140,7 +142,7 @@ const AccountList = () => {
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 200} verticalAlign="middle">
                                         <HeaderCell>
                                             <span className="sort-button" onClick={handleSort}>
-                                                <span>Balance (KAI)</span>
+                                                <span>{t('balance')} (KAI)</span>
                                                 <Icon style={{ marginLeft: 3 }} icon={sortType === SortType.ASC ? "arrow-up-line" : "arrow-down-line"} />
                                             </span>
                                         </HeaderCell>

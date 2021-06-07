@@ -6,6 +6,7 @@ import { convertValueFollowDecimal, numberFormat, renderHashToRedirect, renderSt
 import { TABLE_CONFIG } from '../../config';
 import { useViewport } from '../../context/ViewportContext';
 import { ITokenContract } from '../../service';
+import { useTranslation } from 'react-i18next';
 
 
 const { Column, HeaderCell, Cell } = Table;
@@ -19,6 +20,7 @@ export const VerifiedTokens = ({tokens, totalTokens, loading, size, page, setSiz
     page: number;
     setPage: (_page: number) => void;
 }) => {
+    const { t } = useTranslation()
 
     const { isMobile } = useViewport();
 
@@ -34,7 +36,7 @@ export const VerifiedTokens = ({tokens, totalTokens, loading, size, page, setSiz
                     loading={loading}
                 >
                     <Column flexGrow={3} minWidth={270} verticalAlign="middle">
-                        <HeaderCell>Token</HeaderCell>
+                        <HeaderCell>{t('token')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenContract) => {
                                 return (
@@ -69,7 +71,7 @@ export const VerifiedTokens = ({tokens, totalTokens, loading, size, page, setSiz
                         </Cell>
                     </Column>
                     <Column flexGrow={1} minWidth={100} verticalAlign="middle">
-                        <HeaderCell>Symbol</HeaderCell>
+                        <HeaderCell>{t('symbol')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenContract) => {
                                 return (
@@ -81,7 +83,7 @@ export const VerifiedTokens = ({tokens, totalTokens, loading, size, page, setSiz
                         </Cell>
                     </Column>
                     <Column flexGrow={1} minWidth={100} verticalAlign="middle">
-                        <HeaderCell>Decimals</HeaderCell>
+                        <HeaderCell>{t('decimals')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenContract) => {
                                 return (
@@ -93,7 +95,7 @@ export const VerifiedTokens = ({tokens, totalTokens, loading, size, page, setSiz
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                        <HeaderCell>Token address</HeaderCell>
+                        <HeaderCell>{t('tokenAddress')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenContract) => {
                                 return (
@@ -113,7 +115,7 @@ export const VerifiedTokens = ({tokens, totalTokens, loading, size, page, setSiz
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={100} verticalAlign="middle">
-                        <HeaderCell>Total Supply</HeaderCell>
+                        <HeaderCell>{t('totalSupply')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenContract) => {
                                 return (

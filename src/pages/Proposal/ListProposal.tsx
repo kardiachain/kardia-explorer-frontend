@@ -7,11 +7,13 @@ import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { RenderStatus } from '.';
 import { Link, useHistory } from 'react-router-dom';
 import { millisecondToDay, Button as CustomButton } from '../../common';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 const { Line } = Progress;
 
 const ListProposal = () => {
+    const { t } = useTranslation()
 
     const [proposals, setProposals] = useState([] as Proposal[])
     const [page, setPage] = useState(TABLE_CONFIG.page)
@@ -55,7 +57,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column width={110} verticalAlign="middle">
-                                    <HeaderCell>Deadline</HeaderCell>
+                                    <HeaderCell>{t('deadline')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             if (rowData?.status !== 0) {
@@ -70,7 +72,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={2} minWidth={300} verticalAlign="middle">
-                                    <HeaderCell>Params</HeaderCell>
+                                    <HeaderCell>{t('params')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -117,7 +119,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} minWidth={200} verticalAlign="middle">
-                                    <HeaderCell>Validator Votes</HeaderCell>
+                                    <HeaderCell>{t('validatorVotes')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -129,7 +131,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column flexGrow={1} minWidth={250} verticalAlign="middle">
-                                    <HeaderCell>Community Votes</HeaderCell>
+                                    <HeaderCell>{t('communityVotes')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -148,7 +150,7 @@ const ListProposal = () => {
                                     </Cell>
                                 </Column>
                                 <Column minWidth={110} verticalAlign="middle">
-                                    <HeaderCell>Status</HeaderCell>
+                                    <HeaderCell>{t('status')}</HeaderCell>
                                     <Cell>
                                         {(rowData: Proposal) => {
                                             return (
@@ -172,7 +174,7 @@ const ListProposal = () => {
                                                                 <CustomButton className="kai-button-gray"
                                                                     onClick={() => {
                                                                         isLoggedIn() ? history.push(`/wallet/proposal-vote/${rowData.id}`) : history.push('/wallet')
-                                                                    }}>Vote</CustomButton>
+                                                                    }}>{t('vote')}</CustomButton>
                                                             ) : <></>
 
                                                     }

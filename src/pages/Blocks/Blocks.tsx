@@ -14,10 +14,12 @@ import {
     SearchSection,
     weiToKAI
 } from '../../common';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const Blocks = () => {
+    const { t } = useTranslation()
     const [blocks, setBlocks] = useState([] as KAIBlock[])
     const [totalBlock, setTotalBlock] = useState(0)
     const [page, setPage] = useState(TABLE_CONFIG.page)
@@ -53,10 +55,10 @@ const Blocks = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Blocks
+                        {t('block')}
                         </div>
                         <div className="sub-title">
-                            Block #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} to #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)
+                        {t('block')} #{numberFormat(blocks[blocks.length - 1]?.blockHeight || 0)} {t('to')} #{numberFormat(blocks[0]?.blockHeight || 0)} (Total of {numberFormat(totalBlock)} blocks)
                         </div>
                     </div>
                 </FlexboxGrid.Item>
@@ -76,7 +78,7 @@ const Blocks = () => {
                                     loading={loading}
                                 >
                                     <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                                        <HeaderCell><span style={{ marginLeft: 40 }}>Block</span></HeaderCell>
+                                        <HeaderCell><span style={{ marginLeft: 40 }}>{t('block')}</span></HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -94,7 +96,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 110 : 250} verticalAlign="middle">
-                                        <HeaderCell>Proposer</HeaderCell>
+                                        <HeaderCell>{t('proposer')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -143,7 +145,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Gas Used</HeaderCell>
+                                        <HeaderCell>{t('gasUsed')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -155,7 +157,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Gas Limit</HeaderCell>
+                                        <HeaderCell>{t('gasLimit')}</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
@@ -167,7 +169,7 @@ const Blocks = () => {
                                         </Cell>
                                     </Column>
                                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                                        <HeaderCell>Rewards (KAI)</HeaderCell>
+                                        <HeaderCell>{t('rewards')} (KAI)</HeaderCell>
                                         <Cell>
                                             {(rowData: KAIBlock) => {
                                                 return (
