@@ -103,6 +103,22 @@
         "generate": "A unique private key will be generated.",
         "rememberToSave": "Remember to save your private key and do not lose them!"
     },
+    "createWalletByKeystoreFile": {
+        "title": "CREATE WITH KEYSTORED FILE",
+        "content": "DOWNLOAD and SAVE the provided Keystore File. Both Keystore File and Password are necessary to access your wallet.",
+        "create": "Mật khẩu key store ( chứa ít nhất 8 kí tự )",
+        "youWillNeed": "You will need",
+        "both": "both",
+        "your": "your",
+        "passwordKeystoreFile": "Password + Keystore File",
+        "toAccess":"to access your wallet.",
+        "downloadKeystore": "Download Keystore"
+    },
+    "createWalletByMnemonic":{
+        "title":"CREATE WITH MNEMONIC PHRASE",
+        "content": "REMEMBER to save your mnemonic phrase to access your wallet.",
+        "create": "Key store password (minimum 8 characters) (required)"
+    },
     "createANewPasscode": {
         "createANewPasscode": "Create a new pass code",
         "what": "What is a pass code ?",

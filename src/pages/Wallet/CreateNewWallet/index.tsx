@@ -37,7 +37,7 @@ const CreateNewWallet = () => {
                             <div className="icon">
                                 <Icon icon="file-download" size="lg" />
                             </div>
-                            <div>DOWNLOAD and SAVE the provided Keystore File. Both Keystore File and Password are necessary to access your wallet.</div>
+                            <div>{t('createWalletByKeystoreFile.content')}</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
                     </div>
@@ -45,11 +45,11 @@ const CreateNewWallet = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={22} md={6}>
                     <div className="panel-container mnemonic-phrase">
                         <Panel shaded onClick={() => { history.push('/create-mnemonic-phrase') }}>
-                            <div className="title">CREATE WITH MNEMONIC PHRASE</div>
+                            <div className="title">{t('createWalletByMnemonic.title')}</div>
                             <div className="icon">
                                 <Icon icon="paragraph" size="lg" />
                             </div>
-                            <div>REMEMBER to save your mnemonic phrase to access your wallet.</div>
+                            <div>{t('createWalletByMnemonic.content')}</div>
                             <div className="move-next-step">Go &nbsp;<Icon icon="arrow-circle-o-right" /></div>
                         </Panel>
                     </div>

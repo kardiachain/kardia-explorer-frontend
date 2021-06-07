@@ -105,7 +105,18 @@
     },
     "createWalletByKeystoreFile": {
         "title": "Tạo ví bằng keystore file",
-        "content": "Tải và lưu trữ keystore file được cung cấp. Cần cung cấp keystore file và mật khẩu để truy cập ví"
+        "content": "Tải và lưu trữ keystore file được cung cấp. Cần cung cấp keystore file và mật khẩu để truy cập ví",
+        "create": "Mật khẩu key store ( chứa ít nhất 8 kí tự )",
+        "youWillNeed": "Bạn sẽ cần",
+        "both": "",
+        "your": "",
+        "passwordKeystoreFile": "mật khẩu và keystore file",
+        "toAccess": "để truy cập ví.",
+        "downloadKeystore": "Tải xuống keystore file"
+    },
+    "createWalletByMnemonic": {
+        "title": "Tạo ví bằng mnemonic phrase",
+        "content": "Ghi nhớ mnemonic phrase để truy cập ví"
     },
     "createANewPasscode": {
         "createANewPasscode": "Tạo mới pass code",

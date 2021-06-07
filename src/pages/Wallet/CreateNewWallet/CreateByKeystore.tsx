@@ -4,6 +4,7 @@ import Wallet from 'ethereumjs-wallet'
 import { Link, useHistory } from 'react-router-dom';
 import { ErrorMessage, ErrMessage, Button } from '../../../common';
 import { isLoggedIn } from '../../../service';
+import { useTranslation } from 'react-i18next';
 
 const CreateByKeystore = () => {
     const [password, setPassword] = useState('');
@@ -12,6 +13,7 @@ const CreateByKeystore = () => {
     const [isLoading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     let history = useHistory();
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (isLoggedIn()) {
@@ -70,7 +72,7 @@ const CreateByKeystore = () => {
                                 <FlexboxGrid justify="center">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
                                         <div className="text-container">
-                                            <ControlLabel className="color-white">Key store password (minimum 8 characters) (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{t('createWalletByKeystoreFile.create')}</ControlLabel>
                                             <Form fluid>
                                                 <FormGroup style={{ marginBottom: '12px' }}>
                                                     <FormControl
@@ -84,14 +86,14 @@ const CreateByKeystore = () => {
                                                         }} />
                                                     <ErrMessage message={errorMessage} />
                                                 </FormGroup>
-                                                <div className="color-white">You will need <span className="note">BOTH</span>  your <span className="note">Password + Keystore File</span>  to access your wallet.</div>
+                                                <div className="color-white">{t('createWalletByKeystoreFile.youWillNeed')} <span className="note">{t('createWalletByKeystoreFile.both')}</span>  {t('createWalletByKeystoreFile.your')} <span className="note">{t('createWalletByKeystoreFile.passwordKeystoreFile')}</span>  {t('createWalletByKeystoreFile.toAccess')}</div>
                                             </Form>
                                         </div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="kai-button-gray">Back</Button>
+                                                <Button size="big" className="kai-button-gray">{t('back')}</Button>
                                             </Link>
-                                            <Button className="btn-access" size="big" loading={isLoading} onClick={createWallet}>Create wallet</Button>
+                                            <Button className="btn-access" size="big" loading={isLoading} onClick={createWallet}>{t('createWallet')}</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>
@@ -102,14 +104,14 @@ const CreateByKeystore = () => {
                                             <div className="color-white"> You will need it and <span className="note">your password</span> to access your wallet.</div>
                                             <div className="download-keystore-file">
                                                 <a href={blobUrl} download={keystoreFilename}>
-                                                    <Icon icon="download" size={"lg"} /> Download Keystore
+                                                    <Icon icon="download" size={"lg"} /> {t('createWalletByKeystoreFile.downloadKeystore')}
                                             </a>
                                             </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="kai-button-gray">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">{t('back')}</Button>
                                                 </Link>
-                                                <Button className="btn-access" size="big" onClick={accessWallet}>Access now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWallet}>{t('accessNow')}</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
