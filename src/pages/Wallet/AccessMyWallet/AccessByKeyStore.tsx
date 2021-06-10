@@ -9,8 +9,10 @@ import { Button, ErrMessage, ErrorMessage } from '../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import CreateNewPassword from '../CreateNewPassword';
+import { useTranslation } from 'react-i18next';
 
 const AccessByKeyStore = () => {
+    const { t } = useTranslation()
 
     let history = useHistory();
     const [loadingBtnSubmit, setLoadingBtnSubmit] = useState(false)
@@ -93,13 +95,13 @@ const AccessByKeyStore = () => {
                             <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                                 <Panel shaded className="panel-bg-gray">
                                     <FlexboxGrid justify="start">
-                                        <h3 className="color-white">ACCESS WALLET</h3>
+                                        <h3 className="color-white">{t('accessWallet.title')}</h3>
                                     </FlexboxGrid>
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
                                             <Form fluid>
                                                 <FormGroup style={{ marginBottom: '12px' }}>
-                                                    <ControlLabel className="color-white">Key store password (required)</ControlLabel>
+                                                    <ControlLabel className="color-white">{t('accessByKeystore.keystorePassword')}</ControlLabel>
                                                     <FormControl
                                                         name="password"
                                                         type="password"
@@ -119,15 +121,15 @@ const AccessByKeyStore = () => {
                                                     onRemove={handleRemoveFile}
                                                 >
 
-                                                    <div><Icon icon="upload" size={"lg"} /><span style={{ marginLeft: 12 }}>Upload Keystore</span></div>
+                                                    <div><Icon icon="upload" size={"lg"} /><span style={{ marginLeft: 12 }}>{t('accessByKeystore.uploadKeystore')}</span></div>
                                                 </Uploader>
                                                 <ErrMessage message={keystoreFileErr} />
                                             </Form>
                                             <div className="button-container">
                                                 <Link to="/access-wallet">
-                                                    <Button size="big" className="kai-button-gray">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">{t('back')}</Button>
                                                 </Link>
-                                                <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
+                                                <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>{t('accessNow')}</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>

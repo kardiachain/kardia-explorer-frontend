@@ -5,6 +5,7 @@ import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { millisecondToHMS, renderHashToRedirect, weiToKAI, numberFormat } from '../../../common';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 const BlockByProposerList = ({
@@ -25,6 +26,7 @@ const BlockByProposerList = ({
     setLimit: (newLimit: number) => void;
 }) => {
     const { isMobile } = useViewport();
+    const { t } = useTranslation()
 
     return (
         <>
@@ -37,7 +39,7 @@ const BlockByProposerList = ({
                 loading={loading}
             >
                 <Column flexGrow={2} minWidth={isMobile ? 150 : 0} verticalAlign="middle">
-                    <HeaderCell><span style={{marginLeft: 40}}>Block</span></HeaderCell>
+                    <HeaderCell><span style={{marginLeft: 40}}>{t('block')}</span></HeaderCell>
                     <Cell>
                         {(rowData: KAIBlock) => {
                             return (
@@ -89,7 +91,7 @@ const BlockByProposerList = ({
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                    <HeaderCell>Rewards (KAI)</HeaderCell>
+                    <HeaderCell>{t('rewards')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: KAIBlock) => {
                             return (

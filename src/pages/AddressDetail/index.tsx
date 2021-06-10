@@ -14,6 +14,7 @@ import { TABLE_CONFIG } from '../../config';
 import './addressDetail.css'
 import { getHolderAccount, getKrc20Txs, getTokens, getTxsByAddress, ITokenTranferTx } from '../../service';
 import { KardiaUtils } from 'kardia-js-sdk';
+import { useTranslation } from 'react-i18next';
 
 
 const AddressDetail = () => {
@@ -33,6 +34,7 @@ const AddressDetail = () => {
     const [krc20TxsPage, setKrc20TxsPage] = useState(TABLE_CONFIG.page)
     const [krc20TxsSize, setKrc20TxsSize] = useState(TABLE_CONFIG.limitDefault)
     const [krc20TxsLoading, setKrc20TxsLoading] = useState(false)
+    const { t } = useTranslation()
 
     useEffect(() => {
         window.history.replaceState(null, document.title, `/address/${KardiaUtils.toChecksum(address)}`)
@@ -122,7 +124,7 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="property-title">Balance: </div>
+                                        <div className="property-title">{t('balance')}: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
                                         <div className="property-content">{numberFormat(weiToKAI(holderAccount?.balance))} KAI</div>
@@ -133,7 +135,7 @@ const AddressDetail = () => {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={6}>
-                                        <div className="property-title">Token: </div>
+                                        <div className="property-title">{t('token')}: </div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} sm={18}>
                                         <SelectPicker
@@ -168,7 +170,7 @@ const AddressDetail = () => {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                             <div style={{ marginBottom: 16 }}>
                                 <div className="title header-title">
-                                    Transaction History
+                                {t('transactionHistory')}
                                 </div>
                             </div>
                         </FlexboxGrid.Item>

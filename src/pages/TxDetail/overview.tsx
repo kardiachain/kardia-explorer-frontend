@@ -26,6 +26,7 @@ import { STAKING_SMC_ADDRESS } from '../../config';
 import STAKING_ABI from '../../resources/smc-compile/staking-abi.json'
 import abiDecoder from 'abi-decoder'
 import './txDetail.css'
+import { useTranslation } from 'react-i18next';
 
 const { Paragraph } = Placeholder;
 
@@ -41,6 +42,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
     const [inputDataDecode, setInputDataDecode] = useState({ name: '', params: [] })
     const [fileUploadErr, setFileUploadErr] = useState('');
     const [decodeErr, setDecodeErr] = useState('');
+    const { t } = useTranslation()
 
     const handleRemoveFile = (file: FileType) => {
         setListFile([]);
@@ -164,7 +166,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                    <div className="property-title">Status</div>
+                                    <div className="property-title">{t('status')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                     {
@@ -206,7 +208,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                    <div className="property-title">From</div>
+                                    <div className="property-title">{t('from')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                     <div className="property-content">
@@ -331,7 +333,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                    <div className="property-title">Value</div>
+                                    <div className="property-title">{t('value')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                     <div className="property-content">{numberFormat(weiToKAI(txDetail?.value))} KAI</div>
@@ -341,7 +343,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                    <div className="property-title">Transaction Fee</div>
+                                    <div className="property-title">{t('transactionFee')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                     <div className="property-content">{numberFormat(weiToKAI(txDetail?.txFee || 0))} KAI</div>
@@ -352,7 +354,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Gas Price</div>
+                                        <div className="property-title">{t('gasPrice')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(weiToOXY(txDetail?.gasPrice || 0))} OXY</div>
@@ -362,7 +364,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Gas Limit</div>
+                                        <div className="property-title">{t('gasLimit')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(txDetail?.gas || 0)}</div>
@@ -372,7 +374,7 @@ const TxDetailOverview = ({ txDetail, loading }: {
                             <List.Item>
                                 <FlexboxGrid justify="start" align="middle">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} xs={24}>
-                                        <div className="property-title">Gas Used</div>
+                                        <div className="property-title">{t('gasUsed')}</div>
                                     </FlexboxGrid.Item>
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={20} xs={24}>
                                         <div className="property-content">{numberFormat(txDetail?.gasUsed || 0)} ({numberFormat(txDetail?.gasUsedPercent, 3)}%)</div>

@@ -6,11 +6,13 @@ import { useRecoilState } from 'recoil';
 import walletState from '../../atom/wallet.atom';
 import './wallet.css'
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ConfirmPassword = ({ showModal, setShowModal }: {
     showModal: boolean;
     setShowModal: (isShow: boolean) => void;
 }) => {
+    const { t } = useTranslation()
 
     const history = useHistory()
     const [password, setPassword] = useState('')
@@ -57,7 +59,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
     return (
         <Modal backdropClassName="password-modal" backdrop="static" size="xs" enforceFocus={true} show={showModal}>
             <Modal.Header closeButton={false}>
-                <Modal.Title>Verify pass code to access wallet</Modal.Title>
+                <Modal.Title>{t('verifyPassword.title')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
@@ -67,7 +69,7 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24} style={{ marginBottom: 10 }}>
-                                            <ControlLabel className="color-white">Enter pass code (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{t('verifyPassword.passcode')}</ControlLabel>
                                             <FormControl
                                                 name="password"
                                                 type="password"
@@ -87,12 +89,12 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                             <div className="color-white">
-                                                Forgot your Pass Code? Please
+                                            {t('verifyPassword.forgot')}
                                                 <span style={{
                                                     color: '#00C4F5',
                                                     cursor: 'pointer',
-                                                }} onClick={resetPassword}> click here </span>
-                                                to reset the Pass Code and Sign out wallet
+                                                }} onClick={resetPassword}> {t('verifyPassword.click')} </span>
+                                                {t('verifyPassword.reset')}
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -104,10 +106,10 @@ const ConfirmPassword = ({ showModal, setShowModal }: {
             </Modal.Body>
             <Modal.Footer style={{ textAlign: 'center' }}>
                 <Button className="kai-button-gray" onClick={() => {history.push('/')}}>
-                    Back to home
+                {t('verifyPassword.backToHome')}
                 </Button>
                 <Button className="kai-button-violet-gradient" onClick={confirmPassword}>
-                    Access
+                    {t('accessWallet.title')}
                 </Button>
             </Modal.Footer>
         </Modal>

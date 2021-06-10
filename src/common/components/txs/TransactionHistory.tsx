@@ -8,6 +8,7 @@ import { weiToKAI } from '../../utils/amount';
 import { numberFormat } from '../../utils/number';
 import { compareString, millisecondToHMS, renderHashStringAndTooltip, renderHashToRedirect } from '../../utils/string';
 import { StakingIcon } from '../IconCustom';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,6 +23,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
     setPage: (page: number) => void;
 }) => {
     const { isMobile } = useViewport()
+    const { t } = useTranslation()
 
     return (
         <FlexboxGrid justify="space-between">
@@ -62,7 +64,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                        <HeaderCell>Block Height</HeaderCell>
+                        <HeaderCell>{t('blockHeight')}</HeaderCell>
                         <Cell>
                             {(rowData: KAITransaction) => {
                                 return (
@@ -74,7 +76,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                         </Cell>
                     </Column>
                     <Column flexGrow={3} minWidth={isMobile ? 110 : 0} verticalAlign="middle">
-                        <HeaderCell>From</HeaderCell>
+                        <HeaderCell>{t('from')}</HeaderCell>
                         <Cell>
                             {(rowData: KAITransaction) => {
                                 return (
@@ -108,7 +110,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                         </Cell>
                     </Column>
                     <Column flexGrow={3} minWidth={isMobile ? 120 : 0} verticalAlign="middle">
-                        <HeaderCell>To</HeaderCell>
+                        <HeaderCell>{t('to')}</HeaderCell>
                         <Cell>
                             {(rowData: KAITransaction) => {
                                 return (
@@ -150,7 +152,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                        <HeaderCell>Value (KAI)</HeaderCell>
+                        <HeaderCell>{t('value')} (KAI)</HeaderCell>
                         <Cell>
                             {(rowData: KAITransaction) => {
                                 return (
@@ -162,7 +164,7 @@ export const TransactionHistoryList = ({ transactionList, loading, address, tota
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={isMobile ? 100 : 0} verticalAlign="middle">
-                        <HeaderCell>Tx Fee (KAI)</HeaderCell>
+                        <HeaderCell>{t('txFee')} (KAI)</HeaderCell>
                         <Cell>
                             {(rowData: KAITransaction) => {
                                 return (

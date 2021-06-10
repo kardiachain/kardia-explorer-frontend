@@ -7,13 +7,14 @@ import './txDetail.css'
 import Logs from './Logs';
 import TxDetailOverview from './overview';
 import { hashValid } from '../../common';
+import { useTranslation } from 'react-i18next';
 
 const TxDetail = () => {
     const { txHash }: any = useParams();
     const [txDetail, setTxDetail] = useState<KAITransaction>({} as KAITransaction)
     const [loading, setLoading] = useState(true)
     const [activeKey, setActiveKey] = useState('overview')
-
+    const { t } = useTranslation()
     const [logs, setLogs] = useState([]);
 
 
@@ -51,7 +52,7 @@ const TxDetail = () => {
         <div className="container tx-detail-container">
             <div style={{ marginBottom: 16 }}>
                 <div className="title header-title">
-                    Transaction Details
+                    {t('transactionDetails')}
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">

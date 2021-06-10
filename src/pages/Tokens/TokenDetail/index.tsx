@@ -14,6 +14,7 @@ import {
     convertValueFollowDecimal,
     numberFormat
 } from '../../../common';
+import { useTranslation } from 'react-i18next';
 
 const { Paragraph } = Placeholder;
 
@@ -34,6 +35,7 @@ const TokenDetail = () => {
     const [holdersSize, setHoldersSize] = useState(TABLE_CONFIG.limitDefault)
     const [holdersPage, setHoldersPage] = useState(TABLE_CONFIG.page)
     const [holdersLoading, setHoldersLoading] = useState(false)
+    const { t } = useTranslation()
 
     useEffect(() => {
         (async () => {
@@ -71,7 +73,7 @@ const TokenDetail = () => {
                     <img src={tokenInfor.logo ? tokenInfor.logo : UNVERIFY_TOKEN_DEFAULT_BASE64} style={{ width: '28px', height: '28px', marginRight: '10px' }} alt="logo" />
                     <div style={{ display: 'inline-block', verticalAlign: 'middle' }}>
                         <div className="title header-title">
-                            <span>Token</span> {tokenInfor.tokenName} {tokenInfor.symbol ? `[${tokenInfor.symbol}]` : ''}
+                            <span>{t('token')}</span> {tokenInfor.tokenName} {tokenInfor.symbol ? `[${tokenInfor.symbol}]` : ''}
                         </div>
                     </div>
                 </FlexboxGrid.Item>
@@ -86,7 +88,7 @@ const TokenDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
-                                                <div className="property-title">Token name</div>
+                                                <div className="property-title">{t('tokenName')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content">{tokenInfor.tokenName}</div>
@@ -96,7 +98,7 @@ const TokenDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
-                                                <div className="property-title">Symbol</div>
+                                                <div className="property-title">{t('symbol')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content">{tokenInfor.symbol}</div>
@@ -106,7 +108,7 @@ const TokenDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
-                                                <div className="property-title">Type</div>
+                                                <div className="property-title">{t('type')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content">{tokenInfor.type}</div>
@@ -116,7 +118,7 @@ const TokenDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
-                                                <div className="property-title">Contract</div>
+                                                <div className="property-title">{t('contract')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content">
@@ -136,7 +138,7 @@ const TokenDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
-                                                <div className="property-title">Decimals</div>
+                                                <div className="property-title">{t('decimals')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content">
@@ -148,7 +150,7 @@ const TokenDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
-                                                <div className="property-title">Total supply</div>
+                                                <div className="property-title">{t('totalSupply')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content">
@@ -160,7 +162,7 @@ const TokenDetail = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} xs={24}>
-                                                <div className="property-title">Description</div>
+                                                <div className="property-title">{t('description')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={16} xs={24}>
                                                 <div className="property-content" style={{ wordBreak: 'break-word' }}>
