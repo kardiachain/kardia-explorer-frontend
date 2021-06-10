@@ -19,6 +19,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { GasMode } from '../../../../enum';
+import { useTranslation } from 'react-i18next';
 
 const DeployWithByteCode = () => {
 
@@ -38,6 +39,7 @@ const DeployWithByteCode = () => {
     const [contractJsonFileDownload, setContractJsonFileDownload] = useState<ContractJsonFile>({ contractAddress: "", byteCode: "", abi: "{}" })
     const [construcFields, setConstrucFields] = useState([] as any[]);
     const walletLocalState = useRecoilValue(walletState)
+    const { t } = useTranslation()
 
 
     const validateByteCode = (byteCode: string) => {
@@ -210,7 +212,7 @@ const DeployWithByteCode = () => {
                     <FormGroup>
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                <ControlLabel className="color-white">{t('gasLimit')} {t('require')}</ControlLabel>
                                 <NumberInputFormat
                                     decimalScale={0}
                                     value={gasLimit}
@@ -223,7 +225,7 @@ const DeployWithByteCode = () => {
                                 <ErrMessage message={gasLimitErr} />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={12}>
-                                <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                <ControlLabel className="color-white">{t('gasPrice')} {t('require')}</ControlLabel>
                                 <SelectPicker
                                     className="dropdown-custom w100"
                                     data={gasPriceOption}
@@ -241,8 +243,8 @@ const DeployWithByteCode = () => {
                         <FlexboxGrid>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                    <ControlLabel className="color-white">Byte Code (required)</ControlLabel>
-                                    <Button className="kai-button-gray pd0" onClick={() => { setByteCode('') }}>Clear</Button>
+                                    <ControlLabel className="color-white">Byte Code {t('require')}</ControlLabel>
+                                <Button className="kai-button-gray pd0" onClick={() => { setByteCode('') }}>{t('clear')}</Button>
                                 </FlexboxGrid>
                                 <FormControl rows={20}
                                     style={{ minWidth: 100 }}
@@ -260,17 +262,17 @@ const DeployWithByteCode = () => {
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                                 <FlexboxGrid justify="space-between" align="middle">
-                                    <ControlLabel className="color-white">ABI JSON (required)</ControlLabel>
+                                    <ControlLabel className="color-white">ABI JSON {t('require')}</ControlLabel>
                                     <div className="mb10">
                                         <Button className="kai-button-gray pd0"
                                             onClick={() => {
                                                 setAbi('')
                                                 setAbiErr('')
-                                            }}>Clear</Button>
+                                            }}>{t('clear')}</Button>
                                         <Button className="kai-button-gray pd0"
                                             onClick={() => {
                                                 copyToClipboard(abi, onSuccess)
-                                            }}>Copy</Button>
+                                            }}>{t('copy')}</Button>
                                         <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
                                     </div>
                                 </FlexboxGrid>
@@ -313,8 +315,8 @@ const DeployWithByteCode = () => {
                                 ) : <></>
                             }
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 20, paddingLeft: 0 }}>
-                                <Button size="big" loading={loading} onClick={deploy}>Deploy Contract</Button>
-                                <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
+                                <Button size="big" loading={loading} onClick={deploy}>{t('deployContract')}</Button>
+                                <Button size="big" className="kai-button-gray" onClick={resetAll}>{t('reset')}</Button>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
@@ -369,7 +371,7 @@ const DeployWithByteCode = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="ghost-button">
-                        Cancel
+                        {t('cancel')}
                     </Button>
                 </Modal.Footer>
             </Modal>

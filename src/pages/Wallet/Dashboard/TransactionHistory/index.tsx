@@ -3,6 +3,7 @@ import { FlexboxGrid, Col, Panel, Nav } from 'rsuite';
 import { TABLE_CONFIG } from '../../../../config';
 import {Krc20Txs, TransactionHistoryList} from '../../../../common';
 import { getKrc20Txs, getTxsByAddress, getAccount, ITokenTranferTx } from '../../../../service';
+import { useTranslation } from 'react-i18next';
 
 const TransactionHistory = () => {
     const [transactionList, setTransactionList] = useState([] as KAITransaction[])
@@ -18,6 +19,7 @@ const TransactionHistory = () => {
     const [krc20TxsPage, setKrc20TxsPage] = useState(TABLE_CONFIG.page)
     const [krc20TxsSize, setKrc20TxsSize] = useState(TABLE_CONFIG.limitDefault)
     const [krc20TxsLoading, setKrc20TxsLoading] = useState(false)
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (!myAccount.publickey) return;
@@ -47,7 +49,7 @@ const TransactionHistory = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Transactions history
+                            {t('dashboard_page.transactionsHistory')}
                         </div>
                     </div>
                 </FlexboxGrid.Item>
@@ -62,10 +64,10 @@ const TransactionHistory = () => {
                                 onSelect={setActiveKey}
                                 style={{ marginBottom: 20 }}>
                                 <Nav.Item eventKey="transactions">
-                                    {`Transactions (${totalTxs || 0})`}
+                                    {`${t('dashboard_page.transactions')} (${totalTxs || 0})`}
                                 </Nav.Item>
                                 <Nav.Item eventKey="krc20">
-                                    {`KRC20 Token Txs (${totalKrc20Txs || 0})`}
+                                    {`${t('dashboard_page.krc20')} (${totalKrc20Txs || 0})`}
                                 </Nav.Item>
                             </Nav>
                         </div>

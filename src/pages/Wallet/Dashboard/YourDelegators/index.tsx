@@ -28,10 +28,12 @@ import UnJailValidator from './UnJailValidator';
 import VaidatorStart from './VaidatorStart';
 import WithdrawCommission from './WithdrawCommission';
 import { deleteCache } from '../../../../plugin/localCache';
+import { useTranslation } from 'react-i18next';
 
 const { Circle } = Progress;
 
 const YourDelegators = () => {
+    const { t } = useTranslation()
 
     const history = useHistory();
     const [isVal, setIsVal] = useState(false);
@@ -146,7 +148,7 @@ const YourDelegators = () => {
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <div style={{ marginBottom: 16 }}>
                         <div className="title header-title">
-                            Register to become a validator
+                            {t('validatorPage.register')}
                         </div>
                     </div>
                     <div className="register-container">
@@ -174,14 +176,14 @@ const YourDelegators = () => {
                             <Panel shaded className="panel-bg-gray">
                                 <div style={{ textAlign: 'right' }}>
                                     <Button onClick={() => { history.push(`/wallet/staking/${validator?.address}`) }}>
-                                        Delegate
+                                    {t('delegate')}
                                     </Button>
                                 </div>
                                 <List>
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Validator</div>
+                                                <div className="property-title">{t('validator')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content validator-name">
@@ -208,7 +210,7 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Validator Contract</div>
+                                                <div className="property-title">{t('validatorPage.validatorContract')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content">
@@ -227,7 +229,7 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <span className="property-title">Role </span>
+                                                    <span className="property-title">{t('validatorPage.role')} </span>
                                                 </div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
@@ -246,7 +248,7 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <span className="property-title">Commission Rate </span>
+                                                    <span className="property-title">{t('validatorPage.commissionRate')} </span>
                                                     <Helper style={{ marginLeft: 5 }} info={HelperMessage.CommissionRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
@@ -267,7 +269,7 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <span className="property-title">Max Commission Rate</span>
+                                                    <span className="property-title">{t('validatorPage.maxCommissionRate')}</span>
                                                     <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
@@ -280,7 +282,7 @@ const YourDelegators = () => {
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
                                                 <div className="property-title">
-                                                    <span className="property-title">Max Change Commission Rate</span>
+                                                    <span className="property-title">{t('validatorPage.maxChange')}</span>
                                                     <Helper style={{ marginLeft: 5 }} info={HelperMessage.MaxChangeRate} />
                                                 </div>
                                             </FlexboxGrid.Item>
@@ -292,7 +294,7 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Total Delegator</div>
+                                                <div className="property-title">{t('validatorPage.totalDelegator')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content">{numberFormat(validator?.totalDelegators || 0)}</div>
@@ -302,7 +304,7 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Total staked amount</div>
+                                                <div className="property-title">{t('validatorPage.totalStakedAmount')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content">{numberFormat(weiToKAI(validator?.stakedAmount), 4)} KAI</div>
@@ -313,7 +315,7 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Status</div>
+                                                <div className="property-title">{t('status')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content">
@@ -349,7 +351,7 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Missing block</div>
+                                                <div className="property-title">{t('validatorPage.missingBlock')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content">{validator?.missedBlocks} Blocks</div>
@@ -359,7 +361,7 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Uptime</div>
+                                                <div className="property-title">{t('validatorPage.upTime')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content" style={{
@@ -375,13 +377,13 @@ const YourDelegators = () => {
                                     <List.Item>
                                         <FlexboxGrid justify="start" align="middle">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                                <div className="property-title">Claimable Commission Rewards</div>
+                                                <div className="property-title">{t('validatorPage.claimable')}</div>
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                                 <div className="property-content">
                                                     <span style={{ marginRight: 10 }}>{numberFormat(weiToKAI(validator?.accumulatedCommission), 4)} KAI </span>
                                                     <Button className="kai-button-gray" onClick={() => setShowWithdrawCommissionModal(true)}>
-                                                        Withdraw
+                                                    {t('withdraw')}
                                                             </Button>
                                                 </div>
                                             </FlexboxGrid.Item>
@@ -400,7 +402,7 @@ const YourDelegators = () => {
                                                     onClick={startBecomeValidator}
                                                     disable={!readyStarting}
                                                 >
-                                                    Become a Validator
+                                                    {t('validatorPage.register')}
                                                     </Button>
                                                 <ErrMessage message={startValErr} />
                                             </div>

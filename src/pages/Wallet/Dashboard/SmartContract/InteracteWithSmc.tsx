@@ -22,8 +22,10 @@ import './smartContract.css'
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { GasMode } from '../../../../enum';
+import { useTranslation } from 'react-i18next';
 
 const InteracteWithSmc = () => {
+    const { t } = useTranslation()
 
     const [smcAddr, setSmcAddr] = useState('')
     const [smcAddrErr, setSmcAddrErr] = useState('')
@@ -254,7 +256,7 @@ const InteracteWithSmc = () => {
         <div className="interact-smc-container">
             <div style={{ marginBottom: 16 }}>
                 <div className="title header-title">
-                    Interact With Smart Contract
+                    {t('interactWithSmartContract')}
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -273,7 +275,7 @@ const InteracteWithSmc = () => {
                                 <>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24} style={{ marginBottom: 20 }}>
-                                            <ControlLabel className="color-white">Contract Address (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{t('contractAddress')} {t('require')}</ControlLabel>
                                             <FormControl name="smcAddr"
                                                 placeholder="Input Contract Address"
                                                 className="input"
@@ -286,7 +288,7 @@ const InteracteWithSmc = () => {
                                             <ErrMessage message={smcAddrErr} />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                            <ControlLabel className="color-white">{'Or Upload Your <contract.json> file'} (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{'Or Upload Your <contract.json> file'} {t('require')}</ControlLabel>
                                             <Uploader
                                                 draggable
                                                 autoUpload={false}
@@ -302,17 +304,17 @@ const InteracteWithSmc = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                             <FlexboxGrid justify="space-between" align="middle" className="mb10">
-                                                <ControlLabel className="color-white">ABI JSON (required)</ControlLabel>
+                                                <ControlLabel className="color-white">ABI JSON {t('require')}</ControlLabel>
                                                 <div>
                                                     <Button className="kai-button-gray pd0"
                                                         onClick={() => {
                                                             setAbi('')
                                                             setAbiErr('')
-                                                        }}>Clear</Button>
+                                                        }}>{t('clear')}</Button>
                                                     <Button className="kai-button-gray pd0"
                                                         onClick={() => {
                                                             copyToClipboard(abi, onSuccess)
-                                                        }}>Copy</Button>
+                                                        }}>{t('copy')}</Button>
                                                     <Button className="kai-button-gray pd0" onClick={formatAbiJson}>Format</Button>
                                                 </div>
                                             </FlexboxGrid>
@@ -331,7 +333,7 @@ const InteracteWithSmc = () => {
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: '25px', paddingLeft: 0 }}>
                                             <Button size="big" onClick={compilerABIStep}>Go To Contract</Button>
-                                            <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
+                                            <Button size="big" className="kai-button-gray" onClick={resetAll}>{t('reset')}</Button>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </>
@@ -346,13 +348,13 @@ const InteracteWithSmc = () => {
                                                         resetAll()
                                                     }}
                                                 >
-                                                    <Icon icon="angle-double-left" /><Icon icon="angle-double-left" /> Back
+                                                    <Icon icon="angle-double-left" /><Icon icon="angle-double-left" /> {t('back')}
                                             </Button>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                         <FlexboxGrid style={{ marginBottom: 10 }}>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={24}>
-                                                <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                                <ControlLabel className="color-white">{t('gasLimit')} {t('require')}</ControlLabel>
                                                 <NumberInputFormat
                                                     decimalScale={0}
                                                     value={gasLimit}
@@ -365,7 +367,7 @@ const InteracteWithSmc = () => {
                                                 <ErrMessage message={gasLimitErr} />
                                             </FlexboxGrid.Item>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} sm={24}>
-                                                <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                                <ControlLabel className="color-white">{t('gasPrice')} {t('require')}</ControlLabel>
                                                 <SelectPicker
                                                     className="dropdown-custom w100"
                                                     data={gasPriceOption}
@@ -382,7 +384,7 @@ const InteracteWithSmc = () => {
                                         </FlexboxGrid>
                                         <FlexboxGrid>
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={24}>
-                                                <ControlLabel className="color-white">Interact With Contract</ControlLabel>
+                                                <ControlLabel className="color-white">{t('interactWithSmartContract')}</ControlLabel>
                                                 <SelectPicker
                                                     placeholder="Select a function"
                                                     data={smcFuncList}
@@ -397,7 +399,7 @@ const InteracteWithSmc = () => {
                                             {
                                                 paramsFields && paramsFields.length > 0 ? (
                                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={8} sm={24}>
-                                                        <ControlLabel className="color-white">Params: </ControlLabel>
+                                                        <ControlLabel className="color-white">{t('params')}: </ControlLabel>
                                                         {
                                                             paramsFields.map((field: any, idx: any) => {
                                                                 return (
@@ -478,7 +480,7 @@ const InteracteWithSmc = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowTxDetailModal(false) }} className="kai-button-gray">
-                        Cancel
+                    {t('cancel')}
                     </Button>
                 </Modal.Footer>
             </Modal>

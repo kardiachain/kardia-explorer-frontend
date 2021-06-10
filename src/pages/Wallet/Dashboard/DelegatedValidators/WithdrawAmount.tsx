@@ -31,6 +31,7 @@ import {
     withdrawDelegatedAmountByEW
 } from '../../../../service';
 import './style.css'
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -46,6 +47,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
     const [validatorActive, setValidatorActive] = useState<YourValidator>();
     const [showConfirmWithdrawModal, setShowConfirmWithdrawModal] = useState(false);
     const [delegateOption, setDelegateOption] = useState('part');
+    const { t } = useTranslation()
 
     const walletLocalState = useRecoilValue(walletState)
 
@@ -150,7 +152,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                 rowHeight={() => 80}
             >
                 <Column flexGrow={2} minWidth={250} verticalAlign="middle">
-                    <HeaderCell><span style={{ marginLeft: 50 }}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{ marginLeft: 50 }}>{t('validator')}</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -186,7 +188,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Staked (KAI)</HeaderCell>
+                    <HeaderCell>{t('stakedAmount')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -196,7 +198,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Rewards (KAI)</HeaderCell>
+                    <HeaderCell>{t('rewards')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -206,7 +208,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={110} verticalAlign="middle">
-                    <HeaderCell>Unbonded (KAI)</HeaderCell>
+                    <HeaderCell>{t('unbonded')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -238,7 +240,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Withdrawable (KAI)</HeaderCell>
+                    <HeaderCell>{t('withdrawable')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -259,14 +261,14 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                             resetUndelegateForm()
                                             setShowUndelegateModel(true)
                                             setValidatorActive(rowData)
-                                        }}>Undelegate</Button>
+                                        }}>{t('undelegate')}</Button>
                                     {
                                         rowData.withdrawableAmount > 0 ?
                                             <Button className="withdraw-button"
                                                 onClick={() => {
                                                     setShowConfirmWithdrawModal(true)
                                                     setValidatorActive(rowData)
-                                                }}>Withdraw
+                                                }}>{t('withdraw')}
                                         </Button> : <></>
                                     }
                                 </div>
@@ -282,12 +284,12 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                     setShowUndelegateModel(false)
                 }}>
                 <Modal.Header>
-                    <Modal.Title>Undelegate Your Staked</Modal.Title>
+                    <Modal.Title>{t('undelegate')}</Modal.Title>
                     <div className="undelegate-note" style={{ marginTop: 20 }}>
-                        * Your undelegated amount will be marked as "Unbonded". Your current "Rewards" will be withdrawn to your wallet immediately.
+                        {t('undelegate_note_1')}
                     </div>
                     <div className="undelegate-note">
-                        * After 168 hours (7 days), your "Unbonded" KAI will be marked as "Withdrawable" and can be claimed to your wallet.
+                    {t('undelegate_note_2')}
                     </div>
                 </Modal.Header>
                 <Modal.Body>
@@ -301,9 +303,9 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                     setUnstakeAmountErr('');
                                     setUnstakeAmount('');
                                 }}>
-                                <Radio value="part" className="color-white">Enter Amount</Radio>
+                                <Radio value="part" className="color-white">{t('enterAmount')}</Radio>
                                 <Radio value="all" className="color-white">
-                                    <span>Maximum Amount</span>
+                                    <span>{t('maximumAmount')}</span>
                                     <Helper style={{ marginLeft: 5 }} info={HelperMessage.UndelegateAll} />
                                 </Radio>
                             </RadioGroup>
@@ -311,7 +313,7 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                                 delegateOption === 'part' ? (
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
                                         <FlexboxGrid justify="space-between" align="middle">
-                                            <ControlLabel className="color-white">Amount (KAI) (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{t('amount')} (KAI) {t('require')}</ControlLabel>
                                         </FlexboxGrid>
                                         <NumberInputFormat
                                             decimalScale={18}
@@ -334,10 +336,10 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
                         onClick={() => {
                             setShowUndelegateModel(false)
                         }}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button loading={isLoading} onClick={undelegate}>
-                        Undelegate
+                    {t('undelegate')}
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -345,17 +347,17 @@ const WithdrawAmount = ({ yourValidators, reFetchData }: {
             {/* Modal confirm when withdraw staked token */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmWithdrawModal} onHide={() => { setShowConfirmWithdrawModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirmation</Modal.Title>
+                    <Modal.Title>{t('confirmation')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter" style={{ textAlign: 'center' }}>{InforMessage.WithdrawStakedAmountConfirm}</div>
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>{t('InforMessage.WithdrawStakedAmountConfirm')}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmWithdrawModal(false) }}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button loading={isLoading} onClick={widthdraw}>
-                        Confirm
+                        {t('confirm')}
                     </Button>
                 </Modal.Footer>
             </Modal>

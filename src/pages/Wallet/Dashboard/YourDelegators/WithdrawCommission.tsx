@@ -4,6 +4,7 @@ import { InforMessage, Button, ShowNotifyErr, ShowNotify } from '../../../../com
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { withdrawCommissionByEW, isExtensionWallet, withdrawCommission } from '../../../../service';
+import { useTranslation } from 'react-i18next';
 
 const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -13,7 +14,8 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
 }) => {
     const [isLoading, setIsLoading] = useState(false);
     const walletLocalState = useRecoilValue(walletState);
-    
+    const { t } = useTranslation()
+
     const widthdrawCommission = async () => {
         try {
             setIsLoading(true);
@@ -31,7 +33,7 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
                 setShowModel(false)
                 return;
             }
-            
+
             const result = await withdrawCommission(valSmcAddr, walletLocalState.account);
             ShowNotify(result)
             reFetchData();
@@ -47,19 +49,21 @@ const WithdrawCommission = ({ validator = {} as Validator, showModel, setShowMod
             {/* Modal confirm when withdraw commission amount */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showModel} onHide={() => { setShowModel(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirmation</Modal.Title>
+                    <Modal.Title>
+                        {t('confirmation')}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter" style={{ textAlign: 'center'}}>
-                        {InforMessage.WithdrawCommissionRewardsConfirm}
+                    <div className="confirm-letter" style={{ textAlign: 'center' }}>
+                        {t('InforMessage.WithdrawCommissionRewardsConfirm')}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={() => { setShowModel(false) }}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button loading={isLoading} onClick={widthdrawCommission}>
-                        Confirm
+                        {t('confirm')}
                     </Button>
                 </Modal.Footer>
             </Modal>

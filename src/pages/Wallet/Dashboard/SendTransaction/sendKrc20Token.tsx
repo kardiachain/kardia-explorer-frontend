@@ -19,11 +19,13 @@ import {
 } from '../../../../common';
 import { sendKRC20ByExtension, getAccount, isExtensionWallet, transferKrc20Token } from '../../../../service';
 import { GasMode } from '../../../../enum';
+import { useTranslation } from 'react-i18next';
 
 const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
     tokens: any[];
     fetchKrc20Token: () => void;
 }) => {
+    const { t } = useTranslation()
 
     const [amount, setAmount] = useState('')
     const [toAddress, setToAddress] = useState('')
@@ -175,7 +177,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} sm={24}>
-                                    <ControlLabel className="color-white">Select token KRC20 (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('selectKRC20')} {t('require')}</ControlLabel>
                                     <SelectPicker
                                         placeholder="Your KRC20 token"
                                         className="dropdown-custom"
@@ -205,7 +207,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                 </FlexboxGrid.Item>
 
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                    <ControlLabel className="color-white">To Address (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('toAddress')} {t('require')}</ControlLabel>
                                     <FormControl
                                         placeholder="Ex. 0x..."
                                         name="toAddress"
@@ -219,7 +221,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                     <ErrMessage message={toAddressErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                    <ControlLabel className="color-white">Amount (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('amount')} {t('require')}</ControlLabel>
                                     <NumberInputFormat
                                         decimalScale={krc20Token && krc20Token.tokenDecimals}
                                         value={amount}
@@ -233,7 +235,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                     {krc20Token ? <p style={{ marginTop: '8px' }} className="property-content">Available: {numberFormat(convertValueFollowDecimal(krc20Token.balance, krc20Token.tokenDecimals))} {krc20Token.tokenSymbol}</p> : <></>}
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                    <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasLimit')} {t('require')}</ControlLabel>
                                     <NumberInputFormat
                                         value={gasLimit}
                                         decimalScale={0}
@@ -246,7 +248,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                    <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasPrice')} {t('require')}</ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -270,7 +272,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
             </Form>
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirmation</Modal.Title>
+                    <Modal.Title>{t('confirmation')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="confirm-letter">{InforMessage.SendTxConfirm}</div>
@@ -278,7 +280,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                    <div className="property-title">From</div>
+                                    <div className="property-title">{t('from')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
@@ -296,7 +298,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                    <div className="property-title">To</div>
+                                    <div className="property-title">{t('to')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
@@ -314,7 +316,7 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                    <div className="property-title">Value</div>
+                                    <div className="property-title">{t('value')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
@@ -327,10 +329,10 @@ const SendKrc20Token = ({ tokens, fetchKrc20Token }: {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
-                        Cancel
+                    {t('cancel')}
                     </Button>
                     <Button loading={confirmLoading} onClick={confirmSend}>
-                        Confirm
+                    {t('confirm')}
                     </Button>
                 </Modal.Footer>
             </Modal>

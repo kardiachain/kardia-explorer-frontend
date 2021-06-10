@@ -19,8 +19,10 @@ import {
 } from '../../../../common'
 import { GasMode } from '../../../../enum'
 import { generateTxForEW, generateTx, getAccount, getStoredBalance, isExtensionWallet } from '../../../../service'
+import { useTranslation } from 'react-i18next';
 
 const SendKaiNative = () => {
+    const { t } = useTranslation()
 
     const [amount, setAmount] = useState('')
     const [toAddress, setToAddress] = useState('')
@@ -140,7 +142,7 @@ const SendKaiNative = () => {
         }
         setConfirmLoading(true)
         try {
-            const response = await generateTx(walletLocalState.account, toAddress,  amount, gasLimit, gasPrice)
+            const response = await generateTx(walletLocalState.account, toAddress, amount, gasLimit, gasPrice)
             ShowNotify(response)
         } catch (error) {
             ShowNotifyErr(error)
@@ -159,7 +161,8 @@ const SendKaiNative = () => {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
-                                    <ControlLabel className="color-white">To Address (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('toAddress')} {t('require')}
+                                    </ControlLabel>
                                     <FormControl
                                         placeholder="Ex. 0x..."
                                         name="toAddress"
@@ -174,12 +177,13 @@ const SendKaiNative = () => {
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} sm={24}>
                                     <FlexboxGrid justify="space-between" align="middle">
-                                        <ControlLabel className="color-white">Amount (required)</ControlLabel>
+                                        <ControlLabel className="color-white">{t('amount')} {t('require')}
+                                        </ControlLabel>
                                         <span
                                             className="maximum-amount"
                                             onClick={() => {
                                                 setMaximumAmount()
-                                            }}>Maximum</span>
+                                            }}>{t('maximum')}</span>
                                     </FlexboxGrid>
                                     <NumberInputFormat
                                         decimalScale={18}
@@ -193,7 +197,8 @@ const SendKaiNative = () => {
                                     <ErrMessage message={amountErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                    <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasLimit')} {t('require')}
+                                    </ControlLabel>
                                     <NumberInputFormat
                                         decimalScale={0}
                                         value={gasLimit}
@@ -206,7 +211,8 @@ const SendKaiNative = () => {
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} sm={24}>
-                                    <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasPrice')} {t('require')}
+                                    </ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -221,7 +227,7 @@ const SendKaiNative = () => {
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 30 }}>
-                                    <Button size="big" loading={sendBntLoading} style={{ margin: 0 }} onClick={submitSend} >Send KAI<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
+                                    <Button size="big" loading={sendBntLoading} style={{ margin: 0 }} onClick={submitSend} >{t('sendKAI')}<Icon icon="space-shuttle" style={{ marginLeft: '10px' }} /></Button>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>
                         </FlexboxGrid.Item>
@@ -230,15 +236,15 @@ const SendKaiNative = () => {
             </Form>
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmModal} onHide={() => { setShowConfirmModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirmation</Modal.Title>
+                    <Modal.Title>{t('confirmation')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="confirm-letter">{InforMessage.SendTxConfirm}</div>
+                    <div className="confirm-letter">{t('InforMessage.SendTxConfirm')}</div>
                     <List>
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                    <div className="property-title">From</div>
+                                    <div className="property-title">{t('from')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
@@ -256,7 +262,7 @@ const SendKaiNative = () => {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                    <div className="property-title">To</div>
+                                    <div className="property-title">{t('to')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
@@ -274,7 +280,7 @@ const SendKaiNative = () => {
                         <List.Item>
                             <FlexboxGrid justify="start" align="middle">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={6} xs={24}>
-                                    <div className="property-title">Value</div>
+                                    <div className="property-title">{t('value')}</div>
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={18} xs={24}>
                                     <div className="property-content">
@@ -287,10 +293,10 @@ const SendKaiNative = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={() => { setShowConfirmModal(false) }}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button loading={confirmLoading} onClick={confirmSend}>
-                        Confirm
+                        {t('confirm')}
                     </Button>
                 </Modal.Footer>
             </Modal>

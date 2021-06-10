@@ -4,12 +4,14 @@ import { Panel, Nav } from 'rsuite'
 import { getAccount, getTokens } from '../../../../service'
 import SendKaiNative from './sendKaiNative'
 import SendKrc20Token from './sendKrc20Token'
+import { useTranslation } from 'react-i18next';
 
 const SendTransaction = () => {
     const myAccount: Account = getAccount();
     const [activeKey, setActiveKey] = useState('native')
 
     const [tokens, setTokens] = useState([]);
+    const { t } = useTranslation()
 
     useEffect(() => {
         (async () => {
@@ -33,7 +35,7 @@ const SendTransaction = () => {
         <div className="send-txs-container">
             <div style={{ marginBottom: 16 }}>
                 <div className="title header-title">
-                    Transactions
+                    {t('dashboard_page.transactions')}
                 </div>
             </div>
             <Panel shaded className="panel-bg-gray">
@@ -48,10 +50,10 @@ const SendTransaction = () => {
                         }}
                         style={{ marginBottom: 20 }}>
                         <Nav.Item eventKey="native">
-                            Native KAI Token
+                            {t('native')}
                         </Nav.Item>
                         <Nav.Item eventKey="krc20">
-                            KRC20 Token
+                            {t('krc20')}
                         </Nav.Item>
                     </Nav>
                 </div>
@@ -64,7 +66,7 @@ const SendTransaction = () => {
                                 );
                             case 'krc20':
                                 return (
-                                    <SendKrc20Token tokens={tokens} fetchKrc20Token={fetchListKrc20Token}/>
+                                    <SendKrc20Token tokens={tokens} fetchKrc20Token={fetchListKrc20Token} />
                                 );
                         }
                     })()
