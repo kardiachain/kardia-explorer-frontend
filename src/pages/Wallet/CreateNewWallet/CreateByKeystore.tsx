@@ -100,8 +100,8 @@ const CreateByKeystore = () => {
                             ) : (
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
-                                            <div className="color-white">Please <span className="note">DOWNLOAD</span> and <span className="note">SAVE</span> the following Keystore File.</div>
-                                            <div className="color-white"> You will need it and <span className="note">your password</span> to access your wallet.</div>
+                                            <div className="color-white">{t('createWalletByKeystoreFile.please')} <span className="note">{t('createWalletByKeystoreFile.download')}</span> {t('and')} <span className="note">{t('save')}</span> {t('createWalletByKeystoreFile.theFollowing')}</div>
+                                            <div className="color-white"> {t('createWalletByKeystoreFile.youWill')} <span className="note">{t('createWalletByKeystoreFile.password')}</span> {t('createWalletByKeystoreFile.toAccess')}</div>
                                             <div className="download-keystore-file">
                                                 <a href={blobUrl} download={keystoreFilename}>
                                                     <Icon icon="download" size={"lg"} /> {t('createWalletByKeystoreFile.downloadKeystore')}

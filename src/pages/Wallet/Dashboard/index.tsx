@@ -19,8 +19,10 @@ import ConfirmPassword from '../ConfirmPassword';
 import { isExtensionWallet, useWalletStorage } from '../../../service';
 import CreateProposal from './Proposal';
 import Vote from './Proposal/Vote';
+import { useTranslation } from 'react-i18next';
 
 const DashboardWallet = () => {
+    const { t } = useTranslation()
 
     const [activeKey, setActiveKey] = useState("send-transaction");
     const { isMobile } = useViewport()
@@ -69,33 +71,33 @@ const DashboardWallet = () => {
                                         eventKey="dashboard"
                                         active={activeKey === "4"}
                                         onClick={() => { history.push("/wallet/dashboard") }}
-                                        icon={<Icon icon="order-form" />} > Dashboard
+                                        icon={<Icon icon="order-form" />} > {t('dashboard')}
                                     </Nav.Item>
                                     <Nav.Item
                                         eventKey="send-transaction"
                                         active={activeKey === "1"}
                                         onClick={() => { history.push("/wallet/send-transaction") }}
-                                        icon={<Icon icon="send" />}> Send Transaction
+                                        icon={<Icon icon="send" />}> {t('sendTransaction')}
                                     </Nav.Item>
-                                    <Dropdown eventKey="staking" icon={<Icon icon="group" />} title="Staking">
+                                    <Dropdown eventKey="staking" icon={<Icon icon="group" />} title={t('staking')}>
                                         <Dropdown.Item
                                             eventKey="for-validator"
-                                            onClick={() => { history.push("/wallet/staking/for-validator") }}>For Validator
+                                            onClick={() => { history.push("/wallet/staking/for-validator") }}>{t('forValidator')}
                                         </Dropdown.Item>
                                         <Dropdown.Item
                                             eventKey="for-delegator"
-                                            onClick={() => { history.push("/wallet/staking/for-delegator") }}>For Delegator
+                                            onClick={() => { history.push("/wallet/staking/for-delegator") }}>{t('forDelegator')}
                                         </Dropdown.Item>
                                     </Dropdown>
-                                    <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title="Smart Contract">
+                                    <Dropdown eventKey="smart-contract" icon={<Icon icon="file-code-o" />} title={t('smartContract')}>
                                         {/* <Dropdown.Item eventKey="source-code-deployment" href="/wallet/smc/source-code-deployment">Deploy By Source Code</Dropdown.Item> */}
                                         <Dropdown.Item
                                             eventKey="byte-code-deployment"
-                                            onClick={() => { history.push("/wallet/smc/byte-code-deployment") }}>Deploy Contract
+                                            onClick={() => { history.push("/wallet/smc/byte-code-deployment") }}>{t('deployContract')}
                                         </Dropdown.Item>
                                         <Dropdown.Item
                                             eventKey="interaction"
-                                            onClick={() => { history.push("/wallet/smc/interaction") }}>Interact With Contract
+                                            onClick={() => { history.push("/wallet/smc/interaction") }}>{t('interactWithContract')}
                                          </Dropdown.Item>
                                     </Dropdown>
                                 </Nav>

@@ -7,6 +7,7 @@ import QRCode from 'qrcode.react';
 import { TIME_INTERVAL_MILISECONDS } from '../../../config';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
+import { useTranslation } from 'react-i18next';
 
 const DashboardHeader = () => {
     const account: Account = getAccount()
@@ -17,6 +18,7 @@ const DashboardHeader = () => {
     const walletLocalState = useRecoilValue(walletState)
     const [tokens, setTokens] = useState([]);
     const [yourStakedAmount, setYourStakedAmount] = useState('0')
+    const { t } = useTranslation()
 
     useEffect(() => {
 
@@ -112,8 +114,8 @@ const DashboardHeader = () => {
                 <Col md={24} sm={24} xs={24}>
                     <Message type="warning" description={
                         <>
-                            <p>Only send or withdraw KAI Token from the Exchanges support <strong>native KAI Token</strong>.</p>
-                            <p><strong>DO NOT</strong> send or withdraw KAI Token from <strong>ERC20 Wallet</strong> to this Wallet. We're <strong>NOT</strong> responsible for any token lost.</p>
+                            <p>{t('dashboard_page.note1')} <strong>{t('dashboard_page.kaiNative')}</strong></p>
+                            <p><strong>{t('dashboard_page.donot')}</strong> {t('dashboard_page.send')} <strong>{t('dashboard_page.erc20')}</strong> {t('dashboard_page.to')} <strong>{t('dashboard_page.not')}</strong> {t('dashboard_page.lost')}</p>
                         </>
                     } />
                 </Col>
@@ -122,7 +124,7 @@ const DashboardHeader = () => {
                 <Col md={12} sm={24} xs={24}>
                     <Panel shaded className="wallet-info-card address panel-bg-gray">
                         <div className="card-body">
-                            <div className="title color-white"><Icon className="icon gray-highlight" icon="views-authorize" />Address</div>
+                            <div className="title color-white"><Icon className="icon gray-highlight" icon="views-authorize" />{t('dashboard_page.walletAddress')}</div>
                             <div className="content color-white" style={{ wordBreak: 'break-all', fontWeight: 'bold', paddingLeft: '42px' }}>{account.publickey}</div>
                         </div>
                         <div className="card-footer">
@@ -144,13 +146,13 @@ const DashboardHeader = () => {
                     <Panel shaded className="wallet-info-card balance panel-bg-gray">
                         <div className="card-body balanceSection">
                             <div>
-                                <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />Balance</div>
-                                <div className="content color-white" style={{ paddingLeft: '42px' }}>
-                                    <span style={{marginRight: 5}}>Available:</span>
+                                <div className="title color-white"><Icon className="icon gray-highlight" icon="money" />{t('dashboard_page.balance')}</div>
+                                <div className="content color-white kai" style={{ paddingLeft: '42px' }}>
+                                    <span style={{marginRight: 5}}>{t('dashboard_page.available')}:</span>
                                     <span style={{ fontWeight: 'bold' }}>{numberFormat(balance)}</span> KAI
                                 </div>
-                                <div className="content color-white" style={{ paddingLeft: '42px' }}>
-                                    <span style={{marginRight: 5}}>Staking:</span>
+                                <div className="content color-white kai" style={{ paddingLeft: '42px' }}>
+                                    <span style={{marginRight: 5}}>{t('staking')}:</span>
                                     <span style={{ fontWeight: 'bold' }}>{numberFormat(weiToKAI(yourStakedAmount))}</span> KAI
                                 </div>
                             </div>
@@ -176,7 +178,7 @@ const DashboardHeader = () => {
                             }
                         </div>
                         <div className="card-footer">
-                            <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />Reload balance
+                            <Icon className="icon" icon="refresh2" onClick={reloadBalance} style={{ marginRight: '5px' }} />{t('dashboard_page.reload')}
                         </div>
                     </Panel>
                 </Col>
@@ -184,7 +186,7 @@ const DashboardHeader = () => {
             {/* Modal show wallet address */}
             <Modal size="sm" show={showAddress} onHide={() => { setShowAddress(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Your Wallet Address</Modal.Title>
+                    <Modal.Title>{t('dashboard_page.walletAddress')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ display: 'flex', justifyContent: 'center' }}>
                     <QRCode
@@ -201,7 +203,7 @@ const DashboardHeader = () => {
             {/* Modal show private key */}
             <Modal size="sm" show={showPrivateKey} onHide={() => { setShowPrivateKey(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Your Private Key</Modal.Title>
+                    <Modal.Title>{t('dashboard_page.yourPrivateKey')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{ textAlign: 'center', wordBreak: 'break-all' }}>

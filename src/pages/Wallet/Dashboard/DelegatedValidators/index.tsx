@@ -4,11 +4,13 @@ import { getAccount, getValidatorByDelegator } from '../../../../service';
 import ClaimRewards from './ClaimRewards';
 import WithdrawAmount from './WithdrawAmount';
 import './style.css';
+import { useTranslation } from 'react-i18next';
 
 const Delegator = () => {
     const [yourValidators, setYourValidators] = useState([] as YourValidator[]);
     const myAccount = getAccount() as Account
     const [activeKey, setActiveKey] = useState("rewards");
+    const { t } = useTranslation()
 
     useEffect(() => {
         (async () => {
@@ -37,10 +39,10 @@ const Delegator = () => {
                         onSelect={setActiveKey}
                         style={{ marginBottom: 20 }}>
                         <Nav.Item eventKey="rewards">
-                            {`Claim Rewards`}
+                            {t('claimRewards')}
                         </Nav.Item>
                         <Nav.Item eventKey="withdraw">
-                            {`Withdraw`}
+                            {t('withdraw')}
                         </Nav.Item>
                     </Nav>
                 </div>

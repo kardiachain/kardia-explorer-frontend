@@ -70,6 +70,16 @@
 }
 
 
+@media only screen and (max-width: 450px) {
+    .kai{
+        padding-left:0 !important;
+    }
+
+    .card-body{
+        height:auto !important;
+    }
+}
+
 
 @media only screen and (max-width: 992px) {
     .wallet-info-card {

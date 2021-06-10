@@ -8,8 +8,10 @@ import {ErrMessage, Button, ErrorMessage} from '../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import CreateNewPassword from '../CreateNewPassword';
+import { useTranslation } from 'react-i18next';
 
 const AccessByMnemonicPhrase = () => {
+    const { t } = useTranslation()
 
     const history = useHistory()
     const [loadingBtnSubmit, setLoadingBtnSubmit] = useState(false);
@@ -71,20 +73,20 @@ const AccessByMnemonicPhrase = () => {
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={10} sm={20} xs={24}>
                             <Panel shaded>
                                 <FlexboxGrid justify="start">
-                                    <h3 className="color-white">ACCESS WALLET</h3>
+                                    <h3 className="color-white">{t('accessWallet.title')}</h3>
                                 </FlexboxGrid>
                                 <FlexboxGrid justify="center">
                                     <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ padding: 0 }}>
                                         <Form fluid>
                                             <FormGroup>
-                                                <ControlLabel className="color-white">Enter your secret 12 or 24 words phrase (required)</ControlLabel>
+                                                <ControlLabel className="color-white">{t('accessByMnemonic.enter')}</ControlLabel>
                                                 <FormControl
                                                     rows={5}
                                                     name="textarea"
                                                     className="input"
                                                     style={{ border: 'none' }}
                                                     componentClass="textarea"
-                                                    placeholder="Separate each word with a single space"
+                                                    placeholder={t('accessByMnemonic.space')}
                                                     value={wordPhrase}
                                                     onChange={(value) => {
                                                         setWordPhrase(value);
@@ -96,9 +98,9 @@ const AccessByMnemonicPhrase = () => {
                                         </Form>
                                         <div className="button-container">
                                             <Link to="/access-wallet">
-                                                <Button size="big" className="kai-button-gray" >Back</Button>
+                                                <Button size="big" className="kai-button-gray" >{t('back')}</Button>
                                             </Link>
-                                            <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
+                                            <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>{t('accessNow')}</Button>
                                         </div>
                                     </FlexboxGrid.Item>
                                 </FlexboxGrid>

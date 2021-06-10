@@ -10,9 +10,11 @@ import { ControlLabel } from 'rsuite';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../atom/wallet.atom';
 import CreateNewPassword from '../CreateNewPassword';
+import { useTranslation } from 'react-i18next';
 
 const AccessByPrivateKey = () => {
     let history = useHistory();
+    const { t } = useTranslation()
     const [loadingBtnSubmit, setLoadingBtnSubmit] = useState(false)
     const [privateKey, setPrivateKey] = useState('');
     const [privateKeyErr, setPrivateKeyErr] = useState('')
@@ -72,13 +74,13 @@ const AccessByPrivateKey = () => {
                     <FlexboxGrid.Item componentClass={Col} colspan={22} md={10} sm={20} xs={24}>
                         <Panel shaded className="panel-bg-gray">
                             <FlexboxGrid justify="start">
-                                <h3 className="color-white">ACCESS WALLET</h3>
+                                <h3 className="color-white">{t('accessWallet.title')}</h3>
                             </FlexboxGrid>
                             <FlexboxGrid justify="center">
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{padding:0}}>
                                     <Form fluid>
                                         <FormGroup>
-                                            <ControlLabel className="color-white">Private Key (required)</ControlLabel>
+                                            <ControlLabel className="color-white">{t('privateKey')}</ControlLabel>
                                             <FormControl placeholder="Ex. 0x..."
                                                 name="password"
                                                 type="password"
@@ -93,9 +95,9 @@ const AccessByPrivateKey = () => {
                                     </Form>
                                     <div className="button-container">
                                         <Link to="/access-wallet">
-                                            <Button size="big" className="kai-button-gray" >Back</Button>
+                                            <Button size="big" className="kai-button-gray" >{t('back')}</Button>
                                         </Link>
-                                        <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>Access Now</Button>
+                                        <Button className="btn-access" loading={loadingBtnSubmit} size="big" onClick={accessWallet}>{t('accessNow')}</Button>
                                     </div>
                                 </FlexboxGrid.Item>
                             </FlexboxGrid>

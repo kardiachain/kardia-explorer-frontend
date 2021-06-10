@@ -17,6 +17,7 @@ import {
 import { useViewport } from '../../../../context/ViewportContext';
 import { withdrawRewardByEW, isExtensionWallet } from '../../../../service';
 import { withdrawReward } from '../../../../service';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -29,6 +30,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
     const [validatorActive, setValidatorActive] = useState<YourValidator>();
     const [isLoading, setIsLoading] = useState(false);
     const walletLocalState = useRecoilValue(walletState)
+    const { t } = useTranslation()
 
     const withdrawRewards = async () => {
         setIsLoading(true)
@@ -66,7 +68,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                 rowHeight={() => 80}
             >
                 <Column flexGrow={2} minWidth={250} verticalAlign="middle">
-                    <HeaderCell><span style={{ marginLeft: 50 }}>Validator</span></HeaderCell>
+                    <HeaderCell><span style={{ marginLeft: 50 }}>{t('validator')}</span></HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -102,7 +104,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Staked (KAI)</HeaderCell>
+                    <HeaderCell>{t('stakedAmount')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -112,7 +114,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Claimable Rewards (KAI)</HeaderCell>
+                    <HeaderCell>{t('claimableRewards')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: YourValidator) => {
                             return (
@@ -129,7 +131,7 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
                                 <Button className="kai-button-gray" onClick={() => {
                                     setShowConfirmWithdrawRewardsModal(true)
                                     setValidatorActive(rowData)
-                                }}>Claim Rewards
+                                }}>{t('claimRewards')}
                                 </Button>
                             )
                         }}
@@ -139,19 +141,19 @@ const ClaimRewards = ({ yourValidators, reFetchData }: {
             {/* Modal confirm when withdraw rewards */}
             <Modal backdrop="static" size="sm" enforceFocus={true} show={showConfirmWithdrawRewardsModal} onHide={() => { setShowConfirmWithdrawRewardsModal(false) }}>
                 <Modal.Header>
-                    <Modal.Title>Confirmation</Modal.Title>
+                    <Modal.Title>{t('confirmation')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="confirm-letter" style={{ textAlign: 'center' }}>
-                        {InforMessage.ClaimRewardConfirm}
+                        {t('InforMessage.ClaimRewardConfirm')}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { setShowConfirmWithdrawRewardsModal(false) }} className="kai-button-gray">
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button loading={isLoading} onClick={withdrawRewards} >
-                        Confirm
+                        {t('confirm')}
                     </Button>
                 </Modal.Footer>
             </Modal>

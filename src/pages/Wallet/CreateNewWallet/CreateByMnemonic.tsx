@@ -5,11 +5,13 @@ import { Link, useHistory } from 'react-router-dom';
 import './createWallet.css'
 import { copyToClipboard, Button, onSuccess } from '../../../common';
 import { isLoggedIn } from '../../../service';
+import { useTranslation } from 'react-i18next';
 
 const CreateByMnemonic = () => {
     const [mnemonic, setMnemonic] = useState('');
     const [readyAccessNow, setReadyAccessNow] = useState(false)
     let history = useHistory();
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (isLoggedIn()) {
@@ -42,7 +44,7 @@ const CreateByMnemonic = () => {
                     <Panel shaded className="panel-bg-gray">
                         <FlexboxGrid justify="start">
                             <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
-                                <h3 className="title color-white">MNEMONIC PHRASE</h3>
+                                <h3 className="title color-white">{t('createWalletByMnemonic.mnemonic')}</h3>
                             </FlexboxGrid.Item>
                         </FlexboxGrid>
                         {
@@ -51,13 +53,13 @@ const CreateByMnemonic = () => {
                                     <FlexboxGrid justify="center">
                                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                                             <div style={{ textAlign: 'center', marginTop: 32 }} className="color-white">
-                                                <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle' }} icon='check-circle' /> Create wallet success, you can access wallet now.
+                                                <Icon size="lg" className="icon-check" style={{ verticalAlign: 'middle' }} icon='check-circle' /> {t('createWalletByMnemonic.success')}
                                             </div>
                                             <div className="button-container">
                                                 <Link to="/create-wallet">
-                                                    <Button size="big" className="kai-button-gray">Back</Button>
+                                                    <Button size="big" className="kai-button-gray">{t('back')}</Button>
                                                 </Link>
-                                                <Button className="btn-access" size="big" onClick={accessWallet}>Access Now</Button>
+                                                <Button className="btn-access" size="big" onClick={accessWallet}>{t('accessNow')}</Button>
                                             </div>
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
@@ -66,7 +68,7 @@ const CreateByMnemonic = () => {
                                     <>
                                         <FlexboxGrid justify="center">
                                             <FlexboxGrid.Item componentClass={Col} colspan={24} xs={24}>
-                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>Your 12 Mnemonic Phrase</div>
+                                                <div className="color-white" style={{ fontSize: '16px', fontWeight: 'bold' }}>{t('createWalletByMnemonic.12')}</div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                         <FlexboxGrid justify="center">
@@ -88,20 +90,20 @@ const CreateByMnemonic = () => {
                                                     <Button className="kai-button-gray" style={{ marginBottom: 5 }}
                                                         onClick={() => {
                                                             copyToClipboard(mnemonic, onSuccess)
-                                                        }}>Copy <Icon icon="copy-o" />
+                                                        }}>{t('createWalletByMnemonic.copy')} <Icon icon="copy-o" />
                                                     </Button>
                                                     <Button className="kai-button-gray" onClick={() => randomPhrase()} style={{ marginBottom: 5 }}>
-                                                        Change phrase <Icon icon="refresh" />
+                                                    {t('createWalletByMnemonic.changePhrase')} <Icon icon="refresh" />
                                                     </Button>
                                                 </div>
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
-                                        <div className="color-white">Please make sure you <span className="note">WRITE DOWN </span> and <span className="note">SAVE</span> your mnemonic phrase. You will need it to access your wallet.</div>
+                                        <div className="color-white">{t('createWalletByMnemonic.please')} <span className="note">{t('createWalletByMnemonic.writeDown')} </span> {t('and')} <span className="note">{t('save')}</span> {t('createWalletByMnemonic.your')}</div>
                                         <div className="button-container">
                                             <Link to="/create-wallet">
-                                                <Button size="big" className="kai-button-gray">Back</Button>
+                                                <Button size="big" className="kai-button-gray">{t('back')}</Button>
                                             </Link>
-                                            <Button className="btn-access" size="big" onClick={createWallet}>Create wallet</Button>
+                                            <Button className="btn-access" size="big" onClick={createWallet}>{t('createWallet')}</Button>
                                         </div>
                                     </>
                                 )
