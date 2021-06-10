@@ -84,6 +84,11 @@
     "back": "Back",
     "createWallet": "Create wallet",
     "aUnique": "A unique Private Key will be generated for you ",
+    "and": "and",
+    "save": "save",
+    "create": "Create",
+    "alreadyHave": "Already have a wallet?",
+    "smartContract": "Smart contract",
     "createWalletByPrivateKey": {
         "remember": "Remember",
         "toSaveYour": "to save your",
@@ -112,12 +117,24 @@
         "your": "your",
         "passwordKeystoreFile": "Password + Keystore File",
         "toAccess":"to access your wallet.",
-        "downloadKeystore": "Download Keystore"
+        "downloadKeystore": "Download Keystore",
+        "please": "Please",
+        "download": "DOWNLOAD",
+        "theFollowing": "the following Keystore File.",
+        "youWill": "You will need it and",
+        "password": "your password"
     },
     "createWalletByMnemonic":{
         "title":"CREATE WITH MNEMONIC PHRASE",
         "content": "REMEMBER to save your mnemonic phrase to access your wallet.",
-        "create": "Key store password (minimum 8 characters) (required)"
+        "create": "Key store password (minimum 8 characters) (required)",
+        "success": "Create wallet success, you can access wallet now.",
+        "copy": "Copy",
+        "changePhrase": "Change phrase",
+        "please": "Please",
+        "writeDown": "WRITE DOWN",
+        "your": "your mnemonic phrase. You will need it to access your wallet.",
+        "12": "Your 12 Mnemonic Phrase"
     },
     "createANewPasscode": {
         "createANewPasscode": "Create a new pass code",
@@ -128,7 +145,113 @@
         "newpass": "New Pass Code (minimum 8 characters) (required)",
         "confirm": "Confirm Pass Code (required)"
     },
-    "create": "Create",
-    "alreadyHave": "Already have a wallet?"
+    "accessWallet":{
+        "title": "ACCESS WALLET",
+        "donot": "Do you have a wallet ?",
+        "createOne": "Create one"
+    },
+    "verifyPassword":{
+        "title": "Verify pass code to access wallet",
+        "passcode": "Enter pass code (required)",
+        "backToHome": "Back to home",
+        "forgot": "Forgot your Pass Code? Please",
+        "click": "Click here",
+        "reset": "to reset the Pass Code and Sign out wallet"
+    },
 
+    "accessByKeystore":{
+        "keystorePassword": "Key store password (required)",
+        "uploadKeystore": "Upload Keystore"
+    },
+    "accessByMnemonic":{
+        "enter": "Enter your secret 12 or 24 words phrase (required)",
+        "space": "Separate each word with a single space"
+    },
+    "dashboard_page": {
+        "note1": "Only send or withdraw KAI Token from the Exchanges support",
+        "kaiNative": "native KAI Token",
+        "donot": "DO NOT",
+        "send": "send or withdraw KAI Token from",
+        "erc20": "ERC20 Wallet",
+        "to": "to this Wallet. We're",
+        "not": "NOT",
+        "lost": "responsible for any token lost.",
+        "reload": "Reload balance",
+        "balance": "Balance",
+        "available":"Available",
+        "yourPrivateKey": "Your Private Key",
+        "walletAddress": "Wallet address",
+        "transactionsHistory": "Transactions history",
+        "transactions": "Transactions",
+        "krc20": "KRC20 Token Txs"
+    },
+    "krc20": "KRC20 Token",
+    "native": "Native KAI Token",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "require": "(required)",
+    "toAddress": "To address",
+    "sendKAI": "Send KAI",
+    "maximum": "Maximum",
+    "confirmation": "Confirmation",
+    "selectKRC20": "Select token KRC20",
+
+    "InforMessage": {
+        "DelegationConfirm": "Carefully verify your stats before confirm delegation",
+        "SendTxConfirm": "Carefully verify your transaction before sending the transaction",
+        "CreateValidatorConfirm": "Carefully verify your stats before confirm create a validator",
+        "ClaimRewardConfirm": "Are you sure you want to withdraw all your rewarded token",
+        "WithdrawStakedAmountConfirm": "Are you sure you want to withdraw your staked token",
+        "ConfirmStartingValidator": "Are you sure you want to starting to become validator",
+        "WithdrawCommissionRewardsConfirm": "Are you sure you want to withdraw all your commission reward tokens",
+        "StartValidatorCondition": "* Your staked amount must be at least 12.5M KAI to become a validator.",
+        "CreateProposalCondition": "* Your staked amount must be at least 500K KAI to create proposal"
+    },
+
+    "validatorPage": {
+        "register": "Register to become a validator",
+        "validatorContract": "Validator Contract",
+        "role": "Role",
+        "commissionRate": "Commission rate",
+        "maxCommissionRate": "Max commission rate",
+        "maxChange": "Max Change Commission Rate",
+        "totalDelegator": "Total Delegator",
+        "totalStakedAmount": "Total staked amount",
+        "missingBlock": "Missing block",
+        "upTime": "Uptime",
+        "claimable": "Claimable Commission Rewards"
+    },
+    "updateValidatorName": {
+        "title": "Update Validator Name",
+        "newValidatorName": "New Validator Name",
+        "pay": "You must pay 10,000 KAI to change the validator's name."
+    },
+    "update": "Update",
+    "updateCommissionRate":{
+        "title": "Update Validator Commmission",
+        "note":"* Validator's commission rate can only be updated once every 24 hours.",
+        "update":  "New Commission Rate"
+    },
+    "withdraw": "Withdraw",
+    "claimRewards": "Claim rewards",
+    "claimableRewards": "Claimable Rewards",
+    "undelegate": "Undelegate",
+    "undelegate_note_1": "* Your undelegated amount will be marked as Unbonded. Your current Rewards will be withdrawn to your wallet immediately.",
+    "undelegate_note_2": "* After 168 hours (7 days), your Unbonded KAI will be marked as Withdrawable and can be claimed to your wallet.",
+    "enterAmount":"Enter Amount",
+    "maximumAmount":"Maximum amount",
+    "withdrawable":"Withdrawable",
+    "unbonded": "Unbonded",
+    "clear": "Clear",
+    "copy": "Copy",
+    "reset": "Reset",
+    "interactWithSmartContract": "Interact with smart contract",
+    "contractAddress": "Contract address",
+    "transactionFee": "Transaction fee",
+    "transactionHistory": "Transaction history",
+    "tokenName": "Token name",
+    "type": "Type",
+    "contract": "Contract",
+    "description": "Description",
+    "language": "Language"
 }

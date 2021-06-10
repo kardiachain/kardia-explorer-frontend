@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import walletState from "../../../../atom/wallet.atom";
 import { updateValidatorCommissionByEW, updateValidatorCommission, isExtensionWallet } from "../../../../service";
 import { GasMode } from "../../../../enum";
+import { useTranslation } from 'react-i18next';
 
 const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -13,6 +14,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
     setShowModel: (isShow: boolean) => void;
     reFetchData: () => void;
 }) => {
+    const { t } = useTranslation()
 
     const [isLoading, setIsLoading] = useState(false);
     const [commissionRate, setCommissionRate] = useState('');
@@ -131,7 +133,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasLimit')} {t('require')}</ControlLabel>
                                     <NumberInputFormat
                                         decimalScale={0}
                                         value={gasLimit}
@@ -144,7 +146,7 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasPrice')} {t('require')}</ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -159,12 +161,12 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">New Commission Rate (%)  (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('updateCommissionRate.update')} (%)  {t('require')}</ControlLabel>
                                     <div className="latest-update-validator">
                                         <span className="color-white">Latest update: {dateToUTCString(validator?.updateTime || '')}</span>
                                     </div>
                                     {
-                                        !canUpdate ? <div className="warning-note">* Validator's commission rate can only be updated once every 24 hours.</div> : <></>
+                                        !canUpdate ? <div className="warning-note">{t('updateCommissionRate.note')}</div> : <></>
                                     }
                                     <NumberInputFormat
                                         value={commissionRate}
@@ -182,10 +184,10 @@ const UpdateCommissionRate = ({ validator = {} as Validator, showModel, setShowM
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="kai-button-gray" onClick={cancelEdit}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button loading={isLoading} disable={!canUpdate} onClick={update}>
-                        Update
+                        {t('update')}
                     </Button>
                 </Modal.Footer>
             </Modal>

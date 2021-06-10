@@ -14,6 +14,7 @@ import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { updateValidatorNameByEW, getStoredBalance, isExtensionWallet, updateValidatorName } from '../../../../service';
 import { GasMode } from '../../../../enum';
+import { useTranslation } from 'react-i18next';
 
 const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowModel, reFetchData }: {
     validator: Validator;
@@ -21,6 +22,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
     setShowModel: (isShow: boolean) => void;
     reFetchData: () => void;
 }) => {
+    const { t } = useTranslation()
 
     const [gasPrice, setGasPrice] = useState<GasMode>(GasMode.NORMAL);
     const [gasPriceErr, setGasPriceErr] = useState('');
@@ -113,18 +115,18 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                     resetForm();
                 }}>
                 <Modal.Header>
-                    <Modal.Title>Update Validator Name</Modal.Title>
+                    <Modal.Title>{t('updateValidatorName.title')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form fluid className="panel-bg-gray">
                         <FormGroup>
                             <FlexboxGrid>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">Gas Limit (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasLimit')} {t('require')}</ControlLabel>
                                     <NumberInputFormat
                                         decimalScale={0}
                                         value={gasLimit}
-                                        placeholder="Gas Limit"
+                                        placeholder={t('gasLimit')}
                                         className="input"
                                         onChange={(event) => {
                                             setGasLimit(event.value);
@@ -133,7 +135,7 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                                     <ErrMessage message={gasLimitErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={12} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">Gas Price (required)</ControlLabel>
+                                    <ControlLabel className="color-white">{t('gasPrice')} {t('require')}</ControlLabel>
                                     <SelectPicker
                                         className="dropdown-custom"
                                         data={gasPriceOption}
@@ -148,8 +150,8 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                                     <ErrMessage message={gasPriceErr} />
                                 </FlexboxGrid.Item>
                                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginBottom: 15 }}>
-                                    <ControlLabel className="color-white">New Validator Name (required)</ControlLabel>
-                                    <div className="warning-note">You must pay 10,000 KAI to change the validator's name.</div>
+                                    <ControlLabel className="color-white">{t('updateValidatorName.newValidatorName')} {t('require')}</ControlLabel>
+                                    <div className="warning-note">{t('updateValidatorName.pay')}</div>
                                     <FormControl placeholder="Validator Name"
                                         name="valName"
                                         value={valName}
@@ -171,10 +173,10 @@ const UpdateValidatorName = ({ validator = {} as Validator, showModel, setShowMo
                             setShowModel(false);
                             resetForm();
                         }}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button loading={isLoading} onClick={update}>
-                        Update
+                    {t('update')}
                     </Button>
                 </Modal.Footer>
             </Modal>

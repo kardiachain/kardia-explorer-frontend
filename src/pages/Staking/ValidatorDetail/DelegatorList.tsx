@@ -4,6 +4,7 @@ import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { renderHashToRedirect, StakingIcon, weiToKAI, numberFormat } from '../../../common';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -18,6 +19,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
 }) => {
 
     const { isMobile } = useViewport();
+    const { t } = useTranslation()
    
     return (
         <>
@@ -30,7 +32,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                 loading={loading}
             >
                 <Column flexGrow={3} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Address</HeaderCell>
+                    <HeaderCell>{t('address')}</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
                             return (
@@ -63,7 +65,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Staked (KAI)</HeaderCell>
+                    <HeaderCell>{t('stakedAmount')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
                             return (
@@ -73,7 +75,7 @@ const DelegatorList = ({delegators, page, limit, loading, totalDelegators, setpa
                     </Cell>
                 </Column>
                 <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                    <HeaderCell>Rewards (KAI)</HeaderCell>
+                    <HeaderCell>{t('rewards')} (KAI)</HeaderCell>
                     <Cell>
                         {(rowData: Delegator) => {
                             return (

@@ -10,6 +10,7 @@ import walletState from '../../../atom/wallet.atom';
 import { isLoggedIn, logoutWallet } from '../../../service';
 import { NetworkSelect } from './NetworkSelect';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../../i18n';
 
 export const KAIHeader = () => {
     const { t } = useTranslation()
@@ -92,7 +93,7 @@ export const KAIHeader = () => {
                                         }}>{t('viewAccounts')}</Dropdown.Item>
                                     </Dropdown>
 
-                                    <Dropdown eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} title="Network">
+                                    <Dropdown eventKey="network" icon={<Icon className="gray-highlight" icon="globe2" />} title={t('network')}>
                                         <Dropdown.Item onClick={() => {
                                             history.push("/network")
                                             setShowMenu(false)
@@ -124,7 +125,7 @@ export const KAIHeader = () => {
                                                 setShowMenu(false)
                                              }}>{t('wallet')}</Nav.Item>
                                         ) : (
-                                                <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
+                                                <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title={t('wallet')}>
                                                     <Dropdown.Item
                                                         onClick={() => {
                                                             history.push("/wallet/dashboard")
@@ -172,8 +173,12 @@ export const KAIHeader = () => {
                                     }
                                     {/* <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item> */}
                                     <NetworkSelect />
+                                    <Dropdown eventKey="language" title={t('language')} icon={<Icon className="gray-highlight" icon="language" />} style={{ marginRight: '10px' }}>
+                                        <Dropdown.Item eventKey="en" onClick={() => { i18n.changeLanguage('en') }}>en</Dropdown.Item>
+                                        <Dropdown.Item eventKey="vi" onClick={() => { i18n.changeLanguage('vi') }}>vi</Dropdown.Item>
+                                    </Dropdown>
                                     {
-                                        isLoggedIn() ? <Nav.Item eventKey="logout-wallet" icon={<Icon icon="sign-out" />} onClick={logout}>{t('logoutWallet')}t</Nav.Item> : <></>
+                                        isLoggedIn() ? <Nav.Item eventKey="logout-wallet" icon={<Icon icon="sign-out" />} onClick={logout}>{t('logoutWallet')}</Nav.Item> : <></>
                                     }
                                 </Nav>
                             </Sidenav.Body>
@@ -232,6 +237,10 @@ export const KAIHeader = () => {
                 <Nav className="kardia-nav" pullRight>
                     <NetworkSelect />
                 </Nav>
+                <Dropdown title={t('language')} style={{ marginRight: '10px' }}>
+                        <Dropdown.Item eventKey="en" onClick={() => { i18n.changeLanguage('en') }}>en</Dropdown.Item>
+                        <Dropdown.Item eventKey="vi" onClick={() => { i18n.changeLanguage('vi') }}>vi</Dropdown.Item>
+                </Dropdown>
             </Navbar.Body>
         </Navbar>
     )

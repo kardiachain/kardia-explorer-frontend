@@ -8,6 +8,7 @@ import { numberFormat } from '../../utils/number';
 import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../utils/string';
 import { Link } from 'react-router-dom';
 import { ITokenTranferTx } from '../../../service';
+import { useTranslation } from 'react-i18next';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,6 +23,7 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
 }) => {
 
     const { isMobile } = useViewport()
+    const { t } = useTranslation()
 
     return (
 
@@ -63,7 +65,7 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={180} verticalAlign="middle">
-                        <HeaderCell>From</HeaderCell>
+                        <HeaderCell>{t('from')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenTranferTx) => {
                                 return (
@@ -81,7 +83,7 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={180} verticalAlign="middle">
-                        <HeaderCell>To</HeaderCell>
+                        <HeaderCell>{t('to')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenTranferTx) => {
                                 return (
@@ -99,7 +101,7 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={150} verticalAlign="middle">
-                        <HeaderCell>Amount</HeaderCell>
+                        <HeaderCell>{t('amount')}</HeaderCell>
                         <Cell>
                             {(rowData: any) => {
                                 return (
@@ -111,7 +113,7 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
                         </Cell>
                     </Column>
                     <Column flexGrow={2} minWidth={180} verticalAlign="middle">
-                        <HeaderCell>Token</HeaderCell>
+                        <HeaderCell>{t('token')}</HeaderCell>
                         <Cell>
                             {(rowData: ITokenTranferTx) => {
                                 return (
