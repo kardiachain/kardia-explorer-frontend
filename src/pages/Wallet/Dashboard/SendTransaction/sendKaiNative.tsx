@@ -10,7 +10,6 @@ import {
     gasLimitSendTx,
     gasPriceOption,
     ErrorMessage,
-    InforMessage,
     weiToKAI,
     numberFormat,
     renderHashString,

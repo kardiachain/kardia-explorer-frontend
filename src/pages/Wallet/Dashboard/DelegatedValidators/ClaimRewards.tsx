@@ -7,7 +7,6 @@ import {
     renderHashStringAndTooltip,
     renderStringAndTooltip,
     StakingIcon,
-    InforMessage,
     weiToKAI,
     numberFormat,
     Button,

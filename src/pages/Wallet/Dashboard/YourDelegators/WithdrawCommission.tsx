@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from 'rsuite';
-import { InforMessage, Button, ShowNotifyErr, ShowNotify } from '../../../../common';
+import { Button, ShowNotifyErr, ShowNotify } from '../../../../common';
 import { useRecoilValue } from 'recoil';
 import walletState from '../../../../atom/wallet.atom';
 import { withdrawCommissionByEW, isExtensionWallet, withdrawCommission } from '../../../../service';

@@ -13,7 +13,6 @@ import {
     Helper,
     HelperMessage,
     ErrorMessage,
-    InforMessage,
     renderStringAndTooltip,
     ShowNotifyErr,
     ShowNotify
