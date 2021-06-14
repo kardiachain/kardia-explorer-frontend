@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Col, FlexboxGrid, Form, FormControl, FormGroup, SelectPicker } from 'rsuite';
+import { Col, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, SelectPicker } from 'rsuite';
 import AceEditor from "react-ace";
 import "ace-mode-solidity/build/remix-ide/mode-solidity";
 import "ace-builds/src-noconflict/theme-monokai";
 import { Button, CompilerVersion, ErrMessage, ErrorMessage, TrueOrFalse } from '../../../../common';
 import { compileSourceCode } from '../../../../service';
 import './style.css'
+import Web3 from 'web3';
 
 const DeployWithSourceCode = () => {
+    const [constructorFields, setConstructorFields] = useState([] as any[]);
 
     const [smcCode, setSmcCode] = useState('')
     const [sourceCodeError, setSourceCodeError] = useState('')
@@ -22,18 +24,19 @@ const DeployWithSourceCode = () => {
     const [compilerVersion, setCompilerVersion] = useState('');
     const [compilerVersionError, setCompilerVersionError] = useState('')
 
-    const [constructorArgument, setConstructorArgument] = useState('');
+    const [constructorArgument, setConstructorArgument] = useState([] as any[]);
+    const [contractABI, setContractABI] = useState([] as any[]);
 
 
     const validateOptimize = (value: Boolean) => {
 
-    //     if (!value) {
-    //         setOptimizeError(ErrorMessage.Require);
-    //         return false;
-    //     }
+        //     if (!value) {
+        //         setOptimizeError(ErrorMessage.Require);
+        //         return false;
+        //     }
 
-    //     setOptimizeError("");
-    //     return true
+        //     setOptimizeError("");
+        //     return true
     }
 
     const validateCompilerVersion = (value: String) => {
@@ -69,27 +72,6 @@ const DeployWithSourceCode = () => {
         // return true
     }
 
-
-    const getByteCode = async () => {
-        // if (!validateContractAddress(optimize as Boolean) ||
-        //     !validateCompilerVersion(compilerVersion) ||
-        //     !validateSourceCode(smcCode) ||
-        //     !validateOptimize(contractAddress as any)) {
-        //     return;
-        // }
-
-        const param = {
-            sourceCode: JSON.stringify(smcCode),
-            compilerVersion: JSON.stringify(compilerVersion),
-            isOptimize: JSON.stringify(optimize)
-        }
-        const response = await compileSourceCode(param);
-        // for (var contractName in response.contracts['hello.sol']) {
-        //     const byteCode = response.contracts['hello.sol'][contractName].evm.bytecode.object
-        //     setByteCode(byteCode);
-        // }
-    }
-
     const resetAll = () => {
         setOptimizeError("");
         setSourceCodeError("");
@@ -97,12 +79,59 @@ const DeployWithSourceCode = () => {
         setContractAddressError("");
     }
 
-    const verify = () => {
-        const byteCode = getByteCode();
-        // compare input data
+    const verify = async () => {
+        const web3 = new Web3(window.ethereum);
+        const types = constructorFields.map(field => field.type);
+        const values = constructorFields.map(field => JSON.parse(field.value));
+        try {
+            const abiEncode = await web3.eth.abi.encodeParameters(types, values);
 
-        // success => switch to Compiler Output tabs
+            // call api verify
+            const param = {
+                contractAddress: contractAddress,
+                inputData: `${byteCode}${abiEncode}`,
+                contractBytecode: byteCode,
+                contractABI: contractABI
+            }
+
+            console.log('param', param);
+        } catch (e) {
+            console.log(e);
+        }
     }
+
+    const onChangeSourceCode = async (value: any) => {
+        const param = {
+            sourceCode: JSON.stringify(value),
+            compilerVersion: JSON.stringify(compilerVersion),
+        }
+        const response = await compileSourceCode(param);
+        for (var contractName in response.contracts['hello.sol']) {
+            const contractABI = response.contracts['hello.sol'][contractName].abi;
+            const byteCode = response.contracts['hello.sol'][contractName].evm.bytecode.object;
+            setByteCode(byteCode);
+            setContractABI(contractABI);
+            handleOnChangeABI(contractABI);
+        }
+    }
+
+    const handleOnChangeABI = (contractABI: any) => {
+        const constructor = contractABI.filter((value: any) => value.type === 'constructor')
+        setConstructorFields(constructor[0] && constructor[0].inputs && constructor[0].inputs.map((item: any) => {
+            return {
+                name: item.name,
+                type: item.type,
+                value: ''
+            }
+        }));
+    }
+
+    const handleConstructorFieldChange = (value: any, idx: any) => {
+        const values = [...constructorFields];
+        values[idx].value = value;
+        setConstructorFields(values)
+    }
+
 
     return (
         <div>
@@ -111,7 +140,7 @@ const DeployWithSourceCode = () => {
                     <div className="flex-1" style={{ flex: 1 }}>
                         <p className="rs-control-label color-white">
                             Contract Address
-                    </p>
+                        </p>
                         <FormControl name="smcAddr"
                             placeholder="Ex: 0x0c2fcf8836e1652448b58080679101f819681b6d"
                             className="input"
@@ -128,7 +157,7 @@ const DeployWithSourceCode = () => {
                     <div className="flex-1" style={{ flex: 1 }}>
                         <p className="rs-control-label color-white">
                             Compiler
-                    </p>
+                        </p>
                         <SelectPicker
                             className="dropdown-custom"
                             data={CompilerVersion}
@@ -146,7 +175,7 @@ const DeployWithSourceCode = () => {
                     <div>
                         <p className="rs-control-label color-white">
                             Optimization
-                    </p>
+                        </p>
                         <SelectPicker
                             className="dropdown-custom"
                             data={TrueOrFalse}
@@ -188,12 +217,13 @@ const DeployWithSourceCode = () => {
                                 onChange={(value) => {
                                     setSmcCode(value)
                                     validateSourceCode(value)
+                                    onChangeSourceCode(value)
                                 }}
                             />
                             <ErrMessage message={sourceCodeError} />
 
                             <p className="rs-control-label color-white" style={{ marginTop: '16px' }}>Constructor Arguments</p>
-                            <FormControl rows={20}
+                            {/* <FormControl rows={20}
                                 style={{ minWidth: 100, height: 200 }}
                                 name="argument"
                                 componentClass="textarea"
@@ -202,12 +232,37 @@ const DeployWithSourceCode = () => {
                                 onChange={(value) => {
                                     setConstructorArgument(value)
                                 }}
-                            />
+                            /> */}
+                            {
+                                constructorFields && constructorFields.length > 0 ? (
+                                    <FlexboxGrid.Item componentClass={Col} colspan={24} md={4} sm={24}>
+                                        {
+                                            constructorFields.map((field: any, idx: any) => {
+                                                return (
+                                                    <FormControl
+                                                        key={idx}
+                                                        style={{
+                                                            marginBottom: 10,
+                                                        }}
+                                                        type="text"
+                                                        name={field.name}
+                                                        placeholder={`${field.type} ${field.name}`}
+                                                        value={field.value}
+                                                        onChange={(value) => {
+                                                            handleConstructorFieldChange(value, idx)
+                                                        }}
+                                                    />
+                                                )
+                                            })
+                                        }
+                                    </FlexboxGrid.Item>
+                                ) : <></>
+                            }
 
                         </FlexboxGrid.Item>
 
                         <FlexboxGrid.Item componentClass={Col} colspan={24} md={24} style={{ marginTop: 20, paddingLeft: 0 }}>
-                            <Button size="big" className="kai-button get-started" onClick={getByteCode}>Verify</Button>
+                            <Button size="big" className="kai-button get-started" onClick={verify}>Verify</Button>
                             <Button size="big" className="kai-button-gray" onClick={resetAll}>Reset</Button>
                         </FlexboxGrid.Item>
 

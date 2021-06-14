@@ -13,6 +13,7 @@ declare global {
     interface Window {
         kardiachain: any;
         web3: any;
+        ethereum?: any;
     }
 }
 
