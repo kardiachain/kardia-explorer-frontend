@@ -12,7 +12,7 @@ const BlockTimeChart = ({ blockList = [] }: { blockList: KAIBlock[] }) => {
         if (blockList.length > 0) {
             const newData = {
                 labels: buildLabel(blockList.slice(1)),
-                datasets: [buildBlockTransactionsData(blockList.slice(1)), buildBlockTimeData(blockList)]
+                datasets: [buildBlockTimeData(blockList), buildBlockTransactionsData(blockList.slice(1))]
             }
             setBlockTimeData(newData)
         }
@@ -59,7 +59,7 @@ const options = {
             {
                 type: 'linear',
                 display: true,
-                position: 'left',
+                position: 'right',
                 id: 'y-axis-1',
                 gridLines: {
                     display: false
@@ -80,7 +80,7 @@ const options = {
             {
                 type: 'linear',
                 display: true,
-                position: 'right',
+                position: 'left',
                 id: 'y-axis-2',
                 gridLines: {
                     display: false
