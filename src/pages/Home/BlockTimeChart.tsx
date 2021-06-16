@@ -12,7 +12,7 @@ const BlockTimeChart = ({ blockList = [] }: { blockList: KAIBlock[] }) => {
         if (blockList.length > 0) {
             const newData = {
                 labels: buildLabel(blockList.slice(1)),
-                datasets: [buildBlockTimeData(blockList), buildBlockTransactionsData(blockList.slice(1))]
+                datasets: [buildBlockTransactionsData(blockList.slice(1)), buildBlockTimeData(blockList)]
             }
             setBlockTimeData(newData)
         }

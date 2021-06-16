@@ -30,20 +30,29 @@ const DashboardWallet = () => {
     const walletLocalState = useRecoilValue(walletState)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [walletStored, setWalletStored] = useWalletStorage();
-
-    // Handle Kardia Extension Wallet change account
-    if (walletStored.externalWallet) {
-        window && window.kardiachain && window.kardiachain.on('accountsChanged', (accounts: any) => {
-            if (accounts && accounts[0] !== walletStored.address) {
-                setWalletStored({
-                    privatekey: '',
-                    address: accounts[0],
-                    isAccess: true,
-                    externalWallet: true,
-                });
+    
+    useEffect(() => {
+        if (window && window.kardiachain) {
+            const listener = async (accounts: any) => {
+                if (accounts && accounts[0] !== walletStored.address) {
+                    setWalletStored({
+                        privatekey: '',
+                        address: accounts[0],
+                        isAccess: true,
+                        externalWallet: true,
+                    });
+                }
             }
-        })
-    }
+            window.kardiachain.on('accountsChanged', listener)
+            return () => {
+                window.kardiachain.removeListener('accountsChanged', listener)
+            }
+        }
+        // eslint-disable-next-line
+    }, [walletStored.address])
+
+
+
 
     useEffect(() => {
         if ((walletLocalState && walletLocalState?.account?.privatekey) || isExtensionWallet()) {
