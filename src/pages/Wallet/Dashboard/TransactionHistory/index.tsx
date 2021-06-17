@@ -90,6 +90,7 @@ const TransactionHistory = () => {
                                                 txs={krc20Txs}
                                                 totalTx={totalKrc20Txs}
                                                 loading={krc20TxsLoading}
+                                                address={myAccount.publickey}
                                                 size={krc20TxsSize}
                                                 setSize={setKrc20TxsSize}
                                                 page={krc20TxsPage}

@@ -234,6 +234,7 @@ const AddressDetail = () => {
                                                         totalTx={totalKrc20Txs}
                                                         loading={krc20TxsLoading}
                                                         size={krc20TxsSize}
+                                                        address={address}
                                                         setSize={setKrc20TxsSize}
                                                         page={krc20TxsPage}
                                                         setPage={setKrc20TxsPage} />
