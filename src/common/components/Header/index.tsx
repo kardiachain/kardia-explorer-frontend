@@ -98,16 +98,21 @@ export const KAIHeader = () => {
                                             history.push("/proposals")
                                             setShowMenu(false)
                                         }}>Proposal</Dropdown.Item>
-                                   
+
                                     </Dropdown>
 
-                                    <Nav.Item eventKey="" icon={<Icon className="gray-highlight" icon="list-ul" />}
-                                        onClick={() => {
+                                    <Dropdown eventKey="tokens" icon={<Icon className="gray-highlight" icon="list-ul" />} title="Tokens">
+                                        <Dropdown.Item onClick={() => {
                                             history.push("/tokens")
                                             setShowMenu(false)
-                                        }}>Tokens</Nav.Item>
+                                        }}>KRC20 Top Tokens</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {
+                                            history.push("/tokens-nft")
+                                            setShowMenu(false)
+                                        }}>KRC721 Top Tokens</Dropdown.Item>
 
-                                 
+                                    </Dropdown>
+
                                     <Nav.Item eventKey="staking" icon={<Icon className="gray-highlight" icon="peoples" />}
                                         onClick={() => {
                                             history.push("/staking")
@@ -115,57 +120,57 @@ export const KAIHeader = () => {
                                         }} >Staking</Nav.Item>
                                     {
                                         !isLoggedIn() ? (
-                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} 
-                                            onClick={() => { 
-                                                history.push("/wallet-login")
-                                                setShowMenu(false)
-                                             }}>Wallet</Nav.Item>
+                                            <Nav.Item eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />}
+                                                onClick={() => {
+                                                    history.push("/wallet-login")
+                                                    setShowMenu(false)
+                                                }}>Wallet</Nav.Item>
                                         ) : (
-                                                <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
-                                                    <Dropdown.Item
-                                                        onClick={() => {
-                                                            history.push("/wallet/dashboard")
-                                                            setShowMenu(false)
-                                                        }}>
-                                                        Dashboard
-                                                    </Dropdown.Item>
-                                                    <Dropdown.Item
-                                                        onClick={() => {
-                                                            history.push("/wallet/send-transaction")
-                                                            setShowMenu(false)
-                                                        }}>
-                                                        Send transaction
-                                                    </Dropdown.Item>
-                                                    <Dropdown.Item
-                                                        onClick={() => {
-                                                            history.push("/wallet/staking/for-validator")
-                                                            setShowMenu(false)
-                                                        }}>
-                                                        For Validator
-                                                    </Dropdown.Item>
-                                                    <Dropdown.Item
-                                                        onClick={() => {
-                                                            history.push("/wallet/staking/for-delegator")
-                                                            setShowMenu(false)
-                                                        }}>
-                                                        For Delegator
-                                                        </Dropdown.Item>
-                                                    <Dropdown.Item
-                                                        onClick={() => {
-                                                            history.push("/wallet/smc/byte-code-deployment")
-                                                            setShowMenu(false)
-                                                        }}>
-                                                        Deploy Contract
-                                                        </Dropdown.Item>
-                                                    <Dropdown.Item
-                                                        onClick={() => {
-                                                            history.push("/wallet/smc/interaction")
-                                                            setShowMenu(false)
-                                                        }}>
-                                                        Interact With Contract
-                                                        </Dropdown.Item>
-                                                </Dropdown>
-                                            )
+                                            <Dropdown eventKey="wallet" icon={<Icon className="gray-highlight" icon="money" />} title="Wallet">
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        history.push("/wallet/dashboard")
+                                                        setShowMenu(false)
+                                                    }}>
+                                                    Dashboard
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        history.push("/wallet/send-transaction")
+                                                        setShowMenu(false)
+                                                    }}>
+                                                    Send transaction
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        history.push("/wallet/staking/for-validator")
+                                                        setShowMenu(false)
+                                                    }}>
+                                                    For Validator
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        history.push("/wallet/staking/for-delegator")
+                                                        setShowMenu(false)
+                                                    }}>
+                                                    For Delegator
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        history.push("/wallet/smc/byte-code-deployment")
+                                                        setShowMenu(false)
+                                                    }}>
+                                                    Deploy Contract
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        history.push("/wallet/smc/interaction")
+                                                        setShowMenu(false)
+                                                    }}>
+                                                    Interact With Contract
+                                                </Dropdown.Item>
+                                            </Dropdown>
+                                        )
                                     }
                                     {/* <Nav.Item eventKey="faucet" icon={<Icon icon="usd" />} href="/faucet">Faucet</Nav.Item> */}
                                     <NetworkSelect />
@@ -205,7 +210,20 @@ export const KAIHeader = () => {
                         <Dropdown.Item eventKey="proposals" onClick={() => { history.push("/proposals") }}>Proposal</Dropdown.Item>
                     </Dropdown>
 
-                    <Nav.Item eventKey="tokens" onClick={() => { history.push("/tokens") }}>Tokens</Nav.Item>
+                    {/* <Nav.Item eventKey="tokens" onClick={() => { history.push("/tokens") }}>Tokens</Nav.Item> */}
+
+                    <Dropdown title="Tokens">
+                        <Dropdown.Item onClick={() => {
+                            history.push("/tokens")
+                            setShowMenu(false)
+                        }}>KRC20 Top Tokens</Dropdown.Item>
+                        <Dropdown.Item onClick={() => {
+                            history.push("/tokens-nft")
+                            setShowMenu(false)
+                        }}>KRC721 Top Tokens</Dropdown.Item>
+
+                    </Dropdown>
+
                     <Nav.Item eventKey="staking" onClick={() => { history.push("/staking") }}>Staking</Nav.Item>
                     {
                         isLoggedIn() ? (
@@ -221,8 +239,8 @@ export const KAIHeader = () => {
                                 <Dropdown.Item eventKey="logout-wallet" onSelect={logout}>Logout wallet</Dropdown.Item>
                             </Dropdown>
                         ) : (
-                                <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>Wallet</Nav.Item>
-                            )
+                            <Nav.Item eventKey="wallet" onClick={() => { history.push("/wallet-login") }}>Wallet</Nav.Item>
+                        )
                     }
                     {/* <Nav.Item eventKey="faucet" href="/faucet">Faucet</Nav.Item> */}
                 </Nav>

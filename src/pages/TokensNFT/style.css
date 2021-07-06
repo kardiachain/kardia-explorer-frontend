@@ -1,0 +1,29 @@
+.token-logo {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: top;
+    margin-top: 7px;
+}
+
+.token-name,
+.token-name:hover {
+    color: var(--link-color);
+    font-size: 16px;
+}
+
+.token-address {
+    font-size: 12px;
+}
+
+.token-info {
+    font-size: 12px;
+}
+
+.unverified-note {
+    margin-bottom: 10px;
+    background: #AE7E47;
+    padding: 12px;
+    border-radius: 8px;
+}

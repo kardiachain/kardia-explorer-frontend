@@ -54,6 +54,7 @@ export interface ITokenHoldersByToken {
     holderAddress: string;
     balance: any;
     tokenDecimals: number;
+    tokenID?: string;
 }
 
 export interface ITokenHolderByTokenList {

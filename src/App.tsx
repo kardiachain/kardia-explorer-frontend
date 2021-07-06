@@ -33,6 +33,7 @@ import { RecoilRoot } from 'recoil';
 import Proposal from './pages/Proposal';
 import ProposalDetails from './pages/Proposal/ProposalDetails';
 import Tokens from './pages/Tokens';
+import TokensNFT from './pages/TokensNFT';
 import TokenDetail from './pages/Tokens/TokenDetail';
 import { KAIFooter, KAIHeader } from './common';
 
@@ -65,6 +66,9 @@ class App extends Component {
                   </Route>
                   <Route path="/tokens">
                     <Tokens/>
+                  </Route>
+                  <Route path="/tokens-nft">
+                    <TokensNFT/>
                   </Route>
                   <Route path="/validator/:valAddr">
                     <ValidatorDetail />
