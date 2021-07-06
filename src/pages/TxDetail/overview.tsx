@@ -308,7 +308,8 @@ const TxDetailOverview = ({ txDetail, loading }: {
                                                             </span>
                                                             <span>
                                                                 <span className="text-bold" style={{ marginRight: 5 }}>For</span>
-                                                                <span style={{ marginRight: 5 }}>{item.arguments && item.arguments.value ? numberFormat(convertValueFollowDecimal(item.arguments.value, item.decimals)) : ''}</span>
+                                                                <span style={{ marginRight: 5 }}>{ item.tokenType === 'KRC721' ? `KRC721 TokenID [${item.arguments.tokenId}]` :
+                                                                numberFormat(convertValueFollowDecimal(item.arguments.value, item.decimals))}</span>
                                                                 <img
                                                                     style={{ marginRight: 5 }}
                                                                     className="token-logo-small"

@@ -16,7 +16,7 @@ export const getHolderAccount = async (address: string): Promise<HolderAccount> 
 }
 
 export const getTotalStats = async (): Promise<TotalStats> => {
-    const response = await fetch(`${END_POINT}dashboard/holders/total`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}dashboard/stats`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     return responseJSON.data || 0
 }
