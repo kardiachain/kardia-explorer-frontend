@@ -8,6 +8,8 @@ import { getTokenContractInfor, ITokenDetails, ITokenHoldersByToken, ITokenTranf
 import TokenTransfers from './TokenTransfers';
 import { TABLE_CONFIG } from '../../../config';
 import TokenHolder from './TokenHolder';
+import TokenHolderKRC721 from './TokenHolderKRC721';
+
 import {
     UNVERIFY_TOKEN_DEFAULT_BASE64,
     renderHashToRedirect,
@@ -63,7 +65,7 @@ const TokenDetail = () => {
         (async () => {
             if (!tokenType) return
             setHoldersLoading(true)
-            if(tokenType === 'KRC721') {
+            if (tokenType === 'KRC721') {
                 const rs = await getTokenHoldersByTokenKRC721(contractAddress, holdersPage, holdersSize)
                 setTotalHolder(rs.total)
                 setHolders(rs.holders)
@@ -78,7 +80,7 @@ const TokenDetail = () => {
                 setHoldersLoading(false)
                 return;
             }
-     
+
         })()
     }, [holdersSize, holdersPage, contractAddress, tokenType])
 
@@ -224,6 +226,19 @@ const TokenDetail = () => {
                                                 setPage={setTransferTxsPage} />
                                         );
                                     case 'holders':
+                                        if (tokenType === 'KRC721') {
+                                            return(
+                                            <TokenHolderKRC721
+                                                holders={holders}
+                                                totalHolder={totalHolder}
+                                                size={holdersSize}
+                                                page={holdersPage}
+                                                setSize={setHoldersSize}
+                                                setPage={setHoldersPage}
+                                                loading={holdersLoading}
+                                            />)
+                                        }
+
                                         return (
                                             <TokenHolder
                                                 holders={holders}
@@ -233,7 +248,6 @@ const TokenDetail = () => {
                                                 setSize={setHoldersSize}
                                                 setPage={setHoldersPage}
                                                 loading={holdersLoading}
-                                                tokenType={tokenType}
                                             />
                                         )
 

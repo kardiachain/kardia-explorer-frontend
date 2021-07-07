@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, FlexboxGrid, Table } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
-import { renderHashToRedirect, convertValueFollowDecimal, numberFormat } from '../../../common';
+import { renderHashToRedirect} from '../../../common';
 import { TABLE_CONFIG } from '../../../config';
 import { ITokenHoldersByToken } from '../../../service';
 const { Column, HeaderCell, Cell } = Table;
@@ -49,12 +49,12 @@ const TokenHolder = ({holders, totalHolder, size, setSize, page, setPage, loadin
                     </Cell>
                 </Column>
                 <Column flexGrow={1} minWidth={180} verticalAlign="middle">
-                    <HeaderCell>Balance</HeaderCell>
+                    <HeaderCell>TokenID</HeaderCell>
                     <Cell>
                         {(rowData: ITokenHoldersByToken) => {
                             return (
                                 <div>
-                                    {numberFormat(convertValueFollowDecimal(rowData.balance, rowData.tokenDecimals))}
+                                    {rowData.tokenID}
                                 </div>
                             );
                         }}
