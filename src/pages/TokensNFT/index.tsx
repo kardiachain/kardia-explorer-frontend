@@ -4,25 +4,38 @@ import { TABLE_CONFIG } from '../../config';
 import { getContractKRC721 } from '../../service/tokens-nft';
 import './style.css'
 import { Tokens } from './Tokens';
-
+import { UnverifiedToken } from './UnverifiedToken'
 
 const TokensNFT = () => {
 
     const [activeKey, setActiveKey] = useState('verified')
 
-    const [tokenPage, setTokenPage] = useState(TABLE_CONFIG.page);
-    const [tokenSize, setTokenSize] = useState(TABLE_CONFIG.limitDefault);
+
     const [loading, setLoading] = useState(false);
 
+    const [tokenPage, setTokenPage] = useState(TABLE_CONFIG.page);
+    const [tokenSize, setTokenSize] = useState(TABLE_CONFIG.limitDefault);
     const [tokens, setTokens] = useState([])
+
+
+    const [unverified , setUnverifiedToken] = useState([])
+    const [unverifiedTokenPage, setUnverifiedTokenPage] = useState(TABLE_CONFIG.page);
+    const [unverifiedTokenSize, setUnverifiedTokenSize] = useState(TABLE_CONFIG.limitDefault);
 
 
     useEffect(() => {
         (async () => {
             setLoading(true);
             const rs = await getContractKRC721(tokenPage, tokenSize);
-            setTokens(rs.contracts);
-            setTokenSize(rs.total);
+
+            const _verifyTokens = rs.contracts.filter((it: any) => it.isVerified === true)
+            const _unverifyTokens = rs.contracts.filter((it: any) => it.isVerified === false)
+            
+            setTokens(_verifyTokens);
+            setTokenSize(_verifyTokens.length);
+
+            setUnverifiedToken(_unverifyTokens);
+            setUnverifiedTokenSize(_unverifyTokens.length)
             setLoading(false);
         })()
     }, [tokenPage, tokenSize])
@@ -48,7 +61,11 @@ const TokensNFT = () => {
                                 onSelect={setActiveKey}
                                 style={{ marginBottom: 20 }}>
                                 <Nav.Item eventKey="verified">
-                                    {`KRC721 Contract (${tokenSize || 0})`}
+                                    {`Verified Token (${tokenSize || 0})`}
+                                </Nav.Item>
+
+                                <Nav.Item eventKey="unverified">
+                                    {`Unverified Token (${unverifiedTokenSize || 0})`}
                                 </Nav.Item>
                             </Nav>
                         </div>
@@ -66,6 +83,18 @@ const TokensNFT = () => {
                                                 setSize={setTokenSize}
                                                 loading={loading} />
                                         );
+
+                                    case 'unverified':
+                                        return (
+                                            <UnverifiedToken
+                                                tokens={unverified}
+                                                totalTokens={1}
+                                                page={unverifiedTokenPage}
+                                                setPage={setUnverifiedTokenPage}
+                                                size={unverifiedTokenSize}
+                                                setSize={setUnverifiedTokenSize}
+                                                loading={loading} />
+                                        )
                                 }
                             })()
                         }
