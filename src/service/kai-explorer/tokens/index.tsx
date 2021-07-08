@@ -108,7 +108,7 @@ export const getKrc20Txs = async (address: string, page: number, size: number): 
 }
 
 export const getTokenHoldersByToken = async (tokenAddr: string, page: number, size: number) : Promise<ITokenHolderByTokenList> => {
-    const response = await fetch(`${END_POINT}token/holders/${tokenAddr}?page=${page}&limit=${size}`, GET_REQUEST_OPTION);
+    const response = await fetch(`${END_POINT}krc20/${tokenAddr}/holders?page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
     if (!raws || raws.length < 1) return {} as ITokenHolderByTokenList

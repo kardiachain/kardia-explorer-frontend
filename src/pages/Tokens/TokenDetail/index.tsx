@@ -8,12 +8,15 @@ import { getTokenContractInfor, ITokenDetails, ITokenHoldersByToken, ITokenTranf
 import TokenTransfers from './TokenTransfers';
 import { TABLE_CONFIG } from '../../../config';
 import TokenHolder from './TokenHolder';
+import TokenHolderKRC721 from './TokenHolderKRC721';
+
 import {
     UNVERIFY_TOKEN_DEFAULT_BASE64,
     renderHashToRedirect,
     convertValueFollowDecimal,
     numberFormat
 } from '../../../common';
+import { getTokenHoldersByTokenKRC721 } from '../../../service/tokens-nft';
 
 const { Paragraph } = Placeholder;
 
@@ -34,13 +37,17 @@ const TokenDetail = () => {
     const [holdersSize, setHoldersSize] = useState(TABLE_CONFIG.limitDefault)
     const [holdersPage, setHoldersPage] = useState(TABLE_CONFIG.page)
     const [holdersLoading, setHoldersLoading] = useState(false)
+    const [tokenType, setTokenType] = useState('');
 
     useEffect(() => {
         (async () => {
             setLoading(true);
             const rs = await getTokenContractInfor(contractAddress);
             setTokenInfor(rs);
+            setTokenType(rs.type);
             setLoading(false);
+
+            setHoldersLoading(true)
         })()
     }, [contractAddress])
 
@@ -56,13 +63,26 @@ const TokenDetail = () => {
 
     useEffect(() => {
         (async () => {
+            if (!tokenType) return
             setHoldersLoading(true)
-            const rs = await getTokenHoldersByToken(contractAddress, holdersPage, holdersSize)
-            setTotalHolder(rs.total)
-            setHolders(rs.holders)
-            setHoldersLoading(false)
+            if (tokenType === 'KRC721') {
+                const rs = await getTokenHoldersByTokenKRC721(contractAddress, holdersPage, holdersSize)
+                setTotalHolder(rs.total)
+                setHolders(rs.holders)
+                setHoldersLoading(false)
+                return;
+            }
+
+            else {
+                const rs = await getTokenHoldersByToken(contractAddress, holdersPage, holdersSize)
+                setTotalHolder(rs.total)
+                setHolders(rs.holders)
+                setHoldersLoading(false)
+                return;
+            }
+
         })()
-    }, [holdersSize, holdersPage, contractAddress])
+    }, [holdersSize, holdersPage, contractAddress, tokenType])
 
     return (
         <div className="container token-details-container">
@@ -206,6 +226,19 @@ const TokenDetail = () => {
                                                 setPage={setTransferTxsPage} />
                                         );
                                     case 'holders':
+                                        if (tokenType === 'KRC721') {
+                                            return(
+                                            <TokenHolderKRC721
+                                                holders={holders}
+                                                totalHolder={totalHolder}
+                                                size={holdersSize}
+                                                page={holdersPage}
+                                                setSize={setHoldersSize}
+                                                setPage={setHoldersPage}
+                                                loading={holdersLoading}
+                                            />)
+                                        }
+
                                         return (
                                             <TokenHolder
                                                 holders={holders}
