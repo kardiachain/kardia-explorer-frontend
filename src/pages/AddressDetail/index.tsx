@@ -39,29 +39,48 @@ const AddressDetail = () => {
     }, [address])
 
     useEffect(() => {
-        (async () => {
-            setLoading(true);
-            const rs = await Promise.all([
-                getTxsByAddress(address, page, size),
-                getHolderAccount(address),
-                getTokens(address)
-            ]);
-            setLoading(false);
-            setTransactionList(rs[0].transactions);
-            setTotalTxs(rs[0].totalTxs);
-            setHolderAccount(rs[1]);
-            setTokens(rs[2].tokens);
-        })()
+        if (address) {
+            (async () => {
+                try {
+                    setLoading(true);
+                    const txs = await getTxsByAddress(address, page, size);
+                    setLoading(false);
+                    setTransactionList(txs.transactions);
+                    setTotalTxs(txs.totalTxs);
+                } catch (error) { }
+            })()
+        }
     }, [page, size, address])
 
     useEffect(() => {
-        (async () => {
-            setKrc20TxsLoading(true)
-            const rs = await getKrc20Txs(address, krc20TxsPage, krc20TxsSize)
-            setTotalKrc20Txs(rs.total)
-            setKrc20Txs(rs.txs)
-            setKrc20TxsLoading(false)
-        })()
+        if (address) {
+            (async() => {
+                try {
+                    const rs = await Promise.all([
+                        getHolderAccount(address),
+                        getTokens(address)
+                    ]);
+                    setHolderAccount(rs[0]);
+                    setTokens(rs[1].tokens);
+                } catch (error) {}
+            })()
+        }
+    }, [address])
+
+
+
+    useEffect(() => {
+        if (address) {
+            (async () => {
+                try {
+                    setKrc20TxsLoading(true)
+                    const rs = await getKrc20Txs(address, krc20TxsPage, krc20TxsSize)
+                    setTotalKrc20Txs(rs.total)
+                    setKrc20Txs(rs.txs)
+                    setKrc20TxsLoading(false)
+                } catch (error) {}
+            })()
+        }
     }, [krc20TxsSize, krc20TxsPage, address])
 
     return (
@@ -215,6 +234,7 @@ const AddressDetail = () => {
                                                         totalTx={totalKrc20Txs}
                                                         loading={krc20TxsLoading}
                                                         size={krc20TxsSize}
+                                                        address={address}
                                                         setSize={setKrc20TxsSize}
                                                         page={krc20TxsPage}
                                                         setPage={setKrc20TxsPage} />

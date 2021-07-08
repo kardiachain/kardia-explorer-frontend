@@ -16,8 +16,10 @@ const SendTransaction = () => {
             if (!myAccount.publickey) {
                 return;
             }
-            const listTokens = await getTokens(myAccount.publickey)
-            setTokens(listTokens.tokens);
+            try {
+                const listTokens = await getTokens(myAccount.publickey)
+                setTokens(listTokens.tokens);
+            } catch (error) { }
         })();
     }, [myAccount.publickey])
 
@@ -25,8 +27,10 @@ const SendTransaction = () => {
         if (!myAccount.publickey) {
             return;
         }
-        const listTokens = await getTokens(myAccount.publickey)
-        setTokens(listTokens.tokens);
+        try {
+            const listTokens = await getTokens(myAccount.publickey)
+            setTokens(listTokens.tokens);
+        } catch (error) { }
     }
 
     return (

@@ -59,7 +59,7 @@ const options = {
             {
                 type: 'linear',
                 display: true,
-                position: 'left',
+                position: 'right',
                 id: 'y-axis-1',
                 gridLines: {
                     display: false
@@ -80,7 +80,7 @@ const options = {
             {
                 type: 'linear',
                 display: true,
-                position: 'right',
+                position: 'left',
                 id: 'y-axis-2',
                 gridLines: {
                     display: false

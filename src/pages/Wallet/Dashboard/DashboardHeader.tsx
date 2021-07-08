@@ -19,7 +19,6 @@ const DashboardHeader = () => {
     const [yourStakedAmount, setYourStakedAmount] = useState('0')
 
     useEffect(() => {
-
         (async () => {
             if (!account.publickey) {
                 return;
@@ -43,7 +42,7 @@ const DashboardHeader = () => {
         if (!account.publickey) {
             return;
         }
-        calculateTotalStaked(account.publickey)
+        calculateTotalStaked(account.publickey)  
 
         // eslint-disable-next-line
     }, [account.publickey])
@@ -53,8 +52,10 @@ const DashboardHeader = () => {
             if (!account.publickey) {
                 return;
             }
-            const listTokens = await getTokens(account.publickey)
-            setTokens(listTokens.tokens);
+            try {
+                const listTokens = await getTokens(account.publickey)
+                setTokens(listTokens.tokens);
+            } catch (error) {}
         })();
 
     }, [account.publickey])
@@ -63,22 +64,24 @@ const DashboardHeader = () => {
         if (!addr) {
             return;
         }
-        const validator = await getValidatorByDelegator(account.publickey);
-        let totalStaked = toFraction('0')
-        if (validator && validator.length > 0) {
-            validator.forEach((item: YourValidator) => {
-                if (item.yourStakeAmount && item.yourStakeAmount !== '0') {
-                    totalStaked = fractionAdd(totalStaked, toFraction(String(item.yourStakeAmount)))
-                }
-                if (item.unbondedAmount && item.unbondedAmount !== '0') {
-                    totalStaked = fractionAdd(totalStaked, toFraction(String(item.unbondedAmount)))
-                }
-                if (item.withdrawableAmount && item.withdrawableAmount !== '0') {
-                    totalStaked = fractionAdd(totalStaked, toFraction(String(item.withdrawableAmount)))
-                }
-            });
-        }
-        setYourStakedAmount(toFixed(totalStaked))
+        try {
+            const validator = await getValidatorByDelegator(account.publickey);
+            let totalStaked = toFraction('0')
+            if (validator && validator.length > 0) {
+                validator.forEach((item: YourValidator) => {
+                    if (item.yourStakeAmount && item.yourStakeAmount !== '0') {
+                        totalStaked = fractionAdd(totalStaked, toFraction(String(item.yourStakeAmount)))
+                    }
+                    if (item.unbondedAmount && item.unbondedAmount !== '0') {
+                        totalStaked = fractionAdd(totalStaked, toFraction(String(item.unbondedAmount)))
+                    }
+                    if (item.withdrawableAmount && item.withdrawableAmount !== '0') {
+                        totalStaked = fractionAdd(totalStaked, toFraction(String(item.withdrawableAmount)))
+                    }
+                });
+            }
+            setYourStakedAmount(toFixed(totalStaked))
+        } catch (error) {}
     }
 
 

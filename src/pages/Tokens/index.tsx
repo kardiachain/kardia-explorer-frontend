@@ -3,7 +3,6 @@ import { Col, FlexboxGrid, Nav, Panel } from 'rsuite';
 import { TABLE_CONFIG } from '../../config';
 import { getContractsList, ITokenContract } from '../../service';
 import './tokens.css'
-import unverified from '../../resources/unverified.svg';
 import { VerifiedTokens } from './VerifiedTokens';
 import { UnVerifiedTokens } from './UnverifiedTokens';
 
@@ -59,21 +58,6 @@ const Tokens = () => {
             <FlexboxGrid justify="space-between">
                 <FlexboxGrid.Item componentClass={Col} colspan={24} md={24}>
                     <Panel shaded className="panel-bg-gray">
-                        <div className="unverified-note">
-                            <img
-                                className="token-logo"
-                                style={{
-                                    width: 20,
-                                    height: 20,
-                                    marginTop: 0,
-                                    marginRight: 10
-                                }}
-                                src={unverified} alt="kardiachain" />
-                            <span style={{
-                                color: 'white',
-                                verticalAlign: 'bottom'
-                            }}>Unverified Tokens</span>
-                        </div>
                         <div className="custom-nav">
                             <Nav
                                 appearance="subtle"

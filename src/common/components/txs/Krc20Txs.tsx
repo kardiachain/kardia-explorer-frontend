@@ -1,17 +1,17 @@
 import React from 'react'
-import { Col, FlexboxGrid, Icon, Table } from 'rsuite';
+import { Col, FlexboxGrid, Icon, Table, Tag } from 'rsuite';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 import { TABLE_CONFIG } from '../../../config';
 import { useViewport } from '../../../context/ViewportContext';
 import { convertValueFollowDecimal } from '../../utils/amount';
 import { numberFormat } from '../../utils/number';
-import { millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../utils/string';
+import { compareString, millisecondToHMS, renderHashToRedirect, renderStringAndTooltip } from '../../utils/string';
 import { Link } from 'react-router-dom';
 import { ITokenTranferTx } from '../../../service';
 
 const { Column, HeaderCell, Cell } = Table;
 
-export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }: {
+export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize, address }: {
     txs: ITokenTranferTx[];
     totalTx: number;
     loading: boolean;
@@ -19,6 +19,7 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
     setPage: (page: number) => void;
     size: number;
     setSize: (size: number) => void;
+    address: string
 }) => {
 
     const { isMobile } = useViewport()
@@ -77,6 +78,20 @@ export const Krc20Txs = ({ txs, loading, totalTx, page, setPage, size, setSize }
                                         })}
                                     </div>
                                 );
+                            }}
+                        </Cell>
+                    </Column>
+                    <Column flexGrow={1} verticalAlign="middle">
+                        <HeaderCell></HeaderCell>
+                        <Cell>
+                            {(rowData: KAITransaction) => {
+                                return (
+                                    <div>
+                                        {
+                                            compareString(address, rowData.from) ? <Tag color="yellow" className="tab-in-out tab-out">OUT</Tag> : <Tag color="green" className="tab-in-out tab-in">IN</Tag>
+                                        }
+                                    </div>
+                                )
                             }}
                         </Cell>
                     </Column>

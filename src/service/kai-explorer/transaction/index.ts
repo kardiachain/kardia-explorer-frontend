@@ -1,6 +1,8 @@
 import { END_POINT, GET_REQUEST_OPTION } from "../config";
 import { checkValidatorRole } from "..";
-import { KardiaUtils } from "kardia-js-sdk";
+import { KardiaUtils, KRC20 } from "kardia-js-sdk";
+import { RPC_ENDPOINT, WKAI_ADDRESS } from "../../../config";
+import { compareString, kaiLogo } from "../../../common";
 
 interface TransactionsResponse {
     totalTxs: number;
@@ -212,28 +214,47 @@ export const getTokens = async (address: string): Promise<any> => {
     const _address = KardiaUtils.toChecksum(address)
     const response = await fetch(`${END_POINT}addresses/${_address}/tokens`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
-    if (responseJSON.data.data != null) {
-        return {
-            tokens: responseJSON.data.data.map((it: any) => {
-                return {
-                    balance: it.balance,
-                    contractAddress: it.contractAddress,
-                    holderAddress: it.holderAddress,
-                    logo: it.logo,
-                    tokenDecimals: it.tokenDecimals,
-                    label: it.tokenName,
-                    value: {
-                        contractAddress: it.contractAddress,
-                        tokenSymbol: it.tokenSymbol,
-                        balance: it.balance,
-                        tokenDecimals: it.tokenDecimals
-                    },
-                    tokenSymbol: it.tokenSymbol,
-                    updatedAt: it.updatedAt,
-                }
-            })
+    const krc20Client = new KRC20({address: WKAI_ADDRESS, provider: RPC_ENDPOINT})
+    const wkaiBalance = await krc20Client.balanceOf(address)
+    let tokens = []
+    if (Number(wkaiBalance) > 0) {
+        const wKaiObj = {
+            balance: wkaiBalance,
+            contractAddress: WKAI_ADDRESS,
+            logo: kaiLogo,
+            tokenDecimals: 18,
+            label: "WKAI",
+            value: {
+                contractAddress: WKAI_ADDRESS,
+                tokenSymbol: "WKAI",
+                balance: wkaiBalance,
+                tokenDecimals: 18
+            },
+            tokenSymbol: "WKAI",
         }
+        tokens.push(wKaiObj)
     }
-    return {}
+    if (responseJSON.data.data != null) {
+        responseJSON.data.data.filter((item: any) => !compareString(item.contractAddress, WKAI_ADDRESS)).forEach((it: any) => {
+            const _token = {
+                balance: it.balance,
+                contractAddress: it.contractAddress,
+                holderAddress: it.holderAddress,
+                logo: it.logo,
+                tokenDecimals: it.tokenDecimals,
+                label: it.tokenName,
+                value: {
+                    contractAddress: it.contractAddress,
+                    tokenSymbol: it.tokenSymbol,
+                    balance: it.balance,
+                    tokenDecimals: it.tokenDecimals
+                },
+                tokenSymbol: it.tokenSymbol,
+                updatedAt: it.updatedAt,
+            }
+            tokens.push(_token)
+        })
+    }
+    return { tokens }
 }
 
