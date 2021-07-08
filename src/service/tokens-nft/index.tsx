@@ -1,7 +1,7 @@
 import { END_POINT, GET_REQUEST_OPTION } from "../kai-explorer/config";
 
-export const getContractKRC721 = async (page: number, size: number) => {
-    const response = await fetch(`${END_POINT}contracts?page=${page}&limit=${size}&type=KRC721`, GET_REQUEST_OPTION);
+export const getContractKRC721 = async (page: number, size: number, status: string) => {
+    const response = await fetch(`${END_POINT}contracts?page=${page}&limit=${size}&type=KRC721&status=${status}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
 

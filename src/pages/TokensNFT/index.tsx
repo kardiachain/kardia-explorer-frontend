@@ -26,19 +26,22 @@ const TokensNFT = () => {
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const rs = await getContractKRC721(tokenPage, tokenSize);
-
-            const _verifyTokens = rs.contracts.filter((it: any) => it.isVerified === true)
-            const _unverifyTokens = rs.contracts.filter((it: any) => it.isVerified === false)
-            
-            setTokens(_verifyTokens);
-            setTokenSize(_verifyTokens.length);
-
-            setUnverifiedToken(_unverifyTokens);
-            setUnverifiedTokenSize(_unverifyTokens.length)
+            const rs = await getContractKRC721(tokenPage, tokenSize, 'Verified');
+            setTokens(rs.contracts);
+            setTokenSize(rs.total);
             setLoading(false);
         })()
-    }, [tokenPage, tokenSize, unverifiedTokenPage, unverifiedTokenSize])
+    }, [tokenPage, tokenSize])
+
+    useEffect(() => {
+        (async () => {
+            setLoading(true);
+            const rs = await getContractKRC721(unverifiedTokenPage, unverifiedTokenSize, 'Unverified');
+            setUnverifiedToken(rs.contracts);
+            setUnverifiedTokenSize(rs.total)
+            setLoading(false);
+        })()
+    }, [unverifiedTokenPage, unverifiedTokenSize])
 
     return (
         <div className="container txs-container">
