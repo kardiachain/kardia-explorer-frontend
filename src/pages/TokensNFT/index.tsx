@@ -38,7 +38,7 @@ const TokensNFT = () => {
             setUnverifiedTokenSize(_unverifyTokens.length)
             setLoading(false);
         })()
-    }, [tokenPage, tokenSize])
+    }, [tokenPage, tokenSize, unverifiedTokenPage, unverifiedTokenSize])
 
     return (
         <div className="container txs-container">
