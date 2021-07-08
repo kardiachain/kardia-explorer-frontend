@@ -13,7 +13,7 @@ export const getContractKRC721 = async (page: number, size: number) => {
             return {
                 address: item.address ? item.address : '',
                 decimal: item.decimal ? item.decimal : '',
-                isVerified: item.isVerified ? item.isVerified : false,
+                isVerified: item.isVerified,
                 name: item.name ? item.name : '',
                 status: item.status ? item.status : '',
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
