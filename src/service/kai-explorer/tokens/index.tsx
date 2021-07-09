@@ -53,7 +53,7 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
     const response = await fetch(`${END_POINT}token/txs?contractAddress=${tokenAddr}&page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
-    
+
     if (!raws || raws.length < 1) return {} as ITokenTranferTxList
     const nowTime = (new Date()).getTime()
 
@@ -63,7 +63,7 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
             const createdTime = (new Date(item.time)).getTime()
             return {
                 txHash: item.transactionHash ? item.transactionHash : '',
-                from: item.from? item.from : '',
+                from: item.from ? item.from : '',
                 to: item.to ? item.to : '',
                 value: item.value ? item.value : '0',
                 age: (nowTime - createdTime),
@@ -72,7 +72,8 @@ export const getTokenTransferTx = async (tokenAddr: string, page: number, size: 
                 tokenType: item.tokenType ? item.tokenType : '',
                 tokenSymbol: item.tokenSymbol ? item.tokenSymbol : '',
                 logo: item.logo ? item.logo : UNVERIFY_TOKEN_DEFAULT_BASE64,
-                tokenAddress: item.address ? item.address : ''
+                tokenAddress: item.address ? item.address : '',
+                tokenID: item.tokenID ? item.tokenID : ''
             }
         })
     }
@@ -82,7 +83,7 @@ export const getKrc20Txs = async (address: string, page: number, size: number): 
     const response = await fetch(`${END_POINT}token/txs?address=${KardiaUtils.toChecksum(address)}&page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];
-    
+
     if (!raws || raws.length < 1) return {} as ITokenTranferTxList
     const nowTime = (new Date()).getTime()
 
@@ -92,7 +93,7 @@ export const getKrc20Txs = async (address: string, page: number, size: number): 
             const createdTime = (new Date(item.time)).getTime()
             return {
                 txHash: item.transactionHash ? item.transactionHash : '',
-                from: item.from? item.from : '',
+                from: item.from ? item.from : '',
                 to: item.to ? item.to : '',
                 value: item.value ? item.value : '0',
                 age: (nowTime - createdTime),
@@ -107,7 +108,7 @@ export const getKrc20Txs = async (address: string, page: number, size: number): 
     }
 }
 
-export const getTokenHoldersByToken = async (tokenAddr: string, page: number, size: number) : Promise<ITokenHolderByTokenList> => {
+export const getTokenHoldersByToken = async (tokenAddr: string, page: number, size: number): Promise<ITokenHolderByTokenList> => {
     const response = await fetch(`${END_POINT}krc20/${tokenAddr}/holders?page=${page}&limit=${size}`, GET_REQUEST_OPTION);
     const responseJSON = await response.json();
     const raws = responseJSON?.data?.data || [];

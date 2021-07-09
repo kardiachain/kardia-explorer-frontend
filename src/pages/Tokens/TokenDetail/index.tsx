@@ -9,6 +9,7 @@ import TokenTransfers from './TokenTransfers';
 import { TABLE_CONFIG } from '../../../config';
 import TokenHolder from './TokenHolder';
 import TokenHolderKRC721 from './TokenHolderKRC721';
+import TokenTransfersKRC721 from './TokenTransfersKRC721'
 
 import {
     UNVERIFY_TOKEN_DEFAULT_BASE64,
@@ -215,28 +216,42 @@ const TokenDetail = () => {
                             (() => {
                                 switch (activeKey) {
                                     case 'transfer':
-                                        return (
-                                            <TokenTransfers
-                                                txs={transferTxs}
-                                                totalTx={totalTransferTxs}
-                                                loading={transferTxsLoading}
-                                                size={transferTxsSize}
-                                                setSize={setTransferTxsSize}
-                                                page={transferTxsPage}
-                                                setPage={setTransferTxsPage} />
-                                        );
+                                        if (tokenType === 'KRC721') {
+                                            return (
+                                                <TokenTransfersKRC721
+                                                    txs={transferTxs}
+                                                    totalTx={totalTransferTxs}
+                                                    loading={transferTxsLoading}
+                                                    size={transferTxsSize}
+                                                    setSize={setTransferTxsSize}
+                                                    page={transferTxsPage}
+                                                    setPage={setTransferTxsPage} />
+                                            );
+                                        }
+
+                                        return (<TokenTransfers
+                                            txs={transferTxs}
+                                            totalTx={totalTransferTxs}
+                                            loading={transferTxsLoading}
+                                            size={transferTxsSize}
+                                            setSize={setTransferTxsSize}
+                                            page={transferTxsPage}
+                                            setPage={setTransferTxsPage} />)
+
+
+
                                     case 'holders':
                                         if (tokenType === 'KRC721') {
-                                            return(
-                                            <TokenHolderKRC721
-                                                holders={holders}
-                                                totalHolder={totalHolder}
-                                                size={holdersSize}
-                                                page={holdersPage}
-                                                setSize={setHoldersSize}
-                                                setPage={setHoldersPage}
-                                                loading={holdersLoading}
-                                            />)
+                                            return (
+                                                <TokenHolderKRC721
+                                                    holders={holders}
+                                                    totalHolder={totalHolder}
+                                                    size={holdersSize}
+                                                    page={holdersPage}
+                                                    setSize={setHoldersSize}
+                                                    setPage={setHoldersPage}
+                                                    loading={holdersLoading}
+                                                />)
                                         }
 
                                         return (
