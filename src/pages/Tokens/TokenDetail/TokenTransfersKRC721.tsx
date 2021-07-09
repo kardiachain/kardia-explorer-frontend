@@ -3,7 +3,7 @@ import { Col, FlexboxGrid, Icon, Table } from 'rsuite';
 import { useViewport } from '../../../context/ViewportContext';
 import { ITokenTranferTx } from '../../../service';
 import { TABLE_CONFIG } from '../../../config';
-import { convertValueFollowDecimal, numberFormat, millisecondToHMS, renderHashToRedirect } from '../../../common';
+import { millisecondToHMS, renderHashToRedirect } from '../../../common';
 import TablePagination from 'rsuite/lib/Table/TablePagination';
 
 const { Column, HeaderCell, Cell } = Table;
