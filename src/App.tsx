@@ -48,6 +48,16 @@ class App extends Component {
                 <KAIHeader />
               </Header>
               <Content>
+                <div className="container">
+                  <p style={{ color: '#ffc107' }}>
+                    Warning: We are currently in the process of migrating data. During this process, transactions might be stale and suffer from delay.
+                    We appreciate your patience and understanding.
+                    <br/>
+                    Thanks.
+                  </p>
+                </div>
+              </Content>
+              <Content>
                 <Switch>
                   <Route path="/txs">
                     <TxList />
